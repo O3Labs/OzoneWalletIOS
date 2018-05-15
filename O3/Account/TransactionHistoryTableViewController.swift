@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import NeoSwift
 
 class TransactionHistoryTableViewController: UITableViewController, TransactionHistoryDelegate {
 
@@ -118,10 +117,10 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             assetName = supportedTokens[i].symbol.uppercased()
             assetDecimals = supportedTokens[i].decimal
             divisor = 100000000.0
-        } else if NeoSwift.AssetId.gasAssetId.rawValue.contains(transactionEntry.asset) {
+        } else if AssetId.gasAssetId.rawValue.contains(transactionEntry.asset) {
             assetName = "GAS"
             assetDecimals = 8
-        } else if NeoSwift.AssetId.neoAssetId.rawValue.contains(transactionEntry.asset) {
+        } else if AssetId.neoAssetId.rawValue.contains(transactionEntry.asset) {
             assetName = "NEO"
             assetDecimals = 0
         }

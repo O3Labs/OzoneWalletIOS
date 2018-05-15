@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import NeoSwift
 import WebBrowser
 
 class TokenSalesListTableViewController: UITableViewController {

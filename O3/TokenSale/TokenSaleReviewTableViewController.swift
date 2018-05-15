@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import Kingfisher
-import NeoSwift
 import WebBrowser
 
 class TokenSaleReviewTableViewController: UITableViewController {

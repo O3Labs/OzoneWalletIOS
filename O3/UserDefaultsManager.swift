@@ -7,22 +7,19 @@
 //
 
 import Foundation
-import NeoSwift
 
 class UserDefaultsManager {
 
     private static let networkKey = "networkKey"
 
     static var network: Network {
-        get {
-            #if TESTNET
-                return .test
-            #endif
-            #if PRIVATENET
-                return .test //change this to private net or make NeoSwift able to overwrite coz api
-            #endif
-            return .main
-        }
+        #if TESTNET
+            return .test
+        #endif
+        #if PRIVATENET
+            return .test //change this to private net or make NeoSwift able to overwrite coz api
+        #endif
+        return .main
     }
 
     private static let useDefaultSeedKey = "usedDefaultSeedKey"

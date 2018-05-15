@@ -211,7 +211,8 @@ public class O3Client {
                 completion(.failure(error))
             case .success(let response):
                 let decoder = JSONDecoder()
-                guard let data = try? JSONSerialization.data(withJSONObject: (response["result"] as? JSONDictionary)!["data"], options: .prettyPrinted),
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
                     let accountState = try? decoder.decode(AccountState.self, from: data) else {
                          return
                 }

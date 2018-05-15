@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import KeychainAccess
 import PKHUD
-import NeoSwift
 import SwiftTheme
 
 class WelcomeTableViewController: UITableViewController {

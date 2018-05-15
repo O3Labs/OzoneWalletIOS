@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import AVFoundation
-import NeoSwift
 
 protocol AddressAddDelegate: class {
     func addressAdded(_ address: String, nickName: String)

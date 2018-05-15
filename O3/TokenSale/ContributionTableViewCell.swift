@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import NeoSwift
 
 protocol ContributionCellDelegate: class {
     func setContributionAmount(amountString: String)

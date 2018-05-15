@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import NeoSwift
 
 class PreCreateWalletViewController: UIViewController {
 

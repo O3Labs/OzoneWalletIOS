@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import NeoSwift
 import PKHUD
 import Cache
 import SwiftTheme
@@ -194,7 +193,7 @@ class AccountAssetTableViewController: UITableViewController {
 
     func updateCacheAndLocalBalance(accountState: AccountState) {
         for asset in accountState.assets {
-            if asset.id.contains(NeoSwift.AssetId.neoAssetId.rawValue) {
+            if asset.id.contains(AssetId.neoAssetId.rawValue) {
                 neoBalance = Int(asset.value)
             } else {
                 gasBalance = asset.value

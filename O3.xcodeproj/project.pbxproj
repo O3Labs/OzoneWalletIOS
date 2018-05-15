@@ -44,7 +44,33 @@
 		3552DE0D209FF06F00836341 /* panda1.json in Resources */ = {isa = PBXBuildFile; fileRef = 3552DE0C209FF06F00836341 /* panda1.json */; };
 		3552DE0F209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552DE0E209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift */; };
 		3552DE1120A025D900836341 /* AccountState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552DE1020A025D900836341 /* AccountState.swift */; };
-		3557BA9720AA86AE0034937C /* NeoSwift in Resources */ = {isa = PBXBuildFile; fileRef = 3557BA9620AA86AE0034937C /* NeoSwift */; };
+		3557BA9C20AA9C870034937C /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BA9A20AA9C870034937C /* Account.swift */; };
+		3557BA9D20AA9C870034937C /* AssetIdConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BA9B20AA9C870034937C /* AssetIdConstants.swift */; };
+		3557BAA120AA9C930034937C /* NEP5TokenContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BA9E20AA9C930034937C /* NEP5TokenContract.swift */; };
+		3557BAA220AA9C930034937C /* ScriptBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BA9F20AA9C930034937C /* ScriptBuilder.swift */; };
+		3557BAA320AA9C930034937C /* OpCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAA020AA9C930034937C /* OpCodes.swift */; };
+		3557BAAD20AA9CB20034937C /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAA820AA9CB20034937C /* AES.swift */; };
+		3557BAAE20AA9CB20034937C /* SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAA920AA9CB20034937C /* SHA256.swift */; };
+		3557BAB220AA9CEE0034937C /* nodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 3557BAB120AA9CEE0034937C /* nodes.json */; };
+		3557BABD20AA9D0B0034937C /* Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAB420AA9D0A0034937C /* Balance.swift */; };
+		3557BABE20AA9D0B0034937C /* Claims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAB520AA9D0A0034937C /* Claims.swift */; };
+		3557BABF20AA9D0B0034937C /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAB620AA9D0A0034937C /* Token.swift */; };
+		3557BAC020AA9D0B0034937C /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAB720AA9D0A0034937C /* Transaction.swift */; };
+		3557BAC120AA9D0B0034937C /* TransactionAttritbute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAB820AA9D0A0034937C /* TransactionAttritbute.swift */; };
+		3557BAC220AA9D0B0034937C /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAB920AA9D0A0034937C /* Script.swift */; };
+		3557BAC320AA9D0B0034937C /* NEONetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BABA20AA9D0A0034937C /* NEONetwork.swift */; };
+		3557BAC420AA9D0B0034937C /* ContractResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BABB20AA9D0A0034937C /* ContractResult.swift */; };
+		3557BAC520AA9D0B0034937C /* NeoScanTransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BABC20AA9D0A0034937C /* NeoScanTransactionHistory.swift */; };
+		3557BAC820AA9D180034937C /* NeoScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAC620AA9D180034937C /* NeoScan.swift */; };
+		3557BAC920AA9D180034937C /* NeoClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAC720AA9D180034937C /* NeoClient.swift */; };
+		3557BACB20AA9D260034937C /* WIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACA20AA9D260034937C /* WIF.swift */; };
+		3557BAD220AA9D310034937C /* Base58.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACC20AA9D300034937C /* Base58.swift */; };
+		3557BAD320AA9D310034937C /* validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACD20AA9D300034937C /* validator.swift */; };
+		3557BAD420AA9D310034937C /* Array+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACE20AA9D300034937C /* Array+Util.swift */; };
+		3557BAD520AA9D310034937C /* NEP9.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACF20AA9D300034937C /* NEP9.swift */; };
+		3557BAD720AA9D310034937C /* Data+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAD120AA9D310034937C /* Data+Util.swift */; };
+		3557BAE220AAA3300034937C /* ValueIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAE020AAA32F0034937C /* ValueIn.swift */; };
+		3557BAE320AAA3300034937C /* ValueOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAE120AAA32F0034937C /* ValueOut.swift */; };
 		358E95D9200358AA00A1878B /* NewsFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358E95D8200358AA00A1878B /* NewsFeed.swift */; };
 		35A6390F203517BB0054EA20 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A6390E203517BB0054EA20 /* CloudKit.framework */; };
 		35AD2B64209179010024A900 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 35AD2B61209179010024A900 /* Base.lproj */; };
@@ -156,8 +182,6 @@
 		757FEB711F77E2790099E26F /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757FEB701F77E2790099E26F /* UIView.swift */; };
 		757FEB731F77F07B0099E26F /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757FEB721F77F07B0099E26F /* String.swift */; };
 		75B6E5C21F6D4E8A00F53CA8 /* QR.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75B6E5C11F6D4E8A00F53CA8 /* QR.storyboard */; };
-		75BEB25E1F89F3CA00DC20E9 /* NeoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75BEB25D1F89F3C900DC20E9 /* NeoSwift.framework */; };
-		75BEB25F1F89F3CA00DC20E9 /* NeoSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 75BEB25D1F89F3C900DC20E9 /* NeoSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		75BEB2621F89FB2A00DC20E9 /* O3HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BEB2611F89FB2A00DC20E9 /* O3HUD.swift */; };
 		75BEB2641F89FB8A00DC20E9 /* O3HUD.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75BEB2631F89FB8A00DC20E9 /* O3HUD.storyboard */; };
 		75BEB2681F8A068100DC20E9 /* HUD.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75BEB2671F8A068100DC20E9 /* HUD.xcassets */; };
@@ -200,7 +224,6 @@
 				6E97C4BA1F7FCB4000526FF0 /* DeckTransition.framework in Embed Frameworks */,
 				7537438C1F7F572500803A6C /* KeychainAccess.framework in Embed Frameworks */,
 				755D8F621F66747A00058434 /* ScrollableGraphView.framework in Embed Frameworks */,
-				75BEB25F1F89F3CA00DC20E9 /* NeoSwift.framework in Embed Frameworks */,
 				3537848B2080713200648AF2 /* M13Checkbox.framework in Embed Frameworks */,
 				353F365020037DFB002B4FE1 /* Kingfisher.framework in Embed Frameworks */,
 				6ED600141F76219D006760E6 /* Channel.framework in Embed Frameworks */,
@@ -245,7 +268,35 @@
 		3552DE0C209FF06F00836341 /* panda1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = panda1.json; sourceTree = "<group>"; };
 		3552DE0E209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEP5TokenSelectorTableViewCell.swift; sourceTree = "<group>"; };
 		3552DE1020A025D900836341 /* AccountState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountState.swift; sourceTree = "<group>"; };
-		3557BA9620AA86AE0034937C /* NeoSwift */ = {isa = PBXFileReference; lastKnownFileType = folder; path = NeoSwift; sourceTree = "<group>"; };
+		3557BA9A20AA9C870034937C /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		3557BA9B20AA9C870034937C /* AssetIdConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetIdConstants.swift; sourceTree = "<group>"; };
+		3557BA9E20AA9C930034937C /* NEP5TokenContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEP5TokenContract.swift; sourceTree = "<group>"; };
+		3557BA9F20AA9C930034937C /* ScriptBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptBuilder.swift; sourceTree = "<group>"; };
+		3557BAA020AA9C930034937C /* OpCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodes.swift; sourceTree = "<group>"; };
+		3557BAA820AA9CB20034937C /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
+		3557BAA920AA9CB20034937C /* SHA256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256.swift; sourceTree = "<group>"; };
+		3557BAB120AA9CEE0034937C /* nodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = nodes.json; sourceTree = "<group>"; };
+		3557BAB420AA9D0A0034937C /* Balance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Balance.swift; sourceTree = "<group>"; };
+		3557BAB520AA9D0A0034937C /* Claims.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Claims.swift; sourceTree = "<group>"; };
+		3557BAB620AA9D0A0034937C /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		3557BAB720AA9D0A0034937C /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		3557BAB820AA9D0A0034937C /* TransactionAttritbute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionAttritbute.swift; sourceTree = "<group>"; };
+		3557BAB920AA9D0A0034937C /* Script.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
+		3557BABA20AA9D0A0034937C /* NEONetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEONetwork.swift; sourceTree = "<group>"; };
+		3557BABB20AA9D0A0034937C /* ContractResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContractResult.swift; sourceTree = "<group>"; };
+		3557BABC20AA9D0A0034937C /* NeoScanTransactionHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeoScanTransactionHistory.swift; sourceTree = "<group>"; };
+		3557BAC620AA9D180034937C /* NeoScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoScan.swift; sourceTree = "<group>"; };
+		3557BAC720AA9D180034937C /* NeoClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoClient.swift; sourceTree = "<group>"; };
+		3557BACA20AA9D260034937C /* WIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WIF.swift; sourceTree = "<group>"; };
+		3557BACC20AA9D300034937C /* Base58.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58.swift; sourceTree = "<group>"; };
+		3557BACD20AA9D300034937C /* validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = validator.swift; sourceTree = "<group>"; };
+		3557BACE20AA9D300034937C /* Array+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Util.swift"; sourceTree = "<group>"; };
+		3557BACF20AA9D300034937C /* NEP9.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEP9.swift; sourceTree = "<group>"; };
+		3557BAD120AA9D310034937C /* Data+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Util.swift"; sourceTree = "<group>"; };
+		3557BAD920AA9F690034937C /* neoutils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = neoutils.framework; sourceTree = "<group>"; };
+		3557BADD20AAA0940034937C /* O3-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "O3-Bridging-Header.h"; sourceTree = "<group>"; };
+		3557BAE020AAA32F0034937C /* ValueIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueIn.swift; sourceTree = "<group>"; };
+		3557BAE120AAA32F0034937C /* ValueOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueOut.swift; sourceTree = "<group>"; };
 		358E95D8200358AA00A1878B /* NewsFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeed.swift; sourceTree = "<group>"; };
 		35A6390E203517BB0054EA20 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		35AD2B61209179010024A900 /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
@@ -355,7 +406,6 @@
 		757FEB701F77E2790099E26F /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		757FEB721F77F07B0099E26F /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		75B6E5C11F6D4E8A00F53CA8 /* QR.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = QR.storyboard; sourceTree = "<group>"; };
-		75BEB25D1F89F3C900DC20E9 /* NeoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NeoSwift.framework; path = Carthage/Build/iOS/NeoSwift.framework; sourceTree = "<group>"; };
 		75BEB2611F89FB2A00DC20E9 /* O3HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = O3HUD.swift; sourceTree = "<group>"; };
 		75BEB2631F89FB8A00DC20E9 /* O3HUD.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = O3HUD.storyboard; sourceTree = "<group>"; };
 		75BEB2671F8A068100DC20E9 /* HUD.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = HUD.xcassets; sourceTree = "<group>"; };
@@ -408,7 +458,6 @@
 				6ED600131F76219D006760E6 /* Channel.framework in Frameworks */,
 				755D8F601F66743A00058434 /* ScrollableGraphView.framework in Frameworks */,
 				35494577203C03DC00332E53 /* AutoInsetter.framework in Frameworks */,
-				75BEB25E1F89F3CA00DC20E9 /* NeoSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +483,81 @@
 				35061E46205F5CFE004E89EB /* FeaturedCollectionCell.swift */,
 			);
 			path = NewsFeed;
+			sourceTree = "<group>";
+		};
+		3557BA9920AA9C6C0034937C /* NeoSwift */ = {
+			isa = PBXGroup;
+			children = (
+				3557BAC720AA9D180034937C /* NeoClient.swift */,
+				3557BAC620AA9D180034937C /* NeoScan.swift */,
+				3557BAD820AA9D3E0034937C /* Util */,
+				3557BAB320AA9D010034937C /* Models */,
+				3557BAB020AA9CE50034937C /* Data */,
+				3557BAAF20AA9CBC0034937C /* Crypto */,
+				3557BAA420AA9C980034937C /* Contracts */,
+			);
+			name = NeoSwift;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		3557BAA420AA9C980034937C /* Contracts */ = {
+			isa = PBXGroup;
+			children = (
+				3557BA9E20AA9C930034937C /* NEP5TokenContract.swift */,
+				3557BAA020AA9C930034937C /* OpCodes.swift */,
+				3557BA9F20AA9C930034937C /* ScriptBuilder.swift */,
+			);
+			path = Contracts;
+			sourceTree = "<group>";
+		};
+		3557BAAF20AA9CBC0034937C /* Crypto */ = {
+			isa = PBXGroup;
+			children = (
+				3557BACA20AA9D260034937C /* WIF.swift */,
+				3557BAA820AA9CB20034937C /* AES.swift */,
+				3557BAA920AA9CB20034937C /* SHA256.swift */,
+			);
+			path = Crypto;
+			sourceTree = "<group>";
+		};
+		3557BAB020AA9CE50034937C /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				3557BAB120AA9CEE0034937C /* nodes.json */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		3557BAB320AA9D010034937C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3557BAE020AAA32F0034937C /* ValueIn.swift */,
+				3557BAE120AAA32F0034937C /* ValueOut.swift */,
+				3557BA9A20AA9C870034937C /* Account.swift */,
+				3557BA9B20AA9C870034937C /* AssetIdConstants.swift */,
+				3557BAB420AA9D0A0034937C /* Balance.swift */,
+				3557BAB520AA9D0A0034937C /* Claims.swift */,
+				3557BABB20AA9D0A0034937C /* ContractResult.swift */,
+				3557BABA20AA9D0A0034937C /* NEONetwork.swift */,
+				3557BABC20AA9D0A0034937C /* NeoScanTransactionHistory.swift */,
+				3557BAB920AA9D0A0034937C /* Script.swift */,
+				3557BAB620AA9D0A0034937C /* Token.swift */,
+				3557BAB720AA9D0A0034937C /* Transaction.swift */,
+				3557BAB820AA9D0A0034937C /* TransactionAttritbute.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		3557BAD820AA9D3E0034937C /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				3557BACE20AA9D300034937C /* Array+Util.swift */,
+				3557BACC20AA9D300034937C /* Base58.swift */,
+				3557BAD120AA9D310034937C /* Data+Util.swift */,
+				3557BACF20AA9D300034937C /* NEP9.swift */,
+				3557BACD20AA9D300034937C /* validator.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		35B426BD2098240B00957211 /* TokenSelection */ = {
@@ -578,6 +702,7 @@
 		755D8F5E1F66743900058434 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3557BAD920AA9F690034937C /* neoutils.framework */,
 				351200BA207DE0E2003CA07D /* StoreKit.framework */,
 				3549456B203BF0A400332E53 /* Foundation.framework */,
 				35A6390E203517BB0054EA20 /* CloudKit.framework */,
@@ -606,7 +731,6 @@
 				35051B151FFDAD9300F9AD30 /* Crashlytics.framework */,
 				35051B131FFDAD9200F9AD30 /* Fabric.framework */,
 				6E6BD24A1FFC67E10049098A /* PKHUD.framework */,
-				75BEB25D1F89F3C900DC20E9 /* NeoSwift.framework */,
 				756AC1951F80A888003BF8F7 /* DeckTransition.framework */,
 				7537438A1F7F572500803A6C /* KeychainAccess.framework */,
 				7575ADC41F6006AC0077007B /* O3 */,
@@ -626,7 +750,7 @@
 		7575ADC41F6006AC0077007B /* O3 */ = {
 			isa = PBXGroup;
 			children = (
-				3557BA9620AA86AE0034937C /* NeoSwift */,
+				3557BA9920AA9C6C0034937C /* NeoSwift */,
 				35B426BB20980CC400957211 /* Main.storyboard */,
 				35B426B920980CAE00957211 /* LaunchScreen.storyboard */,
 				6E68B6AE206CB75D008C25E8 /* TokenSale */,
@@ -656,6 +780,7 @@
 				6ED6001B1F76506B006760E6 /* SharedAssets.xcassets */,
 				6ED6001D1F76559E006760E6 /* LogoAssets.xcassets */,
 				75D5BFC31F6D1A4F00E64855 /* AppAssets.xcassets */,
+				3557BADD20AAA0940034937C /* O3-Bridging-Header.h */,
 			);
 			path = O3;
 			sourceTree = "<group>";
@@ -838,6 +963,7 @@
 				TargetAttributes = {
 					7575ADC11F6006AC0077007B = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -905,9 +1031,9 @@
 				75D5BFC41F6D1A4F00E64855 /* AppAssets.xcassets in Resources */,
 				6EF8D8E61F7A732C005CC24D /* AccountAssets.xcassets in Resources */,
 				353F364920037062002B4FE1 /* NewsFeed.storyboard in Resources */,
-				3557BA9720AA86AE0034937C /* NeoSwift in Resources */,
 				75D5BFAF1F6CE8AB00E64855 /* Onboarding.storyboard in Resources */,
 				6E7C927C1F7A6B1400F8D7AA /* Account.storyboard in Resources */,
+				3557BAB220AA9CEE0034937C /* nodes.json in Resources */,
 				75D5BFC21F6D196200E64855 /* OnboardingAssets.xcassets in Resources */,
 				75BEB2681F8A068100DC20E9 /* HUD.xcassets in Resources */,
 				35B426BF2098242600957211 /* TokenSelection.storyboard in Resources */,
@@ -943,7 +1069,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Channel.framework/strip-frameworks.sh\"";
+			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Channel.framework/strip-frameworks.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -952,7 +1078,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3557BAD520AA9D310034937C /* NEP9.swift in Sources */,
+				3557BAA320AA9C930034937C /* OpCodes.swift in Sources */,
 				752006871F7F6F5D00D19B5F /* HalfModalPresentationController.swift in Sources */,
+				3557BAC320AA9D0B0034937C /* NEONetwork.swift in Sources */,
 				752006881F7F6F5D00D19B5F /* HalfModalTransitioningDelegate.swift in Sources */,
 				752006891F7F6F5D00D19B5F /* HalfModalInteractiveTransition.swift in Sources */,
 				35B426D820998B6300957211 /* UISearchBar.swift in Sources */,
@@ -960,6 +1089,8 @@
 				7520068A1F7F6F5D00D19B5F /* HalfModalTransitionAnimator.swift in Sources */,
 				351200BF207F1AA8003CA07D /* TokenSalesListTableViewController.swift in Sources */,
 				35B426C520982D7B00957211 /* Nep5SelectionCollectionViewController.swift in Sources */,
+				3557BAD420AA9D310034937C /* Array+Util.swift in Sources */,
+				3557BABD20AA9D0B0034937C /* Balance.swift in Sources */,
 				35B426C32098290700957211 /* TokenSelectionStrings.swift in Sources */,
 				35E5F60E20285CB800D65BEA /* Int.swift in Sources */,
 				351200BD207EF84C003CA07D /* TokenSales.swift in Sources */,
@@ -968,6 +1099,8 @@
 				35B426C72098303200957211 /* NftTokenViewController.swift in Sources */,
 				7518C0001F8B49D500FBA0BA /* UserDefaultsManager.swift in Sources */,
 				6E4E6F872014652B001A5844 /* UnclaimedGASTableViewCell.swift in Sources */,
+				3557BA9C20AA9C870034937C /* Account.swift in Sources */,
+				3557BAC520AA9D0B0034937C /* NeoScanTransactionHistory.swift in Sources */,
 				755D8F561F665F8200058434 /* HomeViewController.swift in Sources */,
 				75DA59051F7A6CFB0065FE0D /* AddAddressTableViewCell.swift in Sources */,
 				6E244EC32085AED4001B4B22 /* NoActionUITextField.swift in Sources */,
@@ -983,19 +1116,24 @@
 				75CEACE81F66B683005974CE /* SendTableViewController.swift in Sources */,
 				75E14E571F7D2AEC00BEAE22 /* UIApplication.swift in Sources */,
 				75179F021F7620E700F4C67F /* Double.swift in Sources */,
+				3557BAC120AA9D0B0034937C /* TransactionAttritbute.swift in Sources */,
 				6E97C4B71F7FC6FC00526FF0 /* MyAddressViewController.swift in Sources */,
 				75E14E541F7D27F900BEAE22 /* O3.xcdatamodeld in Sources */,
+				3557BAAE20AA9CB20034937C /* SHA256.swift in Sources */,
 				3537848D20807FD800648AF2 /* ContributionTableViewCell.swift in Sources */,
 				75DA59091F7A815E0065FE0D /* OzoneAlert.swift in Sources */,
 				35AD2B74209320140024A900 /* TabbarStrings.swift in Sources */,
 				6EA7F9291F6E32B600E31B78 /* PriceData.swift in Sources */,
+				3557BAE220AAA3300034937C /* ValueIn.swift in Sources */,
 				3537848F20809D3B00648AF2 /* TokenSaleReviewTableViewController.swift in Sources */,
 				7575ADC61F6006AC0077007B /* AppDelegate.swift in Sources */,
 				6E4E6F84201462D7001A5844 /* NEP5Token.swift in Sources */,
 				6E4E6F8B20146627001A5844 /* NEP5TokenTableViewCell.swift in Sources */,
 				75E28F2B1F9B2241006C6E37 /* NetworkTableViewController.swift in Sources */,
 				757FEB711F77E2790099E26F /* UIView.swift in Sources */,
+				3557BAD320AA9D310034937C /* validator.swift in Sources */,
 				6E73679D2084B3C400F4202B /* TokenSaleErrorViewController.swift in Sources */,
+				3557BAD720AA9D310034937C /* Data+Util.swift in Sources */,
 				75D5BFBA1F6CF5E200E64855 /* WelcomeTableViewController.swift in Sources */,
 				6E3E381E1FA44C84004965F8 /* LoginToCurrentWalletViewController.swift in Sources */,
 				353F364B200370D6002B4FE1 /* NewsFeedViewController.swift in Sources */,
@@ -1005,14 +1143,17 @@
 				75DA590B1F7A83940065FE0D /* UIViewController.swift in Sources */,
 				35AD2B70209312600024A900 /* OnboardingStrings.swift in Sources */,
 				35DBABCA2098028D009BE767 /* PortfolioStrings.swift in Sources */,
+				3557BAC820AA9D180034937C /* NeoScan.swift in Sources */,
 				7501E8431F79536300123EA8 /* SettingsMenuTableViewController.swift in Sources */,
 				351200C1207F2649003CA07D /* TokenSaleTableViewCell.swift in Sources */,
 				75E28F2F1F9B24B4006C6E37 /* NetworkSeedCell.swift in Sources */,
+				3557BAC220AA9D0B0034937C /* Script.swift in Sources */,
 				35AD2B72209317950024A900 /* SettingsStrings.swift in Sources */,
 				6E244EBF208583F1001B4B22 /* TokenSaleSubmitViewController.swift in Sources */,
 				75D5BFB21F6CED5900E64855 /* OnboardingHomeViewController.swift in Sources */,
 				350100F220441B53000F6648 /* CurrencyTableViewController.swift in Sources */,
 				7520174B1F74071900090C4F /* QRScannerController.swift in Sources */,
+				3557BAC920AA9D180034937C /* NeoClient.swift in Sources */,
 				75D5BFB61F6CF59C00E64855 /* LoginTableViewController.swift in Sources */,
 				6EA7F9281F6E2F7F00E31B78 /* O3Client.swift in Sources */,
 				7513FAD71F6952B8003450ED /* TransactionCell.swift in Sources */,
@@ -1021,6 +1162,7 @@
 				7501C0271F7BBFF400B4B2FF /* AddressEntryTableViewController.swift in Sources */,
 				75D5BFC71F6D1D4600E64855 /* ShadowedButton.swift in Sources */,
 				751666B01F80C190009ACC07 /* TransactionWebViewController.swift in Sources */,
+				3557BAE320AAA3300034937C /* ValueOut.swift in Sources */,
 				7550940D1F779EEE00127B4F /* WalletHeaderCollectionCell.swift in Sources */,
 				6E244EC92085D5CE001B4B22 /* NumberOnlyUITextField.swift in Sources */,
 				35AD2B6A209301A30024A900 /* AccountStrings.swift in Sources */,
@@ -1032,7 +1174,11 @@
 				75E28F311F9B3B34006C6E37 /* ThemeManager.swift in Sources */,
 				35AD2B6C2093087C0024A900 /* SendStrings.swift in Sources */,
 				6E244ECD208744E0001B4B22 /* TokenSaleTransactionInfoTableViewCell.swift in Sources */,
+				3557BAAD20AA9CB20034937C /* AES.swift in Sources */,
+				3557BA9D20AA9C870034937C /* AssetIdConstants.swift in Sources */,
+				3557BAD220AA9D310034937C /* Base58.swift in Sources */,
 				351200C5207F3740003CA07D /* TokenSaleTableViewController.swift in Sources */,
+				3557BABE20AA9D0B0034937C /* Claims.swift in Sources */,
 				752006861F7F698300D19B5F /* O3TabBarController.swift in Sources */,
 				6E4E6F89201465BE001A5844 /* NativeAssetTableViewCell.swift in Sources */,
 				6ED5D7EC2016BFC900AF3713 /* AssetSelectorTableViewController.swift in Sources */,
@@ -1040,6 +1186,8 @@
 				6E3E381C1FA4437A004965F8 /* PreCreateWalletViewController.swift in Sources */,
 				75BEB2621F89FB2A00DC20E9 /* O3HUD.swift in Sources */,
 				6E7C92741F7A5FBA00F8D7AA /* UINavigationController.swift in Sources */,
+				3557BAA120AA9C930034937C /* NEP5TokenContract.swift in Sources */,
+				3557BABF20AA9D0B0034937C /* Token.swift in Sources */,
 				75DA59031F7A6CEF0065FE0D /* WatchOnlyAddressTableViewCell.swift in Sources */,
 				752586B11F77DD9800ED5312 /* OzoneGraphView.swift in Sources */,
 				6E97C4B51F7FBAA300526FF0 /* AssetView.swift in Sources */,
@@ -1051,14 +1199,18 @@
 				750E17431F6FD560001F62FD /* GraphPanView.swift in Sources */,
 				6E3E381A1FA4436E004965F8 /* FirstTimeLoginViewController.swift in Sources */,
 				6ED600161F763434006760E6 /* O3TextView.swift in Sources */,
+				3557BAA220AA9C930034937C /* ScriptBuilder.swift in Sources */,
 				75D5BFBC1F6D0EC400E64855 /* Global.swift in Sources */,
 				6ED6001A1F763A15006760E6 /* O3CopyableLabel.swift in Sources */,
 				6E4E6F812014611E001A5844 /* AccountAssetTableViewController.swift in Sources */,
 				757FEB731F77F07B0099E26F /* String.swift in Sources */,
 				6E61BBD11F729D3B00D2B30B /* Money.swift in Sources */,
+				3557BACB20AA9D260034937C /* WIF.swift in Sources */,
 				3549458E203FD4D000332E53 /* Decimal.swift in Sources */,
 				353F364D2003755B002B4FE1 /* NewsFeedCell.swift in Sources */,
 				75CEACE61F6678C0005974CE /* Color.swift in Sources */,
+				3557BAC420AA9D0B0034937C /* ContractResult.swift in Sources */,
+				3557BAC020AA9D0B0034937C /* Transaction.swift in Sources */,
 				35E5F614202ADE4300D65BEA /* NativeAssetSelectorTableViewCell.swift in Sources */,
 				3552DE0F209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift in Sources */,
 				353F36522003842F002B4FE1 /* NewsItemViewController.swift in Sources */,
@@ -1141,6 +1293,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = O3/O3.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1157,12 +1310,15 @@
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200 -DTESTNET";
 				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "O3/O3-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1239,6 +1395,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = O3/O3.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1255,12 +1412,15 @@
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200 -DPRIVATENET";
 				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "O3/O3-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1396,10 +1556,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = O3/O3.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1412,12 +1573,15 @@
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200";
 				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "O3/O3-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1428,6 +1592,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = O3/O3.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1443,11 +1608,13 @@
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "O3/O3-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

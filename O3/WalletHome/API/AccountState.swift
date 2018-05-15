@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import NeoSwift
 
 typealias TransferableAsset = AccountState.TransferableAsset
 
@@ -121,7 +120,7 @@ extension TransferableAsset {
 extension TransferableAsset {
     static func NEO() -> TransferableAsset {
         return TransferableAsset(
-            id: NeoSwift.AssetId.neoAssetId.rawValue,
+            id: AssetId.neoAssetId.rawValue,
             name: "NEO",
             symbol: "NEO",
             decimals: 0,
@@ -131,7 +130,7 @@ extension TransferableAsset {
 
     static func NEONoBalance() -> TransferableAsset {
         return TransferableAsset(
-            id: NeoSwift.AssetId.neoAssetId.rawValue,
+            id: AssetId.neoAssetId.rawValue,
             name: "NEO",
             symbol: "NEO",
             decimals: 0,
@@ -141,7 +140,7 @@ extension TransferableAsset {
 
     static func GAS() -> TransferableAsset {
         return TransferableAsset(
-            id: NeoSwift.AssetId.gasAssetId.rawValue,
+            id: AssetId.gasAssetId.rawValue,
             name: "GAS",
             symbol: "GAS",
             decimals: 8,
@@ -151,7 +150,7 @@ extension TransferableAsset {
 
     static func GASNoBalance() -> TransferableAsset {
         return TransferableAsset(
-            id: NeoSwift.AssetId.gasAssetId.rawValue,
+            id: AssetId.gasAssetId.rawValue,
             name: "GAS",
             symbol: "GAS",
             decimals: 8,

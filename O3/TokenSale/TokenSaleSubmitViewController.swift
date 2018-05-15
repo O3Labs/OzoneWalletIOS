@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import NeoSwift
 class TokenSaleSubmitViewController: UIViewController {
 
     var transactionInfo: TokenSaleTableViewController.TokenSaleTransactionInfo!

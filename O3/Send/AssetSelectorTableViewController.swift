@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import NeoSwift
 
 protocol AssetSelectorDelegate: class {
     func assetSelected(selected: TransferableAsset, gasBalance: Double)
@@ -40,7 +39,7 @@ class AssetSelectorTableViewController: UITableViewController {
 
     func updateCacheAndLocalBalance(accountState: AccountState) {
         for asset in accountState.assets {
-            if asset.id.contains(NeoSwift.AssetId.neoAssetId.rawValue) {
+            if asset.id.contains(AssetId.neoAssetId.rawValue) {
                 assets[0] = asset
             } else {
                 assets[1] = asset

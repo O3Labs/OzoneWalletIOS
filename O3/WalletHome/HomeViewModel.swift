@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import NeoSwift
 import UIKit
 
 protocol HomeViewModelDelegate: class {
@@ -120,7 +119,7 @@ class HomeViewModel {
 
         }
 
-        loadAccountState(address: (Authenticated.account?.address)!, isReadOnly: false)
+        loadAccountState(address: address, isReadOnly: false)
 
         resetReadOnlyBalances()
 
@@ -140,7 +139,7 @@ class HomeViewModel {
 
     func addWritableAccountState(_ accountState: AccountState) {
         for asset in accountState.assets {
-            if asset.id.contains(NeoSwift.AssetId.neoAssetId.rawValue) {
+            if asset.id.contains(AssetId.neoAssetId.rawValue) {
                 neo = asset
             } else {
                 gas = asset
@@ -165,7 +164,7 @@ class HomeViewModel {
 
     func addReadOnlyAccountState(_ accountState: AccountState) {
         for asset in accountState.assets {
-            if asset.id.contains(NeoSwift.AssetId.neoAssetId.rawValue) {
+            if asset.id.contains(AssetId.neoAssetId.rawValue) {
                 readOnlyNeo.value += asset.value
             } else {
                 readOnlyGas.value += asset.value

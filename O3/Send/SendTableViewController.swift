@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import NeoSwift
 import KeychainAccess
 import SwiftTheme
 import Crashlytics
@@ -225,7 +224,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
 
         if self.selectedAsset?.assetType == .nativeAsset {
             assetId = String(assetId.dropFirst(2))
-            self.sendNativeAsset(assetId: NeoSwift.AssetId(rawValue: assetId)!, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
+            self.sendNativeAsset(assetId: AssetId(rawValue: assetId)!, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
         } else if self.selectedAsset?.assetType == .nep5Token {
             self.sendNEP5Token(tokenHash: assetId, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
         }

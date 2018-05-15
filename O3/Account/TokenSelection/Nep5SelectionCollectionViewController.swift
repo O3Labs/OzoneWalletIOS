@@ -70,7 +70,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //TODO
+
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

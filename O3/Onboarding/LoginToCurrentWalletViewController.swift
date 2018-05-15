@@ -8,7 +8,6 @@
 
 import UIKit
 import KeychainAccess
-import NeoSwift
 import LocalAuthentication
 import SwiftTheme
 

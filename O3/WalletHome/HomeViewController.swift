@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import ScrollableGraphView
-import NeoSwift
 import Channel
 import PKHUD
 import SwiftTheme

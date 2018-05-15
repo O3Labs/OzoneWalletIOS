@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import NeoSwift
 
 protocol NetworkSeedCellDelegate: class {
     func highestBlockCount() -> UInt

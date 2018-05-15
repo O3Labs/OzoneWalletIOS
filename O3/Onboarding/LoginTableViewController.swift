@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import NeoSwift
 import Channel
 import KeychainAccess
 import PKHUD
