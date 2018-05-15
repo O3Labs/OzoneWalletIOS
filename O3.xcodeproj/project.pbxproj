@@ -44,6 +44,7 @@
 		3552DE0D209FF06F00836341 /* panda1.json in Resources */ = {isa = PBXBuildFile; fileRef = 3552DE0C209FF06F00836341 /* panda1.json */; };
 		3552DE0F209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552DE0E209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift */; };
 		3552DE1120A025D900836341 /* AccountState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552DE1020A025D900836341 /* AccountState.swift */; };
+		3557BA9720AA86AE0034937C /* NeoSwift in Resources */ = {isa = PBXBuildFile; fileRef = 3557BA9620AA86AE0034937C /* NeoSwift */; };
 		358E95D9200358AA00A1878B /* NewsFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358E95D8200358AA00A1878B /* NewsFeed.swift */; };
 		35A6390F203517BB0054EA20 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A6390E203517BB0054EA20 /* CloudKit.framework */; };
 		35AD2B64209179010024A900 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 35AD2B61209179010024A900 /* Base.lproj */; };
@@ -244,6 +245,7 @@
 		3552DE0C209FF06F00836341 /* panda1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = panda1.json; sourceTree = "<group>"; };
 		3552DE0E209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEP5TokenSelectorTableViewCell.swift; sourceTree = "<group>"; };
 		3552DE1020A025D900836341 /* AccountState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountState.swift; sourceTree = "<group>"; };
+		3557BA9620AA86AE0034937C /* NeoSwift */ = {isa = PBXFileReference; lastKnownFileType = folder; path = NeoSwift; sourceTree = "<group>"; };
 		358E95D8200358AA00A1878B /* NewsFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeed.swift; sourceTree = "<group>"; };
 		35A6390E203517BB0054EA20 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		35AD2B61209179010024A900 /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
@@ -624,6 +626,7 @@
 		7575ADC41F6006AC0077007B /* O3 */ = {
 			isa = PBXGroup;
 			children = (
+				3557BA9620AA86AE0034937C /* NeoSwift */,
 				35B426BB20980CC400957211 /* Main.storyboard */,
 				35B426B920980CAE00957211 /* LaunchScreen.storyboard */,
 				6E68B6AE206CB75D008C25E8 /* TokenSale */,
@@ -902,6 +905,7 @@
 				75D5BFC41F6D1A4F00E64855 /* AppAssets.xcassets in Resources */,
 				6EF8D8E61F7A732C005CC24D /* AccountAssets.xcassets in Resources */,
 				353F364920037062002B4FE1 /* NewsFeed.storyboard in Resources */,
+				3557BA9720AA86AE0034937C /* NeoSwift in Resources */,
 				75D5BFAF1F6CE8AB00E64855 /* Onboarding.storyboard in Resources */,
 				6E7C927C1F7A6B1400F8D7AA /* Account.storyboard in Resources */,
 				75D5BFC21F6D196200E64855 /* OnboardingAssets.xcassets in Resources */,

@@ -1,7 +1,6 @@
 github "philackm/ScrollableGraphView"
 github "kishikawakatsumi/KeychainAccess"
 github "HarshilShah/DeckTransition"
-github "CityOfZion/neo-swift" "master"
 github "ashleymills/Reachability.swift"
 github "pkluz/PKHUD" 
 github "onevcat/Kingfisher"
