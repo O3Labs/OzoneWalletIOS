@@ -236,6 +236,13 @@ public class NeoClient {
                 return
             }
 
+            if let code = json!["code"] as? Int {
+                if code != 200 {
+                    completion(.failure(.invalidData))
+                    return
+                }
+            }
+
             let resultJson = NeoClientResult.success(json!)
             completion(resultJson)
         }

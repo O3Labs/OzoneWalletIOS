@@ -30,7 +30,7 @@ public struct Claimable: Codable {
         format.minimumFractionDigits = 0
         format.maximumFractionDigits = 8
         let value = format.number(from: gasValueString)?.decimalValue
-        let gasValue = value!
+        let gasValue = value ?? 0.0
         let claims: [Claim] = try container.decode([Claim].self, forKey: .claims)
         self.init(gas: gasValue, claims: claims)
     }
@@ -70,7 +70,7 @@ public struct Claimable: Codable {
             format.maximumFractionDigits = 8
             let value = format.number(from: valueString)?.decimalValue
             let createdAtBlock: Int = try container.decode(Int.self, forKey: .createdAtBlock)
-            self.init(asset: asset, index: index, txid: txid, value: value!, createdAtBlock: createdAtBlock)
+            self.init(asset: asset, index: index, txid: txid, value: value ?? 0.0, createdAtBlock: createdAtBlock)
 
         }
 
