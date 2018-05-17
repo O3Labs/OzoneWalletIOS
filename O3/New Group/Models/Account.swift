@@ -275,7 +275,7 @@ public class Account {
         }
 
         let amountDecimal = claims.gas * pow(10, 8)
-        let amountInt = NSDecimalNumber(decimal: amountDecimal).uint64Value
+        let amountInt = UInt64(round(NSDecimalNumber(decimal: amountDecimal).doubleValue))
         payload += [0x00] // Attributes
         payload += [0x00] // Inputs
         payload += [0x01] // Output Count
