@@ -66,6 +66,7 @@ public struct Claimable: Codable {
             txid = String(txid.dropFirst(2))
             let valueString: String = try container.decode(String.self, forKey: .value)
             let format = NumberFormatter()
+            format.locale = Locale(identifier: "en_US")
             format.minimumFractionDigits = 0
             format.maximumFractionDigits = 8
             let value = format.number(from: valueString)?.decimalValue

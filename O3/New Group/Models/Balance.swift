@@ -76,6 +76,7 @@ public struct Assets: Codable {
             let createdAtBlock: Int = try container.decode(Int.self, forKey: .createdAtBlock)
             let valueString: String = try container.decode(String.self, forKey: .value)
             let format = NumberFormatter()
+            format.locale = Locale(identifier: "en_US")
             format.minimumFractionDigits = 0
             format.maximumFractionDigits = 8
             let value = format.number(from: valueString)?.decimalValue
