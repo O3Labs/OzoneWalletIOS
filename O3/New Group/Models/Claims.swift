@@ -27,6 +27,7 @@ public struct Claimable: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let gasValueString: String = try container.decode(String.self, forKey: .gas)
         let format = NumberFormatter()
+        format.locale = Locale(identifier: "en_US")
         format.minimumFractionDigits = 0
         format.maximumFractionDigits = 8
         let value = format.number(from: gasValueString)?.decimalValue
