@@ -65,4 +65,10 @@ public class TransactionAttritbute {
         attribute += byteArray
         self.data = attribute
     }
+    
+    public init(script: String) {
+        var attribute: [UInt8] = [Usage.Script.rawValue]
+        attribute += script.dataWithHexString().bytes
+        self.data = attribute
+    }
 }

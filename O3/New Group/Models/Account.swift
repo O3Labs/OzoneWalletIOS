@@ -122,7 +122,9 @@ public class Account {
         
         //asset less sending
         if assets == nil {
-            return (0, Data(bytes: [0x00]), nil)
+            var inputData = [UInt8]()
+            inputData.append(0)
+            return (0, Data(bytes: inputData), nil)
         }
         
         var sortedUnspents = [UTXO]()
@@ -174,7 +176,15 @@ public class Account {
         }
         
         var payload: [UInt8] = payloadPrefix +  [numberOfAttributes]
+        
         payload += attributesPayload + inputDataBytes
+        
+        //if it's the asset less sending
+        if runningAmount == Decimal(0) {
+            payload += [0x00]
+            return Data(bytes: payload)
+        }
+        
         if needsTwoOutputTransactions {
             //Transaction To Reciever
             payload += [0x02] + asset.rawValue.dataWithHexString().bytes.reversed()
@@ -303,17 +313,17 @@ public class Account {
         }
     }
     
-    private func generateInvokeTransactionPayload(assets: Assets?, script: String, contractAddress: String) -> Data {
+    private func generateInvokeTransactionPayload(assets: Assets?, script: String, contractAddress: String, attributes: [TransactionAttritbute]?) -> Data {
         var error: NSError?
         
         
-        let inputData = getInputsNecessaryToSendAsset(asset: AssetId.gasAssetId, amount: 0.00000001, assets: assets!)
+        let inputData = getInputsNecessaryToSendAsset(asset: AssetId.gasAssetId, amount: 0.00000001, assets: assets)
         
         let payloadPrefix = [0xd1, 0x00] + script.dataWithHexString().bytes
         let rawTransaction = packRawTransactionBytes(payloadPrefix: payloadPrefix,
                                                      asset: AssetId.gasAssetId, with: inputData.payload!,
                                                      runningAmount: inputData.totalAmount!,
-                                                     toSendAmount: 0.00000001, toAddress: self.address, attributes: [])
+                                                     toSendAmount: 0.00000001, toAddress: self.address, attributes: attributes)
         let signatureData = NeoutilsSign(rawTransaction, privateKey.fullHexString, &error)
         let finalPayload = concatenatePayloadData(txData: rawTransaction, signatureData: signatureData!)
         return finalPayload
@@ -332,12 +342,16 @@ public class Account {
     }
     
     public func sendNep5Token(seedURL: String, tokenContractHash: String, amount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(Bool?, Error?) -> Void) {
+        
+        var customAttributes: [TransactionAttritbute] = []
+        customAttributes.append(TransactionAttritbute(script: self.hashedSignature.hexString))
         //send nep5 token without using utxo
         let scriptBytes = self.buildNEP5TransferScript(scriptHash: tokenContractHash,
                                                        fromAddress: self.address, toAddress: toAddress, amount: amount)
         var payload = self.generateInvokeTransactionPayload(assets: nil, script: scriptBytes.fullHexString,
-                                                            contractAddress: tokenContractHash)
+                                                            contractAddress: tokenContractHash, attributes: customAttributes )
         payload += tokenContractHash.dataWithHexString().bytes
+        print(payload.fullHexString)
         NeoClient(seed: seedURL).sendRawTransaction(with: payload) { (result) in
             switch result {
             case .failure(let error):

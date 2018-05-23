@@ -77,12 +77,17 @@
                   "peercount": 0
                   },
                   {
-                  "url": "http://node1.o3.network:10332",
+                  "url": "http://seed1.o3node.org:10332",
                   "blockcount": 0,
                   "peercount": 0
                   },
                   {
-                  "url": "http://node2.o3.network:10332",
+                  "url": "http://seed2.o3node.org:10332",
+                  "blockcount": 0,
+                  "peercount": 0
+                  },
+                  {
+                  "url": "http://seed3.o3node.org:10332",
                   "blockcount": 0,
                   "peercount": 0
                   }
