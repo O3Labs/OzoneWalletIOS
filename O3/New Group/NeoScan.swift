@@ -10,8 +10,14 @@ import UIKit
 
 public class NeoScan: NSObject {
 
-    public let baseEndpoint = "https://neoscan.io/api/main_net"
-
+    var baseEndpoint = "https://neoscan.io/api/main_net"
+    
+    public var network: Network = .main
+    
+    init(network: Network) {
+        self.network = network
+    }
+    
     public enum NeoScanResult<T> {
         case success(T)
         case failure(NeoClientError)
@@ -32,8 +38,16 @@ public class NeoScan: NSObject {
         case getHistory = "/v1/get_address_abstracts/" //with address
     }
 
-    func sendFullNodeRequest(_ url: String, params: [Any]?, completion :@escaping (NeoScanResult<JSONDictionary>) -> Void) {
-        let request = NSMutableURLRequest(url: URL(string: url)!)
+    func sendFullNodeRequest(_ endpointResource: String, params: [Any]?, completion :@escaping (NeoScanResult<JSONDictionary>) -> Void) {
+        
+        if network == .test {
+            baseEndpoint = "https://neoscan-testnet.io/api/test_net"
+        } else if network == .privateNet {
+            baseEndpoint = "https://privatenet.o3.network/api/main_net"
+        }
+        
+        let fullURL = baseEndpoint + endpointResource
+        let request = NSMutableURLRequest(url: URL(string: fullURL)!)
         request.httpMethod = "GET"
 
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, _, err) in
@@ -59,8 +73,8 @@ public class NeoScan: NSObject {
     }
 
     public func getTransactionHistory(address: String, page: Int, completion: @escaping(NeoScanResult<NEOScanTransactionHistory>) -> Void) {
-        let url = baseEndpoint + APIEndpoints.getHistory.rawValue + address + "/" + String(page)
-        sendFullNodeRequest(url, params: nil) { result in
+        let endpoint = APIEndpoints.getHistory.rawValue + address + "/" + String(page)
+        sendFullNodeRequest(endpoint, params: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))

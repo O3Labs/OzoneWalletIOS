@@ -52,7 +52,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
     }
 
     func loadTransactionHistory(appendPage: Bool, pageNo: Int) {
-        NeoScan().getTransactionHistory(address: Authenticated.account?.address ?? "", page: pageNo) { result in
+        NeoScan(network: AppState.network).getTransactionHistory(address: Authenticated.account?.address ?? "", page: pageNo) { result in
             switch result {
             case .failure:
                 DispatchQueue.main.async {
