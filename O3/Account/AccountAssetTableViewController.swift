@@ -134,7 +134,11 @@ class AccountAssetTableViewController: UITableViewController {
         }
 
         //to be able to claim. we need to send the entire NEO to ourself.
-        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: Double(self.neoBalance), toAddress: (Authenticated.account?.address)!) { completed, _ in
+        var customAttributes: [TransactionAttritbute] = []
+        let remark = String(format: "O3XFORCLAIM")
+        customAttributes.append(TransactionAttritbute(remark: remark))
+        
+        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: Double(self.neoBalance), toAddress: (Authenticated.account?.address)!, attributes: customAttributes) { completed, _ in
             if completed == false {
                 HUD.hide()
                 self.enableClaimButton(enable: true)

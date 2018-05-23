@@ -66,6 +66,22 @@ public class TransactionAttritbute {
         self.data = attribute
     }
     
+    public init(descriptionHex: String) {
+        let byteArray: [UInt8] = descriptionHex.dataWithHexString().bytes
+        let length = UInt8(byteArray.count)
+        var attribute: [UInt8] = [Usage.Description.rawValue, length]
+        attribute += byteArray
+        self.data = attribute
+    }
+    
+    public init(remark: String) {
+        let byteArray: [UInt8] = Array(remark.utf8)
+        let length = UInt8(byteArray.count)
+        var attribute: [UInt8] = [Usage.Remark.rawValue, length]
+        attribute += byteArray
+        self.data = attribute
+    }
+    
     public init(script: String) {
         var attribute: [UInt8] = [Usage.Script.rawValue]
         attribute += script.dataWithHexString().bytes

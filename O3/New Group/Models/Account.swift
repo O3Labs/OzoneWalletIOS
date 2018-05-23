@@ -273,7 +273,23 @@ public class Account {
         
         let amountDecimal = claims.gas * pow(10, 8)
         let amountInt = UInt64(round(NSDecimalNumber(decimal: amountDecimal).doubleValue))
-        payload += [0x00] // Attributes
+        
+        
+        var attributes: [TransactionAttritbute] = []
+        let remark = String(format: "O3XCLAIM")
+        attributes.append(TransactionAttritbute(remark: remark))
+        
+        var numberOfAttributes: UInt8 = 0x00
+        var attributesPayload: [UInt8] = []
+        
+        for attribute in attributes where attribute.data != nil {
+            attributesPayload += attribute.data!
+            numberOfAttributes += 1
+        }
+        
+        
+        payload += [numberOfAttributes]
+        payload += attributesPayload
         payload += [0x00] // Inputs
         payload += [0x01] // Output Count
         payload += AssetId.gasAssetId.rawValue.dataWithHexString().bytes.reversed()
@@ -345,6 +361,10 @@ public class Account {
         
         var customAttributes: [TransactionAttritbute] = []
         customAttributes.append(TransactionAttritbute(script: self.hashedSignature.hexString))
+        let remark = String(format: "O3X%@", Date().timeIntervalSince1970.description)
+        customAttributes.append(TransactionAttritbute(remark: remark))
+        customAttributes.append(TransactionAttritbute(descriptionHex: tokenContractHash))
+        
         //send nep5 token without using utxo
         let scriptBytes = self.buildNEP5TransferScript(scriptHash: tokenContractHash,
                                                        fromAddress: self.address, toAddress: toAddress, amount: amount)

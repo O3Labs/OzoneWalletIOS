@@ -138,7 +138,11 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                         AppState.bestSeedNodeURL = bestNode
                         UserDefaultsManager.useDefaultSeed = false
                     }
-                    Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress) { completed, _ in
+                    var customAttributes: [TransactionAttritbute] = []
+                    let remark = String(format: "O3XSEND")
+                    customAttributes.append(TransactionAttritbute(remark: remark))
+
+                    Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes) { completed, _ in
                         O3HUD.stop {
                             self.transactionCompleted = completed ?? false
                             if self.transactionCompleted {
