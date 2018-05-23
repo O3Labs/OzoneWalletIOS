@@ -17,8 +17,9 @@ class UserDefaultsManager {
             return .test
         #endif
         #if PRIVATENET
-            return .test //change this to private net or make NeoSwift able to overwrite coz api
+            return .privateNet
         #endif
+        
         return .main
     }
 
@@ -35,7 +36,7 @@ class UserDefaultsManager {
         }
         set {
             if newValue {
-                if let bestNode = NEONetworkMonitor.autoSelectBestNode() {
+                if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                     UserDefaults.standard.set(newValue, forKey: useDefaultSeedKey)
                     UserDefaultsManager.seed = bestNode
                 }
@@ -49,24 +50,9 @@ class UserDefaultsManager {
     private static let seedKey = "seedKey"
     static var seed: String {
         get {
-            //TESTNET
-            #if TESTNET
-                return "http://seed2.neo.org:20332"
-            #endif
-            #if PRIVATENET
-                return "http://192.168.0.17:30333"
-            #endif
-
             return UserDefaults.standard.string(forKey: seedKey)!
         }
         set {
-            Neo.client.seed = newValue
-            Authenticated.account?.neoClient = NeoClient(network: UserDefaultsManager.network, seedURL: newValue)
-
-            #if TESTNET
-                Authenticated.account?.neoClient = NeoClient(network: .test)
-            #endif
-
             UserDefaults.standard.set(newValue, forKey: seedKey)
             UserDefaults.standard.synchronize()
             NotificationCenter.default.post(name: Notification.Name("ChangedNetwork"), object: nil)

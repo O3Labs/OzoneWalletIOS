@@ -22,22 +22,6 @@ struct Authenticated {
     static var contacts: [(String, String)]?
 }
 
-class Neo {
-    static var sharedTest: NeoClient?
-    static var sharedMain: NeoClient?
-
-    static var client: NeoClient {
-        if sharedTest == nil {
-            sharedTest = NeoClient.sharedTest
-        }
-        if sharedMain == nil {
-            sharedMain = NeoClient.sharedMain
-        }
-
-        return sharedMain!
-    }
-}
-
 struct Precision {
     static let usd = 2
     static let jpy = 2

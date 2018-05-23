@@ -52,7 +52,7 @@ class AssetSelectorTableViewController: UITableViewController {
     }
 
     func loadAccountState() {
-        O3Client().getAccountState(address: Authenticated.account?.address ?? "") { result in
+        O3APIClient(network: AppState.network).getAccountState(address: Authenticated.account?.address ?? "") { result in
             DispatchQueue.main.async {
                 switch result {
                 case .failure:

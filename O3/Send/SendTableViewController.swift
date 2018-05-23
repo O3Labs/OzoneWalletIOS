@@ -68,7 +68,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         super.viewDidLoad()
         //select best node
         DispatchQueue.global().async {
-            if let bestNode = NEONetworkMonitor.autoSelectBestNode() {
+            if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                 UserDefaultsManager.seed = bestNode
                 UserDefaultsManager.useDefaultSeed = false
             }
@@ -97,16 +97,13 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                         .authenticationPrompt(SendStrings.authenticateToSendPrompt)
                         .get("ozonePrivateKey")
                     O3HUD.start()
-                    if let bestNode = NEONetworkMonitor.autoSelectBestNode() {
+                    if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                         UserDefaultsManager.seed = bestNode
+                        AppState.bestSeedNodeURL = bestNode
                         UserDefaultsManager.useDefaultSeed = false
                     }
-                    #if TESTNET
-                        UserDefaultsManager.seed = "http://seed2.neo.org:20332"
-                        UserDefaultsManager.useDefaultSeed = false
-                        Authenticated.account?.neoClient = NeoClient(network: .test)
-                    #endif
-                    Authenticated.account?.sendNep5Token(tokenContractHash: tokenHash, amount: amount, toAddress: toAddress, completion: { (completed, _) in
+
+                    Authenticated.account?.sendNep5Token(seedURL: AppState.bestSeedNodeURL ,tokenContractHash: tokenHash, amount: amount, toAddress: toAddress, completion: { (completed, _) in
 
                         O3HUD.stop {
                             self.transactionCompleted = completed ?? false
@@ -136,16 +133,12 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                         .authenticationPrompt(SendStrings.authenticateToSendPrompt)
                         .get("ozonePrivateKey")
                     O3HUD.start()
-                    if let bestNode = NEONetworkMonitor.autoSelectBestNode() {
+                    if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                         UserDefaultsManager.seed = bestNode
+                        AppState.bestSeedNodeURL = bestNode
                         UserDefaultsManager.useDefaultSeed = false
                     }
-                    #if TESTNET
-                        UserDefaultsManager.seed = "http://seed2.neo.org:20332"
-                        UserDefaultsManager.useDefaultSeed = false
-                        Authenticated.account?.neoClient = NeoClient(network: .test)
-                    #endif
-                    Authenticated.account?.sendAssetTransaction(asset: assetId, amount: amount, toAddress: toAddress) { completed, _ in
+                    Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress) { completed, _ in
                         O3HUD.stop {
                             self.transactionCompleted = completed ?? false
                             if self.transactionCompleted {

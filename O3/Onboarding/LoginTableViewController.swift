@@ -61,7 +61,7 @@ class LoginTableViewController: UITableViewController, QRScanDelegate {
 
         HUD.show(.labeledProgress(title: nil, subtitle: OnboardingStrings.selectingBestNodeTitle))
         DispatchQueue.global(qos: .background).async {
-            let bestNode = NEONetworkMonitor.autoSelectBestNode()
+            let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network)
             DispatchQueue.main.async {
                 HUD.hide()
                 if bestNode != nil {

@@ -34,14 +34,14 @@ class NetworkSeedCell: UITableViewCell {
             seedNameLabel.text = node?.URL
             blockCountLabel.text = node?.blockCount.description
             peersLabel.text = node?.peerCount.description
-            DispatchQueue.main.async {
-                if self.node?.URL == Neo.sharedMain?.seed {
-                    self.accessoryType = .checkmark
-                    self.accessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
-                } else {
-                    self.accessoryType = .none
-                }
-            }
+//            DispatchQueue.main.async {
+//                if self.node?.URL == Neo.sharedMain?.seed {
+//                    self.accessoryType = .checkmark
+//                    self.accessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
+//                } else {
+//                    self.accessoryType = .none
+//                }
+//            }
 
             if (delegate!.highestBlockCount()) - (node!.blockCount)  > 5 { //give a small amount of buffer for unaligned blocks
                 DispatchQueue.main.async {

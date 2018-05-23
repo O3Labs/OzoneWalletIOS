@@ -29,8 +29,6 @@ public class NeoScan: NSObject {
     }
 
     enum APIEndpoints: String {
-        case getClaimable = "/v1/get_claimable/" // with address
-        case getBalance = "/v1/get_balance/" // with address
         case getHistory = "/v1/get_address_abstracts/" //with address
     }
 
@@ -59,44 +57,6 @@ public class NeoScan: NSObject {
         }
         task.resume()
     }
-
-    public func getClaimableGAS(address: String, completion: @escaping(NeoScanResult<Claimable>) -> Void) {
-        let url =  baseEndpoint + APIEndpoints.getClaimable.rawValue + address
-        sendFullNodeRequest(url, params: nil) { result in
-            switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success(let response):
-                let decoder = JSONDecoder()
-                guard let data = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted),
-                    let jsonResult = try? decoder.decode(Claimable.self, from: data) else {
-                        completion(.failure(.invalidData))
-                        return
-                }
-                let result = NeoScanResult.success(jsonResult)
-                completion(result)
-            }
-        }
-    }
-
-    /*public func getBalance(address: String, completion: @escaping(NeoScanResult<NeoScanGetBalance>) -> Void) {
-        let url =  baseEndpoint + APIEndpoints.getBalance.rawValue + address
-        sendFullNodeRequest(url, params: nil) { result in
-            switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success(let response):
-                let decoder = JSONDecoder()
-                guard let data = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted),
-                    let jsonResult = try? decoder.decode(NeoScanGetBalance.self, from: data) else {
-                        completion(.failure(.invalidData))
-                        return
-                }
-                let result = NeoScanResult.success(jsonResult)
-                completion(result)
-            }
-        }
-    }*/
 
     public func getTransactionHistory(address: String, page: Int, completion: @escaping(NeoScanResult<NEOScanTransactionHistory>) -> Void) {
         let url = baseEndpoint + APIEndpoints.getHistory.rawValue + address + "/" + String(page)

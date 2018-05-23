@@ -70,9 +70,14 @@ public class NEONetworkMonitor {
         return result
     }
 
-    public static func autoSelectBestNode() -> String? {
+    public static func autoSelectBestNode(network: Network) -> String? {
         let networks = NEONetworkMonitor().load()
-        let nodes = networks?.mainNet.nodes.map({$0.URL}).joined(separator: ",")
+        var nodes = networks?.mainNet.nodes.map({$0.URL}).joined(separator: ",")
+        if network == .test {
+            nodes = networks?.testNet.nodes.map({$0.URL}).joined(separator: ",")
+        } else if network == .privateNet {
+             nodes = networks?.privateNet.nodes.map({$0.URL}).joined(separator: ",")
+        }
         guard let bestNode =  NeoutilsSelectBestSeedNode(nodes) else {
             return nil
         }
@@ -82,11 +87,9 @@ public class NEONetworkMonitor {
 }
 
 public class NeoClient {
-    public var network: Network = .test
+
     public var seed = "http://seed3.o3node.org:10332"
-    public var fullNodeAPI = "http://testnet-api.wallet.cityofzion.io/v2/"
-    public static let sharedTest = NeoClient(network: .test)
-    public static let sharedMain = NeoClient(network: .main)
+  
     private init() {}
     private let tokenInfoCache = NSCache<NSString, AnyObject>()
 
@@ -106,9 +109,6 @@ public class NeoClient {
         case getPeers = "getpeers"
         case invokeFunction = "invokefunction"
         case invokeContract = "invokescript"
-        //The following routes can't be invoked by calling an RPC server
-        //We must use the wrapper for the nodes made by COZ
-        case getBalance = "getbalance"
     }
 
     enum NEP5Method: String {
@@ -116,49 +116,12 @@ public class NeoClient {
         case decimal
         case symbol
     }
-
-    enum apiURL: String {
-        case getUTXO = "utxo"
-        case getClaims = "claimablegas"
-        case getTransactionHistory = "address/history/"
-    }
-
+    
     public init(seed: String) {
         self.seed = seed
     }
-
-    public init(network: Network) {
-        self.network = network
-        switch self.network {
-        case .test:
-            fullNodeAPI = "http://testnet-api.wallet.cityofzion.io/v2/"
-            seed = "http://test4.cityofzion.io:8880"
-        case .main:
-            fullNodeAPI = "https://platform.o3.network/api/v1/neo/"
-            seed = "http://seed1.neo.org:10332"
-        case .privateNet:
-            fullNodeAPI = "http://127.0.0.1:5000/"
-            seed = "http://localhost:30333"
-        }
-    }
-
-    public init(network: Network, seedURL: String) {
-        self.network = network
-        switch self.network {
-        case .test:
-            fullNodeAPI = "http://testnet-api.wallet.cityofzion.io/v2/"
-            seed = seedURL
-        case .main:
-            fullNodeAPI = "https://platform.o3.network/api/v1/neo/"
-            seed = seedURL
-        case .privateNet:
-            fullNodeAPI = "http://127.0.0.1:5000/"
-            seed = seedURL
-        }
-
-    }
-
-    func sendRequest(_ method: RPCMethod, params: [Any]?, completion: @escaping (NeoClientResult<JSONDictionary>) -> Void) {
+    
+    func sendJSONRPCRequest(_ method: RPCMethod, params: [Any]?, completion: @escaping (NeoClientResult<JSONDictionary>) -> Void) {
         guard let url = URL(string: seed) else {
             completion(.failure(.invalidSeed))
             return
@@ -209,91 +172,10 @@ public class NeoClient {
         task.resume()
     }
 
-    func sendFullNodeRequest(_ url: String, params: [Any]?, completion :@escaping (NeoClientResult<JSONDictionary>) -> Void) {
-        let request = NSMutableURLRequest(url: URL(string: url)!)
-        request.httpMethod = "GET"
-        request.timeoutInterval = 60
-        request.cachePolicy = .reloadIgnoringLocalCacheData
-
-        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, _, err) in
-            if err != nil {
-                completion(.failure(.invalidRequest))
-                return
-            }
-
-            if data == nil {
-                completion(.failure(.invalidData))
-                return
-            }
-
-            guard let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? JSONDictionary else {
-                completion(.failure(.invalidData))
-                return
-            }
-
-            if json == nil {
-                completion(.failure(.invalidData))
-                return
-            }
-
-            if let code = json!["code"] as? Int {
-                if code != 200 {
-                    completion(.failure(.invalidData))
-                    return
-                }
-            }
-
-            let resultJson = NeoClientResult.success(json!)
-            completion(resultJson)
-        }
-        task.resume()
-    }
-
-    public func getAssets(for address: String, params: [Any]?, completion: @escaping(NeoClientResult<Assets>) -> Void) {
-        let url = fullNodeAPI + address + "/" + apiURL.getUTXO.rawValue
-        sendFullNodeRequest(url, params: params) { result in
-
-            switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success(let response):
-                let decoder = JSONDecoder()
-                guard let data = try? JSONSerialization.data(withJSONObject: response["result"] as Any, options: .prettyPrinted),
-                    let assets = try? decoder.decode(Assets.self, from: data) else {
-                        completion(.failure(.invalidData))
-                        return
-                }
-
-                let result = NeoClientResult.success(assets)
-                completion(result)
-            }
-        }
-    }
-
-    public func getClaims(address: String, completion: @escaping(NeoClientResult<Claimable>) -> Void) {
-        let url = fullNodeAPI + address + "/" + apiURL.getClaims.rawValue
-        sendFullNodeRequest(url, params: nil) { result in
-            switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success(let response):
-                let decoder = JSONDecoder()
-
-                guard let dictionary = response["result"] as? JSONDictionary,
-                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
-                    let claims = try? decoder.decode(Claimable.self, from: data) else {
-                        completion(.failure(.invalidData))
-                        return
-                }
-
-                let claimsResult = NeoClientResult.success(claims)
-                completion(claimsResult)
-            }
-        }
-    }
+   
 
     public func sendRawTransaction(with data: Data, completion: @escaping(NeoClientResult<Bool>) -> Void) {
-        sendRequest(.sendTransaction, params: [data.fullHexString]) { result in
+        sendJSONRPCRequest(.sendTransaction, params: [data.fullHexString]) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -309,7 +191,7 @@ public class NeoClient {
     }
 
     public func getBlockCount(completion: @escaping (NeoClientResult<Int64>) -> Void) {
-        sendRequest(.getBlockCount, params: nil) { result in
+        sendJSONRPCRequest(.getBlockCount, params: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -326,7 +208,7 @@ public class NeoClient {
     }
 
     public func getConnectionCount(completion: @escaping (NeoClientResult<Int64>) -> Void) {
-        sendRequest(.getConnectionCount, params: nil) { result in
+        sendJSONRPCRequest(.getConnectionCount, params: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -343,7 +225,7 @@ public class NeoClient {
     }
 
     public func getAccountState(for address: String, completion: @escaping(NeoClientResult<AccountState>) -> Void) {
-        sendRequest(.getAccountState, params: [address]) { result in
+        sendJSONRPCRequest(.getAccountState, params: [address]) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -362,7 +244,7 @@ public class NeoClient {
     }
 
     public func invokeContract(with script: String, completion: @escaping(NeoClientResult<ContractResult>) -> Void) {
-        sendRequest(.invokeContract, params: [script]) { result in
+        sendJSONRPCRequest(.invokeContract, params: [script]) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))

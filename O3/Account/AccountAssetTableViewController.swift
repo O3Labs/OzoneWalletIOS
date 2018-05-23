@@ -65,7 +65,7 @@ class AccountAssetTableViewController: UITableViewController {
 
     func claimGas() {
         self.enableClaimButton(enable: false)
-        Authenticated.account?.claimGas { success, error in
+        Authenticated.account?.claimGas(network: AppState.network, seedURL: AppState.bestSeedNodeURL) { success, error in
 
             if error != nil {
                 //if error then try again in 10 seconds
@@ -119,9 +119,10 @@ class AccountAssetTableViewController: UITableViewController {
      //   refreshClaimableGasTimer = Timer()
 
         //select best node
-        if let bestNode = NEONetworkMonitor.autoSelectBestNode() {
+        if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
             UserDefaultsManager.seed = bestNode
             UserDefaultsManager.useDefaultSeed = false
+            AppState.bestSeedNodeURL = bestNode
         }
 
         //we are able to claim gas only when there is data in the .claims array
@@ -133,7 +134,7 @@ class AccountAssetTableViewController: UITableViewController {
         }
 
         //to be able to claim. we need to send the entire NEO to ourself.
-        Authenticated.account?.sendAssetTransaction(asset: AssetId.neoAssetId, amount: Double(self.neoBalance), toAddress: (Authenticated.account?.address)!) { completed, _ in
+        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: Double(self.neoBalance), toAddress: (Authenticated.account?.address)!) { completed, _ in
             if completed == false {
                 HUD.hide()
                 self.enableClaimButton(enable: true)
@@ -163,7 +164,8 @@ class AccountAssetTableViewController: UITableViewController {
         if self.isClaiming == true {
             return
         }
-        Authenticated.account?.neoClient.getClaims(address: (Authenticated.account?.address)!) { result in
+        
+        O3APIClient(network: AppState.network).getClaims(address: (Authenticated.account?.address)!) { result in
             DispatchQueue.main.async { self.tableView.refreshControl?.endRefreshing() }
             switch result {
             case .failure:
@@ -217,7 +219,7 @@ class AccountAssetTableViewController: UITableViewController {
     }
 
     func loadAccountState() {
-        O3Client().getAccountState(address: Authenticated.account?.address ?? "") { result in
+        O3APIClient(network: AppState.network).getAccountState(address: Authenticated.account?.address ?? "") { result in
             DispatchQueue.main.async {
                 switch result {
                 case .failure:

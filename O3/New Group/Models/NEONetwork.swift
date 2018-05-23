@@ -63,21 +63,25 @@ public struct NEONetwork: Codable {
 
     public var mainNet: NEONodes
     public var testNet: NEONodes
+    public var privateNet: NEONodes
 
     enum CodingKeys: String, CodingKey {
         case mainNet = "main"
         case testNet = "test"
+        case privateNet = "private"
     }
 
-    public init(mainNodes: NEONodes, testNodes: NEONodes) {
+    public init(mainNodes: NEONodes, testNodes: NEONodes, privateNetNodes: NEONodes) {
         self.mainNet = mainNodes
         self.testNet = testNodes
+        self.privateNet = privateNetNodes
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let mainNodes: NEONodes = try container.decode(NEONodes.self, forKey: .mainNet)
         let testNodes: NEONodes = try container.decode(NEONodes.self, forKey: .testNet)
-        self.init(mainNodes: mainNodes, testNodes: testNodes)
+        let privateNet: NEONodes = try container.decode(NEONodes.self, forKey: .privateNet)
+        self.init(mainNodes: mainNodes, testNodes: testNodes, privateNetNodes: privateNet)
     }
 }

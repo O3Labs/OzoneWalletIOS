@@ -11,22 +11,20 @@ import Neoutils
 import Security
 
 public class Account {
-    //allow this to override the entire client not only the network
-    public var neoClient: NeoClient
     public var wif: String
     public var publicKey: Data
     public var privateKey: Data
     public var address: String
     public var hashedSignature: Data
-
+    
     lazy var publicKeyString: String = {
         return publicKey.fullHexString
     }()
-
+    
     lazy var privateKeyString: String = {
         return privateKey.fullHexString
     }()
-
+    
     public init?(wif: String) {
         var error: NSError?
         guard let wallet = NeoutilsGenerateFromWIF(wif, &error) else { return nil }
@@ -35,10 +33,8 @@ public class Account {
         self.privateKey = wallet.privateKey()
         self.address = wallet.address()
         self.hashedSignature = wallet.hashedSignature()
-        //default to mainnet
-        self.neoClient = NeoClient.sharedMain
     }
-
+    
     public init?(privateKey: String) {
         var error: NSError?
         guard let wallet = NeoutilsGenerateFromPrivateKey(privateKey, &error) else { return nil }
@@ -47,20 +43,18 @@ public class Account {
         self.privateKey = privateKey.dataWithHexString()
         self.address = wallet.address()
         self.hashedSignature = wallet.hashedSignature()
-        //default to mainnet
-        self.neoClient = NeoClient.sharedMain
     }
-
+    
     public init?() {
         var pkeyData = Data(count: 32)
         let result = pkeyData.withUnsafeMutableBytes {
             SecRandomCopyBytes(kSecRandomDefault, pkeyData.count, $0)
         }
-
+        
         if result != errSecSuccess {
             fatalError()
         }
-
+        
         var error: NSError?
         guard let wallet = NeoutilsGenerateFromPrivateKey(pkeyData.fullHexString, &error) else { return nil }
         self.wif = wallet.wif()
@@ -68,35 +62,22 @@ public class Account {
         self.privateKey = pkeyData
         self.address = wallet.address()
         self.hashedSignature = wallet.hashedSignature()
-        //default to mainnet
-        self.neoClient = NeoClient.sharedMain
     }
-
+    
     func createSharedSecret(publicKey: Data) -> Data? {
         var error: NSError?
         guard let wallet = NeoutilsGenerateFromPrivateKey(self.privateKey.fullHexString, &error) else {return nil}
         return wallet.computeSharedSecret(publicKey)
     }
-
+    
     func encryptString(key: Data, text: String) -> String {
         return NeoutilsEncrypt(key, text)
     }
-
+    
     func decryptString(key: Data, text: String) -> String? {
         return NeoutilsDecrypt(key, text)
     }
-
-    func getBalance(completion: @escaping(Assets?, Error?) -> Void) {
-        neoClient.getAssets(for: self.address, params: []) { result in
-            switch result {
-            case .failure(let error):
-                completion(nil, error)
-            case .success(let assets):
-                completion(assets, nil)
-            }
-        }
-    }
-
+    
     /*
      * Every asset has a list of transaction ouputs representing the total balance
      * For example your total NEO could be represented as a list [tx1, tx2, tx3]
@@ -137,16 +118,22 @@ public class Account {
      *
      * NEED TO DOUBLE CHECK THE BYTE COUNT HERE
      */
-    public func getInputsNecessaryToSendAsset(asset: AssetId, amount: Double, assets: Assets) -> (totalAmount: Decimal?, payload: Data?, error: Error?) {
+    public func getInputsNecessaryToSendAsset(asset: AssetId, amount: Double, assets: Assets?) -> (totalAmount: Decimal?, payload: Data?, error: Error?) {
+        
+        //asset less sending
+        if assets == nil {
+            return (0, Data(bytes: [0x00]), nil)
+        }
+        
         var sortedUnspents = [UTXO]()
         var neededForTransaction = [UTXO]()
         if asset == .neoAssetId {
-            sortedUnspents = assets.getSortedNEOUTXOs()
+            sortedUnspents = assets!.getSortedNEOUTXOs()
             if sortedUnspents.reduce(0, {$0 + $1.value}) < Decimal(amount) {
                 return (nil, nil, NSError())
             }
         } else {
-            sortedUnspents = assets.getSortedGASUTXOs()
+            sortedUnspents = assets!.getSortedGASUTXOs()
             if sortedUnspents.reduce(0, {$0 + $1.value}) < Decimal(amount) {
                 return (nil, nil, NSError())
             }
@@ -154,7 +141,7 @@ public class Account {
         var runningAmount: Decimal = 0.0
         var index = 0
         var count: UInt8 = 0
-        //Assume we always have anough balance to do this, prevent the check for bal
+        //Assume we always have enough balance to do this, prevent the check for bal
         while runningAmount < Decimal(amount) {
             neededForTransaction.append(sortedUnspents[index])
             runningAmount += sortedUnspents[index].value
@@ -168,15 +155,15 @@ public class Account {
             let reversedBytes = data.bytes.reversed()
             inputData += reversedBytes + toByteArray(UInt16(neededForTransaction[x].index))
         }
-
+        
         return (runningAmount, Data(bytes: inputData), nil)
     }
-
+    
     func packRawTransactionBytes(payloadPrefix: [UInt8], asset: AssetId, with inputData: Data, runningAmount: Decimal,
                                  toSendAmount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil) -> Data {
         let inputDataBytes = inputData.bytes
         let needsTwoOutputTransactions = runningAmount != Decimal(toSendAmount)
-
+        
         var numberOfAttributes: UInt8 = 0x00
         var attributesPayload: [UInt8] = []
         if attributes != nil {
@@ -185,7 +172,7 @@ public class Account {
                 numberOfAttributes += 1
             }
         }
-
+        
         var payload: [UInt8] = payloadPrefix +  [numberOfAttributes]
         payload += attributesPayload + inputDataBytes
         if needsTwoOutputTransactions {
@@ -195,31 +182,31 @@ public class Account {
             let amountToSendRounded = round(amountToSend)
             let amountToSendInMemory = UInt64(amountToSendRounded)
             payload += toByteArray(amountToSendInMemory)
-
+            
             //reciever addressHash
             payload += toAddress.hashFromAddress().dataWithHexString()
-
+            
             //Transaction To Sender
             payload += asset.rawValue.dataWithHexString().bytes.reversed()
             let runningAmountRounded = round(NSDecimalNumber(decimal: runningAmount * pow(10, 8)).doubleValue)
             let amountToGetBack = runningAmountRounded - amountToSendRounded
             let amountToGetBackInMemory = UInt64(amountToGetBack)
-
+            
             payload += toByteArray(amountToGetBackInMemory)
             payload += hashedSignature.bytes
-
+            
         } else {
             payload += [0x01] + asset.rawValue.dataWithHexString().bytes.reversed()
             let amountToSend = toSendAmount * pow(10, 8)
             let amountToSendRounded = round(amountToSend)
             let amountToSendInMemory = UInt64(amountToSendRounded)
-
+            
             payload += toByteArray(amountToSendInMemory)
             payload += toAddress.hashFromAddress().dataWithHexString()
         }
         return Data(bytes: payload)
     }
-
+    
     func concatenatePayloadData(txData: Data, signatureData: Data) -> Data {
         var payload = txData.bytes + [0x01]                        // signature number
         payload += [0x41]                                 // signature struct length
@@ -229,7 +216,7 @@ public class Account {
         payload += [0x21] + self.publicKey.bytes + [0xac] // NeoSigned publicKey
         return Data(bytes: payload)
     }
-
+    
     func generateSendTransactionPayload(asset: AssetId, amount: Double, toAddress: String, assets: Assets, attributes: [TransactionAttritbute]? = nil) -> Data {
         var error: NSError?
         let inputData = getInputsNecessaryToSendAsset(asset: asset, amount: amount, assets: assets)
@@ -240,17 +227,17 @@ public class Account {
         let signatureData = NeoutilsSign(rawTransaction, privateKey.fullHexString, &error)
         let finalPayload = concatenatePayloadData(txData: rawTransaction, signatureData: signatureData!)
         return finalPayload
-
+        
     }
-
-    public func sendAssetTransaction(asset: AssetId, amount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(Bool?, Error?) -> Void) {
-        neoClient.getAssets(for: self.address, params: []) { result in
+    
+    public func sendAssetTransaction(network: Network, seedURL: String, asset: AssetId, amount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(Bool?, Error?) -> Void) {
+        O3APIClient(network: network).getUTXO(for: self.address, params: []) { result in
             switch result {
             case .failure(let error):
                 completion(nil, error)
             case .success(let assets):
                 let payload = self.generateSendTransactionPayload(asset: asset, amount: amount, toAddress: toAddress, assets: assets, attributes: attributes)
-                self.neoClient.sendRawTransaction(with: payload) { (result) in
+                NeoClient(seed: seedURL).sendRawTransaction(with: payload) { (result) in
                     switch result {
                     case .failure(let error):
                         completion(nil, error)
@@ -261,19 +248,19 @@ public class Account {
             }
         }
     }
-
+    
     func generateClaimInputData(claims: Claimable) -> Data {
         var payload: [UInt8] = [0x02] // Claim Transaction Type
         payload += [0x00]    // Version
         //let claimsCount = UInt8(claims.claims.count)
         let claimsCount = UInt8(claims.claims.count)
         payload += [claimsCount]
-
+        
         for claim in claims.claims {
             payload += claim.txid.dataWithHexString().bytes.reversed()
             payload += toByteArray(claim.index)
         }
-
+        
         let amountDecimal = claims.gas * pow(10, 8)
         let amountInt = UInt64(round(NSDecimalNumber(decimal: amountDecimal).doubleValue))
         payload += [0x00] // Attributes
@@ -287,7 +274,7 @@ public class Account {
         #endif
         return Data(bytes: payload)
     }
-
+    
     func generateClaimTransactionPayload(claims: Claimable) -> Data {
         var error: NSError?
         let rawClaim = generateClaimInputData(claims: claims)
@@ -295,16 +282,16 @@ public class Account {
         let finalPayload = concatenatePayloadData(txData: rawClaim, signatureData: signatureData!)
         return finalPayload
     }
-
-    public func claimGas(completion: @escaping(Bool?, Error?) -> Void) {
-        neoClient.getClaims(address: self.address) { result in
+    
+    public func claimGas(network: Network, seedURL: String, completion: @escaping(Bool?, Error?) -> Void) {
+        O3APIClient(network: network).getClaims(address: self.address) { result in
             switch result {
             case .failure(let error):
                 completion(nil, error)
             case .success(let claims):
                 let claimData = self.generateClaimTransactionPayload(claims: claims)
                 print(claimData.fullHexString)
-                self.neoClient.sendRawTransaction(with: claimData) { (result) in
+                NeoClient(seed: seedURL).sendRawTransaction(with: claimData) { (result) in
                     switch result {
                     case .failure(let error):
                         completion(nil, error)
@@ -315,11 +302,13 @@ public class Account {
             }
         }
     }
-
-    private func generateInvokeTransactionPayload(assets: Assets, script: String, contractAddress: String) -> Data {
+    
+    private func generateInvokeTransactionPayload(assets: Assets?, script: String, contractAddress: String) -> Data {
         var error: NSError?
-
-        let inputData = getInputsNecessaryToSendAsset(asset: AssetId.gasAssetId, amount: 0.00000001, assets: assets)
+        
+        
+        let inputData = getInputsNecessaryToSendAsset(asset: AssetId.gasAssetId, amount: 0.00000001, assets: assets!)
+        
         let payloadPrefix = [0xd1, 0x00] + script.dataWithHexString().bytes
         let rawTransaction = packRawTransactionBytes(payloadPrefix: payloadPrefix,
                                                      asset: AssetId.gasAssetId, with: inputData.payload!,
@@ -329,7 +318,7 @@ public class Account {
         let finalPayload = concatenatePayloadData(txData: rawTransaction, signatureData: signatureData!)
         return finalPayload
     }
-
+    
     private func buildNEP5TransferScript(scriptHash: String, fromAddress: String,
                                          toAddress: String, amount: Double) -> [UInt8] {
         let amountToSendInMemory = Int(amount * 100000000)
@@ -341,42 +330,15 @@ public class Account {
         let script = scriptBuilder.rawBytes
         return [UInt8(script.count)] + script
     }
-
-    public func sendNep5Token(tokenContractHash: String, amount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(Bool?, Error?) -> Void) {
-        neoClient.getAssets(for: self.address, params: []) { result in
-            switch result {
-            case .failure(let error):
-                completion(nil, error)
-            case .success(let assets):
-                let scriptBytes = self.buildNEP5TransferScript(scriptHash: tokenContractHash,
-                                                          fromAddress: self.address, toAddress: toAddress, amount: amount)
-                var payload = self.generateInvokeTransactionPayload(assets: assets, script: scriptBytes.fullHexString,
-                                                                    contractAddress: tokenContractHash)
-                payload += tokenContractHash.dataWithHexString().bytes
-                self.neoClient.sendRawTransaction(with: payload) { (result) in
-                    switch result {
-                    case .failure(let error):
-                        completion(nil, error)
-                    case .success(let response):
-                        completion(response, nil)
-                    }
-                }
-            }
-        }
-    }
-
-    public func invokeContractFunction(assets: Assets, contractHash: String, method: String, args: [Any], completion: @escaping(Bool?, Error?) -> Void) {
-
-        let scriptBuilder = ScriptBuilder()
-        scriptBuilder.pushContractInvoke(scriptHash: contractHash, operation: method,
-                                         args: args)
-        let script = scriptBuilder.rawBytes
-
-        let scriptBytes =  [UInt8(script.count)] + script
-        var payload = self.generateInvokeTransactionPayload(assets: assets, script: scriptBytes.fullHexString,
-                                                            contractAddress: contractHash)
-        payload += contractHash.dataWithHexString().bytes
-        self.neoClient.sendRawTransaction(with: payload) { (result) in
+    
+    public func sendNep5Token(seedURL: String, tokenContractHash: String, amount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(Bool?, Error?) -> Void) {
+        //send nep5 token without using utxo
+        let scriptBytes = self.buildNEP5TransferScript(scriptHash: tokenContractHash,
+                                                       fromAddress: self.address, toAddress: toAddress, amount: amount)
+        var payload = self.generateInvokeTransactionPayload(assets: nil, script: scriptBytes.fullHexString,
+                                                            contractAddress: tokenContractHash)
+        payload += tokenContractHash.dataWithHexString().bytes
+        NeoClient(seed: seedURL).sendRawTransaction(with: payload) { (result) in
             switch result {
             case .failure(let error):
                 completion(nil, error)
@@ -385,26 +347,28 @@ public class Account {
             }
         }
     }
-
-    public func allowToParticipateInTokenSale(scriptHash: String, completion: @escaping(NeoClientResult<Bool>) -> Void) {
-        self.neoClient.getTokenSaleStatus(for: self.address, scriptHash: scriptHash) { result in
+    
+    
+    public func allowToParticipateInTokenSale(seedURL: String, scriptHash: String, completion: @escaping(NeoClientResult<Bool>) -> Void) {
+        NeoClient(seed: seedURL).getTokenSaleStatus(for: self.address, scriptHash: scriptHash) { result in
             completion(result)
         }
     }
-
-    public func participateTokenSales(scriptHash: String, assetID: String, amount: Float64, remark: String, networkFee: Float64, completion: @escaping(Bool?, String, Error?) -> Void) {
-        var network = "main"
-        if self.neoClient.network == .test {
-            network = "test"
+    
+    public func participateTokenSales(network: Network, seedURL: String, scriptHash: String, assetID: String, amount: Float64, remark: String, networkFee: Float64, completion: @escaping(Bool?, String, Error?) -> Void) {
+        
+        var networkString = "main"
+        if network == .test {
+            networkString = "test"
         }
         var error: NSError?
-
-        let payload = NeoutilsMintTokensRawTransactionMobile(network, scriptHash, self.wif, assetID, amount, remark, networkFee, &error)
+        
+        let payload = NeoutilsMintTokensRawTransactionMobile(networkString, scriptHash, self.wif, assetID, amount, remark, networkFee, &error)
         if payload == nil {
             completion(false, "", error)
             return
         }
-        self.neoClient.sendRawTransaction(with: payload!.data()) { (result) in
+        NeoClient(seed: seedURL).sendRawTransaction(with: payload!.data()) { (result) in
             switch result {
             case .failure(let error):
                 completion(nil, "", error)

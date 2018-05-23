@@ -17,17 +17,9 @@ class TokenSaleSubmitViewController: UIViewController {
     }
 
     func submitTransaction() {
-        #if PRIVATENET
-        Authenticated.account?.neoClient = NeoClient(network: .privateNet)
-        UserDefaultsManager.network = .privateNet
-        UserDefaultsManager.useDefaultSeed = false
-        UserDefaultsManager.seed = "http://192.168.0.17:30333"
-        Authenticated.account?.neoClient.fullNodeAPI = "http://192.168.0.17:5000"
-        #endif
-
         let fee = transactionInfo.priorityIncluded == true ? Float64(0.0011) : Float64(0)
         let remark = String(format: "O3X%@", transactionInfo.saleInfo.name)
-        Authenticated.account?.participateTokenSales(scriptHash: transactionInfo.tokenSaleContractHash, assetID: transactionInfo.assetIDUsedToPurchase, amount: transactionInfo.assetAmount, remark: remark, networkFee: fee) { success, txID, _ in
+        Authenticated.account?.participateTokenSales(network: AppState.network, seedURL: AppState.bestSeedNodeURL, scriptHash: transactionInfo.tokenSaleContractHash, assetID: transactionInfo.assetIDUsedToPurchase, amount: transactionInfo.assetAmount, remark: remark, networkFee: fee) { success, txID, _ in
 
             //make delay to 10 seconds in production
             DispatchQueue.main.asyncAfter(deadline: .now() + 10) {

@@ -178,7 +178,8 @@ class HomeViewModel {
 
     func loadAccountState(address: String, isReadOnly: Bool) {
         self.group.enter()
-        O3Client().getAccountState(address: address) { result in
+        
+        O3APIClient(network: AppState.network).getAccountState(address: address) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .failure:
