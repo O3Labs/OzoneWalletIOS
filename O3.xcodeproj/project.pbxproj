@@ -133,6 +133,7 @@
 		6E7C927C1F7A6B1400F8D7AA /* Account.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E7C927B1F7A6B1400F8D7AA /* Account.storyboard */; };
 		6E7F3D8B20B5329B00835963 /* O3APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7F3D8A20B5329B00835963 /* O3APIClient.swift */; };
 		6E7F3D8D20B5419A00835963 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7F3D8C20B5419A00835963 /* AppState.swift */; };
+		6E7F3D8F20B6805200835963 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7F3D8E20B6805200835963 /* Data.swift */; };
 		6E97C4B51F7FBAA300526FF0 /* AssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E97C4B41F7FBAA300526FF0 /* AssetView.swift */; };
 		6E97C4B71F7FC6FC00526FF0 /* MyAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E97C4B61F7FC6FC00526FF0 /* MyAddressViewController.swift */; };
 		6E97C4B91F7FCB4000526FF0 /* DeckTransition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E97C4B81F7FC92B00526FF0 /* DeckTransition.framework */; };
@@ -359,6 +360,7 @@
 		6E7C927B1F7A6B1400F8D7AA /* Account.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Account.storyboard; sourceTree = "<group>"; };
 		6E7F3D8A20B5329B00835963 /* O3APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = O3APIClient.swift; sourceTree = "<group>"; };
 		6E7F3D8C20B5419A00835963 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		6E7F3D8E20B6805200835963 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		6E97C4B41F7FBAA300526FF0 /* AssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetView.swift; sourceTree = "<group>"; };
 		6E97C4B61F7FC6FC00526FF0 /* MyAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAddressViewController.swift; sourceTree = "<group>"; };
 		6E97C4B81F7FC92B00526FF0 /* DeckTransition.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeckTransition.framework; path = Carthage/Build/iOS/DeckTransition.framework; sourceTree = "<group>"; };
@@ -823,6 +825,7 @@
 				35E5F60D20285CB800D65BEA /* Int.swift */,
 				3549458D203FD4D000332E53 /* Decimal.swift */,
 				35B426D720998B6300957211 /* UISearchBar.swift */,
+				6E7F3D8E20B6805200835963 /* Data.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1166,6 +1169,7 @@
 				6EA7F9281F6E2F7F00E31B78 /* O3Client.swift in Sources */,
 				7513FAD71F6952B8003450ED /* TransactionCell.swift in Sources */,
 				35AD2B682092F7110024A900 /* TokenSaleStrings.swift in Sources */,
+				6E7F3D8F20B6805200835963 /* Data.swift in Sources */,
 				7546DB451F765295001DF5A2 /* AssetDetailViewController.swift in Sources */,
 				7501C0271F7BBFF400B4B2FF /* AddressEntryTableViewController.swift in Sources */,
 				75D5BFC71F6D1D4600E64855 /* ShadowedButton.swift in Sources */,
@@ -1320,7 +1324,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200 -DTESTNET";
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1422,7 +1426,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200 -DPRIVATENET";
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1583,7 +1587,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200";
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1617,7 +1621,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

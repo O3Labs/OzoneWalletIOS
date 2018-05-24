@@ -360,7 +360,7 @@ public class Account {
     public func sendNep5Token(seedURL: String, tokenContractHash: String, amount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(Bool?, Error?) -> Void) {
         
         var customAttributes: [TransactionAttritbute] = []
-        customAttributes.append(TransactionAttritbute(script: self.hashedSignature.hexString))
+        customAttributes.append(TransactionAttritbute(script: self.address.hashFromAddress()))
         let remark = String(format: "O3X%@", Date().timeIntervalSince1970.description)
         customAttributes.append(TransactionAttritbute(remark: remark))
         customAttributes.append(TransactionAttritbute(descriptionHex: tokenContractHash))
