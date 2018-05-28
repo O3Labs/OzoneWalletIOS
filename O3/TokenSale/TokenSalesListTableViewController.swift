@@ -119,7 +119,6 @@ class TokenSalesListTableViewController: UITableViewController {
     // MARK: 
     func checkWhitelisted(sale: TokenSales.SaleInfo, indexPath: IndexPath) {
         DispatchQueue.main.async {
-
             guard let cell = self.tableView.cellForRow(at: indexPath) as? TokenSaleTableViewCell else {
                 return
             }
