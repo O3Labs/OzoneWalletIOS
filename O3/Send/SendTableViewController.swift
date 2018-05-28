@@ -103,7 +103,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                         UserDefaultsManager.useDefaultSeed = false
                     }
 
-                    Authenticated.account?.sendNep5Token(seedURL: AppState.bestSeedNodeURL ,tokenContractHash: tokenHash, amount: amount, toAddress: toAddress, completion: { (completed, _) in
+                    Authenticated.account?.sendNep5Token(seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, amount: amount, toAddress: toAddress, completion: { (completed, _) in
 
                         O3HUD.stop {
                             self.transactionCompleted = completed ?? false

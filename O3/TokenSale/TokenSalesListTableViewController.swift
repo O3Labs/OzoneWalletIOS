@@ -123,7 +123,7 @@ class TokenSalesListTableViewController: UITableViewController {
             guard let cell = self.tableView.cellForRow(at: indexPath) as? TokenSaleTableViewCell else {
                 return
             }
-            
+
             Authenticated.account?.allowToParticipateInTokenSale(seedURL: AppState.bestSeedNodeURL, scriptHash: sale.scriptHash, completion: { (result) in
                 DispatchQueue.main.async {
                     switch result {

@@ -76,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #else
         Fabric.with([Crashlytics.self])
         #endif
-           
+
         self.registerDefaults()
         self.setupChannel()
         self.setupReachability()

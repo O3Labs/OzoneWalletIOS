@@ -19,7 +19,7 @@ class UserDefaultsManager {
         #if PRIVATENET
             return .privateNet
         #endif
-        
+
         return .main
     }
 

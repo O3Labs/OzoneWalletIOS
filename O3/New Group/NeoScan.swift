@@ -11,13 +11,13 @@ import UIKit
 public class NeoScan: NSObject {
 
     var baseEndpoint = "https://neoscan.io/api/main_net"
-    
+
     public var network: Network = .main
-    
+
     init(network: Network) {
         self.network = network
     }
-    
+
     public enum NeoScanResult<T> {
         case success(T)
         case failure(NeoClientError)
@@ -39,13 +39,13 @@ public class NeoScan: NSObject {
     }
 
     func sendFullNodeRequest(_ endpointResource: String, params: [Any]?, completion :@escaping (NeoScanResult<JSONDictionary>) -> Void) {
-        
+
         if network == .test {
             baseEndpoint = "https://neoscan-testnet.io/api/test_net"
         } else if network == .privateNet {
             baseEndpoint = "https://privatenet.o3.network/api/main_net"
         }
-        
+
         let fullURL = baseEndpoint + endpointResource
         let request = NSMutableURLRequest(url: URL(string: fullURL)!)
         request.httpMethod = "GET"

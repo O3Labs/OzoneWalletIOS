@@ -17,9 +17,9 @@ class AppState: NSObject {
         #if PRIVATENET
         return .privateNet
         #endif
-        
+
         return .main
     }
-    
+
     static var bestSeedNodeURL: String = ""
 }

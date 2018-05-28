@@ -137,7 +137,7 @@ class AccountAssetTableViewController: UITableViewController {
         var customAttributes: [TransactionAttritbute] = []
         let remark = String(format: "O3XFORCLAIM")
         customAttributes.append(TransactionAttritbute(remark: remark))
-        
+
         Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: Double(self.neoBalance), toAddress: (Authenticated.account?.address)!, attributes: customAttributes) { completed, _ in
             if completed == false {
                 HUD.hide()
@@ -168,7 +168,7 @@ class AccountAssetTableViewController: UITableViewController {
         if self.isClaiming == true {
             return
         }
-        
+
         O3APIClient(network: AppState.network).getClaims(address: (Authenticated.account?.address)!) { result in
             DispatchQueue.main.async { self.tableView.refreshControl?.endRefreshing() }
             switch result {

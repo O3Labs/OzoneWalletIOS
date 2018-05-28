@@ -89,7 +89,7 @@ public class NEONetworkMonitor {
 public class NeoClient {
 
     public var seed = "http://seed3.o3node.org:10332"
-  
+
     private init() {}
     private let tokenInfoCache = NSCache<NSString, AnyObject>()
 
@@ -116,11 +116,11 @@ public class NeoClient {
         case decimal
         case symbol
     }
-    
+
     public init(seed: String) {
         self.seed = seed
     }
-    
+
     func sendJSONRPCRequest(_ method: RPCMethod, params: [Any]?, completion: @escaping (NeoClientResult<JSONDictionary>) -> Void) {
         guard let url = URL(string: seed) else {
             completion(.failure(.invalidSeed))
@@ -171,8 +171,6 @@ public class NeoClient {
         }
         task.resume()
     }
-
-   
 
     public func sendRawTransaction(with data: Data, completion: @escaping(NeoClientResult<Bool>) -> Void) {
         sendJSONRPCRequest(.sendTransaction, params: [data.fullHexString]) { result in

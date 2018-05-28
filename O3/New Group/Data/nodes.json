@@ -47,32 +47,32 @@
                   "peercount": 0
                   },
                   {
-                  "url": "http://seed1.bridgeprotocol.io:10332",
+                  "url": "http://seed2.aphelion-neo.com:10332",
                   "blockcount": 0,
                   "peercount": 0
                   },
                   {
-                  "url": "http://seed2.bridgeprotocol.io:10332",
+                  "url": "http://seed2.aphelion-neo.com:10332",
                   "blockcount": 0,
                   "peercount": 0
                   },
                   {
-                  "url": "http://seed3.bridgeprotocol.io:10332",
+                  "url": "https://seed3.switcheo.network:10331",
                   "blockcount": 0,
                   "peercount": 0
                   },
                   {
-                  "url": "http://seed4.bridgeprotocol.io:10332",
+                  "url": "https://seed2.switcheo.network:10331",
                   "blockcount": 0,
                   "peercount": 0
                   },
                   {
-                  "url": "http://seed5.bridgeprotocol.io:10332",
+                  "url": "https://seed1.spotcoin.com:10332",
                   "blockcount": 0,
                   "peercount": 0
                   },
                   {
-                  "url": "http://seed6.bridgeprotocol.io:10332",
+                  "url": "http://node2.ams2.bridgeprotocol.io:10332",
                   "blockcount": 0,
                   "peercount": 0
                   },
