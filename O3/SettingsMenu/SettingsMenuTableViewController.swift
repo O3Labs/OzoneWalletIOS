@@ -16,8 +16,6 @@ import WebBrowser
 class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate {
     @IBOutlet weak var showPrivateKeyView: UIView!
     @IBOutlet weak var contactView: UIView!
-    @IBOutlet weak var networkView: UIView!
-    @IBOutlet weak var networkCell: UITableViewCell!
     @IBOutlet weak var themeCell: UITableViewCell!
     @IBOutlet weak var privateKeyCell: UITableViewCell!
     @IBOutlet weak var watchOnlyCell: UITableViewCell!
@@ -31,7 +29,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var themeView: UIView!
     @IBOutlet weak var privateKeyLabel: UILabel!
     @IBOutlet weak var watchOnlyLabel: UILabel!
-    @IBOutlet weak var netLabel: UILabel!
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var themeLabel: UILabel!
@@ -53,8 +50,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
 
     func setThemedElements() {
-        let themedTitleLabels = [privateKeyLabel, watchOnlyLabel, netLabel, contactLabel, themeLabel, currencyLabel, logoutLabel, versionLabel, supportLabel]
-        let themedCells = [networkCell, themeCell, privateKeyCell, watchOnlyCell, currencyCell, contactCell, logoutCell]
+        let themedTitleLabels = [privateKeyLabel, watchOnlyLabel, contactLabel, themeLabel, currencyLabel, logoutLabel, versionLabel, supportLabel]
+        let themedCells = [themeCell, privateKeyCell, watchOnlyCell, currencyCell, contactCell, logoutCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
         }
@@ -188,7 +185,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     //properly implement cell did tap
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 7 {
+        if indexPath.row == 6 {
             OzoneAlert.confirmDialog(message: SettingsStrings.logoutWarning, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: SettingsStrings.logout, didCancel: {
 
             }, didConfirm: {
@@ -205,7 +202,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.title = SettingsStrings.settingsTitle
         privateKeyLabel.text = SettingsStrings.privateKeyTitle
         watchOnlyLabel.text = SettingsStrings.watchOnlyTitle
-        netLabel.text = SettingsStrings.networkTitle
         themeLabel.text = SettingsStrings.themeTitle
         currencyLabel.text = SettingsStrings.currencyTitle + UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased()
         contactLabel.text = SettingsStrings.contactTitle

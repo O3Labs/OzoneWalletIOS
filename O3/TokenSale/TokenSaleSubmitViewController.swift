@@ -21,8 +21,8 @@ class TokenSaleSubmitViewController: UIViewController {
         let remark = String(format: "O3X%@", transactionInfo.saleInfo.name)
         Authenticated.account?.participateTokenSales(network: AppState.network, seedURL: AppState.bestSeedNodeURL, scriptHash: transactionInfo.tokenSaleContractHash, assetID: transactionInfo.assetIDUsedToPurchase, amount: transactionInfo.assetAmount, remark: remark, networkFee: fee) { success, txID, _ in
 
-            //make delay to 10 seconds in production
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            //make delay to 5 seconds in production
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 if success == true {
                     self.transactionInfo.txID = txID
                     self.performSegue(withIdentifier: "success", sender: self.transactionInfo)
@@ -43,6 +43,9 @@ class TokenSaleSubmitViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
+            AppState.bestSeedNodeURL = bestNode
+        }
         submitTransaction()
     }
 
