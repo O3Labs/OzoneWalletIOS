@@ -82,8 +82,6 @@ class O3TabBarController: UITabBarController {
 
     func tokenSaleTapped() {
         if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
-            UserDefaultsManager.seed = bestNode
-            UserDefaultsManager.useDefaultSeed = false
             AppState.bestSeedNodeURL = bestNode
         }
         let modal = UIStoryboard(name: "TokenSale", bundle: nil).instantiateInitialViewController() as? UINavigationController

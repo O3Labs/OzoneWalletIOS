@@ -38,6 +38,7 @@ class UserDefaultsManager {
             if newValue {
                 if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                     UserDefaults.standard.set(newValue, forKey: useDefaultSeedKey)
+                    AppState.bestSeedNodeURL = bestNode
                     UserDefaultsManager.seed = bestNode
                 }
             } else {

@@ -69,8 +69,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         //select best node
         DispatchQueue.global().async {
             if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
-                UserDefaultsManager.seed = bestNode
-                UserDefaultsManager.useDefaultSeed = false
+                AppState.bestSeedNodeURL = bestNode
             }
         }
 
@@ -98,9 +97,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                         .get("ozonePrivateKey")
                     O3HUD.start()
                     if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
-                        UserDefaultsManager.seed = bestNode
                         AppState.bestSeedNodeURL = bestNode
-                        UserDefaultsManager.useDefaultSeed = false
                     }
 
                     Authenticated.account?.sendNep5Token(seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, amount: amount, toAddress: toAddress, completion: { (completed, _) in
@@ -134,9 +131,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                         .get("ozonePrivateKey")
                     O3HUD.start()
                     if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
-                        UserDefaultsManager.seed = bestNode
                         AppState.bestSeedNodeURL = bestNode
-                        UserDefaultsManager.useDefaultSeed = false
                     }
                     var customAttributes: [TransactionAttritbute] = []
                     let remark = String(format: "O3XSEND")

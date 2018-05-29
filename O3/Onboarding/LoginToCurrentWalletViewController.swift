@@ -35,12 +35,10 @@ class LoginToCurrentWalletViewController: UIViewController {
                 O3HUD.start()
                 Authenticated.account = account
                 DispatchQueue.global(qos: .background).async {
-                    let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network)
+                    if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
+                        AppState.bestSeedNodeURL = bestNode
+                    }
                     DispatchQueue.main.async {
-                        if bestNode != nil {
-                            UserDefaultsManager.seed = bestNode!
-                            UserDefaultsManager.useDefaultSeed = false
-                        }
                         O3HUD.stop {
                             DispatchQueue.main.async {
                                 SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)

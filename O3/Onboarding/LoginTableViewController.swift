@@ -61,13 +61,11 @@ class LoginTableViewController: UITableViewController, QRScanDelegate {
 
         HUD.show(.labeledProgress(title: nil, subtitle: OnboardingStrings.selectingBestNodeTitle))
         DispatchQueue.global(qos: .background).async {
-            let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network)
+            if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
+                AppState.bestSeedNodeURL = bestNode
+            }
             DispatchQueue.main.async {
                 HUD.hide()
-                if bestNode != nil {
-                    UserDefaultsManager.seed = bestNode!
-                    UserDefaultsManager.useDefaultSeed = false
-                }
                 do {
                     //save pirivate key to keychain
                     try keychain
