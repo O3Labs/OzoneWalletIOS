@@ -39,7 +39,7 @@ public class O3Client {
         case getPortfolioValue = "/v1/historical"
         case getNewsFeed = "/v1/feed/"
         case getFeatureFeed = "/v1/features"
-        case getTokenSales = "https://s3-ap-northeast-1.amazonaws.com/network.o3.cdn/data/___tokensale.json"
+        case getTokenSales = "https://platform.o3.network/api/v1/neo/tokensales"
     }
 
     enum HTTPMethod: String {
@@ -204,9 +204,12 @@ public class O3Client {
     }
 
     func getTokenSales(completion: @escaping(O3ClientResult<TokenSales>) -> Void) {
-        var endpoint = "https://cdn.o3.network/data/tokensales.json"
-        #if PRIVATENET || TESTNET
-        endpoint = "https://s3-ap-northeast-1.amazonaws.com/network.o3.cdn/data/___tokensale.json"
+        var endpoint = "https://platform.o3.network/api/v1/neo/tokensales"
+        #if TESTNET
+        endpoint = "https://platform.o3.network/api/v1/neo/tokensales?network=test"
+        #endif
+        #if PRIVATENET
+        endpoint = "https://platform.o3.network/api/v1/neo/tokensales?network=private"
         #endif
         sendRequest(endpoint, method: .GET, data: nil, noBaseURL: true) { result in
             switch result {
