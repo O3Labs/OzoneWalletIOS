@@ -13,6 +13,7 @@
 @class NeoutilsBlockCountResponse;
 @class NeoutilsFetchSeedRequest;
 @class NeoutilsMultiSig;
+@class NeoutilsNEP2;
 @class NeoutilsNEP5;
 @class NeoutilsNativeAsset;
 @class NeoutilsNodeList;
@@ -95,6 +96,18 @@
 
 // skipped method MultiSig.CreateMultiSignedAddress with unsupported parameter or return types
 
+@end
+
+@interface NeoutilsNEP2 : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) id _ref;
+
+- (instancetype)initWithRef:(id)ref;
+- (instancetype)init;
+- (NSString*)encryptedKey;
+- (void)setEncryptedKey:(NSString*)v;
+- (NSString*)address;
+- (void)setAddress:(NSString*)v;
 @end
 
 @interface NeoutilsNEP5 : NSObject <goSeqRefInterface, NeoutilsNEP5Interface> {
@@ -181,8 +194,8 @@
 - (instancetype)init;
 - (NSString*)to;
 - (void)setTo:(NSString*)v;
-- (NSString*)assetID;
-- (void)setAssetID:(NSString*)v;
+- (NSString*)asset;
+- (void)setAsset:(NSString*)v;
 - (double)amount;
 - (void)setAmount:(double)v;
 @end
@@ -247,11 +260,12 @@ FOUNDATION_EXPORT NSData* NeoutilsHexTobytes(NSString* hexstring);
 
 FOUNDATION_EXPORT NeoutilsRawTransaction* NeoutilsMintTokensRawTransactionMobile(NSString* network, NSString* scriptHash, NSString* wif, NSString* sendingAssetID, double amount, NSString* remark, double networkFeeAmountInGAS, NSError** error);
 
-FOUNDATION_EXPORT NSString* NeoutilsNEOAddressToScriptHash(NSString* neoAddress);
+// skipped function NEOAddressToScriptHashWithEndian with unsupported parameter or return types
+
 
 FOUNDATION_EXPORT NSString* NeoutilsNEP2Decrypt(NSString* key, NSString* passphrase, NSError** error);
 
-FOUNDATION_EXPORT NSString* NeoutilsNEP2Encrypt(NSString* wif, NSString* passphrase, NSError** error);
+FOUNDATION_EXPORT NeoutilsNEP2* NeoutilsNEP2Encrypt(NSString* wif, NSString* passphrase, NSError** error);
 
 FOUNDATION_EXPORT NeoutilsWallet* NeoutilsNewWallet(NSError** error);
 

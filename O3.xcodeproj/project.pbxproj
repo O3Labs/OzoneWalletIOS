@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		014B532D20BFEE7A00F6967C /* neoutils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 014B532C20BFEE7A00F6967C /* neoutils.framework */; };
 		350100F220441B53000F6648 /* CurrencyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350100F120441B53000F6648 /* CurrencyTableViewController.swift */; };
 		350100F4204541A6000F6648 /* SwiftTheme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 350100F3204541A6000F6648 /* SwiftTheme.framework */; };
 		350100F5204541A6000F6648 /* SwiftTheme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 350100F3204541A6000F6648 /* SwiftTheme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -241,6 +242,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		014B532C20BFEE7A00F6967C /* neoutils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = neoutils.framework; sourceTree = "<group>"; };
 		350100F120441B53000F6648 /* CurrencyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTableViewController.swift; sourceTree = "<group>"; };
 		350100F3204541A6000F6648 /* SwiftTheme.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftTheme.framework; path = Carthage/Build/iOS/SwiftTheme.framework; sourceTree = "<group>"; };
 		35051B131FFDAD9200F9AD30 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Carthage/Build/iOS/Fabric.framework; sourceTree = "<group>"; };
@@ -296,7 +298,6 @@
 		3557BACE20AA9D300034937C /* Array+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Util.swift"; sourceTree = "<group>"; };
 		3557BACF20AA9D300034937C /* NEP9.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEP9.swift; sourceTree = "<group>"; };
 		3557BAD120AA9D310034937C /* Data+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Util.swift"; sourceTree = "<group>"; };
-		3557BAD920AA9F690034937C /* neoutils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = neoutils.framework; sourceTree = "<group>"; };
 		3557BADD20AAA0940034937C /* O3-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "O3-Bridging-Header.h"; sourceTree = "<group>"; };
 		3557BAE020AAA32F0034937C /* ValueIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueIn.swift; sourceTree = "<group>"; };
 		3557BAE120AAA32F0034937C /* ValueOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueOut.swift; sourceTree = "<group>"; };
@@ -449,6 +450,7 @@
 				350100F4204541A6000F6648 /* SwiftTheme.framework in Frameworks */,
 				6E244EC020858AB8001B4B22 /* Lottie.framework in Frameworks */,
 				35494575203C030A00332E53 /* Tabman.framework in Frameworks */,
+				014B532D20BFEE7A00F6967C /* neoutils.framework in Frameworks */,
 				3549456D203BF1F700332E53 /* Pageboy.framework in Frameworks */,
 				6E97C4B91F7FCB4000526FF0 /* DeckTransition.framework in Frameworks */,
 				35051B1C1FFDB10800F9AD30 /* Crashlytics.framework in Frameworks */,
@@ -709,7 +711,7 @@
 		755D8F5E1F66743900058434 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3557BAD920AA9F690034937C /* neoutils.framework */,
+				014B532C20BFEE7A00F6967C /* neoutils.framework */,
 				351200BA207DE0E2003CA07D /* StoreKit.framework */,
 				3549456B203BF0A400332E53 /* Foundation.framework */,
 				35A6390E203517BB0054EA20 /* CloudKit.framework */,
