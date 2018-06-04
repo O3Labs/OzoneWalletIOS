@@ -196,11 +196,6 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                     self.amountField.becomeFirstResponder()
             })
             return
-        } else if selectedAsset?.assetType == .nep5Token && gasBalance == 0.0 {
-            OzoneAlert.alertDialog(message: SendStrings.notEnoughGasForInvokeError, dismissTitle: OzoneAlert.okPositiveConfirmString, didDismiss: {
-                self.amountField.becomeFirstResponder()
-            })
-            return
         }
         let toAddress = toAddressField.text?.trim() ?? ""
 
