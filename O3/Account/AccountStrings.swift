@@ -21,9 +21,6 @@ struct AccountStrings {
     static let claimingInProgressTitle = NSLocalizedString("WALLET_Claim_In_Progress_Title", comment: "A title to display while claiming is in progress")
     static let claimingInProgressSubtitle = NSLocalizedString("WALLET_Claim_In_Progress_Subtitle", comment: "A subtitle to display while claiming is in progress")
     static let accountTitle = NSLocalizedString("WALLET_Account", comment: "A title for the account screen")
-    static let addNEP5Token = NSLocalizedString("WALLET_Add_NEP5_Token", comment: "A title for the button which allows you to add a NEP-5 Token to your wallet")
-    static let done = NSLocalizedString("WALLET_NEP_5_DONE", comment: "Done bar button item")
-    static let availableTokensTitle = NSLocalizedString("WALLET_NEP5_Tokens", comment: "Title for NEP-5 Tokens Selection View")
 
     //Transaction History
     static let fromPrefix = NSLocalizedString("WALLET_From_Prefix", comment: "Prefix used in the transaction history to indicate where the transaction came from")

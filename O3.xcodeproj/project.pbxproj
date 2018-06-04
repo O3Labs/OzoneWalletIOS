@@ -480,6 +480,15 @@
 			path = Currency;
 			sourceTree = "<group>";
 		};
+		3527F8CB20C533F100C2FCB9 /* Marketplace */ = {
+			isa = PBXGroup;
+			children = (
+				6E68B6AE206CB75D008C25E8 /* TokenSale */,
+				35B426BD2098240B00957211 /* TokenSelection */,
+			);
+			path = Marketplace;
+			sourceTree = "<group>";
+		};
 		353F364720036F97002B4FE1 /* NewsFeed */ = {
 			isa = PBXGroup;
 			children = (
@@ -759,10 +768,10 @@
 		7575ADC41F6006AC0077007B /* O3 */ = {
 			isa = PBXGroup;
 			children = (
+				3527F8CB20C533F100C2FCB9 /* Marketplace */,
 				3557BA9920AA9C6C0034937C /* NeoSwift */,
 				35B426BB20980CC400957211 /* Main.storyboard */,
 				35B426B920980CAE00957211 /* LaunchScreen.storyboard */,
-				6E68B6AE206CB75D008C25E8 /* TokenSale */,
 				7533B2A41F7F671C00A21B89 /* Transitions */,
 				75D5BFC51F6D1D2B00E64855 /* UIControls */,
 				75CEACE41F6678A4005974CE /* Extensions */,
@@ -851,7 +860,6 @@
 		75CEACEA1F66B73C005974CE /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				35B426BD2098240B00957211 /* TokenSelection */,
 				6E4E6F8520146514001A5844 /* Views */,
 				6E4E6F82201462BF001A5844 /* Models */,
 				35AD2B69209301A30024A900 /* AccountStrings.swift */,
