@@ -77,6 +77,17 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
         userSwiped = true
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
+        super.viewWillDisappear(animated)
+
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
+        super.viewWillAppear(animated)
+    }
+
     func timePaging() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             if self.userSwiped || self.currPosition == self.maxPosition {

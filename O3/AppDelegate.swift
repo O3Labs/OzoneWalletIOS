@@ -82,11 +82,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.setupReachability()
         AppDelegate.setNavbarAppearance()
         print(NSHomeDirectory())
-        let login = UIStoryboard(name: "Landing", bundle: nil).instantiateInitialViewController()
-        if let window = self.window {
-            window.rootViewController = login
-        }
-        return true
 
         //check if there is an existing wallet in keychain
         //if so, present LoginToCurrentWalletViewController
