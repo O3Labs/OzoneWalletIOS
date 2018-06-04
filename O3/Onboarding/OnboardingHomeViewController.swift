@@ -110,6 +110,6 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
 
         loginButton.setTitle(OnboardingStrings.loginTitle, for: UIControlState())
         createNewWalletButton.setTitle(OnboardingStrings.createNewWalletTitle, for: UIControlState())
-        newToO3Label.text = OnboardingStrings.newToO3
+        //newToO3Label.text = OnboardingStrings.newToO3
     }
 }

@@ -10,15 +10,22 @@ import Foundation
 
 struct OnboardingStrings {
     //Landing Screen
-    static let landingTitleOne = NSLocalizedString("ONBOARDING_Tutorial_Title_One", comment: "The first title in the onboarding pages")
-    static let landingTitleTwo = NSLocalizedString("ONBOARDING_Tutorial_Title_Two", comment: "The second title in the onboarding pages")
-    static let landingTitleThree = NSLocalizedString("ONBOARDING_Tutorial_Title_Three", comment: "The third title in the onboarding pages")
-    static let landingSubtitleOne = NSLocalizedString("ONBOARDING_Tutorial_Subtitle_One", comment: "The first subtitle in the onboarding pages")
-    static let landingSubtitleTwo = NSLocalizedString("ONBOARDING_Tutorial_Subtitle_Two", comment: "The second subtitle in the onboarding pages")
-    static let landingSubtitleThree = NSLocalizedString("ONBOARDING_Tutorial_Subtitle_Three", comment: "The third subtitle in the onboarding pages")
+    static let landingTitleOne = NSLocalizedString("ONBOARDING_Landing_Title_One", comment: "The first title in the landing pages")
+    static let landingTitleTwo = NSLocalizedString("ONBOARDING_Landing_Title_Two", comment: "The second title in the landing pages")
+    static let landingTitleThree = NSLocalizedString("ONBOARDING_Landing_Title_Three", comment: "The third title in the landing pages")
+    static let landingTitleFour = NSLocalizedString("ONBOARDING_Landing_Title_Four", comment: "The foruth title in the landing pages")
+    static let landingTitleFive = NSLocalizedString("ONBOARDING_Landing_Title_Five", comment: "The fifth title in the landing pages")
+
+    static let landingSubtitleOne = NSLocalizedString("ONBOARDING_Landing_Subtitle_One", comment: "The first subtitle in the landing pages")
+    static let landingSubtitleTwo = NSLocalizedString("ONBOARDING_Landing_Subtitle_Two", comment: "The second subtitle in the landing pages")
+    static let landingSubtitleThree = NSLocalizedString("ONBOARDING_Landing_Subtitle_Three", comment: "The third subtitle in the landing pages")
+    static let landingSubtitleFour = NSLocalizedString("ONBOARDING_Landing_Subtitle_Four", comment: "The fourth subtitle in the landing pages")
+    static let landingSubtitleFive = NSLocalizedString("ONBOARDING_Landing_Subtitle_Five", comment: "The fifth subtitle in the landing pages")
+
     static let loginTitle = NSLocalizedString("ONBOARDING_Login_Title", comment: "Title for all login items in the onboarding flow")
     static let createNewWalletTitle = NSLocalizedString("ONBOARDING_Create_New _Wallet", comment: "Title For Creating a New Wallet in the onboarding flow")
-    static let newToO3 = NSLocalizedString("ONBOARDING_New To O3?", comment: "Welcome label to create a new wallet")
+
+    static let stylizedOr = NSLocalizedString("ONBOARDING_OR", comment: "Seperator for login and create new wallet")
 
     //Login Screen
     static let loginNoPassCodeError = NSLocalizedString("ONBOARDING_Login_No_Passcode_Error", comment: "Error message that is displayed when the user tries to login without a passcode")

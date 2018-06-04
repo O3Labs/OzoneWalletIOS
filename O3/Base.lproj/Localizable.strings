@@ -69,6 +69,36 @@
 /* Error message to display when the system fails to retrieve the private key from the keychain */
 "ONBOARDING_Keychain_Failure_Error" = "There has been an error when attempting to retrieve data from the keychain. Please try again later or contact our team directly.";
 
+/* The fifth subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Five" = "Get started by setting up a new wallet or logging in with your private key"; /* NEW */
+
+/* The fourth subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Four" = "Get the latest NEO news and discover new projects from right inside the app"; /* NEW */
+
+/* The first subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_One" = "A simple, user-friendly smart wallet, designed for the smart economy"; /* NEW */
+
+/* The third subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Three" = "With latest security features, you can be sure your assets are safe and sound."; /* NEW */
+
+/* The second subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Two" = "Send, receive, claim GAS & manage NEP5 Tokens all in one place with ease."; /* NEW */
+
+/* The fifth title in the landing pages */
+"ONBOARDING_Landing_Title_Five" = "Are you ready to get started?"; /* NEW */
+
+/* The foruth title in the landing pages */
+"ONBOARDING_Landing_Title_Four" = "Stay up to date"; /* NEW */
+
+/* The first title in the landing pages */
+"ONBOARDING_Landing_Title_One" = "Welcome to O3"; /* NEW */
+
+/* The third title in the landing pages */
+"ONBOARDING_Landing_Title_Three" = "Secure and safe."; /* NEW */
+
+/* The second title in the landing pages */
+"ONBOARDING_Landing_Title_Two" = "Built for the NEO Smart Economy"; /* NEW */
+
 /* Subtitle under the text field of the login controller. Explains what to do in textfield */
 "ONBOARDING_Login_Input_Info_Title" = "Login to your wallet using your NEO private key";
 
@@ -78,8 +108,8 @@
 /* Title for all login items in the onboarding flow */
 "ONBOARDING_Login_Title" = "Login";
 
-/* Welcome label to create a new wallet */
-"ONBOARDING_New To O3?" = "New To O3?";
+/* Seperator for login and create new wallet */
+"ONBOARDING_OR" = "——  OR  ——"; /* NEW */
 
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
 "ONBOARDING_Please_Backup Warning" = "Please backup this private key in another secure location.\n\nIt is highly reccomended that you have a passcode set on your iPhone. Removing the passcode from your device will delete your private key from the keychain.";
@@ -93,24 +123,6 @@
 /* Title to start the app after completing the onboarding */
 "ONBOARDING_Start_Action_Title" = "Start";
 
-/* The first subtitle in the onboarding pages */
-"ONBOARDING_Tutorial_Subtitle_One" = "Safely monitor your wallet from the palm of your hand";
-
-/* The third subtitle in the onboarding pages */
-"ONBOARDING_Tutorial_Subtitle_Three" = "GAS, NEO, and NEP5 tokens are all supported";
-
-/* The second subtitle in the onboarding pages */
-"ONBOARDING_Tutorial_Subtitle_Two" = "Your private is protected by the most up to date security practices";
-
-/* The first title in the onboarding pages */
-"ONBOARDING_Tutorial_Title_One" = "Add Watch-Only Address";
-
-/* The third title in the onboarding pages */
-"ONBOARDING_Tutorial_Title_Three" = "Send, Receive, & Claim Rewards";
-
-/* The second title in the onboarding pages */
-"ONBOARDING_Tutorial_Title_Two" = "Securely store your funds";
-
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "Welcome!";
 
@@ -121,7 +133,7 @@
 "PORTFOLIO_Combined_Header" = "COMBINED";
 
 /* Portfolio Percentage Change String */
-"PORTFOLIO_Interval" = "%@ (%.2f%@) SINCE %@"; /* NEW */
+"PORTFOLIO_Interval" = "%@ (%.2f%@) SINCE %@";
 
 /* Interval Button on portfolio page, interval specifies 1 Month */
 "PORTFOLIO_Interval_Button_1M" = "1M";

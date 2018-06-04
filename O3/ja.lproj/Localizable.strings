@@ -69,6 +69,36 @@
 /* Error message to display when the system fails to retrieve the private key from the keychain */
 "ONBOARDING_Keychain_Failure_Error" = "キーチェーンからのデータ受信にエラーが発生しました。後ほどもう一度試すか我たちのチームに直接ご連絡ください。";
 
+/* The fifth subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Five" = "ONBOARDING_Landing_Subtitle_Five"; /* NEW */
+
+/* The fourth subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Four" = "ONBOARDING_Landing_Subtitle_Four"; /* NEW */
+
+/* The first subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_One" = "ONBOARDING_Landing_Subtitle_One"; /* NEW */
+
+/* The third subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Three" = "ONBOARDING_Landing_Subtitle_Three"; /* NEW */
+
+/* The second subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Two" = "ONBOARDING_Landing_Subtitle_Two"; /* NEW */
+
+/* The fifth title in the landing pages */
+"ONBOARDING_Landing_Title_Five" = "ONBOARDING_Landing_Title_Five"; /* NEW */
+
+/* The foruth title in the landing pages */
+"ONBOARDING_Landing_Title_Four" = "ONBOARDING_Landing_Title_Four"; /* NEW */
+
+/* The first title in the landing pages */
+"ONBOARDING_Landing_Title_One" = "ONBOARDING_Landing_Title_One"; /* NEW */
+
+/* The third title in the landing pages */
+"ONBOARDING_Landing_Title_Three" = "ONBOARDING_Landing_Title_Three"; /* NEW */
+
+/* The second title in the landing pages */
+"ONBOARDING_Landing_Title_Two" = "ONBOARDING_Landing_Title_Two"; /* NEW */
+
 /* Subtitle under the text field of the login controller. Explains what to do in textfield */
 "ONBOARDING_Login_Input_Info_Title" = "NEO秘密鍵でウォレットにログイン";
 
@@ -78,8 +108,8 @@
 /* Title for all login items in the onboarding flow */
 "ONBOARDING_Login_Title" = "ログイン";
 
-/* Welcome label to create a new wallet */
-"ONBOARDING_New To O3?" = "初めてO3を使いますか？";
+/* Seperator for login and create new wallet */
+"ONBOARDING_OR" = "ONBOARDING_OR"; /* NEW */
 
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
 "ONBOARDING_Please_Backup Warning" = "別の安全な場所に秘密鍵をバックアップして下さい。\n\nあなたのiPhoneにパスコードを設定することを強くお勧めします。あなたのデバイスからパスコードを削除すると、秘密鍵がキーチェーンから削除されます。";
@@ -93,24 +123,6 @@
 /* Title to start the app after completing the onboarding */
 "ONBOARDING_Start_Action_Title" = "始める";
 
-/* The first subtitle in the onboarding pages */
-"ONBOARDING_Tutorial_Subtitle_One" = "ウォレットを手のひらで安全に管理する";
-
-/* The third subtitle in the onboarding pages */
-"ONBOARDING_Tutorial_Subtitle_Three" = "GAS、NEO、NEP5トークンがすべてサポートされています";
-
-/* The second subtitle in the onboarding pages */
-"ONBOARDING_Tutorial_Subtitle_Two" = "あなたの秘密鍵は最新のセキュリティ技術で保護されます";
-
-/* The first title in the onboarding pages */
-"ONBOARDING_Tutorial_Title_One" = "残高確認用アドレス追加";
-
-/* The third title in the onboarding pages */
-"ONBOARDING_Tutorial_Title_Three" = "送金、入金、報酬受取";
-
-/* The second title in the onboarding pages */
-"ONBOARDING_Tutorial_Title_Two" = "資産を安全に管理";
-
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "ようこそ！";
 
@@ -121,7 +133,7 @@
 "PORTFOLIO_Combined_Header" = "結合済";
 
 /* Portfolio Percentage Change String */
-"PORTFOLIO_Interval" = "%@ (%.2f%@) %@ 以降"; /* NEW */
+"PORTFOLIO_Interval" = "%@ (%.2f%@) %@ 以降";
 
 /* Interval Button on portfolio page, interval specifies 1 Month */
 "PORTFOLIO_Interval_Button_1M" = "1M";
