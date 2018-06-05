@@ -42,6 +42,9 @@
 /* A title for error alert prompts */
 "Error" = "Error";
 
+/* Title for marketplace section in app */
+"MARKETPLACE_title" = "Marketplace";
+
 /* Title of the news feed page */
 "NEWSFEED_News_Title" = "News Feed";
 
@@ -121,7 +124,7 @@
 "PORTFOLIO_Combined_Header" = "COMBINED";
 
 /* Portfolio Percentage Change String */
-"PORTFOLIO_Interval" = "%@ (%.2f%@) SINCE %@"; /* NEW */
+"PORTFOLIO_Interval" = "%@ (%.2f%@) SINCE %@";
 
 /* Interval Button on portfolio page, interval specifies 1 Month */
 "PORTFOLIO_Interval_Button_1M" = "1M";
@@ -146,6 +149,9 @@
 
 /* Title of the portfolio page */
 "PORTFOLIO_Portfolio_Title" = "Portfolio";
+
+/* Error message to display when the price history of a token is not available */
+"PORTFOLIO_Price_History_Not_Available" = "Price history isn't available for this token yet. Check back soon!";
 
 /* A title for the scan button in the send screen */
 "SCAN_Button_Title" = "Scan";
@@ -432,9 +438,6 @@
 /* A title for the account screen */
 "WALLET_Account" = "Account";
 
-/* A title for the button which allows you to add a NEP-5 Token to your wallet */
-"WALLET_Add_NEP5_Token" = "+ Add NEP5 Token";
-
 /* Title of assets tab in wallet screen */
 "WALLET_Assets" = "ASSETS";
 
@@ -471,14 +474,11 @@
 /* Title of the My Address Page */
 "WALLET_My_Address_Title" = "My Address";
 
-/* Title for NEP-5 Tokens Selection View */
-"WALLET_NEP5_Tokens" = "NEP5 Tokens";
-
-/* Done bar button item */
-"WALLET_NEP_5_DONE" = "Done";
-
 /* String in transaction history indicating O3 Wallet */
 "WALLET_O3_Wallet" = "O3 Wallet";
+
+/* A title for the request action in the wallet */
+"WALLET_Request" = "request"; /* NEW */
 
 /* An Action Title for saving your QR code */
 "WALLET_Save_Qr_Action" = "Save QR Code Image";
@@ -488,6 +488,12 @@
 
 /* A title to display when you've successfully saved your wallet address qr code */
 "WALLET_Saved_Title" = "Saved!";
+
+/* A title for the scan action in the wallet */
+"WALLET_Scan" = "Scan"; /* NEW */
+
+/* A title for the send action in the wallet */
+"WALLET_Send" = "Send"; /* NEW */
 
 /* An action title for sharing O3 */
 "WALLET_Share" = "Share";

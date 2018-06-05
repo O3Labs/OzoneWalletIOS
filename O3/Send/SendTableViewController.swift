@@ -36,6 +36,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     var transactionCompleted: Bool!
     var selectedAsset: TransferableAsset?
     var preselectedAddress = ""
+    var incomingQRData: String?
 
     func addThemedElements() {
         let themedTitleLabels = [toLabel, assetLabel, amountLabel]
@@ -77,6 +78,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
         self.enableSendButton()
         self.toAddressField.text = preselectedAddress.trim()
+        if incomingQRData != nil {
+            qrScanned(data: incomingQRData!)
+        }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -237,21 +241,20 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     }
 
     func qrScanned(data: String) {
-        
-        if data.range(of:"neo:") == nil {
+
+        if data.range(of: "neo:") == nil {
             toAddressField.text = data
         } else {
             let nep9Data = NEP9.parse(data)
             let address = nep9Data?.to()
             let asset = nep9Data?.asset()
             let amount = nep9Data?.amount()
-            
+
             toAddressField.text = address
-            
-            
+
             if asset != "" {
                 var selected: TransferableAsset?
-                
+
                 if (asset?.lowercased() == "neo" || asset == AssetId.neoAssetId.rawValue) {
                     selected = O3Cache.neo()
                 } else if (asset?.lowercased() == "gas" || asset == AssetId.gasAssetId.rawValue) {
@@ -259,24 +262,24 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                 } else {
                     let tokenAssets = O3Cache.tokenAssets()
                     let assetIndex = tokenAssets.index(where: { (item) -> Bool in
-                        item.id.range(of:asset!) != nil
+                        item.id.range(of: asset!) != nil
                     })
                     if assetIndex != nil {
                         selected = tokenAssets[assetIndex!]
                     }
                 }
-                
+
                 if selected != nil {
                     self.selectedAsset = selected
                     self.selectedAssetLabel.text = selected!.symbol
                 }
             }
-            
+
             if amount != nil {
-                self.amountField.text = String(format:"%f",amount!)
+                self.amountField.text = String(format: "%f", amount!)
             }
         }
-        
+
         enableSendButton()
     }
 
