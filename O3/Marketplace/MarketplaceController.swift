@@ -39,6 +39,7 @@ class MarketplaceController: TabmanViewController, PageboyViewControllerDataSour
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addThemeObserver()
         self.bar.items = [Item(title: TokenSelectionStrings.NEP5),
                           Item(title: TokenSaleStrings.tokenSalesTitle)]
         self.navigationController?.navigationBar.topItem?.title = MarketplaceStrings.Marketplace

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Crashlytics
+import SwiftTheme
 
 class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     let numberOfTokensPerRow: CGFloat = 2
@@ -19,6 +20,14 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
+
+    func addThemeObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.setSearchBarTheme(_:)), name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
+    }
 
     func loadTokens() {
         O3Client().getTokens { result in
@@ -35,6 +44,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addThemeObserver()
         setLocalizedStrings()
         setThemedElements()
         collectionView.dataSource = self
@@ -95,6 +105,14 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     func setThemedElements() {
         collectionView.theme_backgroundColor = O3Theme.backgroundColorPicker
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        setSearchBarTheme(nil)
+
+        searchBar.theme_keyboardAppearance = O3Theme.keyboardPicker
+        searchBar.theme_backgroundColor = O3Theme.backgroundColorPicker
+        searchBar.theme_tintColor = O3Theme.textFieldTextColorPicker
+    }
+
+    @objc func setSearchBarTheme(_ sender: Any?) {
         var background: UIImage
         if UserDefaultsManager.themeIndex == 0 {
             background = UIImage(color: .white)!
@@ -105,11 +123,6 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
             searchBar.setTextFieldColor(color: Theme.dark.backgroundColor)
             UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: UIColor.white]
         }
-
-        searchBar.theme_keyboardAppearance = O3Theme.keyboardPicker
-        searchBar.theme_backgroundColor = O3Theme.backgroundColorPicker
-        searchBar.theme_tintColor = O3Theme.textFieldTextColorPicker
-
         searchBar.setBackgroundImage(background, for: .any, barMetrics: UIBarMetrics.default)
     }
 
