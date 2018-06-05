@@ -1,95 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="W9D-Gv-leE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dKu-sA-2AZ">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="GPt-f8-Yls">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="W9D-Gv-leE" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="h4y-i7-95E">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="khY-0E-6kC" kind="relationship" relationship="rootViewController" id="KhS-Zz-yDm"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="D1U-lJ-XLT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-121" y="59"/>
-        </scene>
-        <!--Token Selection Tab View Controller-->
-        <scene sceneID="nie-vw-08v">
-            <objects>
-                <viewController id="khY-0E-6kC" customClass="TokenSelectionTabViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="QhR-8R-VPm">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="p8u-yK-lXk"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="ZIk-Zx-n2s"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="AHa-Jd-JN6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="580" y="59"/>
-        </scene>
-        <!--nftSelectionViewController-->
-        <scene sceneID="xDG-8u-TXO">
-            <objects>
-                <viewController storyboardIdentifier="nftSelectionViewController" title="nftSelectionViewController" id="evp-vS-Mz9" customClass="NftSelectionViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Ph9-0M-Lw5">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xY6-qr-1wr">
-                                <rect key="frame" x="0.0" y="20" width="320" height="381"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="xY6-qr-1wr" secondAttribute="height" multiplier="370:440" id="ETE-b9-lsh"/>
-                                </constraints>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Non Fungible Tokens are Under Construction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tJq-O7-UxR">
-                                <rect key="frame" x="16" y="417" width="288" height="46.5"/>
-                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="xY6-qr-1wr" firstAttribute="centerX" secondItem="Ph9-0M-Lw5" secondAttribute="centerX" id="3Xl-0P-P0g"/>
-                            <constraint firstItem="tJq-O7-UxR" firstAttribute="leading" secondItem="UcA-nv-Bzl" secondAttribute="leading" constant="16" id="4b4-HL-cNo"/>
-                            <constraint firstItem="tJq-O7-UxR" firstAttribute="centerX" secondItem="UcA-nv-Bzl" secondAttribute="centerX" id="BFl-1p-Leg"/>
-                            <constraint firstItem="tJq-O7-UxR" firstAttribute="top" secondItem="xY6-qr-1wr" secondAttribute="bottom" constant="16" id="DU9-Mg-BhE"/>
-                            <constraint firstItem="xY6-qr-1wr" firstAttribute="leading" secondItem="UcA-nv-Bzl" secondAttribute="leading" id="TwA-dz-qAV"/>
-                            <constraint firstItem="UcA-nv-Bzl" firstAttribute="trailing" secondItem="tJq-O7-UxR" secondAttribute="trailing" constant="16" id="g3E-js-azh"/>
-                            <constraint firstItem="xY6-qr-1wr" firstAttribute="top" secondItem="UcA-nv-Bzl" secondAttribute="top" id="lMW-ww-97H"/>
-                            <constraint firstItem="UcA-nv-Bzl" firstAttribute="trailing" secondItem="xY6-qr-1wr" secondAttribute="trailing" id="xWD-PH-Aqp"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="UcA-nv-Bzl"/>
-                    </view>
-                    <connections>
-                        <outlet property="animationView" destination="xY6-qr-1wr" id="Tze-nX-asb"/>
-                        <outlet property="nftConstructionLabel" destination="tJq-O7-UxR" id="K39-QG-hrK"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Pnt-OQ-qO6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1252" y="409.7451274362819"/>
-        </scene>
         <!--Nep5 Selection Collection View Controller-->
         <scene sceneID="5XF-Aj-Ci4">
             <objects>
@@ -187,11 +108,20 @@
                     <connections>
                         <outlet property="collectionView" destination="PzO-7c-uTf" id="vED-dr-M1c"/>
                         <outlet property="searchBar" destination="3vK-hU-sax" id="cmm-3S-yPY"/>
+                        <segue destination="YD6-na-iJV" kind="show" identifier="segueToAssetDetail" id="sK7-rn-rau"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tpK-my-sLr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2866.875" y="-143.66197183098592"/>
+            <point key="canvasLocation" x="2333" y="-108"/>
+        </scene>
+        <!--AssetDetailViewController-->
+        <scene sceneID="Tn2-K3-hjx">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="AssetDetailViewController" id="YD6-na-iJV" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="43z-9d-Em8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3149" y="-125"/>
         </scene>
     </scenes>
     <resources>

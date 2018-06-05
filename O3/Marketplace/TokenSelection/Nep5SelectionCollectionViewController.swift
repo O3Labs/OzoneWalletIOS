@@ -15,6 +15,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     let gridSpacing: CGFloat = 8
     var supportedTokens = [NEP5Token]()
     var filteredTokens = [NEP5Token]()
+    var selectedAsset = ""
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -70,7 +71,17 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedAsset = filteredTokens[indexPath.row].symbol
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "segueToAssetDetail", sender: nil)
+        }
+    }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let dest = segue.destination as? AssetDetailViewController else {
+            fatalError("Unknown segue type attempted")
+        }
+        dest.selectedAsset = selectedAsset
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -83,6 +94,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
 
     func setThemedElements() {
         collectionView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
         var background: UIImage
         if UserDefaultsManager.themeIndex == 0 {
             background = UIImage(color: .white)!

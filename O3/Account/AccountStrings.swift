@@ -22,6 +22,10 @@ struct AccountStrings {
     static let claimingInProgressSubtitle = NSLocalizedString("WALLET_Claim_In_Progress_Subtitle", comment: "A subtitle to display while claiming is in progress")
     static let accountTitle = NSLocalizedString("WALLET_Account", comment: "A title for the account screen")
 
+    static let send = NSLocalizedString("WALLET_Send", comment: "A title for the send action in the wallet")
+    static let request = NSLocalizedString("WALLET_Request", comment: "A title for the request action in the wallet")
+    static let scan = NSLocalizedString("WALLET_Scan", comment: "A title for the scan action in the wallet")
+
     //Transaction History
     static let fromPrefix = NSLocalizedString("WALLET_From_Prefix", comment: "Prefix used in the transaction history to indicate where the transaction came from")
     static let toPrefix = NSLocalizedString("WALLET_To_Prefix", comment: "Prefix used in the transaction history to indicate where the transaction went to")

@@ -18,6 +18,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     var qrCodeFrameView: UIView?
     weak var delegate: QRScanDelegate?
+    var noScanYet = true
     let supportedCodeTypes = [
                               AVMetadataObject.ObjectType.qr]
 
@@ -73,13 +74,16 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             qrCodeFrameView?.frame = barCodeObject!.bounds
 
             if let dataString = metadataObj.stringValue {
-                delegate?.qrScanned(data: dataString)
-                self.dismiss(animated: true)
+                if noScanYet {
+                    noScanYet = false
+                    delegate?.qrScanned(data: dataString)
+                    DispatchQueue.main.async { self.dismiss(animated: true) }
+                }
             }
         }
     }
 
     @IBAction func dissmissTapped(_ sender: Any) {
-        self.dismiss(animated: true)
+        DispatchQueue.main.async { self.dismiss(animated: true) }
     }
 }
