@@ -12,12 +12,16 @@ import Cache
 import SwiftTheme
 import Crashlytics
 import StoreKit
+import DeckTransition
 
-class AccountAssetTableViewController: UITableViewController {
+class AccountAssetTableViewController: UITableViewController, WalletToolbarDelegate, QRScanDelegate {
     private enum sections: Int {
         case unclaimedGAS = 0
+        case toolbar
         case assets
     }
+
+    var sendModal: SendTableViewController?
 
     var claims: Claimable?
     var isClaiming: Bool = false
@@ -27,6 +31,7 @@ class AccountAssetTableViewController: UITableViewController {
     var neoBalance: Int = Int(O3Cache.neo().value)
     var gasBalance: Double = O3Cache.gas().value
     var mostRecentClaimAmount = 0.0
+    var qrController: QRScannerController?
 
     @objc func reloadCells() {
         DispatchQueue.main.async { self.tableView.reloadData() }
@@ -236,11 +241,13 @@ class AccountAssetTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == sections.unclaimedGAS.rawValue {
+            return 1
+        } else if section == sections.toolbar.rawValue {
             return 1
         }
         return 2 + tokenAssets.count
@@ -249,6 +256,8 @@ class AccountAssetTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == sections.unclaimedGAS.rawValue {
             return 108.0
+        } else if indexPath.section == sections.toolbar.rawValue {
+            return 80.0
         }
         return 52.0
     }
@@ -256,6 +265,16 @@ class AccountAssetTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == sections.unclaimedGAS.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-unclaimedgas") as? UnclaimedGASTableViewCell else {
+                let cell =  UITableViewCell()
+                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                return cell
+            }
+            cell.delegate = self
+            return cell
+        }
+
+        if indexPath.section == sections.toolbar.rawValue {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "walletToolbarCell") as? WalletToolBarCell else {
                 let cell =  UITableViewCell()
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
@@ -309,6 +328,57 @@ class AccountAssetTableViewController: UITableViewController {
 
     func setLocalizedStrings() {
         self.navigationController?.navigationBar.topItem?.title = AccountStrings.accountTitle
+    }
+
+    @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+
+    func sendTapped(qrData: String? = nil) {
+        DispatchQueue.main.async {
+            self.qrController?.dismiss(animated: false, completion: nil)
+            self.qrController = nil
+            guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {
+                    fatalError("Presenting improper modal controller")
+            }
+            sendModal.incomingQRData = qrData
+            let nav = WalletHomeNavigationController(rootViewController: sendModal)
+            nav.navigationBar.prefersLargeTitles = true
+            nav.navigationItem.largeTitleDisplayMode = .automatic
+            sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
+            let transitionDelegate = DeckTransitioningDelegate()
+            nav.transitioningDelegate = transitionDelegate
+            nav.modalPresentationStyle = .custom
+            self.present(nav, animated: true, completion: nil)
+        }
+    }
+
+    func requestTapped() {
+        let modal = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "MyAddressNavigationController")
+
+        let transitionDelegate = DeckTransitioningDelegate()
+        modal.transitioningDelegate = transitionDelegate
+        modal.modalPresentationStyle = .custom
+        present(modal, animated: true, completion: nil)
+    }
+
+    func scanTapped() {
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "segueToQR", sender: nil)
+        }
+    }
+
+    func qrScanned(data: String) {
+        DispatchQueue.main.async {
+            self.sendTapped(qrData: data)
+        }
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dest = segue.destination as? QRScannerController {
+            dest.delegate = self
+            qrController = dest
+        }
     }
 }
 

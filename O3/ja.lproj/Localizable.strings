@@ -42,6 +42,9 @@
 /* A title for error alert prompts */
 "Error" = "エラー";
 
+/* Title for marketplace section in app */
+"MARKETPLACE_title" = "MARKETPLACE_title";
+
 /* Title of the news feed page */
 "NEWSFEED_News_Title" = "ニュースフィード";
 
@@ -121,7 +124,7 @@
 "PORTFOLIO_Combined_Header" = "結合済";
 
 /* Portfolio Percentage Change String */
-"PORTFOLIO_Interval" = "%@ (%.2f%@) %@ 以降"; /* NEW */
+"PORTFOLIO_Interval" = "%@ (%.2f%@) %@ 以降";
 
 /* Interval Button on portfolio page, interval specifies 1 Month */
 "PORTFOLIO_Interval_Button_1M" = "1M";
@@ -146,6 +149,9 @@
 
 /* Title of the portfolio page */
 "PORTFOLIO_Portfolio_Title" = "ポートフォリオ";
+
+/* Error message to display when the price history of a token is not available */
+"PORTFOLIO_Price_History_Not_Available" = "PORTFOLIO_Price_History_Not_Available";
 
 /* A title for the scan button in the send screen */
 "SCAN_Button_Title" = "スキャン";
@@ -432,9 +438,6 @@
 /* A title for the account screen */
 "WALLET_Account" = "アカウント";
 
-/* A title for the button which allows you to add a NEP-5 Token to your wallet */
-"WALLET_Add_NEP5_Token" = "NEP5トークンの追加";
-
 /* Title of assets tab in wallet screen */
 "WALLET_Assets" = "資産状況";
 
@@ -471,14 +474,11 @@
 /* Title of the My Address Page */
 "WALLET_My_Address_Title" = "マイアドレス";
 
-/* Title for NEP-5 Tokens Selection View */
-"WALLET_NEP5_Tokens" = "NEP5トークン";
-
-/* Done bar button item */
-"WALLET_NEP_5_DONE" = "完了";
-
 /* String in transaction history indicating O3 Wallet */
 "WALLET_O3_Wallet" = "O3ウォレット";
+
+/* A title for the request action in the wallet */
+"WALLET_Request" = "WALLET_Request"; /* NEW */
 
 /* An Action Title for saving your QR code */
 "WALLET_Save_Qr_Action" = "QRコードの保存";
@@ -488,6 +488,12 @@
 
 /* A title to display when you've successfully saved your wallet address qr code */
 "WALLET_Saved_Title" = "保存完了！";
+
+/* A title for the scan action in the wallet */
+"WALLET_Scan" = "WALLET_Scan"; /* NEW */
+
+/* A title for the send action in the wallet */
+"WALLET_Send" = "WALLET_Send"; /* NEW */
 
 /* An action title for sharing O3 */
 "WALLET_Share" = "シェア";

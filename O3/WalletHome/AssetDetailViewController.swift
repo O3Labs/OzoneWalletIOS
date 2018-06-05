@@ -22,6 +22,8 @@ class AssetDetailViewController: UIViewController, GraphPanDelegate, ScrollableG
     @IBOutlet weak var sixtyMinButton: UIButton!
     @IBOutlet weak var oneDayButton: UIButton!
     @IBOutlet weak var allButton: UIButton!
+    @IBOutlet weak var errorImage: UIImageView!
+    @IBOutlet weak var errorLabel: UILabel!
 
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var activatedLine: UIView!
@@ -55,6 +57,7 @@ class AssetDetailViewController: UIViewController, GraphPanDelegate, ScrollableG
         applyNavBarTheme()
         let themedTransparentButtons = [fiveMinButton, fifteenMinButton, thirtyMinButton, sixtyMinButton, oneDayButton, allButton]
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        errorLabel.theme_textColor = O3Theme.titleColorPicker
 
         for button in themedTransparentButtons {
             button?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -75,7 +78,8 @@ class AssetDetailViewController: UIViewController, GraphPanDelegate, ScrollableG
         O3Client.shared.getPriceHistory(asset, interval: selectedInterval.rawValue) {result in
             switch result {
             case .failure:
-                print(result)
+                self.showErrorView()
+                return
             case .success(let priceHistory):
                 self.priceHistory = priceHistory
                 DispatchQueue.main.async {
@@ -83,6 +87,15 @@ class AssetDetailViewController: UIViewController, GraphPanDelegate, ScrollableG
                     self.graphView.reload()
                 }
             }
+        }
+    }
+
+    func showErrorView() {
+        DispatchQueue.main.async {
+            self.errorImage.isHidden = false
+            self.errorLabel.isHidden = false
+            self.graphView.isHidden = true
+            self.panView.isHidden = true
         }
     }
 
@@ -104,12 +117,20 @@ class AssetDetailViewController: UIViewController, GraphPanDelegate, ScrollableG
 
     func showLatestPrice() {
         if self.priceHistory == nil || self.priceHistory?.data.count == 0 {
+            showErrorView()
             return
         }
+
         guard let latestPrice = self.priceHistory?.data.first,
             let earliestPrice = self.priceHistory?.data.last else {
                 fatalError("undefined latest price behavior")
         }
+
+        if latestPrice.averageBTC == 0.0 {
+            showErrorView()
+            return
+        }
+
         switch referenceCurrency {
         case .btc:
             amountLabel.text = "₿"+latestPrice.averageBTC.string(Precision.btc, removeTrailing: true)
@@ -211,6 +232,6 @@ class AssetDetailViewController: UIViewController, GraphPanDelegate, ScrollableG
         sixtyMinButton.setTitle(PortfolioStrings.oneMonthInterval, for: UIControlState())
         oneDayButton.setTitle(PortfolioStrings.threeMonthInterval, for: UIControlState())
         allButton.setTitle(PortfolioStrings.allInterval, for: UIControlState())
-
+        errorLabel.text = PortfolioStrings.priceHistoryNotAvailable
     }
 }
