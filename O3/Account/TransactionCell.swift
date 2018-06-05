@@ -68,7 +68,11 @@ class TransactionCell: UITableViewCell {
                 amountLabel.text = data?.amount.stringWithSign((data?.precision)!)
             } else {
                 amountLabel.theme_textColor = O3Theme.negativeLossColorPicker
-                amountLabel.text = data?.amount.stringWithSign((data?.precision)! * -1)
+                if data?.amount ?? 0 > 0 {
+                    data!.amount = (data?.amount ?? 0) * -1
+                }
+                amountLabel.text = data?.amount.stringWithSign((data?.precision)!)
+
             }
             assetLabel.text = data?.asset.uppercased()
             transactionTimeLabel?.text = String(format: AccountStrings.blockPrefix, String(data?.date ?? 0))
