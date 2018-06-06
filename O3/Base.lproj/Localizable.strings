@@ -42,6 +42,9 @@
 /* A title for error alert prompts */
 "Error" = "Error";
 
+/* Title for marketplace section in app */
+"MARKETPLACE_title" = "Marketplace";
+
 /* Title of the news feed page */
 "NEWSFEED_News_Title" = "News Feed";
 
@@ -70,34 +73,34 @@
 "ONBOARDING_Keychain_Failure_Error" = "There has been an error when attempting to retrieve data from the keychain. Please try again later or contact our team directly.";
 
 /* The fifth subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Five" = "Get started by setting up a new wallet or logging in with your private key"; /* NEW */
+"ONBOARDING_Landing_Subtitle_Five" = "Get started by setting up a new wallet or logging in with your private key";
 
 /* The fourth subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Four" = "Get the latest NEO news and discover new projects from right inside the app"; /* NEW */
+"ONBOARDING_Landing_Subtitle_Four" = "Get the latest NEO news and discover new projects from right inside the app";
 
 /* The first subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_One" = "A simple, user-friendly smart wallet, designed for the smart economy"; /* NEW */
+"ONBOARDING_Landing_Subtitle_One" = "A simple, user-friendly smart wallet, designed for the smart economy";
 
 /* The third subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Three" = "With latest security features, you can be sure your assets are safe and sound."; /* NEW */
+"ONBOARDING_Landing_Subtitle_Three" = "With latest security features, you can be sure your assets are safe and sound.";
 
 /* The second subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Two" = "Send, receive, claim GAS & manage NEP5 Tokens all in one place with ease."; /* NEW */
+"ONBOARDING_Landing_Subtitle_Two" = "Send, receive, claim GAS & manage NEP5 Tokens all in one place with ease.";
 
 /* The fifth title in the landing pages */
-"ONBOARDING_Landing_Title_Five" = "Are you ready to get started?"; /* NEW */
+"ONBOARDING_Landing_Title_Five" = "Are you ready to get started?";
 
 /* The foruth title in the landing pages */
-"ONBOARDING_Landing_Title_Four" = "Stay up to date"; /* NEW */
+"ONBOARDING_Landing_Title_Four" = "Stay up to date";
 
 /* The first title in the landing pages */
-"ONBOARDING_Landing_Title_One" = "Welcome to O3"; /* NEW */
+"ONBOARDING_Landing_Title_One" = "Welcome to O3";
 
 /* The third title in the landing pages */
-"ONBOARDING_Landing_Title_Three" = "Secure and safe."; /* NEW */
+"ONBOARDING_Landing_Title_Three" = "Secure and safe.";
 
 /* The second title in the landing pages */
-"ONBOARDING_Landing_Title_Two" = "Built for the NEO Smart Economy"; /* NEW */
+"ONBOARDING_Landing_Title_Two" = "Built for the NEO Smart Economy";
 
 /* Subtitle under the text field of the login controller. Explains what to do in textfield */
 "ONBOARDING_Login_Input_Info_Title" = "Login to your wallet using your NEO private key";
@@ -109,7 +112,7 @@
 "ONBOARDING_Login_Title" = "Login";
 
 /* Seperator for login and create new wallet */
-"ONBOARDING_OR" = "——  OR  ——"; /* NEW */
+"ONBOARDING_OR" = "——  OR  ——";
 
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
 "ONBOARDING_Please_Backup Warning" = "Please backup this private key in another secure location.\n\nIt is highly reccomended that you have a passcode set on your iPhone. Removing the passcode from your device will delete your private key from the keychain.";
@@ -122,6 +125,54 @@
 
 /* Title to start the app after completing the onboarding */
 "ONBOARDING_Start_Action_Title" = "Start";
+
+/* Emphasis text for the third info paragraph on the fifth tutorial card */
+"ONBOARDING_Tutorial_Emphasis_Fuve" = "You're ready to join the Smart Economy!"; /* NEW */
+
+/* Emphasis text for the third info paragraph on the third tutorial card */
+"ONBOARDING_Tutorial_Emphasis_Three" = "So, please make a copy!"; /* NEW */
+
+/* Text for the first info paragraph on the fifth tutorial card */
+"ONBOARDING_Tutorial_Info_One_Five" = "Your key gives full access to your account and funds"; /* NEW */
+
+/* Text for the first info paragraph on the fourth tutorial card */
+"ONBOARDING_Tutorial_Info_One_Four" = "O3 recommends making a copy of your key and storing it somewhere safe from theft or damange, in multiple locations if possible."; /* NEW */
+
+/* Text for the first info paragraph on the first tutorial card */
+"ONBOARDING_Tutorial_Info_One_One" = "Your Private Key is very important to making sure your tokens are safe and sound"; /* NEW */
+
+/* Text for the first info paragraph on the third tutorial card */
+"ONBOARDING_Tutorial_Info_One_Three" = "If you log out, delete the app or lose your phone, the key will no longer be accessible in the app"; /* NEW */
+
+/* Text for the first info paragraph on the second tutorial card */
+"ONBOARDING_Tutorial_Info_One_Two" = "O3 app uses your private key to access the blockchain where your tokens are stored"; /* NEW */
+
+/* Text for the second info paragraph on the fifth tutorial card */
+"ONBOARDING_Tutorial_Info_Two_Five" = "Never share this key with anyone or post it on the internet. If you do, then your funds can be stolen."; /* NEW */
+
+/* Text for the second info paragraph on the first tutorial card */
+"ONBOARDING_Tutorial_Info_Two_One" = "Here are a few quick tips to help look after it"; /* NEW */
+
+/* Text for the second info paragraph on the third tutorial card */
+"ONBOARDING_Tutorial_Info_Two_Three" = "You will need this key to log back into yout wallet again"; /* NEW */
+
+/* Text for the second info paragraph on the second tutorial card */
+"ONBOARDING_Tutorial_Info_Two_Two" = "The key is stored on your device locally. For security reasons, O3 does not have a copy of this key"; /* NEW */
+
+/* Title for the fifth tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Five" = "For your eyes only"; /* NEW */
+
+/* Title for the fourth tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Four" = "Back it up!"; /* NEW */
+
+/* Title for the first tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_One" = "Quick tips!"; /* NEW */
+
+/* Title for the third tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Three" = "Don't lose your key"; /* NEW */
+
+/* Title for the second tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Two" = "Your private key"; /* NEW */
 
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "Welcome!";
@@ -158,6 +209,9 @@
 
 /* Title of the portfolio page */
 "PORTFOLIO_Portfolio_Title" = "Portfolio";
+
+/* Error message to display when the price history of a token is not available */
+"PORTFOLIO_Price_History_Not_Available" = "Price history isn't available for this token yet. Check back soon!";
 
 /* A title for the scan button in the send screen */
 "SCAN_Button_Title" = "Scan";
@@ -444,9 +498,6 @@
 /* A title for the account screen */
 "WALLET_Account" = "Account";
 
-/* A title for the button which allows you to add a NEP-5 Token to your wallet */
-"WALLET_Add_NEP5_Token" = "+ Add NEP5 Token";
-
 /* Title of assets tab in wallet screen */
 "WALLET_Assets" = "ASSETS";
 
@@ -483,14 +534,11 @@
 /* Title of the My Address Page */
 "WALLET_My_Address_Title" = "My Address";
 
-/* Title for NEP-5 Tokens Selection View */
-"WALLET_NEP5_Tokens" = "NEP5 Tokens";
-
-/* Done bar button item */
-"WALLET_NEP_5_DONE" = "Done";
-
 /* String in transaction history indicating O3 Wallet */
 "WALLET_O3_Wallet" = "O3 Wallet";
+
+/* A title for the request action in the wallet */
+"WALLET_Request" = "request";
 
 /* An Action Title for saving your QR code */
 "WALLET_Save_Qr_Action" = "Save QR Code Image";
@@ -500,6 +548,12 @@
 
 /* A title to display when you've successfully saved your wallet address qr code */
 "WALLET_Saved_Title" = "Saved!";
+
+/* A title for the scan action in the wallet */
+"WALLET_Scan" = "Scan";
+
+/* A title for the send action in the wallet */
+"WALLET_Send" = "Send";
 
 /* An action title for sharing O3 */
 "WALLET_Share" = "Share";

@@ -36,6 +36,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     var transactionCompleted: Bool!
     var selectedAsset: TransferableAsset?
     var preselectedAddress = ""
+    var incomingQRData: String?
 
     func addThemedElements() {
         let themedTitleLabels = [toLabel, assetLabel, amountLabel]
@@ -77,6 +78,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
         self.enableSendButton()
         self.toAddressField.text = preselectedAddress.trim()
+        if incomingQRData != nil {
+            qrScanned(data: incomingQRData!)
+        }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

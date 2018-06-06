@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="n0F-4W-k6A">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="n0F-4W-k6A">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -39,8 +39,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="Fuw-MK-zk1">
-                            <rect key="frame" x="0.0" y="240" width="375" height="80"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="Fuw-MK-zk1">
+                            <rect key="frame" x="0.0" y="348" width="375" height="80"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
@@ -116,8 +116,94 @@
                                     <outlet property="headerLabel" destination="gKJ-Ri-6MS" id="zdn-Ww-4rH"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="walletToolbarCell" rowHeight="108" id="RdN-mi-al3" customClass="WalletToolBarCell" customModule="O3" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="136" width="375" height="108"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RdN-mi-al3" id="tdN-0H-iLz">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="108"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azq-Zs-K2d">
+                                            <rect key="frame" x="146.5" y="34.5" width="82" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="82" id="QHy-oK-V0N"/>
+                                                <constraint firstAttribute="height" constant="40" id="W6H-d2-Tg9"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                            <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Request" image="qrCode-button">
+                                                <color key="titleColor" name="lightThemePrimary"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="requestTapped" destination="RdN-mi-al3" eventType="touchUpInside" id="lTX-bh-uBe"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nDM-Rf-vIt">
+                                            <rect key="frame" x="261.5" y="34.5" width="97.5" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="fc8-M7-WAa"/>
+                                            </constraints>
+                                            <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Scan" image="ic_scan">
+                                                <color key="titleColor" name="lightThemePrimary"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="scanTapped" destination="RdN-mi-al3" eventType="touchUpInside" id="JZi-q2-P7A"/>
+                                            </connections>
+                                        </button>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iqG-lQ-nCw">
+                                            <rect key="frame" x="129.5" y="29" width="1" height="50"/>
+                                            <color key="backgroundColor" name="lightGreyTransparent"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="5Ft-M7-zFo"/>
+                                                <constraint firstAttribute="width" constant="1" id="a61-3t-mBN"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UhM-Tx-Esh">
+                                            <rect key="frame" x="244.5" y="29" width="1" height="50"/>
+                                            <color key="backgroundColor" name="lightGreyTransparent"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="MZn-Wu-T3P"/>
+                                                <constraint firstAttribute="width" constant="1" id="s54-xL-kQh"/>
+                                            </constraints>
+                                        </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLt-ba-FLt">
+                                            <rect key="frame" x="16" y="34" width="97.5" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="PYW-Bg-Uuv"/>
+                                            </constraints>
+                                            <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Send" image="ic_send">
+                                                <color key="titleColor" name="lightThemePrimary"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="sendTapped" destination="RdN-mi-al3" eventType="touchUpInside" id="bsg-Kn-het"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="UhM-Tx-Esh" firstAttribute="centerY" secondItem="tdN-0H-iLz" secondAttribute="centerY" id="8sM-uB-Bvs"/>
+                                        <constraint firstItem="iqG-lQ-nCw" firstAttribute="leading" secondItem="dLt-ba-FLt" secondAttribute="trailing" constant="16" id="A1F-Jh-Kmq"/>
+                                        <constraint firstItem="azq-Zs-K2d" firstAttribute="leading" secondItem="iqG-lQ-nCw" secondAttribute="trailing" constant="16" id="Bpi-nC-jOo"/>
+                                        <constraint firstItem="UhM-Tx-Esh" firstAttribute="leading" secondItem="azq-Zs-K2d" secondAttribute="trailing" constant="16" id="Owg-3X-LK3"/>
+                                        <constraint firstAttribute="trailing" secondItem="nDM-Rf-vIt" secondAttribute="trailing" constant="16" id="SXG-XH-DCa"/>
+                                        <constraint firstItem="nDM-Rf-vIt" firstAttribute="centerY" secondItem="tdN-0H-iLz" secondAttribute="centerY" id="ZF6-Ja-T4k"/>
+                                        <constraint firstItem="nDM-Rf-vIt" firstAttribute="leading" secondItem="UhM-Tx-Esh" secondAttribute="trailing" constant="16" id="ZTl-3O-MDk"/>
+                                        <constraint firstItem="dLt-ba-FLt" firstAttribute="centerY" secondItem="tdN-0H-iLz" secondAttribute="centerY" id="aOS-43-93p"/>
+                                        <constraint firstItem="iqG-lQ-nCw" firstAttribute="centerY" secondItem="tdN-0H-iLz" secondAttribute="centerY" id="jnl-kz-nwK"/>
+                                        <constraint firstItem="azq-Zs-K2d" firstAttribute="centerY" secondItem="tdN-0H-iLz" secondAttribute="centerY" id="ood-ft-mDD"/>
+                                        <constraint firstItem="dLt-ba-FLt" firstAttribute="leading" secondItem="tdN-0H-iLz" secondAttribute="leading" constant="16" id="rBx-iL-P1Q"/>
+                                        <constraint firstItem="azq-Zs-K2d" firstAttribute="centerX" secondItem="tdN-0H-iLz" secondAttribute="centerX" id="tVU-gh-2QJ"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="requestButton" destination="azq-Zs-K2d" id="fRW-vl-Zc0"/>
+                                    <outlet property="scanButton" destination="nDM-Rf-vIt" id="P55-Iv-ELw"/>
+                                    <outlet property="sendButton" destination="dLt-ba-FLt" id="FDK-iC-6DW"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell-nativeasset" rowHeight="52" id="PPM-vd-ml7" customClass="NativeAssetTableViewCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="136" width="375" height="52"/>
+                                <rect key="frame" x="0.0" y="244" width="375" height="52"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PPM-vd-ml7" id="etX-se-Ux6">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
@@ -164,7 +250,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell-nep5token" rowHeight="52" id="IIb-YS-HV4" customClass="NEP5TokenTableViewCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="188" width="375" height="52"/>
+                                <rect key="frame" x="0.0" y="296" width="375" height="52"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IIb-YS-HV4" id="0Cn-S5-ICg">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
@@ -226,12 +312,20 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Account" id="1c4-vr-c6c"/>
                     <connections>
-                        <segue destination="xeb-mh-Hz2" kind="presentation" identifier="addTokens" id="8G3-Ol-UMB"/>
+                        <segue destination="Cyd-Xw-uN9" kind="presentation" identifier="segueToQR" id="cGN-As-U92"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UO7-7v-Y9b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4775" y="-582"/>
+            <point key="canvasLocation" x="4773.6000000000004" y="-582.45877061469275"/>
+        </scene>
+        <!--QR-->
+        <scene sceneID="XUQ-VB-3vx">
+            <objects>
+                <viewControllerPlaceholder storyboardName="QR" id="Cyd-Xw-uN9" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xRS-dp-rS1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5359" y="-1083"/>
         </scene>
         <!--Transaction History Table View Controller-->
         <scene sceneID="RTd-eb-PCH">
@@ -242,7 +336,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="Znk-Ss-776">
+                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="Znk-Ss-776">
                             <rect key="frame" x="0.0" y="101" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </view>
@@ -504,7 +598,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="gtt-Ks-oOx">
+                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="gtt-Ks-oOx">
                             <rect key="frame" x="0.0" y="103" width="375" height="120"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -611,21 +705,19 @@
             </objects>
             <point key="canvasLocation" x="7356" y="-720"/>
         </scene>
-        <!--TokenSelection-->
-        <scene sceneID="BVR-CQ-53u">
-            <objects>
-                <viewControllerPlaceholder storyboardName="TokenSelection" id="xeb-mh-Hz2" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iRd-Kj-cOo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5257" y="-1163"/>
-        </scene>
     </scenes>
     <resources>
+        <image name="ic_scan" width="19" height="19"/>
+        <image name="ic_send" width="17" height="17"/>
         <image name="plus" width="24" height="24"/>
+        <image name="qrCode-button" width="20" height="20"/>
         <image name="times" width="20" height="20"/>
         <image name="wallet" width="25" height="25"/>
         <namedColor name="grey">
             <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="lightGreyTransparent">
+            <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="0.20000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="lightThemeOrange">
             <color red="1" green="0.49803921568627452" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -634,7 +726,7 @@
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="superLightGrey">
-            <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textColor">
             <color red="0.062745098039215685" green="0.062745098039215685" blue="0.094117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -27,6 +27,27 @@ struct OnboardingStrings {
 
     static let stylizedOr = NSLocalizedString("ONBOARDING_OR", comment: "Seperator for login and create new wallet")
 
+    //Tutorial Screen
+    static let tutorialTitleOne = NSLocalizedString("ONBOARDING_Tutorial_Title_One", comment: "Title for the first tutorial card when creating new wallet")
+    static let tutorialTitleTwo = NSLocalizedString("ONBOARDING_Tutorial_Title_Two", comment: "Title for the second tutorial card when creating new wallet")
+    static let tutorialTitleThree = NSLocalizedString("ONBOARDING_Tutorial_Title_Three", comment: "Title for the third tutorial card when creating new wallet")
+    static let tutorialTitleFour = NSLocalizedString("ONBOARDING_Tutorial_Title_Four", comment: "Title for the fourth tutorial card when creating new wallet")
+    static let tutorialTitleFive = NSLocalizedString("ONBOARDING_Tutorial_Title_Five", comment: "Title for the fifth tutorial card when creating new wallet")
+
+    static let tutorialInfoOneOne = NSLocalizedString("ONBOARDING_Tutorial_Info_One_One", comment: "Text for the first info paragraph on the first tutorial card")
+    static let tutorialInfoOneTwo = NSLocalizedString("ONBOARDING_Tutorial_Info_One_Two", comment: "Text for the first info paragraph on the second tutorial card")
+    static let tutorialInfoOneThree = NSLocalizedString("ONBOARDING_Tutorial_Info_One_Three", comment: "Text for the first info paragraph on the third tutorial card")
+    static let tutorialInfoOneFour = NSLocalizedString("ONBOARDING_Tutorial_Info_One_Four", comment: "Text for the first info paragraph on the fourth tutorial card")
+    static let tutorialInfoOneFive = NSLocalizedString("ONBOARDING_Tutorial_Info_One_Five", comment: "Text for the first info paragraph on the fifth tutorial card")
+
+    static let tutorialInfoTwoOne = NSLocalizedString("ONBOARDING_Tutorial_Info_Two_One", comment: "Text for the second info paragraph on the first tutorial card")
+    static let tutorialInfoTwoTwo = NSLocalizedString("ONBOARDING_Tutorial_Info_Two_Two", comment: "Text for the second info paragraph on the second tutorial card")
+    static let tutorialInfoTwoThree = NSLocalizedString("ONBOARDING_Tutorial_Info_Two_Three", comment: "Text for the second info paragraph on the third tutorial card")
+    static let tutorialInfoTwoFive = NSLocalizedString("ONBOARDING_Tutorial_Info_Two_Five", comment: "Text for the second info paragraph on the fifth tutorial card")
+
+    static let emphasisThree = NSLocalizedString("ONBOARDING_Tutorial_Emphasis_Three", comment: "Emphasis text for the third info paragraph on the third tutorial card")
+    static let emphasisFive = NSLocalizedString("ONBOARDING_Tutorial_Emphasis_Fuve", comment: "Emphasis text for the third info paragraph on the fifth tutorial card")
+
     //Login Screen
     static let loginNoPassCodeError = NSLocalizedString("ONBOARDING_Login_No_Passcode_Error", comment: "Error message that is displayed when the user tries to login without a passcode")
     static let createWalletNoPassCodeError = NSLocalizedString("ONBOARDING_Create_Wallet_No_Passcode_Error", comment: "Error message that is displayed when the user tries to Create a New Wallet without a passcode")

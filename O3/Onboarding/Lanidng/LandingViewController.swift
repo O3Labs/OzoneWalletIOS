@@ -159,11 +159,10 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
             return
         }
         if UserDefaultsManager.o3WalletAddress == nil {
-            Authenticated.account = Account()
             performSegue(withIdentifier: "segueToWelcome", sender: nil)
             return
         }
-        performSegue(withIdentifier: "preCreateWallet", sender: nil)
+        performSegue(withIdentifier: "segueToWelcome", sender: nil)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -173,6 +172,13 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
 
         cell.data = LandingCollectionCell.Data(title: titles[indexPath.row], subtitle: subtitles[indexPath.row])
         return cell
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let dest = segue.destination as? PrivateKeyCreationViewController else {
+            return
+        }
+        dest.wif = (Account()?.wif)!
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {

@@ -42,6 +42,9 @@
 /* A title for error alert prompts */
 "Error" = "エラー";
 
+/* Title for marketplace section in app */
+"MARKETPLACE_title" = "MARKETPLACE_title";
+
 /* Title of the news feed page */
 "NEWSFEED_News_Title" = "ニュースフィード";
 
@@ -70,34 +73,34 @@
 "ONBOARDING_Keychain_Failure_Error" = "キーチェーンからのデータ受信にエラーが発生しました。後ほどもう一度試すか我たちのチームに直接ご連絡ください。";
 
 /* The fifth subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Five" = "ONBOARDING_Landing_Subtitle_Five"; /* NEW */
+"ONBOARDING_Landing_Subtitle_Five" = "ONBOARDING_Landing_Subtitle_Five";
 
 /* The fourth subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Four" = "ONBOARDING_Landing_Subtitle_Four"; /* NEW */
+"ONBOARDING_Landing_Subtitle_Four" = "ONBOARDING_Landing_Subtitle_Four";
 
 /* The first subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_One" = "ONBOARDING_Landing_Subtitle_One"; /* NEW */
+"ONBOARDING_Landing_Subtitle_One" = "ONBOARDING_Landing_Subtitle_One";
 
 /* The third subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Three" = "ONBOARDING_Landing_Subtitle_Three"; /* NEW */
+"ONBOARDING_Landing_Subtitle_Three" = "ONBOARDING_Landing_Subtitle_Three";
 
 /* The second subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Two" = "ONBOARDING_Landing_Subtitle_Two"; /* NEW */
+"ONBOARDING_Landing_Subtitle_Two" = "ONBOARDING_Landing_Subtitle_Two";
 
 /* The fifth title in the landing pages */
-"ONBOARDING_Landing_Title_Five" = "ONBOARDING_Landing_Title_Five"; /* NEW */
+"ONBOARDING_Landing_Title_Five" = "ONBOARDING_Landing_Title_Five";
 
 /* The foruth title in the landing pages */
-"ONBOARDING_Landing_Title_Four" = "ONBOARDING_Landing_Title_Four"; /* NEW */
+"ONBOARDING_Landing_Title_Four" = "ONBOARDING_Landing_Title_Four";
 
 /* The first title in the landing pages */
-"ONBOARDING_Landing_Title_One" = "ONBOARDING_Landing_Title_One"; /* NEW */
+"ONBOARDING_Landing_Title_One" = "ONBOARDING_Landing_Title_One";
 
 /* The third title in the landing pages */
-"ONBOARDING_Landing_Title_Three" = "ONBOARDING_Landing_Title_Three"; /* NEW */
+"ONBOARDING_Landing_Title_Three" = "ONBOARDING_Landing_Title_Three";
 
 /* The second title in the landing pages */
-"ONBOARDING_Landing_Title_Two" = "ONBOARDING_Landing_Title_Two"; /* NEW */
+"ONBOARDING_Landing_Title_Two" = "ONBOARDING_Landing_Title_Two";
 
 /* Subtitle under the text field of the login controller. Explains what to do in textfield */
 "ONBOARDING_Login_Input_Info_Title" = "NEO秘密鍵でウォレットにログイン";
@@ -109,7 +112,7 @@
 "ONBOARDING_Login_Title" = "ログイン";
 
 /* Seperator for login and create new wallet */
-"ONBOARDING_OR" = "ONBOARDING_OR"; /* NEW */
+"ONBOARDING_OR" = "ONBOARDING_OR";
 
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
 "ONBOARDING_Please_Backup Warning" = "別の安全な場所に秘密鍵をバックアップして下さい。\n\nあなたのiPhoneにパスコードを設定することを強くお勧めします。あなたのデバイスからパスコードを削除すると、秘密鍵がキーチェーンから削除されます。";
@@ -122,6 +125,54 @@
 
 /* Title to start the app after completing the onboarding */
 "ONBOARDING_Start_Action_Title" = "始める";
+
+/* Emphasis text for the third info paragraph on the fifth tutorial card */
+"ONBOARDING_Tutorial_Emphasis_Fuve" = "ONBOARDING_Tutorial_Emphasis_Fuve"; /* NEW */
+
+/* Emphasis text for the third info paragraph on the third tutorial card */
+"ONBOARDING_Tutorial_Emphasis_Three" = "ONBOARDING_Tutorial_Emphasis_Three"; /* NEW */
+
+/* Text for the first info paragraph on the fifth tutorial card */
+"ONBOARDING_Tutorial_Info_One_Five" = "ONBOARDING_Tutorial_Info_One_Five"; /* NEW */
+
+/* Text for the first info paragraph on the fourth tutorial card */
+"ONBOARDING_Tutorial_Info_One_Four" = "ONBOARDING_Tutorial_Info_One_Four"; /* NEW */
+
+/* Text for the first info paragraph on the first tutorial card */
+"ONBOARDING_Tutorial_Info_One_One" = "ONBOARDING_Tutorial_Info_One_One"; /* NEW */
+
+/* Text for the first info paragraph on the third tutorial card */
+"ONBOARDING_Tutorial_Info_One_Three" = "ONBOARDING_Tutorial_Info_One_Three"; /* NEW */
+
+/* Text for the first info paragraph on the second tutorial card */
+"ONBOARDING_Tutorial_Info_One_Two" = "ONBOARDING_Tutorial_Info_One_Two"; /* NEW */
+
+/* Text for the second info paragraph on the fifth tutorial card */
+"ONBOARDING_Tutorial_Info_Two_Five" = "ONBOARDING_Tutorial_Info_Two_Five"; /* NEW */
+
+/* Text for the second info paragraph on the first tutorial card */
+"ONBOARDING_Tutorial_Info_Two_One" = "ONBOARDING_Tutorial_Info_Two_One"; /* NEW */
+
+/* Text for the second info paragraph on the third tutorial card */
+"ONBOARDING_Tutorial_Info_Two_Three" = "ONBOARDING_Tutorial_Info_Two_Three"; /* NEW */
+
+/* Text for the second info paragraph on the second tutorial card */
+"ONBOARDING_Tutorial_Info_Two_Two" = "ONBOARDING_Tutorial_Info_Two_Two"; /* NEW */
+
+/* Title for the fifth tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Five" = "ONBOARDING_Tutorial_Title_Five"; /* NEW */
+
+/* Title for the fourth tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Four" = "ONBOARDING_Tutorial_Title_Four"; /* NEW */
+
+/* Title for the first tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_One" = "ONBOARDING_Tutorial_Title_One"; /* NEW */
+
+/* Title for the third tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Three" = "ONBOARDING_Tutorial_Title_Three"; /* NEW */
+
+/* Title for the second tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Two" = "ONBOARDING_Tutorial_Title_Two"; /* NEW */
 
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "ようこそ！";
@@ -158,6 +209,9 @@
 
 /* Title of the portfolio page */
 "PORTFOLIO_Portfolio_Title" = "ポートフォリオ";
+
+/* Error message to display when the price history of a token is not available */
+"PORTFOLIO_Price_History_Not_Available" = "PORTFOLIO_Price_History_Not_Available";
 
 /* A title for the scan button in the send screen */
 "SCAN_Button_Title" = "スキャン";
@@ -444,9 +498,6 @@
 /* A title for the account screen */
 "WALLET_Account" = "アカウント";
 
-/* A title for the button which allows you to add a NEP-5 Token to your wallet */
-"WALLET_Add_NEP5_Token" = "NEP5トークンの追加";
-
 /* Title of assets tab in wallet screen */
 "WALLET_Assets" = "資産状況";
 
@@ -483,14 +534,11 @@
 /* Title of the My Address Page */
 "WALLET_My_Address_Title" = "マイアドレス";
 
-/* Title for NEP-5 Tokens Selection View */
-"WALLET_NEP5_Tokens" = "NEP5トークン";
-
-/* Done bar button item */
-"WALLET_NEP_5_DONE" = "完了";
-
 /* String in transaction history indicating O3 Wallet */
 "WALLET_O3_Wallet" = "O3ウォレット";
+
+/* A title for the request action in the wallet */
+"WALLET_Request" = "WALLET_Request";
 
 /* An Action Title for saving your QR code */
 "WALLET_Save_Qr_Action" = "QRコードの保存";
@@ -500,6 +548,12 @@
 
 /* A title to display when you've successfully saved your wallet address qr code */
 "WALLET_Saved_Title" = "保存完了！";
+
+/* A title for the scan action in the wallet */
+"WALLET_Scan" = "WALLET_Scan";
+
+/* A title for the send action in the wallet */
+"WALLET_Send" = "WALLET_Send";
 
 /* An action title for sharing O3 */
 "WALLET_Share" = "シェア";

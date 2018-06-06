@@ -1,19 +1,17 @@
 //
-//  AccountTabViewController.swift
+//  MarketPlaceTabmanController.swift
 //  O3
 //
-//  Created by Apisit Toompakdee on 1/21/18.
-//  Copyright © 2018 drei. All rights reserved.
+//  Created by Andrei Terentiev on 6/4/18.
+//  Copyright © 2018 O3 Labs Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import Tabman
 import Pageboy
-import DeckTransition
 import SwiftTheme
 
-class AccountTabViewController: TabmanViewController, PageboyViewControllerDataSource {
-
+class MarketplaceController: TabmanViewController, PageboyViewControllerDataSource {
     var viewControllers: [UIViewController] = []
 
     func addThemeObserver() {
@@ -34,21 +32,27 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         })
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        applyNavBarTheme()
+        super.viewWillAppear(animated)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setLocalizedStrings()
         addThemeObserver()
+        self.bar.items = [Item(title: TokenSelectionStrings.NEP5),
+                          Item(title: TokenSaleStrings.tokenSalesTitle)]
+        self.navigationController?.navigationBar.topItem?.title = MarketplaceStrings.Marketplace
+        let tokenSalesViewController = UIStoryboard(name: "TokenSale", bundle: nil).instantiateInitialViewController()!
+        let nep5tokensViewController = UIStoryboard(name: "TokenSelection", bundle: nil).instantiateInitialViewController()!
 
-        let accountAssetViewController = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "AccountAssetTableViewController")
-        let transactionHistory = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "TransactionHistoryTableViewController")
-        let contactsViewController = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "ContactsTableViewController")
+        self.viewControllers.append(nep5tokensViewController)
 
-        self.viewControllers.append(accountAssetViewController)
-        self.viewControllers.append(transactionHistory)
-        self.viewControllers.append(contactsViewController)
+        if O3Cache.gas().value != 0 || O3Cache.neo().value != 0 {
+            self.viewControllers.append(tokenSalesViewController)
+        }
 
-        self.dataSource = self
-
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.bar.appearance = TabmanBar.Appearance({ (appearance) in
             appearance.state.selectedColor = UserDefaultsManager.theme.primaryColor
             appearance.state.color = UserDefaultsManager.theme.lightTextColor
@@ -58,14 +62,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         })
         self.bar.location = .top
         self.bar.style = .buttonBar
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "qrCode-button"), style: .plain, target: self, action: #selector(myAddressTapped(_:)))
-        self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
-
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        applyNavBarTheme()
-        super.viewWillAppear(animated)
+        self.dataSource = self
     }
 
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
@@ -78,20 +75,5 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
 
     func defaultPage(for pageboyViewController: PageboyViewController) -> PageboyViewController.Page? {
         return nil
-    }
-
-    @objc func myAddressTapped(_ sender: Any) {
-        let modal = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "MyAddressNavigationController")
-
-        let transitionDelegate = DeckTransitioningDelegate()
-        modal.transitioningDelegate = transitionDelegate
-        modal.modalPresentationStyle = .custom
-        present(modal, animated: true, completion: nil)
-    }
-
-    func setLocalizedStrings() {
-        self.bar.items = [Item(title: AccountStrings.assets),
-                          Item(title: AccountStrings.transactions),
-                          Item(title: AccountStrings.contacts)]
     }
 }
