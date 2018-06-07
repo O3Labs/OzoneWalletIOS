@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Feh-6v-5Ue">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RXF-gX-Dph">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -137,7 +137,7 @@
             <objects>
                 <tableViewController title="Login" id="2cF-Xh-uiy" customClass="LoginTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="250" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Qno-fC-Drn">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -249,11 +249,11 @@
             <objects>
                 <viewController id="VNX-u0-3hQ" customClass="PreCreateWalletViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6Fk-0s-jAE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SEW-OK-L5T">
-                                <rect key="frame" x="20" y="40" width="335" height="131.5"/>
+                                <rect key="frame" x="20" y="60" width="335" height="131.5"/>
                                 <string key="text">Looks like you already have an existing wallet on this device.  
 Create a new wallet will write the new private key over the existing one. Please make sure you have your private key back up.</string>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
@@ -261,7 +261,7 @@ Create a new wallet will write the new private key over the existing one. Please
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JYL-wE-2wB" customClass="ShadowedButton" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="20" y="211.5" width="335" height="44"/>
+                                <rect key="frame" x="20" y="231.5" width="335" height="44"/>
                                 <color key="backgroundColor" red="0.0" green="0.41176470590000003" blue="0.85098039219999999" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="xCh-9a-7S0"/>
@@ -306,7 +306,7 @@ Create a new wallet will write the new private key over the existing one. Please
             <objects>
                 <tableViewController title="Welcome!" id="bCm-98-80m" customClass="WelcomeTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="0ZM-vy-OEP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -422,49 +422,23 @@ It is highly reccomended that you have a passcode set on your iPhone. Removing t
             </objects>
             <point key="canvasLocation" x="1538" y="115"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="5zh-jm-uIr">
-            <objects>
-                <navigationController id="Feh-6v-5Ue" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" largeTitles="YES" id="4xl-SN-k6x">
-                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="barTintColor" red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </textAttributes>
-                        <textAttributes key="largeTitleTextAttributes">
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="RXF-gX-Dph" kind="relationship" relationship="rootViewController" id="vm4-AT-R40"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="f64-mK-47m" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2010" y="-107"/>
-        </scene>
         <!--preCreateWallet-->
         <scene sceneID="JSL-MU-Bh1">
             <objects>
                 <viewController title="preCreateWallet" id="RXF-gX-Dph" customClass="LandingViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="C5q-qL-KhT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ixd-qL-Njv">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="440"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="440"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Ixd-qL-Njv" secondAttribute="height" multiplier="75:88" id="Z6t-od-upg"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kWF-9u-7P5">
-                                <rect key="frame" x="0.0" y="416" width="375" height="77"/>
+                                <rect key="frame" x="0.0" y="436" width="375" height="77"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="77" id="hby-iE-mp1"/>
@@ -513,7 +487,7 @@ It is highly reccomended that you have a passcode set on your iPhone. Removing t
                                 </cells>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Dy-pE-iwY">
-                                <rect key="frame" x="163.5" y="510" width="48" height="33"/>
+                                <rect key="frame" x="163.5" y="626" width="48" height="33"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
                                 <state key="normal" title="Button">
                                     <color key="titleColor" name="lightThemePrimary"/>
@@ -523,13 +497,13 @@ It is highly reccomended that you have a passcode set on your iPhone. Removing t
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRH-WO-ILB">
-                                <rect key="frame" x="169.5" y="485.5" width="37" height="20.5"/>
+                                <rect key="frame" x="169.5" y="601.5" width="37" height="20.5"/>
                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="15"/>
                                 <color key="textColor" name="grey"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zPu-pI-4oL">
-                                <rect key="frame" x="16" y="429.5" width="343" height="44"/>
+                                <rect key="frame" x="16" y="545.5" width="343" height="44"/>
                                 <color key="backgroundColor" name="lightThemeOrange"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="gvH-Ny-yo3"/>
@@ -548,7 +522,7 @@ It is highly reccomended that you have a passcode set on your iPhone. Removing t
                                 </connections>
                             </button>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="5" translatesAutoresizingMaskIntoConstraints="NO" id="i9h-DR-BHG">
-                                <rect key="frame" x="150" y="0.0" width="75" height="37"/>
+                                <rect key="frame" x="150" y="20" width="75" height="37"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="75" id="N14-0R-N75"/>
                                 </constraints>
@@ -629,7 +603,7 @@ It is highly reccomended that you have a passcode set on your iPhone. Removing t
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gND-3E-7d0"/>
+        <segue reference="1ME-Er-JZt"/>
         <segue reference="Pu8-0K-9jj"/>
     </inferredMetricsTieBreakers>
 </document>

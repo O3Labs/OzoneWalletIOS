@@ -14,7 +14,21 @@ class NEP2PasswordViewController: UITableViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var showButton: UIButton!
-    @IBOutlet weak var fieldTitleLabel: UILabel!
+    var wif = ""
+
+    lazy var inputToolbar: UIToolbar = {
+        var toolbar = UIToolbar()
+        toolbar.barStyle = .default
+        toolbar.isTranslucent = true
+        toolbar.sizeToFit()
+        let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        var doneButton = UIBarButtonItem(title: OnboardingStrings.continueButton, style: .plain, target: self, action: #selector(self.continueTapped(_:)))
+
+        toolbar.setItems([flexibleButton, doneButton], animated: false)
+        toolbar.isUserInteractionEnabled = true
+
+        return toolbar
+    }()
 
     var passwordIsSecure = true
 
@@ -22,7 +36,9 @@ class NEP2PasswordViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        passwordTextField.inputAccessoryView = inputToolbar
         passwordTextField.becomeFirstResponder()
+        setLocalizedStrings()
     }
 
     @IBAction func continueTapped(_ sender: Any) {
@@ -52,11 +68,18 @@ class NEP2PasswordViewController: UITableViewController {
         passwordIsSecure = !passwordIsSecure
         passwordTextField.isSecureTextEntry = passwordIsSecure
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let dest = segue.destination as? NEP2PasswordConfirmViewController {
+        guard let dest = segue.destination as? NEP2PasswordConfirmViewController else {
             fatalError("Unknown segue has been triggered")
         }
         dest.previousPassword = passwordTextField.text?.trim()
+        dest.wif = wif
+    }
+
+    func setLocalizedStrings() {
+        title = OnboardingStrings.createPassword
+        descriptionLabel.text = OnboardingStrings.createPasswordDescription
+        passwordTextField.placeholder = OnboardingStrings.createPasswordHint
     }
 }

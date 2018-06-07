@@ -33,6 +33,9 @@ class TutorialCardCollectionViewCell: UICollectionViewCell {
 
     var data: TutorialCardData? {
         didSet {
+            backButton.setTitle(OnboardingStrings.back, for: UIControlState())
+            forwardButton.setTitle(OnboardingStrings.continueButton, for: UIControlState())
+
             cardTitleLabel.text = data?.title ?? ""
             cardInfoOneLabel.text = data?.infoOne ?? ""
             cardInfoTwoLabel.text = data?.infoTwo ?? ""

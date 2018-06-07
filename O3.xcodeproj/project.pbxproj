@@ -39,6 +39,8 @@
 		353E79A220C7A7E700B9AB1F /* BackupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E79A120C7A7E700B9AB1F /* BackupTableViewController.swift */; };
 		353E79A420C7AE0500B9AB1F /* NEP2PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E79A320C7AE0500B9AB1F /* NEP2PasswordViewController.swift */; };
 		353E79A620C7AE1700B9AB1F /* NEP2PasswordConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E79A520C7AE1700B9AB1F /* NEP2PasswordConfirmViewController.swift */; };
+		353E79A920C7C6C000B9AB1F /* LearnMore.json in Resources */ = {isa = PBXBuildFile; fileRef = 353E79A820C7C6BF00B9AB1F /* LearnMore.json */; };
+		353E79AB20C8F68500B9AB1F /* PaperBackupConfirmTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E79AA20C8F68500B9AB1F /* PaperBackupConfirmTableViewController.swift */; };
 		353F364920037062002B4FE1 /* NewsFeed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 353F364820037062002B4FE1 /* NewsFeed.storyboard */; };
 		353F364B200370D6002B4FE1 /* NewsFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353F364A200370D6002B4FE1 /* NewsFeedViewController.swift */; };
 		353F364D2003755B002B4FE1 /* NewsFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353F364C2003755B002B4FE1 /* NewsFeedCell.swift */; };
@@ -283,6 +285,8 @@
 		353E79A120C7A7E700B9AB1F /* BackupTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupTableViewController.swift; sourceTree = "<group>"; };
 		353E79A320C7AE0500B9AB1F /* NEP2PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEP2PasswordViewController.swift; sourceTree = "<group>"; };
 		353E79A520C7AE1700B9AB1F /* NEP2PasswordConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEP2PasswordConfirmViewController.swift; sourceTree = "<group>"; };
+		353E79A820C7C6BF00B9AB1F /* LearnMore.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LearnMore.json; sourceTree = "<group>"; };
+		353E79AA20C8F68500B9AB1F /* PaperBackupConfirmTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperBackupConfirmTableViewController.swift; sourceTree = "<group>"; };
 		353F364820037062002B4FE1 /* NewsFeed.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewsFeed.storyboard; sourceTree = "<group>"; };
 		353F364A200370D6002B4FE1 /* NewsFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedViewController.swift; sourceTree = "<group>"; };
 		353F364C2003755B002B4FE1 /* NewsFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedCell.swift; sourceTree = "<group>"; };
@@ -528,6 +532,7 @@
 		353E799820C68CA800B9AB1F /* WalletCreation */ = {
 			isa = PBXGroup;
 			children = (
+				353E79A820C7C6BF00B9AB1F /* LearnMore.json */,
 				353E799920C68CBE00B9AB1F /* WalletCreation.storyboard */,
 				353E799B20C6905B00B9AB1F /* PrivateKeyCreationViewController.swift */,
 				353E799D20C690A200B9AB1F /* TutorialCardCollectionViewCell.swift */,
@@ -543,6 +548,7 @@
 				353E79A120C7A7E700B9AB1F /* BackupTableViewController.swift */,
 				353E79A320C7AE0500B9AB1F /* NEP2PasswordViewController.swift */,
 				353E79A520C7AE1700B9AB1F /* NEP2PasswordConfirmViewController.swift */,
+				353E79AA20C8F68500B9AB1F /* PaperBackupConfirmTableViewController.swift */,
 			);
 			path = Backup;
 			sourceTree = "<group>";
@@ -1099,6 +1105,7 @@
 				6E68B6B0206CB771008C25E8 /* TokenSale.storyboard in Resources */,
 				35B426BA20980CAE00957211 /* LaunchScreen.storyboard in Resources */,
 				3527F8CD20C5349200C2FCB9 /* Marketplace.storyboard in Resources */,
+				353E79A920C7C6C000B9AB1F /* LearnMore.json in Resources */,
 				75B6E5C21F6D4E8A00F53CA8 /* QR.storyboard in Resources */,
 				7520068E1F7FC56400D19B5F /* SendAssets.xcassets in Resources */,
 				35B426BC20980CC400957211 /* Main.storyboard in Resources */,
@@ -1261,6 +1268,7 @@
 				35E5F60C20283AA600D65BEA /* AddressBookEntryTableViewCell.swift in Sources */,
 				350771CC208470C90049346B /* O3Cache.swift in Sources */,
 				75E28F311F9B3B34006C6E37 /* ThemeManager.swift in Sources */,
+				353E79AB20C8F68500B9AB1F /* PaperBackupConfirmTableViewController.swift in Sources */,
 				35AD2B6C2093087C0024A900 /* SendStrings.swift in Sources */,
 				6E244ECD208744E0001B4B22 /* TokenSaleTransactionInfoTableViewCell.swift in Sources */,
 				3557BAAD20AA9CB20034937C /* AES.swift in Sources */,

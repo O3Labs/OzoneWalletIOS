@@ -28,6 +28,10 @@ struct OnboardingStrings {
     static let stylizedOr = NSLocalizedString("ONBOARDING_OR", comment: "Seperator for login and create new wallet")
 
     //Tutorial Screen
+    static let titleAnimationHeader = NSLocalizedString("ONBOARDING_Title_Animation_Header", comment: "Title for the animation header when learning more")
+    static let subtitleAnimationHeader = NSLocalizedString("ONBOARDING_Subtitle_Animation_Header", comment: "Subtitle for the animation header when learning more")
+    static let learnMore = NSLocalizedString("ONBOARDING_Learn_More", comment: "Title for learn more buttong")
+
     static let tutorialTitleOne = NSLocalizedString("ONBOARDING_Tutorial_Title_One", comment: "Title for the first tutorial card when creating new wallet")
     static let tutorialTitleTwo = NSLocalizedString("ONBOARDING_Tutorial_Title_Two", comment: "Title for the second tutorial card when creating new wallet")
     static let tutorialTitleThree = NSLocalizedString("ONBOARDING_Tutorial_Title_Three", comment: "Title for the third tutorial card when creating new wallet")
@@ -47,6 +51,37 @@ struct OnboardingStrings {
 
     static let emphasisThree = NSLocalizedString("ONBOARDING_Tutorial_Emphasis_Three", comment: "Emphasis text for the third info paragraph on the third tutorial card")
     static let emphasisFive = NSLocalizedString("ONBOARDING_Tutorial_Emphasis_Fuve", comment: "Emphasis text for the third info paragraph on the fifth tutorial card")
+
+    static let finish = NSLocalizedString("ONBOARDING_finish", comment: "Button title to finish the tutorial")
+    static let back = NSLocalizedString("ONBOARDING_back", comment: "Button title to go back in the tutorial page")
+
+    //backup
+    static let backup = NSLocalizedString("ONBOARDING_Backup", comment: "Title menu to backup private key")
+    static let reccommended = NSLocalizedString("ONBOARDING_Reccommended", comment: "Text showing reccommended backup option")
+
+    static let copiedToClipboardAlertTitle = NSLocalizedString("ONBOARDING_Copied_Title", comment: "Title for when copied to clipboard")
+    static let copiedToClipboardAlertDescription = NSLocalizedString("ONBOARDING_Copied_Description", comment: "Description for when the key has been copied to your clipboard")
+    static let screenShotTakenAlertTitle = NSLocalizedString("ONBOARDING_Screenshot_Alert_Title", comment: "Title for when a screenshot was taken")
+    static let screenShotTakenAlertDescription = NSLocalizedString("ONBOARDING_Screenshot_Alert_Description", comment: "Description for when the screenshot was taken")
+
+    static let backupOptionCopy = NSLocalizedString("ONBOARDING_Backup_Copy_Title", comment: "Title for option to backup the key by copying to clipboard")
+    static let backupOptionEmail = NSLocalizedString("ONBOARDING_Backup_Email_Title", comment: "Title for option to backup the key by emailing an encrypted NEP2")
+    static let backupOptionPaper = NSLocalizedString("ONBOARDING_Backup_Paper_Title", comment: "Title for option to backup private key using paperr")
+    static let backupOptionScreenshot = NSLocalizedString("ONBOARDING_Backup_Screenshot_Title", comment: "Title for option to backup private key using screenshot")
+    static let backupGoBackOption = NSLocalizedString("ONBOARDING_Backup_Go_Back", comment: "Title for option to go back and view private key")
+
+    static let createPassword = NSLocalizedString("ONBOARDING_Create_Password_title", comment: "Title for when creating a password for encrypting your private key")
+    static let reenterPassword = NSLocalizedString("ONBOARDING_Reenter_Password_title", comment: "Title for when when confirming password for NEP-2 Encryption")
+    static let createPasswordDescription = NSLocalizedString("ONBOARDING_Create_Password_Description", comment: "Description for when creating a password for NEP-2 Encryption")
+    static let reenterPasswordDescription = NSLocalizedString("ONBOARDING_Reenter_Password_Description", comment: "Description for when reentering password with NEP-2 Description")
+    static let createPasswordHint = NSLocalizedString("ONBOARDING_Create_Password_Hint", comment: "Hint for text field when creating a password")
+    static let reenterPasswordHint = NSLocalizedString("ONBOARDING_Reenter_Password_Hint", comment: "Hint for text field when reentering a password")
+    static let continueButton = NSLocalizedString("ONBOARDING_Continue_Button", comment: "Continue button when creating a password")
+
+    static let paperBackupInfoOne = NSLocalizedString("ONBOARDING_paper_backup_info_one", comment: "First Info text when confirming that writing down on paper was successful")
+    static let paperBackupInfoTwo = NSLocalizedString("ONBOARDING_paper_backup_info_two", comment: "Second Info text when confirming that writing down on paper was successful")
+    static let notMatchedWif = NSLocalizedString("ONBOARDING_not_matched_wif", comment: "Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key")
+    static let enterPrivateKey = NSLocalizedString("ONBOARDING_enter_private_key", comment: "Title when reentering backup")
 
     //Login Screen
     static let loginNoPassCodeError = NSLocalizedString("ONBOARDING_Login_No_Passcode_Error", comment: "Error message that is displayed when the user tries to login without a passcode")
