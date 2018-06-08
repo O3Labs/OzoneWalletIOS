@@ -27,6 +27,11 @@ struct OnboardingStrings {
 
     static let stylizedOr = NSLocalizedString("ONBOARDING_OR", comment: "Seperator for login and create new wallet")
 
+    //Login Screen
+    static let encryptedKeyDetected = NSLocalizedString("ONBOARDING_encrypted_key_detected", comment: "Title for when user tries to login with encrypted key")
+    static let pleaseEnterNEP2Password = NSLocalizedString("ONBOARDING_please_enter_nep2_password", comment: "Subtitle for when unlocking the nep2 key")
+    static let submit = NSLocalizedString("ONBOARDING_submit", comment: "Title for button to decrypt private key and continue itno app")
+
     //Tutorial Screen
     static let walletGenerated = NSLocalizedString("ONBOARDING_Wallet_Generated", comment: "Title for wallet generated popup")
     static let pleaseTakeAMoment = NSLocalizedString("ONBOARDING_Please_Take_A_Moment", comment: "Please take a moment to make a backup of your private key")
