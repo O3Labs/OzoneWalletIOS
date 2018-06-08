@@ -60,8 +60,14 @@
 /* When the user tries to create a new wallet, but they already have one saved on the devicve, this explanation/warning is given to the user */
 "ONBOARDING_Already_Have_Wallet_Explanation" = "您在该设备上已有一个创建好的钱包。\n\n若要创建新钱包，现有的私钥将会被新私钥覆盖。 请确保你现有钱包的私钥已备份。";
 
+/* Button title to go back in the tutorial page */
+"ONBOARDING_back" = "ONBOARDING_back";
+
 /* Title menu to backup private key */
 "ONBOARDING_Backup" = "ONBOARDING_Backup";
+
+/* Tutle for backing private key and moving to end */
+"ONBOARDING_backup_and_continue" = "ONBOARDING_backup_and_continue";
 
 /* Title for option to backup the key by copying to clipboard */
 "ONBOARDING_Backup_Copy_Title" = "ONBOARDING_Backup_Copy_Title";
@@ -102,11 +108,29 @@
 /* Error message that is displayed when the user tries to Create a New Wallet without a passcode */
 "ONBOARDING_Create_Wallet_No_Passcode_Error" = "若要创建新钱包，请确认已在该设备上设置好密码，以确保您的资金安全。";
 
+/* Email body when sending Nep-2 backup */
+"ONBOARDING_email_body" = "ONBOARDING_email_body";
+
+/* Email subject when sending NEP-2 backup */
+"ONBOARDING_email_subject" = "ONBOARDING_email_subject";
+
 /* Title when reentering backup */
 "ONBOARDING_enter_private_key" = "ONBOARDING_enter_private_key";
 
 /* Prompt asking the user to authenticate themselves when they already have a wallet stored on device. */
 "ONBOARDING_Existing_Wallet_Authentication_Prompt" = "使用已保存在该设备上的钱包登录";
+
+/* Message to display when send email could not finish correctly */
+"ONBOARDING_failed_to_send_email" = "ONBOARDING_failed_to_send_email";
+
+/* Button title to finish the tutorial */
+"ONBOARDING_finish" = "ONBOARDING_finish";
+
+/* Ok got it */
+"ONBOARDING_got_it" = "ONBOARDING_got_it"; /* NEW */
+
+/* Message to display when invalid password is entered */
+"ONBOARDING_invalid_password" = "ONBOARDING_invalid_password";
 
 /* Error message to display when the system fails to retrieve the private key from the keychain */
 "ONBOARDING_Keychain_Failure_Error" = "从钥匙串获取资料过程中出现错误！请稍后再试，或直接联系我们的团队。";
@@ -142,7 +166,7 @@
 "ONBOARDING_Landing_Title_Two" = "ONBOARDING_Landing_Title_Two";
 
 /* Title for learn more buttong */
-"ONBOARDING_Learn_More" = "ONBOARDING_Learn_More"; /* NEW */
+"ONBOARDING_Learn_More" = "ONBOARDING_Learn_More";
 
 /* Subtitle under the text field of the login controller. Explains what to do in textfield */
 "ONBOARDING_Login_Input_Info_Title" = "使用您的NEO私钥登录钱包";
@@ -152,6 +176,12 @@
 
 /* Title for all login items in the onboarding flow */
 "ONBOARDING_Login_Title" = "登录";
+
+/* Message to display when the email is not setup on the phone */
+"ONBOARDING_mail_not_setup_message" = "ONBOARDING_mail_not_setup_message";
+
+/* Title when error and mail is not yet setup */
+"ONBOARDING_mail_not_setup_title" = "ONBOARDING_mail_not_setup_title";
 
 /* Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key */
 "ONBOARDING_not_matched_wif" = "ONBOARDING_not_matched_wif";
@@ -167,6 +197,9 @@
 
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
 "ONBOARDING_Please_Backup Warning" = "请在安全的情况下备份该私钥。\n\n我们强烈建议您在自己的iPhone上设置好密码。若删除您设备上的密码，钥匙串上的私钥也将被删除。";
+
+/* Please take a moment to make a backup of your private key */
+"ONBOARDING_Please_Take_A_Moment" = "ONBOARDING_Please_Take_A_Moment"; /* NEW */
 
 /* A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF) */
 "ONBOARDING_Private_Key_title" = "您的私钥（WIF）";
@@ -196,10 +229,10 @@
 "ONBOARDING_Start_Action_Title" = "开始";
 
 /* Subtitle for the animation header when learning more */
-"ONBOARDING_Subtitle_Animation_Header" = "ONBOARDING_Subtitle_Animation_Header"; /* NEW */
+"ONBOARDING_Subtitle_Animation_Header" = "ONBOARDING_Subtitle_Animation_Header";
 
 /* Title for the animation header when learning more */
-"ONBOARDING_Title_Animation_Header" = "ONBOARDING_Title_Animation_Header"; /* NEW */
+"ONBOARDING_Title_Animation_Header" = "ONBOARDING_Title_Animation_Header";
 
 /* Emphasis text for the third info paragraph on the fifth tutorial card */
 "ONBOARDING_Tutorial_Emphasis_Fuve" = "ONBOARDING_Tutorial_Emphasis_Fuve";
@@ -248,6 +281,9 @@
 
 /* Title for the second tutorial card when creating new wallet */
 "ONBOARDING_Tutorial_Title_Two" = "ONBOARDING_Tutorial_Title_Two";
+
+/* Title for wallet generated popup */
+"ONBOARDING_Wallet_Generated" = "ONBOARDING_Wallet_Generated"; /* NEW */
 
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "欢迎使用O3钱包";

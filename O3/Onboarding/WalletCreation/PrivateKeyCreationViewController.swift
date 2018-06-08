@@ -44,6 +44,15 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
 
     let tutorialAnimation = LOTAnimationView(name: "LearnMore")
 
+    func presentWalletGeneratedViewController() {
+        let walletGeneratedVc = UIStoryboard(name: "WalletCreation", bundle: nil).instantiateViewController(withIdentifier: "walletGeneratedViewController")
+        walletGeneratedVc.modalPresentationStyle = .overCurrentContext
+        walletGeneratedVc.modalTransitionStyle = .crossDissolve
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            self.presentFromEmbedded(walletGeneratedVc, animated: true, completion: nil)
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
@@ -62,6 +71,9 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
 
         animationContainerView.embed(tutorialAnimation)
         view.bringSubview(toFront: learnMoreContainer)
+        view.bringSubview(toFront: closeButton)
+
+        presentWalletGeneratedViewController()
 
     }
 

@@ -60,8 +60,14 @@
 /* When the user tries to create a new wallet, but they already have one saved on the devicve, this explanation/warning is given to the user */
 "ONBOARDING_Already_Have_Wallet_Explanation" = "Looks like you already have an existing wallet on this device.\n\n Creating a new wallet will write the new private key over the existing one. Please make sure you have your private key backed up.";
 
+/* Button title to go back in the tutorial page */
+"ONBOARDING_back" = "Back";
+
 /* Title menu to backup private key */
 "ONBOARDING_Backup" = "Backup Options";
+
+/* Tutle for backing private key and moving to end */
+"ONBOARDING_backup_and_continue" = "Backup & Continue";
 
 /* Title for option to backup the key by copying to clipboard */
 "ONBOARDING_Backup_Copy_Title" = "Copy to clipboard";
@@ -91,7 +97,7 @@
 "ONBOARDING_Create_New _Wallet" = "Create New Wallet";
 
 /* Description for when creating a password for NEP-2 Encryption */
-"ONBOARDING_Create_Password_Description" = "In order to keep your key safe, we need to encrypt it with a password. You will need this password and the key in order to login in the future. The password must be 8 characters in length";
+"ONBOARDING_Create_Password_Description" = "In order to keep your key safe, we need to encrypt it with a password. You'll need both in order to login in the future. The password must be at least 8 characters in length";
 
 /* Hint for text field when creating a password */
 "ONBOARDING_Create_Password_Hint" = "Enter Password";
@@ -102,11 +108,29 @@
 /* Error message that is displayed when the user tries to Create a New Wallet without a passcode */
 "ONBOARDING_Create_Wallet_No_Passcode_Error" = "In order to create a new wallet you have to have a passcode set on your device. This ensures that your funds are always secure";
 
+/* Email body when sending Nep-2 backup */
+"ONBOARDING_email_body" = "Thank you for choosing the O3 Wallet!\n\n Here is an ecrypted private key that you just created!\n\n You can use this key, along with the password that you created in O3 in the event that you are locked out of your wallet.\n\n%@\n\n To login follow these steps:\n\nOpen the O3 App\n\nSelect Login\n\nEither enter the text key or scan the attached QR Code\n\nEnter your password\n\nAnd you're in!\n\nThanks again for using O3!";
+
+/* Email subject when sending NEP-2 backup */
+"ONBOARDING_email_subject" = "O3 Wallet Encrypted Key Backup";
+
 /* Title when reentering backup */
 "ONBOARDING_enter_private_key" = "Enter private key";
 
 /* Prompt asking the user to authenticate themselves when they already have a wallet stored on device. */
 "ONBOARDING_Existing_Wallet_Authentication_Prompt" = "Login to your existing wallet stored on this device";
+
+/* Message to display when send email could not finish correctly */
+"ONBOARDING_failed_to_send_email" = "Oh no! The email failed to send. Please try again to make sure your backup is safe";
+
+/* Button title to finish the tutorial */
+"ONBOARDING_finish" = "Finish";
+
+/* Ok got it */
+"ONBOARDING_got_it" = "Ok, Got It!"; /* NEW */
+
+/* Message to display when invalid password is entered */
+"ONBOARDING_invalid_password" = "You've entered an invalid password.";
 
 /* Error message to display when the system fails to retrieve the private key from the keychain */
 "ONBOARDING_Keychain_Failure_Error" = "There has been an error when attempting to retrieve data from the keychain. Please try again later or contact our team directly.";
@@ -142,7 +166,7 @@
 "ONBOARDING_Landing_Title_Two" = "Built for the NEO Smart Economy";
 
 /* Title for learn more buttong */
-"ONBOARDING_Learn_More" = "Learn More"; /* NEW */
+"ONBOARDING_Learn_More" = "Learn More";
 
 /* Subtitle under the text field of the login controller. Explains what to do in textfield */
 "ONBOARDING_Login_Input_Info_Title" = "Login to your wallet using your NEO private key";
@@ -152,6 +176,12 @@
 
 /* Title for all login items in the onboarding flow */
 "ONBOARDING_Login_Title" = "Login";
+
+/* Message to display when the email is not setup on the phone */
+"ONBOARDING_mail_not_setup_message" = "If you continue without sending your backup, then you will need to make a backup copy at a later date";
+
+/* Title when error and mail is not yet setup */
+"ONBOARDING_mail_not_setup_title" = "Mail not setup";
 
 /* Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key */
 "ONBOARDING_not_matched_wif" = "Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key.";
@@ -167,6 +197,9 @@
 
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
 "ONBOARDING_Please_Backup Warning" = "Please backup this private key in another secure location.\n\nIt is highly reccomended that you have a passcode set on your iPhone. Removing the passcode from your device will delete your private key from the keychain.";
+
+/* Please take a moment to make a backup of your private key */
+"ONBOARDING_Please_Take_A_Moment" = "Please take a moment to backup a copy of your private key"; /* NEW */
 
 /* A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF) */
 "ONBOARDING_Private_Key_title" = "Your Private Key (WIF)";
@@ -196,10 +229,10 @@
 "ONBOARDING_Start_Action_Title" = "Start";
 
 /* Subtitle for the animation header when learning more */
-"ONBOARDING_Subtitle_Animation_Header" = "This key will be used to log into your wallet, back it up before continuing"; /* NEW */
+"ONBOARDING_Subtitle_Animation_Header" = "This key will be used to log into your wallet, back it up before continuing";
 
 /* Title for the animation header when learning more */
-"ONBOARDING_Title_Animation_Header" = "My Private Key"; /* NEW */
+"ONBOARDING_Title_Animation_Header" = "My Private Key";
 
 /* Emphasis text for the third info paragraph on the fifth tutorial card */
 "ONBOARDING_Tutorial_Emphasis_Fuve" = "You're ready to join the Smart Economy!";
@@ -248,6 +281,9 @@
 
 /* Title for the second tutorial card when creating new wallet */
 "ONBOARDING_Tutorial_Title_Two" = "Your private key";
+
+/* Title for wallet generated popup */
+"ONBOARDING_Wallet_Generated" = "Wallet Generated!"; /* NEW */
 
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "Welcome!";

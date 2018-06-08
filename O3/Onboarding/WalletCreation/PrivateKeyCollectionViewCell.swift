@@ -26,7 +26,7 @@ class PrivateKeyCollectionViewCell: UICollectionViewCell {
 
     var data: String? {
         didSet {
-            backupButton.setTitle(OnboardingStrings.backup, for: UIControlState())
+            backupButton.setTitle(OnboardingStrings.backupAndContinue, for: UIControlState())
 
             self.privateKeyImageView.image = UIImage(qrData: data!, width: self.privateKeyImageView.frame.width, height: self.privateKeyImageView.frame.height, qrLogoName: "ic_QRkey")
             let attributedString = NSMutableAttributedString(string: data!)

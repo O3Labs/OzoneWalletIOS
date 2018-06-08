@@ -27,20 +27,28 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
     lazy var inputToolbar: UIToolbar = {
         var toolbar = UIToolbar()
         toolbar.barStyle = .default
+        toolbar.barTintColor = .white
         toolbar.sizeToFit()
         let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         var doneButton = UIBarButtonItem(title: OnboardingStrings.continueButton, style: .plain, target: self, action: #selector(self.continueButtonTapped(_:)))
-
+        let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.primaryColor,
+                                                       NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        doneButton.setTitleTextAttributes(attributes, for: UIControlState())
         toolbar.setItems([flexibleButton, doneButton], animated: false)
         toolbar.isUserInteractionEnabled = true
 
         return toolbar
     }()
 
+    var passwordIsSecure = true
+
     override func viewDidLoad() {
         super.viewDidLoad()
         passwordField.inputAccessoryView = inputToolbar
+        passwordField.setLeftPaddingPoints(CGFloat(10.0))
+        passwordField.setRightPaddingPoints(CGFloat(10.0))
         passwordField.becomeFirstResponder()
+        tableView.tableFooterView = UIView()
         setLocalizedStrings()
     }
 
@@ -54,24 +62,25 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
     @IBAction func continueButtonTapped(_ sender: Any) {
         if validatePassword() {
             if !MFMailComposeViewController.canSendMail() {
-                print("Mail services are not available")
+                OzoneAlert.confirmDialog(OnboardingStrings.mailNotSetupTitle, message: OnboardingStrings.mailNotSetupMessage,
+                                         cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.okPositiveConfirmString, didCancel: { return }) {
+                        self.loginToApp()
+                }
                 return
             }
 
             var error: NSError?
             let nep2 = NeoutilsNEP2Encrypt(wif, previousPassword, &error)
             let json = NeoutilsGenerateNEP6FromEncryptedKey("My O3 Wallet", "My O3 Address", nep2?.address(), nep2?.encryptedKey())
+            let nep2String = (nep2?.encryptedKey())!
 
-            let image = UIImage(qrData: "Andrei is Cool", width: 150, height: 150)
+            let image = UIImage(qrData: nep2String, width: 150, height: 150, qrLogoName: "ic_QRkey")
             let imageData = UIImagePNGRepresentation(image) ?? nil
-            let base64String = imageData?.base64EncodedString() ?? "" // Your String Image
-            let strHtml = "<html><body><p>Header: Hello Test Email</p><p><b><img src='data:image/png;base64,\(String(describing: base64String))' alt='Logo' title='Logo' style='display:block' width='150' height='150'></b></p></body></html>"
             let composeVC = MFMailComposeViewController()
             composeVC.mailComposeDelegate = self
             // Configure the fields of the interface.
-            composeVC.setToRecipients(["address@example.com"])
-            composeVC.setSubject("Hello!")
-            composeVC.setMessageBody(strHtml, isHTML: true)
+            composeVC.setSubject(OnboardingStrings.emailSubject)
+            composeVC.setMessageBody(String.localizedStringWithFormat(String(OnboardingStrings.emailBody), nep2String), isHTML: false)
 
             composeVC.addAttachmentData((json?.data(using: .utf8))!, mimeType: "application/json", fileName: "O3Wallet.json")
             composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")
@@ -83,6 +92,10 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
                 composeVC.modalPresentationStyle = .custom
                 self.present(composeVC, animated: true, completion: nil)
             }
+        } else {
+            OzoneAlert.alertDialog(message: OnboardingStrings.invalidPassword, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+
+            }
         }
     }
 
@@ -90,8 +103,8 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
         DispatchQueue.main.async {
             controller.dismiss(animated: true, completion: nil)
             if result == .cancelled || result == .failed {
-                OzoneAlert.alertDialog(message: "fadadaf", dismissTitle: "fdsafda") {
-
+                OzoneAlert.alertDialog(message: OnboardingStrings.failedToSendEmailDescription, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+                    return
                 }
             } else {
                 self.loginToApp()
@@ -99,7 +112,22 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
         }
     }
 
+    @IBAction func showTapped(_ sender: Any) {
+        passwordIsSecure = !passwordIsSecure
+        passwordField.isSecureTextEntry = passwordIsSecure
+        let tmp = passwordField.text
+        passwordField.text = ""
+        passwordField.text = tmp
+
+        if passwordIsSecure {
+            showButton.alpha = CGFloat(0.3)
+        } else {
+            showButton.alpha = CGFloat(1.0)
+        }
+    }
+
     func loginToApp() {
+        dismissKeyboard()
         guard let account = Account(wif: wif) else {
             return
         }

@@ -28,9 +28,14 @@ struct OnboardingStrings {
     static let stylizedOr = NSLocalizedString("ONBOARDING_OR", comment: "Seperator for login and create new wallet")
 
     //Tutorial Screen
+    static let walletGenerated = NSLocalizedString("ONBOARDING_Wallet_Generated", comment: "Title for wallet generated popup")
+    static let pleaseTakeAMoment = NSLocalizedString("ONBOARDING_Please_Take_A_Moment", comment: "Please take a moment to make a backup of your private key")
+    static let gotIt = NSLocalizedString("ONBOARDING_got_it", comment: "Ok got it")
+
     static let titleAnimationHeader = NSLocalizedString("ONBOARDING_Title_Animation_Header", comment: "Title for the animation header when learning more")
     static let subtitleAnimationHeader = NSLocalizedString("ONBOARDING_Subtitle_Animation_Header", comment: "Subtitle for the animation header when learning more")
     static let learnMore = NSLocalizedString("ONBOARDING_Learn_More", comment: "Title for learn more buttong")
+    static let backupAndContinue = NSLocalizedString("ONBOARDING_backup_and_continue", comment: "Tutle for backing private key and moving to end")
 
     static let tutorialTitleOne = NSLocalizedString("ONBOARDING_Tutorial_Title_One", comment: "Title for the first tutorial card when creating new wallet")
     static let tutorialTitleTwo = NSLocalizedString("ONBOARDING_Tutorial_Title_Two", comment: "Title for the second tutorial card when creating new wallet")
@@ -82,6 +87,13 @@ struct OnboardingStrings {
     static let paperBackupInfoTwo = NSLocalizedString("ONBOARDING_paper_backup_info_two", comment: "Second Info text when confirming that writing down on paper was successful")
     static let notMatchedWif = NSLocalizedString("ONBOARDING_not_matched_wif", comment: "Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key")
     static let enterPrivateKey = NSLocalizedString("ONBOARDING_enter_private_key", comment: "Title when reentering backup")
+
+    static let emailSubject = NSLocalizedString("ONBOARDING_email_subject", comment: "Email subject when sending NEP-2 backup")
+    static let emailBody = NSLocalizedString("ONBOARDING_email_body", comment: "Email body when sending Nep-2 backup")
+    static let mailNotSetupTitle = NSLocalizedString("ONBOARDING_mail_not_setup_title", comment: "Title when error and mail is not yet setup")
+    static let mailNotSetupMessage = NSLocalizedString("ONBOARDING_mail_not_setup_message", comment: "Message to display when the email is not setup on the phone")
+    static let failedToSendEmailDescription = NSLocalizedString("ONBOARDING_failed_to_send_email", comment: "Message to display when send email could not finish correctly")
+    static let invalidPassword = NSLocalizedString("ONBOARDING_invalid_password", comment: "Message to display when invalid password is entered")
 
     //Login Screen
     static let loginNoPassCodeError = NSLocalizedString("ONBOARDING_Login_No_Passcode_Error", comment: "Error message that is displayed when the user tries to login without a passcode")

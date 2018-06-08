@@ -19,10 +19,15 @@ class NEP2PasswordViewController: UITableViewController {
     lazy var inputToolbar: UIToolbar = {
         var toolbar = UIToolbar()
         toolbar.barStyle = .default
+        toolbar.barTintColor = .white
         toolbar.isTranslucent = true
         toolbar.sizeToFit()
+
         let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         var doneButton = UIBarButtonItem(title: OnboardingStrings.continueButton, style: .plain, target: self, action: #selector(self.continueTapped(_:)))
+        let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.primaryColor,
+                                                        NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        doneButton.setTitleTextAttributes(attributes, for: UIControlState())
 
         toolbar.setItems([flexibleButton, doneButton], animated: false)
         toolbar.isUserInteractionEnabled = true
@@ -37,7 +42,10 @@ class NEP2PasswordViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         passwordTextField.inputAccessoryView = inputToolbar
+        passwordTextField.setLeftPaddingPoints(CGFloat(10.0))
+        passwordTextField.setRightPaddingPoints(CGFloat(10.0))
         passwordTextField.becomeFirstResponder()
+        tableView.tableFooterView = UIView()
         setLocalizedStrings()
     }
 
@@ -45,7 +53,7 @@ class NEP2PasswordViewController: UITableViewController {
         if validatePassword() {
             self.performSegue(withIdentifier: "segueToConfirmPassword", sender: nil)
         } else {
-            OzoneAlert.alertDialog(message: "fdsafdsa", dismissTitle: "fdsafdsa") {
+            OzoneAlert.alertDialog(message: OnboardingStrings.invalidPassword, dismissTitle: OzoneAlert.okPositiveConfirmString) {
 
             }
         }
@@ -67,6 +75,14 @@ class NEP2PasswordViewController: UITableViewController {
     @IBAction func showButtonTapped(_ sender: Any) {
         passwordIsSecure = !passwordIsSecure
         passwordTextField.isSecureTextEntry = passwordIsSecure
+        let tmp = passwordTextField.text
+        passwordTextField.text = ""
+        passwordTextField.text = tmp
+        if passwordIsSecure {
+            showButton.alpha = CGFloat(0.3)
+        } else {
+            showButton.alpha = CGFloat(1.0)
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
