@@ -73,6 +73,7 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
         view.bringSubview(toFront: learnMoreContainer)
         view.bringSubview(toFront: closeButton)
 
+        tutorialAnimation.animationSpeed = CGFloat(1.4)
         presentWalletGeneratedViewController()
 
     }
@@ -145,7 +146,7 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
                 self.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
                 self.tutorialAnimation.animationSpeed = CGFloat(20.0)
                 self.tutorialAnimation.play(fromFrame: currentKeyFrame, toFrame: NSNumber(value: 0)) { _ in
-                    self.tutorialAnimation.animationSpeed = CGFloat(1.0)
+                    self.tutorialAnimation.animationSpeed = CGFloat(1.4)
                     self.swipeDisabled = false
                     self.currPosition = 0
                 }
