@@ -180,6 +180,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         o3tab?.halfModalTransitioningDelegate?.presentingViewController = nil
         o3tab?.halfModalTransitioningDelegate?.interactionController = nil
         o3tab?.halfModalTransitioningDelegate = nil
+
+        SwiftTheme.ThemeManager.setTheme(index: 0)
     }
 
     //properly implement cell did tap

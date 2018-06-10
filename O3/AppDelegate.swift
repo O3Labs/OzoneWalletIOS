@@ -82,6 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.setupReachability()
         AppDelegate.setNavbarAppearance()
         print(NSHomeDirectory())
+
         //check if there is an existing wallet in keychain
         //if so, present LoginToCurrentWalletViewController
         let walletExists =  UserDefaultsManager.o3WalletAddress != nil

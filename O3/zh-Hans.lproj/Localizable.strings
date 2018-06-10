@@ -60,17 +60,119 @@
 /* When the user tries to create a new wallet, but they already have one saved on the devicve, this explanation/warning is given to the user */
 "ONBOARDING_Already_Have_Wallet_Explanation" = "您在该设备上已有一个创建好的钱包。\n\n若要创建新钱包，现有的私钥将会被新私钥覆盖。 请确保你现有钱包的私钥已备份。";
 
+/* Button title to go back in the tutorial page */
+"ONBOARDING_back" = "ONBOARDING_back";
+
+/* Title menu to backup private key */
+"ONBOARDING_Backup" = "ONBOARDING_Backup";
+
+/* Tutle for backing private key and moving to end */
+"ONBOARDING_backup_and_continue" = "ONBOARDING_backup_and_continue";
+
+/* Title for option to backup the key by copying to clipboard */
+"ONBOARDING_Backup_Copy_Title" = "ONBOARDING_Backup_Copy_Title";
+
+/* Title for option to backup the key by emailing an encrypted NEP2 */
+"ONBOARDING_Backup_Email_Title" = "ONBOARDING_Backup_Email_Title";
+
+/* Title for option to go back and view private key */
+"ONBOARDING_Backup_Go_Back" = "ONBOARDING_Backup_Go_Back";
+
+/* Title for option to backup private key using paperr */
+"ONBOARDING_Backup_Paper_Title" = "ONBOARDING_Backup_Paper_Title";
+
+/* Title for option to backup private key using screenshot */
+"ONBOARDING_Backup_Screenshot_Title" = "ONBOARDING_Backup_Screenshot_Title";
+
+/* Continue button when creating a password */
+"ONBOARDING_Continue_Button" = "ONBOARDING_Continue_Button";
+
+/* Description for when the key has been copied to your clipboard */
+"ONBOARDING_Copied_Description" = "ONBOARDING_Copied_Description";
+
+/* Title for when copied to clipboard */
+"ONBOARDING_Copied_Title" = "ONBOARDING_Copied_Title";
+
 /* Title For Creating a New Wallet in the onboarding flow */
 "ONBOARDING_Create_New _Wallet" = "创建新钱包";
+
+/* Description for when creating a password for NEP-2 Encryption */
+"ONBOARDING_Create_Password_Description" = "ONBOARDING_Create_Password_Description";
+
+/* Hint for text field when creating a password */
+"ONBOARDING_Create_Password_Hint" = "ONBOARDING_Create_Password_Hint";
+
+/* Title for when creating a password for encrypting your private key */
+"ONBOARDING_Create_Password_title" = "ONBOARDING_Create_Password_title";
 
 /* Error message that is displayed when the user tries to Create a New Wallet without a passcode */
 "ONBOARDING_Create_Wallet_No_Passcode_Error" = "若要创建新钱包，请确认已在该设备上设置好密码，以确保您的资金安全。";
 
+/* Email body when sending Nep-2 backup */
+"ONBOARDING_email_body" = "ONBOARDING_email_body";
+
+/* Email subject when sending NEP-2 backup */
+"ONBOARDING_email_subject" = "ONBOARDING_email_subject";
+
+/* Title for when user tries to login with encrypted key */
+"ONBOARDING_encrypted_key_detected" = "ONBOARDING_encrypted_key_detected"; /* NEW */
+
+/* Title when reentering backup */
+"ONBOARDING_enter_private_key" = "ONBOARDING_enter_private_key";
+
 /* Prompt asking the user to authenticate themselves when they already have a wallet stored on device. */
 "ONBOARDING_Existing_Wallet_Authentication_Prompt" = "使用已保存在该设备上的钱包登录";
 
+/* Message to display when send email could not finish correctly */
+"ONBOARDING_failed_to_send_email" = "ONBOARDING_failed_to_send_email";
+
+/* Button title to finish the tutorial */
+"ONBOARDING_finish" = "ONBOARDING_finish";
+
+/* Ok got it */
+"ONBOARDING_got_it" = "ONBOARDING_got_it";
+
+/* An alert message for when an invalid key is detected */
+"ONBOARDING_invalid_key" = "ONBOARDING_invalid_key"; /* NEW */
+
+/* Message to display when invalid password is entered */
+"ONBOARDING_invalid_password" = "ONBOARDING_invalid_password";
+
 /* Error message to display when the system fails to retrieve the private key from the keychain */
 "ONBOARDING_Keychain_Failure_Error" = "从钥匙串获取资料过程中出现错误！请稍后再试，或直接联系我们的团队。";
+
+/* The fifth subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Five" = "ONBOARDING_Landing_Subtitle_Five";
+
+/* The fourth subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Four" = "ONBOARDING_Landing_Subtitle_Four";
+
+/* The first subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_One" = "ONBOARDING_Landing_Subtitle_One";
+
+/* The third subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Three" = "ONBOARDING_Landing_Subtitle_Three";
+
+/* The second subtitle in the landing pages */
+"ONBOARDING_Landing_Subtitle_Two" = "ONBOARDING_Landing_Subtitle_Two";
+
+/* The fifth title in the landing pages */
+"ONBOARDING_Landing_Title_Five" = "ONBOARDING_Landing_Title_Five";
+
+/* The foruth title in the landing pages */
+"ONBOARDING_Landing_Title_Four" = "ONBOARDING_Landing_Title_Four";
+
+/* The first title in the landing pages */
+"ONBOARDING_Landing_Title_One" = "ONBOARDING_Landing_Title_One";
+
+/* The third title in the landing pages */
+"ONBOARDING_Landing_Title_Three" = "ONBOARDING_Landing_Title_Three";
+
+/* The second title in the landing pages */
+"ONBOARDING_Landing_Title_Two" = "ONBOARDING_Landing_Title_Two";
+
+/* Title for learn more buttong */
+"ONBOARDING_Learn_More" = "ONBOARDING_Learn_More";
 
 /* Subtitle under the text field of the login controller. Explains what to do in textfield */
 "ONBOARDING_Login_Input_Info_Title" = "使用您的NEO私钥登录钱包";
@@ -81,14 +183,56 @@
 /* Title for all login items in the onboarding flow */
 "ONBOARDING_Login_Title" = "登录";
 
-/* Welcome label to create a new wallet */
-"ONBOARDING_New To O3?" = "新手入门O3？";
+/* Message to display when the email is not setup on the phone */
+"ONBOARDING_mail_not_setup_message" = "ONBOARDING_mail_not_setup_message";
+
+/* Title when error and mail is not yet setup */
+"ONBOARDING_mail_not_setup_title" = "ONBOARDING_mail_not_setup_title";
+
+/* Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key */
+"ONBOARDING_not_matched_wif" = "ONBOARDING_not_matched_wif";
+
+/* Seperator for login and create new wallet */
+"ONBOARDING_OR" = "ONBOARDING_OR";
+
+/* First Info text when confirming that writing down on paper was successful */
+"ONBOARDING_paper_backup_info_one" = "ONBOARDING_paper_backup_info_one";
+
+/* Second Info text when confirming that writing down on paper was successful */
+"ONBOARDING_paper_backup_info_two" = "ONBOARDING_paper_backup_info_two";
 
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
 "ONBOARDING_Please_Backup Warning" = "请在安全的情况下备份该私钥。\n\n我们强烈建议您在自己的iPhone上设置好密码。若删除您设备上的密码，钥匙串上的私钥也将被删除。";
 
+/* Subtitle for when unlocking the nep2 key */
+"ONBOARDING_please_enter_nep2_password" = "ONBOARDING_please_enter_nep2_password"; /* NEW */
+
+/* Please take a moment to make a backup of your private key */
+"ONBOARDING_Please_Take_A_Moment" = "ONBOARDING_Please_Take_A_Moment";
+
+/* A label for entering the private key field, can be NEP2 or WIF */
+"ONBOARDING_private_key" = "ONBOARDING_private_key"; /* NEW */
+
 /* A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF) */
 "ONBOARDING_Private_Key_title" = "您的私钥（WIF）";
+
+/* Text showing reccommended backup option */
+"ONBOARDING_Reccommended" = "ONBOARDING_Reccommended";
+
+/* Description for when reentering password with NEP-2 Description */
+"ONBOARDING_Reenter_Password_Description" = "ONBOARDING_Reenter_Password_Description";
+
+/* Hint for text field when reentering a password */
+"ONBOARDING_Reenter_Password_Hint" = "ONBOARDING_Reenter_Password_Hint";
+
+/* Title for when when confirming password for NEP-2 Encryption */
+"ONBOARDING_Reenter_Password_title" = "ONBOARDING_Reenter_Password_title";
+
+/* Description for when the screenshot was taken */
+"ONBOARDING_Screenshot_Alert_Description" = "ONBOARDING_Screenshot_Alert_Description";
+
+/* Title for when a screenshot was taken */
+"ONBOARDING_Screenshot_Alert_Title" = "ONBOARDING_Screenshot_Alert_Title";
 
 /* Displayed when the app is waiting to connect to the network. It is finding the best NEO node to connect to */
 "ONBOARDING_Selecting_Best_Node" = "选择最佳节点";
@@ -96,23 +240,65 @@
 /* Title to start the app after completing the onboarding */
 "ONBOARDING_Start_Action_Title" = "开始";
 
-/* The first subtitle in the onboarding pages */
-"ONBOARDING_Tutorial_Subtitle_One" = "安全管控自己的钱包";
+/* Title for button to decrypt private key and continue itno app */
+"ONBOARDING_submit" = "ONBOARDING_submit"; /* NEW */
 
-/* The third subtitle in the onboarding pages */
-"ONBOARDING_Tutorial_Subtitle_Three" = "支持GAS、NEO、NEP5所有代币";
+/* Subtitle for the animation header when learning more */
+"ONBOARDING_Subtitle_Animation_Header" = "ONBOARDING_Subtitle_Animation_Header";
 
-/* The second subtitle in the onboarding pages */
-"ONBOARDING_Tutorial_Subtitle_Two" = "您的隐私受到最新安全措施的保护";
+/* Title for the animation header when learning more */
+"ONBOARDING_Title_Animation_Header" = "ONBOARDING_Title_Animation_Header";
 
-/* The first title in the onboarding pages */
-"ONBOARDING_Tutorial_Title_One" = "添加观察地址";
+/* Emphasis text for the third info paragraph on the fifth tutorial card */
+"ONBOARDING_Tutorial_Emphasis_Fuve" = "ONBOARDING_Tutorial_Emphasis_Fuve";
 
-/* The third title in the onboarding pages */
-"ONBOARDING_Tutorial_Title_Three" = "发送、接收、提取奖励";
+/* Emphasis text for the third info paragraph on the third tutorial card */
+"ONBOARDING_Tutorial_Emphasis_Three" = "ONBOARDING_Tutorial_Emphasis_Three";
 
-/* The second title in the onboarding pages */
-"ONBOARDING_Tutorial_Title_Two" = "安全储存您的资金";
+/* Text for the first info paragraph on the fifth tutorial card */
+"ONBOARDING_Tutorial_Info_One_Five" = "ONBOARDING_Tutorial_Info_One_Five";
+
+/* Text for the first info paragraph on the fourth tutorial card */
+"ONBOARDING_Tutorial_Info_One_Four" = "ONBOARDING_Tutorial_Info_One_Four";
+
+/* Text for the first info paragraph on the first tutorial card */
+"ONBOARDING_Tutorial_Info_One_One" = "ONBOARDING_Tutorial_Info_One_One";
+
+/* Text for the first info paragraph on the third tutorial card */
+"ONBOARDING_Tutorial_Info_One_Three" = "ONBOARDING_Tutorial_Info_One_Three";
+
+/* Text for the first info paragraph on the second tutorial card */
+"ONBOARDING_Tutorial_Info_One_Two" = "ONBOARDING_Tutorial_Info_One_Two";
+
+/* Text for the second info paragraph on the fifth tutorial card */
+"ONBOARDING_Tutorial_Info_Two_Five" = "ONBOARDING_Tutorial_Info_Two_Five";
+
+/* Text for the second info paragraph on the first tutorial card */
+"ONBOARDING_Tutorial_Info_Two_One" = "ONBOARDING_Tutorial_Info_Two_One";
+
+/* Text for the second info paragraph on the third tutorial card */
+"ONBOARDING_Tutorial_Info_Two_Three" = "ONBOARDING_Tutorial_Info_Two_Three";
+
+/* Text for the second info paragraph on the second tutorial card */
+"ONBOARDING_Tutorial_Info_Two_Two" = "ONBOARDING_Tutorial_Info_Two_Two";
+
+/* Title for the fifth tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Five" = "ONBOARDING_Tutorial_Title_Five";
+
+/* Title for the fourth tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Four" = "ONBOARDING_Tutorial_Title_Four";
+
+/* Title for the first tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_One" = "ONBOARDING_Tutorial_Title_One";
+
+/* Title for the third tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Three" = "ONBOARDING_Tutorial_Title_Three";
+
+/* Title for the second tutorial card when creating new wallet */
+"ONBOARDING_Tutorial_Title_Two" = "ONBOARDING_Tutorial_Title_Two";
+
+/* Title for wallet generated popup */
+"ONBOARDING_Wallet_Generated" = "ONBOARDING_Wallet_Generated";
 
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "欢迎使用O3钱包";
@@ -478,7 +664,7 @@
 "WALLET_O3_Wallet" = "O3钱包";
 
 /* A title for the request action in the wallet */
-"WALLET_Request" = "WALLET_Request"; /* NEW */
+"WALLET_Request" = "WALLET_Request";
 
 /* An Action Title for saving your QR code */
 "WALLET_Save_Qr_Action" = "保存二维码图片";
@@ -490,10 +676,10 @@
 "WALLET_Saved_Title" = "保存";
 
 /* A title for the scan action in the wallet */
-"WALLET_Scan" = "WALLET_Scan"; /* NEW */
+"WALLET_Scan" = "WALLET_Scan";
 
 /* A title for the send action in the wallet */
-"WALLET_Send" = "WALLET_Send"; /* NEW */
+"WALLET_Send" = "WALLET_Send";
 
 /* An action title for sharing O3 */
 "WALLET_Share" = "分享";
