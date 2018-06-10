@@ -16,8 +16,11 @@ import Channel
 import PKHUD
 
 class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutputObjectsDelegate {
-    var qrView: UIView!
+    @IBOutlet weak var pkeyLabel: UILabel!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var keyTextView: O3TextView!
 
+    var qrView: UIView!
     var captureSession: AVCaptureSession!
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     let supportedCodeTypes = [
@@ -109,6 +112,20 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
         }
     }
 
+    func attemptLoginWithKey(key: String) {
+        if key.count == 58 && key.hasPrefix("6P") {
+            DispatchQueue.main.async {
+                self.presentWalletGeneratedViewController()
+            }
+        } else if let account = Account(wif: key) {
+            loginToApp(account: account)
+        }
+    }
+
+    @IBAction func loginTapped(_ sender: Any) {
+        attemptLoginWithKey(key: keyTextView.text.trim())
+    }
+
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if metadataObjects.count == 0 {
             return
@@ -120,18 +137,14 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
 
         if supportedCodeTypes.contains(metadataObj.type) {
             if let dataString = metadataObj.stringValue {
-                if dataString.count == 58 && dataString.hasPrefix("6P") {
-                    DispatchQueue.main.async {
-                        self.presentWalletGeneratedViewController()
-                    }
-                } else if let account = Account(wif: dataString) {
-                    loginToApp(account: account)
-                }
+                attemptLoginWithKey(key: dataString)
             }
         }
     }
 
     func setLocalizedStrings() {
         title = OnboardingStrings.loginTitle
+        pkeyLabel.text = OnboardingStrings.privateKeyTitle
+        loginButton.setTitle(OnboardingStrings.loginTitle, for: UIControlState())
     }
 }
