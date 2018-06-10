@@ -134,6 +134,10 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
     }
 
     func forwardTapped() {
+        if swipeDisabled {
+            return
+        }
+
         DispatchQueue.main.async {
             if self.collectionView.indexPathsForVisibleItems[0].row == Int(self.maxPosition) {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {

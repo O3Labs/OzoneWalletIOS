@@ -32,6 +32,7 @@ struct OnboardingStrings {
     static let pleaseEnterNEP2Password = NSLocalizedString("ONBOARDING_please_enter_nep2_password", comment: "Subtitle for when unlocking the nep2 key")
     static let submit = NSLocalizedString("ONBOARDING_submit", comment: "Title for button to decrypt private key and continue itno app")
     static let privateKey = NSLocalizedString("ONBOARDING_private_key", comment: "A label for entering the private key field, can be NEP2 or WIF")
+    static let invalidKey = NSLocalizedString("ONBOARDING_invalid_key", comment: "An alert message for when an invalid key is detected")
 
     //Tutorial Screen
     static let walletGenerated = NSLocalizedString("ONBOARDING_Wallet_Generated", comment: "Title for wallet generated popup")

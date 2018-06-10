@@ -9,6 +9,12 @@
 import Foundation
 import UIKit
 import Lottie
+import PKHUD
+import Neoutils
+
+protocol Nep2PasswordDelegate: class {
+    func passwordEntered(account: Account?)
+}
 
 class NEP2DetectedViewController: UIViewController {
     @IBOutlet weak var titleView: UILabel!
@@ -16,14 +22,23 @@ class NEP2DetectedViewController: UIViewController {
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var alertContainer: UIView!
     @IBOutlet weak var animationContainer: UIView!
+    @IBOutlet weak var nep2PasswordField: UITextField!
+
+    var nep2EncryptedKey: String = ""
+    var password = ""
 
     let animationView = LOTAnimationView(name: "EnterPasswordKey")
+    weak var delegate: Nep2PasswordDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
         view.backgroundColor = UIColor.clear
         view.isOpaque = false
+
+        nep2PasswordField.becomeFirstResponder()
+        nep2PasswordField.setLeftPaddingPoints(CGFloat(10.0))
+        nep2PasswordField.setRightPaddingPoints(CGFloat(10.0))
 
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let visualEffectView = UIVisualEffectView(effect: blurEffect)
@@ -38,7 +53,50 @@ class NEP2DetectedViewController: UIViewController {
     }
 
     @IBAction func doneButtonTapped(_ sender: Any) {
-        DispatchQueue.main.async { self.dismiss(animated: true, completion: nil) }
+        DispatchQueue.main.async {
+            HUD.show(.progress, onView: self.alertContainer)
+        }
+
+        var error: NSError?
+        DispatchQueue.global().async {
+            let wif = NeoutilsNEP2Decrypt(self.nep2EncryptedKey, self.password, &error)
+            if wif == nil {
+                DispatchQueue.main.async {
+                    HUD.hide()
+                    OzoneAlert.alertDialog(message: OnboardingStrings.invalidKey, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+                        self.view.endEditing(true)
+                        self.dismiss(animated: true) {
+                            self.delegate?.passwordEntered(account: nil)
+                        }
+                    }
+                }
+                return
+            }
+
+            guard let account = Account(wif: wif!) else {
+                DispatchQueue.main.async {
+                    HUD.hide()
+                    OzoneAlert.alertDialog(message: OnboardingStrings.invalidKey, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+                        self.view.endEditing(true)
+                        self.dismiss(animated: true) {
+                            self.delegate?.passwordEntered(account: nil)
+                        }
+                    }
+                }
+                return
+            }
+
+            DispatchQueue.main.async {
+                self.view.endEditing(true)
+                self.dismiss(animated: true) {
+                    self.delegate?.passwordEntered(account: account)
+                }
+            }
+        }
+    }
+
+    @IBAction func passwordTyped(_ sender: Any) {
+        password = (self.nep2PasswordField.text?.trim())!
     }
 
     func setLocalizedStrings() {

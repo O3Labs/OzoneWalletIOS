@@ -15,23 +15,28 @@ import KeychainAccess
 import Channel
 import PKHUD
 
-class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutputObjectsDelegate {
+class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutputObjectsDelegate, Nep2PasswordDelegate {
     @IBOutlet weak var pkeyLabel: UILabel!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var keyTextView: O3TextView!
 
+    var alreadyScanned = false
     var qrView: UIView!
     var captureSession: AVCaptureSession!
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     let supportedCodeTypes = [
         AVMetadataObject.ObjectType.qr]
 
-    func presentWalletGeneratedViewController() {
-        let walletGeneratedVc = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "nep2DetectedViewController")
-        walletGeneratedVc.modalPresentationStyle = .overCurrentContext
-        walletGeneratedVc.modalTransitionStyle = .crossDissolve
+    func presentNEP2Detected() {
+        guard let nep2DetectedVC = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "nep2DetectedViewController") as? NEP2DetectedViewController else {
+            return
+        }
+        nep2DetectedVC.modalPresentationStyle = .overCurrentContext
+        nep2DetectedVC.modalTransitionStyle = .crossDissolve
+        nep2DetectedVC.delegate = self
+        nep2DetectedVC.nep2EncryptedKey = keyTextView.text.trim()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            self.presentFromEmbedded(walletGeneratedVc, animated: true, completion: nil)
+            self.presentFromEmbedded(nep2DetectedVC, animated: true, completion: nil)
         }
     }
 
@@ -75,13 +80,19 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
         }
     }
 
+    func passwordEntered(account: Account?) {
+        self.alreadyScanned = false
+        if account != nil {
+            loginToApp(account: account!)
+        }
+    }
+
     func loginToApp(account: Account) {
         dismissKeyboard()
 
         let keychain = Keychain(service: "network.o3.neo.wallet")
         Authenticated.account = account
         Channel.pushNotificationEnabled(true)
-
         DispatchQueue.main.async {
             HUD.show(.labeledProgress(title: nil, subtitle: OnboardingStrings.selectingBestNodeTitle))
         }
@@ -112,13 +123,23 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
         }
     }
 
+    func invalidKeyDetected() {
+        DispatchQueue.main.async {
+            OzoneAlert.alertDialog(message: OnboardingStrings.invalidKey, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+                self.alreadyScanned = false
+            }
+        }
+    }
+
     func attemptLoginWithKey(key: String) {
         if key.count == 58 && key.hasPrefix("6P") {
             DispatchQueue.main.async {
-                self.presentWalletGeneratedViewController()
+                self.presentNEP2Detected()
             }
         } else if let account = Account(wif: key) {
             loginToApp(account: account)
+        } else {
+            invalidKeyDetected()
         }
     }
 
@@ -136,8 +157,12 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
         }
 
         if supportedCodeTypes.contains(metadataObj.type) {
-            if let dataString = metadataObj.stringValue {
-                attemptLoginWithKey(key: dataString)
+            if !alreadyScanned {
+                if let dataString = metadataObj.stringValue {
+                    keyTextView.text = dataString.trim()
+                    alreadyScanned = true
+                    attemptLoginWithKey(key: dataString)
+                }
             }
         }
     }

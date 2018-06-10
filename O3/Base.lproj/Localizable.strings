@@ -109,10 +109,13 @@
 "ONBOARDING_Create_Wallet_No_Passcode_Error" = "In order to create a new wallet you have to have a passcode set on your device. This ensures that your funds are always secure";
 
 /* Email body when sending Nep-2 backup */
-"ONBOARDING_email_body" = "Thank you for choosing the O3 Wallet!\n\n Here is an ecrypted private key that you just created!\n\n You can use this key, along with the password that you created in O3 in the event that you are locked out of your wallet.\n\n%@\n\n To login follow these steps:\n\nOpen the O3 App\n\nSelect Login\n\nEither enter the text key or scan the attached QR Code\n\nEnter your password\n\nAnd you're in!\n\nThanks again for using O3!";
+"ONBOARDING_email_body" = "Thank you for choosing the O3 Wallet!\n\n Here is an ecrypted private key that you just created!\n\n You can use this key, along with the password that you created in O3 in the event that you are locked out of your wallet.\n\n%@\n\n To login follow these steps:\n\n1) Open the O3 App\n2)Select Login\n3) Either enter the text key or scan the attached QR Code\n4) Enter your password\n\nAnd you're in!\nThanks again for using O3!";
 
 /* Email subject when sending NEP-2 backup */
 "ONBOARDING_email_subject" = "O3 Wallet Encrypted Key Backup";
+
+/* Title for when user tries to login with encrypted key */
+"ONBOARDING_encrypted_key_detected" = "Encrypted Key Detected"; /* NEW */
 
 /* Title when reentering backup */
 "ONBOARDING_enter_private_key" = "Enter private key";
@@ -127,7 +130,10 @@
 "ONBOARDING_finish" = "Finish";
 
 /* Ok got it */
-"ONBOARDING_got_it" = "Ok, Got It!"; /* NEW */
+"ONBOARDING_got_it" = "Ok, Got It!";
+
+/* An alert message for when an invalid key is detected */
+"ONBOARDING_invalid_key" = "This is an invalid private key, please try again"; /* NEW */
 
 /* Message to display when invalid password is entered */
 "ONBOARDING_invalid_password" = "You've entered an invalid password.";
@@ -198,11 +204,17 @@
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
 "ONBOARDING_Please_Backup Warning" = "Please backup this private key in another secure location.\n\nIt is highly reccomended that you have a passcode set on your iPhone. Removing the passcode from your device will delete your private key from the keychain.";
 
+/* Subtitle for when unlocking the nep2 key */
+"ONBOARDING_please_enter_nep2_password" = "Enter the password you used to secure this private key."; /* NEW */
+
 /* Please take a moment to make a backup of your private key */
-"ONBOARDING_Please_Take_A_Moment" = "Please take a moment to backup a copy of your private key"; /* NEW */
+"ONBOARDING_Please_Take_A_Moment" = "Please take a moment to backup a copy of your private key";
+
+/* A label for entering the private key field, can be NEP2 or WIF */
+"ONBOARDING_private_key" = "Your Private Key (WIF or NEP2"; /* NEW */
 
 /* A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF) */
-"ONBOARDING_Private_Key_title" = "Your Private Key (WIF)";
+"ONBOARDING_Private_Key_title" = "Your Private Key (WIF or NEP2)";
 
 /* Text showing reccommended backup option */
 "ONBOARDING_Reccommended" = "Most Secure";
@@ -227,6 +239,9 @@
 
 /* Title to start the app after completing the onboarding */
 "ONBOARDING_Start_Action_Title" = "Start";
+
+/* Title for button to decrypt private key and continue itno app */
+"ONBOARDING_submit" = "Submit"; /* NEW */
 
 /* Subtitle for the animation header when learning more */
 "ONBOARDING_Subtitle_Animation_Header" = "This key will be used to log into your wallet, back it up before continuing";
@@ -283,7 +298,7 @@
 "ONBOARDING_Tutorial_Title_Two" = "Your private key";
 
 /* Title for wallet generated popup */
-"ONBOARDING_Wallet_Generated" = "Wallet Generated!"; /* NEW */
+"ONBOARDING_Wallet_Generated" = "Wallet Generated!";
 
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "Welcome!";

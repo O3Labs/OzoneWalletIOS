@@ -114,6 +114,9 @@
 /* Email subject when sending NEP-2 backup */
 "ONBOARDING_email_subject" = "ONBOARDING_email_subject";
 
+/* Title for when user tries to login with encrypted key */
+"ONBOARDING_encrypted_key_detected" = "ONBOARDING_encrypted_key_detected"; /* NEW */
+
 /* Title when reentering backup */
 "ONBOARDING_enter_private_key" = "ONBOARDING_enter_private_key";
 
@@ -127,7 +130,10 @@
 "ONBOARDING_finish" = "ONBOARDING_finish";
 
 /* Ok got it */
-"ONBOARDING_got_it" = "ONBOARDING_got_it"; /* NEW */
+"ONBOARDING_got_it" = "ONBOARDING_got_it";
+
+/* An alert message for when an invalid key is detected */
+"ONBOARDING_invalid_key" = "ONBOARDING_invalid_key"; /* NEW */
 
 /* Message to display when invalid password is entered */
 "ONBOARDING_invalid_password" = "ONBOARDING_invalid_password";
@@ -198,8 +204,14 @@
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
 "ONBOARDING_Please_Backup Warning" = "请在安全的情况下备份该私钥。\n\n我们强烈建议您在自己的iPhone上设置好密码。若删除您设备上的密码，钥匙串上的私钥也将被删除。";
 
+/* Subtitle for when unlocking the nep2 key */
+"ONBOARDING_please_enter_nep2_password" = "ONBOARDING_please_enter_nep2_password"; /* NEW */
+
 /* Please take a moment to make a backup of your private key */
-"ONBOARDING_Please_Take_A_Moment" = "ONBOARDING_Please_Take_A_Moment"; /* NEW */
+"ONBOARDING_Please_Take_A_Moment" = "ONBOARDING_Please_Take_A_Moment";
+
+/* A label for entering the private key field, can be NEP2 or WIF */
+"ONBOARDING_private_key" = "ONBOARDING_private_key"; /* NEW */
 
 /* A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF) */
 "ONBOARDING_Private_Key_title" = "您的私钥（WIF）";
@@ -227,6 +239,9 @@
 
 /* Title to start the app after completing the onboarding */
 "ONBOARDING_Start_Action_Title" = "开始";
+
+/* Title for button to decrypt private key and continue itno app */
+"ONBOARDING_submit" = "ONBOARDING_submit"; /* NEW */
 
 /* Subtitle for the animation header when learning more */
 "ONBOARDING_Subtitle_Animation_Header" = "ONBOARDING_Subtitle_Animation_Header";
@@ -283,7 +298,7 @@
 "ONBOARDING_Tutorial_Title_Two" = "ONBOARDING_Tutorial_Title_Two";
 
 /* Title for wallet generated popup */
-"ONBOARDING_Wallet_Generated" = "ONBOARDING_Wallet_Generated"; /* NEW */
+"ONBOARDING_Wallet_Generated" = "ONBOARDING_Wallet_Generated";
 
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "欢迎使用O3钱包";

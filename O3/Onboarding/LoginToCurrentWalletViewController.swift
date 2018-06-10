@@ -58,17 +58,33 @@ class LoginToCurrentWalletViewController: UIViewController {
         login()
     }
 
+    func performLogout() {
+        O3Cache.clear()
+        try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
+        Authenticated.account = nil
+        UserDefaultsManager.o3WalletAddress = nil
+        NotificationCenter.default.post(name: Notification.Name("loggedOut"), object: nil)
+        self.dismiss(animated: false)
+    }
+
     @IBAction func didTapLogin(_ sender: Any) {
         login()
     }
 
     @IBAction func didTapCancel(_ sender: Any) {
-        SwiftTheme.ThemeManager.setTheme(index: 2)
-        UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()
+        SwiftTheme.ThemeManager.setTheme(index: 0)
+        OzoneAlert.confirmDialog(message: SettingsStrings.logoutWarning, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: SettingsStrings.logout, didCancel: {
+
+        }, didConfirm: {
+            self.performLogout()
+            self.view.window!.rootViewController?.dismiss(animated: false)
+            UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()
+
+        })
     }
 
     func setLocalizedStrings() {
-        cancelButton.setTitle(OzoneAlert.cancelNegativeConfirmString, for: UIControlState())
+        cancelButton.setTitle(SettingsStrings.logout, for: UIControlState())
         if #available(iOS 8.0, *) {
             var error: NSError?
             let hasTouchID = LAContext().canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error)

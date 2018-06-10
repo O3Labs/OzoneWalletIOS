@@ -74,7 +74,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
             let json = NeoutilsGenerateNEP6FromEncryptedKey("My O3 Wallet", "My O3 Address", nep2?.address(), nep2?.encryptedKey())
             let nep2String = (nep2?.encryptedKey())!
 
-            let image = UIImage(qrData: nep2String, width: 150, height: 150, qrLogoName: "ic_QRkey")
+            let image = UIImage(qrData: nep2String, width: 200, height: 200, qrLogoName: "ic_QRkey")
             let imageData = UIImagePNGRepresentation(image) ?? nil
             let composeVC = MFMailComposeViewController()
             composeVC.mailComposeDelegate = self

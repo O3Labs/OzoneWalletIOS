@@ -27,19 +27,6 @@
                                     <constraint firstAttribute="height" constant="60" id="eAy-3g-fm7"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BgK-hP-zRg">
-                                <rect key="frame" x="20" y="563" width="335" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="loM-6c-2Pc"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
-                                <state key="normal" title="Cancel">
-                                    <color key="titleColor" name="grey"/>
-                                </state>
-                                <connections>
-                                    <action selector="didTapCancel:" destination="xk2-J6-ZVf" eventType="touchUpInside" id="MOK-i6-sAC"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zxT-w2-Mdf">
                                 <rect key="frame" x="20" y="373.5" width="335" height="44"/>
                                 <constraints>
@@ -53,17 +40,30 @@
                                     <action selector="didTapLogin:" destination="xk2-J6-ZVf" eventType="touchUpInside" id="5Yd-bD-6Qh"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BgK-hP-zRg">
+                                <rect key="frame" x="20" y="46" width="335" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="loM-6c-2Pc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" name="grey"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapCancel:" destination="xk2-J6-ZVf" eventType="touchUpInside" id="MOK-i6-sAC"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="hCT-fL-H0W" firstAttribute="trailing" secondItem="BgK-hP-zRg" secondAttribute="trailing" constant="20" id="8ka-2J-QF4"/>
                             <constraint firstItem="zxT-w2-Mdf" firstAttribute="top" secondItem="Foa-Cs-0Cp" secondAttribute="bottom" constant="20" id="Ife-DC-JPu"/>
+                            <constraint firstItem="BgK-hP-zRg" firstAttribute="top" secondItem="hCT-fL-H0W" secondAttribute="top" constant="26" id="MIf-2w-WfF"/>
                             <constraint firstItem="zxT-w2-Mdf" firstAttribute="leading" secondItem="hCT-fL-H0W" secondAttribute="leading" constant="20" id="Tbw-uL-AGR"/>
                             <constraint firstItem="Foa-Cs-0Cp" firstAttribute="centerX" secondItem="hCT-fL-H0W" secondAttribute="centerX" id="Zro-Ga-ZxX"/>
                             <constraint firstItem="hCT-fL-H0W" firstAttribute="trailing" secondItem="zxT-w2-Mdf" secondAttribute="trailing" constant="20" id="rt1-rQ-sU0"/>
                             <constraint firstItem="BgK-hP-zRg" firstAttribute="leading" secondItem="hCT-fL-H0W" secondAttribute="leading" constant="20" id="sdQ-Zc-u6o"/>
                             <constraint firstItem="Foa-Cs-0Cp" firstAttribute="centerY" secondItem="hCT-fL-H0W" secondAttribute="centerY" constant="-20" id="uJZ-RY-gPZ"/>
-                            <constraint firstItem="hCT-fL-H0W" firstAttribute="bottom" secondItem="BgK-hP-zRg" secondAttribute="bottom" constant="60" id="xiW-RT-DQK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="hCT-fL-H0W"/>
                     </view>
@@ -248,7 +248,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="JZQ-du-D87">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="Suu-B5-bcr">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -423,7 +423,16 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="22"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="lightThemeOrange"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="passwordTyped:" destination="M06-g3-HaP" eventType="editingChanged" id="2xO-N2-vmG"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -465,6 +474,7 @@
                         <outlet property="alertContainer" destination="meL-Oc-e4m" id="wFq-JS-PBY"/>
                         <outlet property="animationContainer" destination="qPY-wZ-wjO" id="SDa-CY-cBa"/>
                         <outlet property="doneButton" destination="CUP-es-ofi" id="M5A-cW-Gcb"/>
+                        <outlet property="nep2PasswordField" destination="r2h-US-9B6" id="la0-Oi-kJY"/>
                         <outlet property="subtitleLabel" destination="hYn-zE-ZMH" id="B27-3R-yXV"/>
                         <outlet property="titleView" destination="7hZ-B5-NJo" id="Jlk-aK-oBg"/>
                     </connections>
@@ -479,20 +489,11 @@
         <namedColor name="grey">
             <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="grey">
-            <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="lightGreyTransparent">
             <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="0.20000000300000001" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="lightThemeGreen">
             <color red="0.4941176471" green="0.82745098039999998" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="lightThemeGreen">
-            <color red="0.4941176471" green="0.82745098039999998" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="lightThemeOrange">
-            <color red="0.96078431372549022" green="0.65098039215686276" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="lightThemeOrange">
             <color red="0.96078431372549022" green="0.65098039215686276" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -502,15 +503,6 @@
         </namedColor>
         <namedColor name="textColor">
             <color red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textColor">
-            <color red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textColor">
-            <color red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textColor">
-            <color red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
