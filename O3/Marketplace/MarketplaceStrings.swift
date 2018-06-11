@@ -10,4 +10,5 @@ import Foundation
 
 struct MarketplaceStrings {
     static var Marketplace = NSLocalizedString("MARKETPLACE_title", comment: "Title for marketplace section in app")
+    static var searchTokens = NSLocalizedString("MARKETPLACE_search_tokens", comment: "PlaceHolder for searching tokens")
 }

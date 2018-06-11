@@ -17,7 +17,7 @@ class PrivateKeyViewController: UIViewController {
         super.viewDidLoad()
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
         privateKeyLabel.text = Authenticated.account?.wif
-        qrView.image = UIImage(qrData: Authenticated.account?.wif ?? "", width: qrView.frame.width, height: qrView.frame.height)
+        qrView.image = UIImage(qrData: Authenticated.account?.wif ?? "", width: qrView.frame.width, height: qrView.frame.height, qrLogoName: "ic_QRkey")
         title = SettingsStrings.privateKeyTitle
     }
 

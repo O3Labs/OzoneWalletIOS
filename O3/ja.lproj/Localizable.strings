@@ -42,6 +42,9 @@
 /* A title for error alert prompts */
 "Error" = "エラー";
 
+/* PlaceHolder for searching tokens */
+"MARKETPLACE_search_tokens" = "MARKETPLACE_search_tokens"; /* NEW */
+
 /* Title for marketplace section in app */
 "MARKETPLACE_title" = "MARKETPLACE_title";
 
@@ -115,7 +118,7 @@
 "ONBOARDING_email_subject" = "ONBOARDING_email_subject";
 
 /* Title for when user tries to login with encrypted key */
-"ONBOARDING_encrypted_key_detected" = "ONBOARDING_encrypted_key_detected"; /* NEW */
+"ONBOARDING_encrypted_key_detected" = "ONBOARDING_encrypted_key_detected";
 
 /* Title when reentering backup */
 "ONBOARDING_enter_private_key" = "ONBOARDING_enter_private_key";
@@ -133,10 +136,10 @@
 "ONBOARDING_got_it" = "ONBOARDING_got_it";
 
 /* An alert message for when an invalid key is detected */
-"ONBOARDING_invalid_key" = "ONBOARDING_invalid_key"; /* NEW */
+"ONBOARDING_invalid_key" = "ONBOARDING_invalid_key";
 
-/* Message to display when invalid password is entered */
-"ONBOARDING_invalid_password" = "ONBOARDING_invalid_password";
+/* Message to display when password is too short */
+"ONBOARDING_invalid_password_length" = "ONBOARDING_invalid_password_length";
 
 /* Error message to display when the system fails to retrieve the private key from the keychain */
 "ONBOARDING_Keychain_Failure_Error" = "キーチェーンからのデータ受信にエラーが発生しました。後ほどもう一度試すか我たちのチームに直接ご連絡ください。";
@@ -201,17 +204,20 @@
 /* Second Info text when confirming that writing down on paper was successful */
 "ONBOARDING_paper_backup_info_two" = "ONBOARDING_paper_backup_info_two";
 
+/* Message to display when the password is mismatched */
+"ONBOARDING_password_mismatch" = "ONBOARDING_password_mismatch";
+
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
 "ONBOARDING_Please_Backup Warning" = "別の安全な場所に秘密鍵をバックアップして下さい。\n\nあなたのiPhoneにパスコードを設定することを強くお勧めします。あなたのデバイスからパスコードを削除すると、秘密鍵がキーチェーンから削除されます。";
 
 /* Subtitle for when unlocking the nep2 key */
-"ONBOARDING_please_enter_nep2_password" = "ONBOARDING_please_enter_nep2_password"; /* NEW */
+"ONBOARDING_please_enter_nep2_password" = "ONBOARDING_please_enter_nep2_password";
 
 /* Please take a moment to make a backup of your private key */
 "ONBOARDING_Please_Take_A_Moment" = "ONBOARDING_Please_Take_A_Moment";
 
 /* A label for entering the private key field, can be NEP2 or WIF */
-"ONBOARDING_private_key" = "ONBOARDING_private_key"; /* NEW */
+"ONBOARDING_private_key" = "ONBOARDING_private_key";
 
 /* A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF) */
 "ONBOARDING_Private_Key_title" = "あなたの秘密鍵（WIF）";
@@ -241,7 +247,7 @@
 "ONBOARDING_Start_Action_Title" = "始める";
 
 /* Title for button to decrypt private key and continue itno app */
-"ONBOARDING_submit" = "ONBOARDING_submit"; /* NEW */
+"ONBOARDING_submit" = "ONBOARDING_submit";
 
 /* Subtitle for the animation header when learning more */
 "ONBOARDING_Subtitle_Animation_Header" = "ONBOARDING_Subtitle_Animation_Header";

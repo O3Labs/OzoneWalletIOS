@@ -24,10 +24,12 @@ class NEP2PasswordViewController: UITableViewController {
         toolbar.sizeToFit()
 
         let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        var doneButton = UIBarButtonItem(title: OnboardingStrings.continueButton, style: .plain, target: self, action: #selector(self.continueTapped(_:)))
         let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.primaryColor,
                                                         NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
-        doneButton.setTitleTextAttributes(attributes, for: UIControlState())
+        let disabledAttributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.disabledColor,
+                                                                NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        doneButton.setTitleTextAttributes(attributes, for: UIControlState.normal)
+        doneButton.setTitleTextAttributes(disabledAttributes, for: UIControlState.disabled)
 
         toolbar.setItems([flexibleButton, doneButton], animated: false)
         toolbar.isUserInteractionEnabled = true
@@ -36,11 +38,13 @@ class NEP2PasswordViewController: UITableViewController {
     }()
 
     var passwordIsSecure = true
+    var doneButton = UIBarButtonItem(title: OnboardingStrings.continueButton, style: .plain, target: self, action: #selector(continueTapped(_:)))
 
     var allowedCharacters = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~`!@#$%^&*()+=-/;:\"\'{}[]<>^?,")
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        doneButton.isEnabled = false
         passwordTextField.inputAccessoryView = inputToolbar
         passwordTextField.setLeftPaddingPoints(CGFloat(10.0))
         passwordTextField.setRightPaddingPoints(CGFloat(10.0))
@@ -53,7 +57,7 @@ class NEP2PasswordViewController: UITableViewController {
         if validatePassword() {
             self.performSegue(withIdentifier: "segueToConfirmPassword", sender: nil)
         } else {
-            OzoneAlert.alertDialog(message: OnboardingStrings.invalidPassword, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+            OzoneAlert.alertDialog(message: OnboardingStrings.invalidPasswordLength, dismissTitle: OzoneAlert.okPositiveConfirmString) {
 
             }
         }
@@ -82,6 +86,14 @@ class NEP2PasswordViewController: UITableViewController {
             showButton.alpha = CGFloat(0.3)
         } else {
             showButton.alpha = CGFloat(1.0)
+        }
+    }
+
+    @IBAction func textfieldChanged(_ sender: Any) {
+        if passwordTextField.text == "" {
+            doneButton.isEnabled = false
+        } else {
+            doneButton.isEnabled = true
         }
     }
 

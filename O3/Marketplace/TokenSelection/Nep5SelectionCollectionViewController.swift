@@ -49,6 +49,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         setThemedElements()
         collectionView.dataSource = self
         collectionView.delegate = self
+        searchBar.change(textFont: UIFont(name: "Avenir-Book", size: CGFloat(14)))
         searchBar.delegate = self
         self.hideKeyboardWhenTappedAround()
         loadTokens()
@@ -126,7 +127,15 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         searchBar.setBackgroundImage(background, for: .any, barMetrics: UIBarMetrics.default)
     }
 
-    func setLocalizedStrings() {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
 
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
+
+    func setLocalizedStrings() {
+        searchBar.placeholder = MarketplaceStrings.searchTokens
     }
 }

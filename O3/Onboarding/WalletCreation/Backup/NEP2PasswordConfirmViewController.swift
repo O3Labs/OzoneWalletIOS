@@ -30,10 +30,12 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
         toolbar.barTintColor = .white
         toolbar.sizeToFit()
         let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        var doneButton = UIBarButtonItem(title: OnboardingStrings.continueButton, style: .plain, target: self, action: #selector(self.continueButtonTapped(_:)))
         let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.primaryColor,
-                                                       NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
-        doneButton.setTitleTextAttributes(attributes, for: UIControlState())
+                                                        NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        let disabledAttributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.disabledColor,
+                                                                NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        doneButton.setTitleTextAttributes(attributes, for: UIControlState.normal)
+        doneButton.setTitleTextAttributes(disabledAttributes, for: UIControlState.disabled)
         toolbar.setItems([flexibleButton, doneButton], animated: false)
         toolbar.isUserInteractionEnabled = true
 
@@ -41,9 +43,11 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
     }()
 
     var passwordIsSecure = true
+    var doneButton = UIBarButtonItem(title: OnboardingStrings.continueButton, style: .plain, target: self, action: #selector(continueButtonTapped(_:)))
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        doneButton.isEnabled = false
         passwordField.inputAccessoryView = inputToolbar
         passwordField.setLeftPaddingPoints(CGFloat(10.0))
         passwordField.setRightPaddingPoints(CGFloat(10.0))
@@ -57,6 +61,14 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
             return true
         }
         return false
+    }
+
+    @IBAction func textFieldChanged(_ sender: Any) {
+        if passwordField.text == "" {
+            doneButton.isEnabled = false
+        } else {
+            doneButton.isEnabled = true
+        }
     }
 
     @IBAction func continueButtonTapped(_ sender: Any) {
@@ -93,7 +105,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
                 self.present(composeVC, animated: true, completion: nil)
             }
         } else {
-            OzoneAlert.alertDialog(message: OnboardingStrings.invalidPassword, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+            OzoneAlert.alertDialog(message: OnboardingStrings.passwordMismatch, dismissTitle: OzoneAlert.okPositiveConfirmString) {
 
             }
         }

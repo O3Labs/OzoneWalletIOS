@@ -100,7 +100,8 @@ struct OnboardingStrings {
     static let mailNotSetupTitle = NSLocalizedString("ONBOARDING_mail_not_setup_title", comment: "Title when error and mail is not yet setup")
     static let mailNotSetupMessage = NSLocalizedString("ONBOARDING_mail_not_setup_message", comment: "Message to display when the email is not setup on the phone")
     static let failedToSendEmailDescription = NSLocalizedString("ONBOARDING_failed_to_send_email", comment: "Message to display when send email could not finish correctly")
-    static let invalidPassword = NSLocalizedString("ONBOARDING_invalid_password", comment: "Message to display when invalid password is entered")
+    static let invalidPasswordLength = NSLocalizedString("ONBOARDING_invalid_password_length", comment: "Message to display when password is too short")
+    static let passwordMismatch = NSLocalizedString("ONBOARDING_password_mismatch", comment: "Message to display when the password is mismatched")
 
     //Login Screen
     static let loginNoPassCodeError = NSLocalizedString("ONBOARDING_Login_No_Passcode_Error", comment: "Error message that is displayed when the user tries to login without a passcode")
