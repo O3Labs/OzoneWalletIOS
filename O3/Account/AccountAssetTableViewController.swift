@@ -54,112 +54,21 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         applyNavBarTheme()
-        loadClaimableGAS()
-
-        //refreshClaimableGasTimer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(AccountAssetTableViewController.loadClaimableGAS), userInfo: nil, repeats: true)
         tableView.refreshControl = UIRefreshControl()
-        self.tableView.refreshControl?.beginRefreshing()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        loadClaimableGAS()
     }
 
     @objc func reloadAllData() {
         loadAccountState()
         loadClaimableGAS()
-        DispatchQueue.main.async { self.tableView.reloadData() }
-    }
-
-    func claimGas() {
-        self.enableClaimButton(enable: false)
-        Authenticated.account?.claimGas(network: AppState.network, seedURL: AppState.bestSeedNodeURL) { success, error in
-
-            if error != nil {
-                //if error then try again in 10 seconds
-                DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                    self.claimGas()
-                }
-            }
-
-            if success == true {
-                DispatchQueue.main.async {
-                    OzoneAlert.alertDialog(message: OzoneAlert.errorTitle, dismissTitle: SendStrings.transactionFailedTitle) {
-                        return
-                    }
-                }
-            }
-
-            Answers.logCustomEvent(withName: "Gas Claimed",
-                                   customAttributes: ["Amount": self.mostRecentClaimAmount])
-            DispatchQueue.main.async {
-                HUD.hide()
-                OzoneAlert.alertDialog(message: AccountStrings.successfulClaimPrompt, dismissTitle: OzoneAlert.okPositiveConfirmString) {
-                    UserDefaultsManager.numClaims += 1
-                    if UserDefaultsManager.numClaims == 1 || UserDefaultsManager.numClaims % 10 == 0 {
-                        SKStoreReviewController.requestReview()
-                    }
-                }
-
-                //save latest claim time interval here to limit user to only claim every 5 minutes
-                let now = Date().timeIntervalSince1970
-                UserDefaults.standard.set(now, forKey: "lastetClaimDate")
-                UserDefaults.standard.synchronize()
-
-                self.isClaiming = false
-                self.loadClaimableGAS()
-            }
-        }
-    }
-
-    func enableClaimButton(enable: Bool) {
-        let indexPath = IndexPath(row: 0, section: sections.unclaimedGAS.rawValue)
-        guard let cell = tableView.cellForRow(at: indexPath) as? UnclaimedGASTableViewCell else {
-            return
-        }
-        cell.claimButton.isEnabled = enable && isClaiming == false
-    }
-
-    func prepareClaimingGAS() {
-
-        self.isClaiming = true
-        //refreshClaimableGasTimer.invalidate()
-     //   refreshClaimableGasTimer = Timer()
-
-        //select best node
-        if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
-            AppState.bestSeedNodeURL = bestNode
-        }
-
-        //we are able to claim gas only when there is data in the .claims array
-        if self.claims != nil && self.claims!.claims.count > 0 {
-            DispatchQueue.main.async {
-                self.claimGas()
-            }
-            return
-        }
-
-        //to be able to claim. we need to send the entire NEO to ourself.
-        var customAttributes: [TransactionAttritbute] = []
-        let remark = String(format: "O3XFORCLAIM")
-        customAttributes.append(TransactionAttritbute(remark: remark))
-
-        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: Double(self.neoBalance), toAddress: (Authenticated.account?.address)!, attributes: customAttributes) { completed, _ in
-            if completed == false {
-                HUD.hide()
-                self.enableClaimButton(enable: true)
-                return
-            }
-            DispatchQueue.main.async {
-                //if completed then mark the flag that we are claiming GAS
-                self.isClaiming = true
-
-                //disable button and invalidate the timer to refresh claimable GAS
-
-               // self.refreshClaimableGasTimer.invalidate()
-               // self.refreshClaimableGasTimer = Timer()
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                    self.claimGas()
-                }
-            }
+        DispatchQueue.main.async {
+            self.tableView.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
         }
     }
 
@@ -171,41 +80,11 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         if self.isClaiming == true {
             return
         }
-
-        O3APIClient(network: AppState.network).getClaims(address: (Authenticated.account?.address)!) { result in
-            DispatchQueue.main.async { self.tableView.refreshControl?.endRefreshing() }
-            switch result {
-            case .failure:
-                return
-            case .success(let claims):
-                self.claims = claims
-                self.mostRecentClaimAmount = NSDecimalNumber(decimal: claims.gas).doubleValue
-                DispatchQueue.main.async {
-                    self.showClaimableGASAmount(amount: self.mostRecentClaimAmount)
-                }
-            }
+        let indexPath = IndexPath(row: 0, section: sections.unclaimedGAS.rawValue)
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? ClaimableGASTableViewCell else {
+            return
         }
-    }
-
-    func showClaimableGASAmount(amount: Double) {
-        DispatchQueue.main.async {
-            let indexPath = IndexPath(row: 0, section: sections.unclaimedGAS.rawValue)
-            guard let cell = self.tableView.cellForRow(at: indexPath) as? UnclaimedGASTableViewCell else {
-                return
-            }
-            cell.amountLabel.text = amount.string(8, removeTrailing: true)
-
-            //only enable button if latestClaimDate is more than 5 minutes
-            let latestClaimDateInterval: Double = UserDefaults.standard.double(forKey: "lastetClaimDate")
-            let latestClaimDate: Date = Date(timeIntervalSince1970: latestClaimDateInterval)
-            let diff = Date().timeIntervalSince(latestClaimDate)
-            if diff > (5 * 60) {
-                cell.claimButton.isEnabled = true
-            } else {
-                cell.claimButton.isEnabled = false
-            }
-            cell.claimButton.isEnabled = amount > 0
-        }
+        cell.loadClaimableGAS()
     }
 
     func updateCacheAndLocalBalance(accountState: AccountState) {
@@ -255,7 +134,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == sections.unclaimedGAS.rawValue {
-            return 108.0
+            return 150.0
         } else if indexPath.section == sections.toolbar.rawValue {
             return 80.0
         }
@@ -264,12 +143,12 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == sections.unclaimedGAS.rawValue {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-unclaimedgas") as? UnclaimedGASTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-claimable-gas") as? ClaimableGASTableViewCell else {
                 let cell =  UITableViewCell()
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
-            cell.delegate = self
+//            cell.delegate = self
             return cell
         }
 
@@ -382,15 +261,3 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     }
 }
 
-extension AccountAssetTableViewController: UnclaimGASDelegate {
-    func claimButtonTapped() {
-        DispatchQueue.main.async {
-            if self.neoBalance == 0 {
-                return
-            }
-            HUD.show(.labeledProgress(title: AccountStrings.claimingInProgressTitle, subtitle: AccountStrings.claimingInProgressSubtitle))
-            self.enableClaimButton(enable: false)
-            self.prepareClaimingGAS()
-        }
-    }
-}
