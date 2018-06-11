@@ -42,6 +42,9 @@
 /* A title for error alert prompts */
 "Error" = "Error";
 
+/* PlaceHolder for searching tokens */
+"MARKETPLACE_search_tokens" = "Search tokens"; /* NEW */
+
 /* Title for marketplace section in app */
 "MARKETPLACE_title" = "Marketplace";
 
@@ -49,7 +52,7 @@
 "NEWSFEED_News_Title" = "News Feed";
 
 /* A prompt asking the user to please confirm that they have indeed backed up their private key in a secure location before continuing */
-"ONBARDING_Confirmed_Private_Key_Saved_Prompt" = "Please confirm that you have backed up your private key in a secure offline location.";
+"ONBARDING_Confirmed_Private_Key_Saved_Prompt" = "Please confirm that you have backed up your Private Key in a secure, offline location.";
 
 /* On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using TouchID */
 "ONBOARDING Login_Button_Specifying_Biometric" = "Login using TouchID or FaceID";
@@ -58,16 +61,16 @@
 "ONBOARDING Login_Button_Specifying_PassCode" = "Login using Passcode";
 
 /* When the user tries to create a new wallet, but they already have one saved on the devicve, this explanation/warning is given to the user */
-"ONBOARDING_Already_Have_Wallet_Explanation" = "Looks like you already have an existing wallet on this device.\n\n Creating a new wallet will write the new private key over the existing one. Please make sure you have your private key backed up.";
+"ONBOARDING_Already_Have_Wallet_Explanation" = "Looks like you already have an existing wallet on this device.\n\n Creating a new wallet will write the new Private Key over the existing one. Please make sure you have your Private Key backed up.";
 
 /* Button title to go back in the tutorial page */
 "ONBOARDING_back" = "Back";
 
 /* Title menu to backup private key */
-"ONBOARDING_Backup" = "Backup Options";
+"ONBOARDING_Backup" = "Backup options";
 
 /* Tutle for backing private key and moving to end */
-"ONBOARDING_backup_and_continue" = "Backup & Continue";
+"ONBOARDING_backup_and_continue" = "Backup & continue";
 
 /* Title for option to backup the key by copying to clipboard */
 "ONBOARDING_Backup_Copy_Title" = "Copy to clipboard";
@@ -109,16 +112,16 @@
 "ONBOARDING_Create_Wallet_No_Passcode_Error" = "In order to create a new wallet you have to have a passcode set on your device. This ensures that your funds are always secure";
 
 /* Email body when sending Nep-2 backup */
-"ONBOARDING_email_body" = "Thank you for choosing the O3 Wallet!\n\n Here is an ecrypted private key that you just created!\n\n You can use this key, along with the password that you created in O3 in the event that you are locked out of your wallet.\n\n%@\n\n To login follow these steps:\n\n1) Open the O3 App\n2)Select Login\n3) Either enter the text key or scan the attached QR Code\n4) Enter your password\n\nAnd you're in!\nThanks again for using O3!";
+"ONBOARDING_email_body" = "Thank you for choosing the O3 Wallet!\n\n Here is the encrypted Private Key that you just created!\n\n You can use this key, along with the password that you created in O3 in the event that you are locked out of your wallet.\n\n%@\n\n To login follow these steps:\n\n1) Open the O3 App\n2) Select Login\n3) Either enter the text key or scan the attached QR Code\n4) Enter your password\n\nAnd you're in!\nThanks again for using O3!";
 
 /* Email subject when sending NEP-2 backup */
 "ONBOARDING_email_subject" = "O3 Wallet Encrypted Key Backup";
 
 /* Title for when user tries to login with encrypted key */
-"ONBOARDING_encrypted_key_detected" = "Encrypted Key Detected"; /* NEW */
+"ONBOARDING_encrypted_key_detected" = "Encrypted Key Detected";
 
 /* Title when reentering backup */
-"ONBOARDING_enter_private_key" = "Enter private key";
+"ONBOARDING_enter_private_key" = "Enter Private Key";
 
 /* Prompt asking the user to authenticate themselves when they already have a wallet stored on device. */
 "ONBOARDING_Existing_Wallet_Authentication_Prompt" = "Login to your existing wallet stored on this device";
@@ -130,28 +133,28 @@
 "ONBOARDING_finish" = "Finish";
 
 /* Ok got it */
-"ONBOARDING_got_it" = "Ok, Got It!";
+"ONBOARDING_got_it" = "Ok, got it!";
 
 /* An alert message for when an invalid key is detected */
-"ONBOARDING_invalid_key" = "This is an invalid private key, please try again"; /* NEW */
+"ONBOARDING_invalid_key" = "This is an invalid Private Key, please try again";
 
-/* Message to display when invalid password is entered */
-"ONBOARDING_invalid_password" = "You've entered an invalid password.";
+/* Message to display when password is too short */
+"ONBOARDING_invalid_password_length" = "Your password is too short to encrypt the key. It must be at least 8 characters in length.";
 
 /* Error message to display when the system fails to retrieve the private key from the keychain */
 "ONBOARDING_Keychain_Failure_Error" = "There has been an error when attempting to retrieve data from the keychain. Please try again later or contact our team directly.";
 
 /* The fifth subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Five" = "Get started by setting up a new wallet or logging in with your private key";
+"ONBOARDING_Landing_Subtitle_Five" = "Get started by setting up a new wallet or logging in with your Private Key.";
 
 /* The fourth subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Four" = "Get the latest NEO news and discover new projects from right inside the app";
+"ONBOARDING_Landing_Subtitle_Four" = "Get the latest NEO news and discover new projects from right inside the app.";
 
 /* The first subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_One" = "A simple, user-friendly smart wallet, designed for the smart economy";
+"ONBOARDING_Landing_Subtitle_One" = "A simple, user-friendly smart wallet, designed for the Smart Economy.";
 
 /* The third subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Three" = "With latest security features, you can be sure your assets are safe and sound.";
+"ONBOARDING_Landing_Subtitle_Three" = "With the latest security features, you can be sure your assets are safe and sound.";
 
 /* The second subtitle in the landing pages */
 "ONBOARDING_Landing_Subtitle_Two" = "Send, receive, claim GAS & manage NEP5 Tokens all in one place with ease.";
@@ -166,16 +169,16 @@
 "ONBOARDING_Landing_Title_One" = "Welcome to O3";
 
 /* The third title in the landing pages */
-"ONBOARDING_Landing_Title_Three" = "Secure and safe.";
+"ONBOARDING_Landing_Title_Three" = "Secure and safe";
 
 /* The second title in the landing pages */
 "ONBOARDING_Landing_Title_Two" = "Built for the NEO Smart Economy";
 
 /* Title for learn more buttong */
-"ONBOARDING_Learn_More" = "Learn More";
+"ONBOARDING_Learn_More" = "Learn more";
 
 /* Subtitle under the text field of the login controller. Explains what to do in textfield */
-"ONBOARDING_Login_Input_Info_Title" = "Login to your wallet using your NEO private key";
+"ONBOARDING_Login_Input_Info_Title" = "Login to your wallet using your NEO Private Key";
 
 /* Error message that is displayed when the user tries to login without a passcode */
 "ONBOARDING_Login_No_Passcode_Error" = "In order to login you have to have a passcode set on your device. This ensures that your funds are always secure.";
@@ -190,7 +193,7 @@
 "ONBOARDING_mail_not_setup_title" = "Mail not setup";
 
 /* Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key */
-"ONBOARDING_not_matched_wif" = "Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key.";
+"ONBOARDING_not_matched_wif" = "Oh no! Looks like your backup copy doesn't match your Private Key. Try again, or go back to review your Private Key.";
 
 /* Seperator for login and create new wallet */
 "ONBOARDING_OR" = "——  OR  ——";
@@ -199,28 +202,31 @@
 "ONBOARDING_paper_backup_info_one" = "Sometimes people make a mistake when they write down their key on paper.";
 
 /* Second Info text when confirming that writing down on paper was successful */
-"ONBOARDING_paper_backup_info_two" = "We just want to make sure that the backup you have just made is accurate. Please confirm your private key below";
+"ONBOARDING_paper_backup_info_two" = "We just want to make sure that the backup you have just made is accurate. Please confirm your Private Key below.";
+
+/* Message to display when the password is mismatched */
+"ONBOARDING_password_mismatch" = "You're passwords did not match, we were unable to encrypt the Private Key. Please double check your passwords";
 
 /* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
-"ONBOARDING_Please_Backup Warning" = "Please backup this private key in another secure location.\n\nIt is highly reccomended that you have a passcode set on your iPhone. Removing the passcode from your device will delete your private key from the keychain.";
+"ONBOARDING_Please_Backup Warning" = "Please backup this Private Key in another secure location.\n\nIt is highly reccomended that you have a passcode set on your iPhone. Removing the passcode from your device will delete your Private Key from the keychain.";
 
 /* Subtitle for when unlocking the nep2 key */
-"ONBOARDING_please_enter_nep2_password" = "Enter the password you used to secure this private key."; /* NEW */
+"ONBOARDING_please_enter_nep2_password" = "Enter the password you used to secure this Private Key.";
 
 /* Please take a moment to make a backup of your private key */
-"ONBOARDING_Please_Take_A_Moment" = "Please take a moment to backup a copy of your private key";
+"ONBOARDING_Please_Take_A_Moment" = "Please take a moment to backup a copy of your Private Key.";
 
 /* A label for entering the private key field, can be NEP2 or WIF */
-"ONBOARDING_private_key" = "Your Private Key (WIF or NEP2"; /* NEW */
+"ONBOARDING_private_key" = "Scan or enter your Private Key (WIF or Encrypted)";
 
 /* A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF) */
-"ONBOARDING_Private_Key_title" = "Your Private Key (WIF or NEP2)";
+"ONBOARDING_Private_Key_title" = "Your Private Key (WIF or Encrypted)";
 
 /* Text showing reccommended backup option */
 "ONBOARDING_Reccommended" = "Most Secure";
 
 /* Description for when reentering password with NEP-2 Description */
-"ONBOARDING_Reenter_Password_Description" = "Please re-enter your password to the confirm the encrypted key was generated successfully";
+"ONBOARDING_Reenter_Password_Description" = "Please re-enter your password to confirm the encrypted key was generated successfully.";
 
 /* Hint for text field when reentering a password */
 "ONBOARDING_Reenter_Password_Hint" = "Re-enter your password";
@@ -229,7 +235,7 @@
 "ONBOARDING_Reenter_Password_title" = "Re-enter password";
 
 /* Description for when the screenshot was taken */
-"ONBOARDING_Screenshot_Alert_Description" = "Although you'll be able to look at your private key in the future, it's a good idea to double check that the screenshot ended up successfully in your photos";
+"ONBOARDING_Screenshot_Alert_Description" = "Although you'll be able to look at your Private Key in the future, it's a good idea to double check that the screenshot ended up successfully in your photos.";
 
 /* Title for when a screenshot was taken */
 "ONBOARDING_Screenshot_Alert_Title" = "Is your screenshot secure?";
@@ -241,10 +247,10 @@
 "ONBOARDING_Start_Action_Title" = "Start";
 
 /* Title for button to decrypt private key and continue itno app */
-"ONBOARDING_submit" = "Submit"; /* NEW */
+"ONBOARDING_submit" = "Submit";
 
 /* Subtitle for the animation header when learning more */
-"ONBOARDING_Subtitle_Animation_Header" = "This key will be used to log into your wallet, back it up before continuing";
+"ONBOARDING_Subtitle_Animation_Header" = "This key will be used to log into your wallet. Back it up before continuing.";
 
 /* Title for the animation header when learning more */
 "ONBOARDING_Title_Animation_Header" = "My Private Key";
@@ -256,31 +262,31 @@
 "ONBOARDING_Tutorial_Emphasis_Three" = "So, please make a copy!";
 
 /* Text for the first info paragraph on the fifth tutorial card */
-"ONBOARDING_Tutorial_Info_One_Five" = "Your key gives full access to your account and funds";
+"ONBOARDING_Tutorial_Info_One_Five" = "Your key gives full access to your account and funds.";
 
 /* Text for the first info paragraph on the fourth tutorial card */
 "ONBOARDING_Tutorial_Info_One_Four" = "O3 recommends making a copy of your key and storing it somewhere safe from theft or damange, in multiple locations if possible.";
 
 /* Text for the first info paragraph on the first tutorial card */
-"ONBOARDING_Tutorial_Info_One_One" = "Your Private Key is very important to making sure your tokens are safe and sound";
+"ONBOARDING_Tutorial_Info_One_One" = "Your Private Key is very important to making sure your tokens are safe and sound.";
 
 /* Text for the first info paragraph on the third tutorial card */
-"ONBOARDING_Tutorial_Info_One_Three" = "If you log out, delete the app or lose your phone, the key will no longer be accessible in the app";
+"ONBOARDING_Tutorial_Info_One_Three" = "If you log out, delete the app or lose your phone, the key will no longer be accessible in the app.";
 
 /* Text for the first info paragraph on the second tutorial card */
-"ONBOARDING_Tutorial_Info_One_Two" = "O3 app uses your private key to access the blockchain where your tokens are stored";
+"ONBOARDING_Tutorial_Info_One_Two" = "O3 app uses your Private Key to access the blockchain where your tokens are stored.";
 
 /* Text for the second info paragraph on the fifth tutorial card */
 "ONBOARDING_Tutorial_Info_Two_Five" = "Never share this key with anyone or post it on the internet. If you do, then your funds can be stolen.";
 
 /* Text for the second info paragraph on the first tutorial card */
-"ONBOARDING_Tutorial_Info_Two_One" = "Here are a few quick tips to help look after it";
+"ONBOARDING_Tutorial_Info_Two_One" = "Here are a few quick tips to help look after it.";
 
 /* Text for the second info paragraph on the third tutorial card */
-"ONBOARDING_Tutorial_Info_Two_Three" = "You will need this key to log back into your wallet again";
+"ONBOARDING_Tutorial_Info_Two_Three" = "You will need this key to log back into your wallet again.";
 
 /* Text for the second info paragraph on the second tutorial card */
-"ONBOARDING_Tutorial_Info_Two_Two" = "The key is stored on your device locally. For security reasons, O3 does not have a copy of this key";
+"ONBOARDING_Tutorial_Info_Two_Two" = "The key is stored on your device locally. For security reasons, O3 does not have a copy of this key.";
 
 /* Title for the fifth tutorial card when creating new wallet */
 "ONBOARDING_Tutorial_Title_Five" = "For your eyes only";
@@ -295,10 +301,10 @@
 "ONBOARDING_Tutorial_Title_Three" = "Don't lose your key";
 
 /* Title for the second tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_Two" = "Your private key";
+"ONBOARDING_Tutorial_Title_Two" = "Your Private Key";
 
 /* Title for wallet generated popup */
-"ONBOARDING_Wallet_Generated" = "Wallet Generated!";
+"ONBOARDING_Wallet_Generated" = "Wallet generated!";
 
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "Welcome!";
@@ -439,7 +445,7 @@
 "SETTINGS_Logout" = "Logout";
 
 /* Warning that appears when attempting to logout from settings */
-"SETTINGS_Logout_Warning" = "Logging out will remove the private key from your device. Please make sure you already back it up or write it down. You will need to restore it from your backup to reenter the application.";
+"SETTINGS_Logout_Warning" = "Logging out will remove the Private Key from your device. Please make sure you already back it up or write it down. You will need to restore it from your backup to reenter the application.";
 
 /* Settings Menu Title for Private Key */
 "SETTINGS_My_Private_Key" = "My Private Key";

@@ -15,7 +15,7 @@ import KeychainAccess
 import Channel
 import PKHUD
 
-class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutputObjectsDelegate, Nep2PasswordDelegate {
+class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutputObjectsDelegate, Nep2PasswordDelegate, UITextViewDelegate {
     @IBOutlet weak var pkeyLabel: UILabel!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var keyTextView: O3TextView!
@@ -43,6 +43,8 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
+        keyTextView.delegate = self
+        loginButton.isEnabled = false
         self.navigationController?.hideHairline()
         let qrView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height * 0.5))
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height * 0.5)
@@ -71,6 +73,16 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
             captureSession!.startRunning()
         } catch {
             return
+        }
+    }
+
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.trim() == "" {
+            loginButton.isEnabled = false
+            loginButton.backgroundColor = Theme.light.disabledColor
+        } else {
+            loginButton.isEnabled = true
+            loginButton.backgroundColor = Theme.light.accentColor
         }
     }
 

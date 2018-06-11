@@ -71,7 +71,7 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            maximizeToFullScreen()
+            maximizeToFullScreen(allowReverse: false)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.performSegue(withIdentifier: "segueToEmailBackup", sender: nil)
             }
@@ -92,7 +92,7 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
             }
 
         } else if indexPath.row == 3 {
-            maximizeToFullScreen()
+            maximizeToFullScreen(allowReverse: false)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.performSegue(withIdentifier: "segueToPaperBackup", sender: nil)
             }

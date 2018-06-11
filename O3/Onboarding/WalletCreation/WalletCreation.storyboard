@@ -613,6 +613,9 @@
                                             <real key="value" value="1"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="textfieldChanged:" destination="AG2-PO-Ebk" eventType="editingChanged" id="MFV-YT-DDe"/>
+                                    </connections>
                                 </textField>
                                 <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pto-FC-pTP">
                                     <rect key="frame" x="273" y="58.5" width="23" height="22"/>
@@ -687,6 +690,9 @@
                                             <real key="value" value="1"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="textFieldChanged:" destination="yzI-Vf-PGd" eventType="editingChanged" id="EWF-NX-wyq"/>
+                                    </connections>
                                 </textField>
                                 <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Hr-9z-wnE">
                                     <rect key="frame" x="273" y="58.5" width="23" height="22"/>
