@@ -14,7 +14,7 @@ import KeychainAccess
 import SwiftTheme
 import PKHUD
 
-class PaperBackupConfirmTableViewController: UITableViewController {
+class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDelegate {
     @IBOutlet weak var paperBackupInfoOneLabel: UILabel!
     @IBOutlet weak var paperBackupInfoTwoLabel: UILabel!
     @IBOutlet weak var wifTextView: O3TextView!
@@ -24,8 +24,12 @@ class PaperBackupConfirmTableViewController: UITableViewController {
         toolbar.barStyle = .default
         toolbar.sizeToFit()
         let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        var doneButton = UIBarButtonItem(title: OnboardingStrings.continueButton, style: .plain, target: self, action: #selector(self.continueButtonTapped(_:)))
-
+        let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.primaryColor,
+                                                        NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        let disabledAttributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.disabledColor,
+                                                        NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        doneButton.setTitleTextAttributes(attributes, for: UIControlState.normal)
+        doneButton.setTitleTextAttributes(disabledAttributes, for: UIControlState.disabled)
         toolbar.setItems([flexibleButton, doneButton], animated: false)
         toolbar.isUserInteractionEnabled = true
 
@@ -33,18 +37,31 @@ class PaperBackupConfirmTableViewController: UITableViewController {
     }()
 
     var wif = ""
+    var doneButton = UIBarButtonItem(title: OnboardingStrings.continueButton, style: .plain, target: self,
+                                     action: #selector(continueButtonTapped(_:)))
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
+        wifTextView.delegate = self
         wifTextView.becomeFirstResponder()
         wifTextView.inputAccessoryView = inputToolbar
+
+        doneButton.isEnabled = false
     }
 
     func setLocalizedStrings() {
         self.title = OnboardingStrings.enterPrivateKey
         paperBackupInfoOneLabel.text = OnboardingStrings.paperBackupInfoOne
         paperBackupInfoTwoLabel.text = OnboardingStrings.paperBackupInfoTwo
+    }
+
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text == "" {
+            doneButton.isEnabled = false
+        } else {
+            doneButton.isEnabled = true
+        }
     }
 
     func loginToApp() {

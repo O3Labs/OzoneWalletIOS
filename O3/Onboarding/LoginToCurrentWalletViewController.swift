@@ -63,6 +63,8 @@ class LoginToCurrentWalletViewController: UIViewController {
         try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
         Authenticated.account = nil
         UserDefaultsManager.o3WalletAddress = nil
+        SwiftTheme.ThemeManager.setTheme(index: 0)
+        UserDefaultsManager.themeIndex = 0
         NotificationCenter.default.post(name: Notification.Name("loggedOut"), object: nil)
         self.dismiss(animated: false)
     }
@@ -72,7 +74,6 @@ class LoginToCurrentWalletViewController: UIViewController {
     }
 
     @IBAction func didTapCancel(_ sender: Any) {
-        SwiftTheme.ThemeManager.setTheme(index: 0)
         OzoneAlert.confirmDialog(message: SettingsStrings.logoutWarning, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: SettingsStrings.logout, didCancel: {
 
         }, didConfirm: {

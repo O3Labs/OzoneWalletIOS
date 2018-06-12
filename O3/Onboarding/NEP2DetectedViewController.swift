@@ -45,8 +45,9 @@ class NEP2DetectedViewController: UIViewController {
         visualEffectView.frame = view.bounds
         view.addSubview(visualEffectView)
         view.bringSubview(toFront: alertContainer)
-        view.isUserInteractionEnabled = true
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(doneButtonTapped(_:))))
+
+        doneButton.isEnabled = false
+
         animationContainer.embed(animationView)
         animationView.loopAnimation = true
         animationView.play()
@@ -97,6 +98,13 @@ class NEP2DetectedViewController: UIViewController {
 
     @IBAction func passwordTyped(_ sender: Any) {
         password = (self.nep2PasswordField.text?.trim())!
+        if password == "" {
+            doneButton.isEnabled = false
+            doneButton.backgroundColor = Theme.light.disabledColor
+        } else {
+            doneButton.isEnabled = true
+            doneButton.backgroundColor = Theme.light.positiveGainColor
+        }
     }
 
     func setLocalizedStrings() {
