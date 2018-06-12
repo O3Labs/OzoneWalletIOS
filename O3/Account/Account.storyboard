@@ -49,7 +49,7 @@
                             <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell-claimable-gas" rowHeight="150" id="TIe-lF-Uu0" customClass="ClaimableGASTableViewCell" customModule="O3" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="150"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TIe-lF-Uu0" id="UlV-wn-pQH">
+                                <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TIe-lF-Uu0" id="UlV-wn-pQH">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
@@ -364,7 +364,7 @@
                                     <outlet property="syncNowButton" destination="XPi-qg-IPl" id="vDb-Cx-zEv"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="walletToolbarCell" rowHeight="108" id="RdN-mi-al3" customClass="WalletToolBarCell" customModule="O3" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="walletToolbarCell" rowHeight="108" id="RdN-mi-al3" customClass="WalletToolBarCell" customModule="O3" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="178" width="375" height="108"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RdN-mi-al3" id="tdN-0H-iLz">
@@ -994,9 +994,6 @@
         <image name="wallet" width="25" height="25"/>
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="grey">
-            <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="lightGreyTransparent">
             <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="0.20000000300000001" colorSpace="custom" customColorSpace="sRGB"/>

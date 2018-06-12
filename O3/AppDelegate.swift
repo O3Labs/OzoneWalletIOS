@@ -158,9 +158,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if Authenticated.account == nil {
             return
         }
-        let address = url.host?.removingPercentEncoding
-        let asset = url.valueOf("asset")
-        let amount = url.valueOf("amount")
+        var updatedURL: URL = url
+        if !url.absoluteString.contains("neo://") {
+            let fullURL = updatedURL.absoluteString.replacingOccurrences(of: "neo:", with: "neo://")
+            updatedURL = URL(string: fullURL)!
+        }
+        let address = updatedURL.host?.removingPercentEncoding
+        let asset = updatedURL.valueOf("asset")
+        let amount = updatedURL.valueOf("amount")
         //Get account state
         O3APIClient(network: AppState.network).getAccountState(address: Authenticated.account!.address) { result in
             DispatchQueue.main.async {
