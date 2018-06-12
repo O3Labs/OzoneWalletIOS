@@ -25,6 +25,8 @@ class ClaimableGASTableViewCell: UITableViewCell {
     @IBOutlet var estimatedClaimableGASLabel: UILabel?
     @IBOutlet var confirmedClaimableGASLabel: UILabel?
     @IBOutlet var successClaimableGASLabel: UILabel?
+    @IBOutlet var claimingActivityIndicator: UIActivityIndicatorView?
+    
     
     
     func setupTheme() {
@@ -41,6 +43,8 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
     
     func resetState() {
+        self.claimingActivityIndicator?.stopAnimating()
+        self.claimNowButton?.isHidden = false
         self.progressBar?.progress = 0
         self.progressBarBackToEstimated?.progress = 0
         self.estimatedClaimableGASContainer?.isHidden = true
@@ -62,6 +66,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
                 return
             case .success(let claims):
                 DispatchQueue.main.async {
+                    if claims.claims.count > 0 {
+                        AppState.setClaimingState(address: Authenticated.account!.address, claimingState: .ReadyToClaim)
+                    }
                     self.displayClaimableState(claimable: claims)
                 }
             }
@@ -70,6 +77,14 @@ class ClaimableGASTableViewCell: UITableViewCell {
     
     func displayClaimableState(claimable: Claimable) {
         self.resetState()
+      
+        //if user already sent NEO to the address and waiting for the claimable data then we show the loading
+        if AppState.claimingState(address: Authenticated.account!.address) == .WaitingForClaimableData {
+            self.startLoading()
+            return
+        }
+        
+        
         let gasDouble = NSDecimalNumber(decimal: claimable.gas).doubleValue
         if claimable.claims.count == 0 {
             //if claim array is empty then we show estimated
@@ -82,6 +97,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
             }
             return
         }
+        
         //if claim array is not empty then we show the confirmed claimable and let user claims
         let gas = gasDouble.string(8, removeTrailing: true)
         self.showConfirmedClaimableGASState(value: gas)
@@ -102,8 +118,15 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
     
     func sendAllNEOToTheAddress() {
-        //TODO show loading
-       
+        //set app state here
+        AppState.setClaimingState(address: (Authenticated.account?.address)!, claimingState: .WaitingForClaimableData)
+        
+        //show loading screen first
+        DispatchQueue.main.async {
+            self.startLoading()
+        }
+        
+        //try to fetch best node
         if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
             AppState.bestSeedNodeURL = bestNode
             #if DEBUG
@@ -119,21 +142,20 @@ class ClaimableGASTableViewCell: UITableViewCell {
         
         Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: O3Cache.neo().value, toAddress: (Authenticated.account?.address)!, attributes: customAttributes) { completed, _ in
             if completed == false {
-                //show error
+                //if sending failed then show error message and load the claimable gas again to reset the state
                 OzoneAlert.alertDialog(message: "Error while trying to send", dismissTitle: "OK", didDismiss: {
                     
                 })
+                self.loadClaimableGAS()
                 return
-            }
-            //if send succeeded then show the loading screen
-            DispatchQueue.main.async {
-                self.startLoading()
             }
         }
     }
     
     
     func claimConfirmedClaimableGAS() {
+        self.claimNowButton?.isHidden = true
+        self.claimingActivityIndicator?.startAnimating()
         //show loading perhaps
         if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
             AppState.bestSeedNodeURL = bestNode
@@ -144,31 +166,37 @@ class ClaimableGASTableViewCell: UITableViewCell {
         }
         
         Authenticated.account?.claimGas(network: AppState.network, seedURL: AppState.bestSeedNodeURL) { success, error in
-            if error != nil {
-                //TODO show error dialog
-                OzoneAlert.alertDialog(message: "Error while trying to claim", dismissTitle: "OK", didDismiss: {
-                    
-                })
-                return
-            }
             
-            if success == true {
-                Answers.logCustomEvent(withName: "Gas Claimed",
-                                       customAttributes: ["Amount": self.confirmedClaimableGASLabel?.text ?? ""])
-                self.claimedSuccess()
-            } else {
-                //TODO figure out when success == false
-                OzoneAlert.alertDialog(message: "Error while trying to claim. Please try again later", dismissTitle: "OK", didDismiss: {
+            DispatchQueue.main.async {
+                
+                if error != nil {
+                    self.claimingActivityIndicator?.stopAnimating()
+                    self.claimNowButton?.isHidden = false
+                    //TODO show error dialog
+                    OzoneAlert.alertDialog(message: "Error while trying to claim", dismissTitle: "OK", didDismiss: {
+                        
+                    })
+                    return
+                }
+                
+                if success == true {
                     
-                })
-                return
+                    self.claimedSuccess()
+                    
+                    Answers.logCustomEvent(withName: "Gas Claimed",
+                                           customAttributes: ["Amount": self.confirmedClaimableGASLabel?.text ?? ""])
+                } else {
+                    //TODO figure out when success == false
+                    OzoneAlert.alertDialog(message: "Error while trying to claim. Please try again later", dismissTitle: "OK", didDismiss: {
+                        
+                    })
+                    return
+                }
             }
-            
         }
     }
     
     @objc @IBAction func syncNowTapped(_ sender: Any) {
-        //send all NEO to the address
         self.sendAllNEOToTheAddress()
     }
     
@@ -177,6 +205,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
     
     func claimedSuccess() {
+        AppState.setClaimingState(address: Authenticated.account!.address, claimingState: .Fresh)
         self.confirmedClaimableGASContainer?.isHidden = true
         self.successContainer?.isHidden = false
         startCountdownBackToEstimated()
@@ -202,7 +231,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
     func startLoading(){
         self.loaderView?.isHidden = false
         self.estimatedClaimableGASContainer?.isHidden = true
-        // Initialization code
+        
         animationView?.layer.transform = CATransform3DScale(CATransform3DMakeRotation(0, 0, 0, 0), -1, 1, 1)
         animationView?.loopAnimation = true
         animationView?.play()

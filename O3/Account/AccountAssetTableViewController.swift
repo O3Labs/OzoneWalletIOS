@@ -138,7 +138,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         } else if indexPath.section == sections.toolbar.rawValue {
             return 80.0
         }
-        return 52.0
+        return 66.0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -148,7 +148,6 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
-//            cell.delegate = self
             return cell
         }
 
@@ -172,11 +171,15 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             if indexPath.row == 0 {
                 cell.titleLabel.text = "NEO"
                 cell.amountLabel.text = neoBalance.description
+                let imageURL = "https://cdn.o3.network/img/neo/NEO.png"
+                cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             }
 
             if indexPath.row == 1 {
                 cell.titleLabel.text = "GAS"
                 cell.amountLabel.text = gasBalance.string(8, removeTrailing: true)
+                let imageURL = "https://cdn.o3.network/img/neo/GAS.png"
+                cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             }
 
             return cell
@@ -192,6 +195,8 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         cell.amountLabel.text = token.value.string(token.decimals, removeTrailing: true)
         cell.titleLabel.text = token.symbol
         cell.subtitleLabel.text = token.name
+        let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", token.symbol.uppercased())
+        cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
         return cell
     }
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {

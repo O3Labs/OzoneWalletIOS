@@ -107,12 +107,15 @@ class TokenSalesListTableViewController: UITableViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let dest = segue.destination as? TokenSaleTableViewController else {
+        guard let dest = segue.destination as? UINavigationController else {
             return
         }
         if segue.identifier == "segueToTokenSale" {
-            let selectedSale = sender as? TokenSales.SaleInfo
-            dest.saleInfo = selectedSale
+            if let vc = dest.viewControllers.first as? TokenSaleTableViewController {
+                let selectedSale = sender as? TokenSales.SaleInfo
+                vc.saleInfo = selectedSale
+            }
+            
         }
     }
 
