@@ -265,7 +265,7 @@
 "ONBOARDING_Tutorial_Info_One_Five" = "Your key gives full access to your account and funds.";
 
 /* Text for the first info paragraph on the fourth tutorial card */
-"ONBOARDING_Tutorial_Info_One_Four" = "O3 recommends making a copy of your key and storing it somewhere safe from theft or damange, in multiple locations if possible.";
+"ONBOARDING_Tutorial_Info_One_Four" = "O3 recommends making a copy of your key and storing it somewhere safe from theft or damage, in multiple locations if possible.";
 
 /* Text for the first info paragraph on the first tutorial card */
 "ONBOARDING_Tutorial_Info_One_One" = "Your Private Key is very important to making sure your tokens are safe and sound.";
