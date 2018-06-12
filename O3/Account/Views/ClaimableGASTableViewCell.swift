@@ -30,7 +30,20 @@ class ClaimableGASTableViewCell: UITableViewCell {
     
     
     func setupTheme() {
+        estimatedClaimableGASLabel?.theme_textColor = O3Theme.titleColorPicker
+        confirmedClaimableGASLabel?.theme_textColor = O3Theme.titleColorPicker
+        successClaimableGASLabel?.theme_textColor = O3Theme.titleColorPicker
         
+        loaderView?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        estimatedClaimableGASContainer?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        confirmedClaimableGASContainer?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        successContainer?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.setupTheme()
     }
     
     func setupView() {
@@ -56,8 +69,8 @@ class ClaimableGASTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.setupView()
-        self.setupTheme()
     }
+    
     
     func loadClaimableGAS() {
         O3APIClient(network: AppState.network).getClaims(address: (Authenticated.account?.address)!) { result in
