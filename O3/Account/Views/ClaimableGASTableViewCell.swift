@@ -27,7 +27,29 @@ class ClaimableGASTableViewCell: UITableViewCell {
     @IBOutlet var successClaimableGASLabel: UILabel?
     @IBOutlet var claimingActivityIndicator: UIActivityIndicatorView?
     
+    @IBOutlet var estimatedTitle: UILabel?
+    @IBOutlet var confirmedTitle: UILabel?
+    @IBOutlet var estimatedClaimableGASTitle: UILabel?
+    @IBOutlet var confirmedClaimableGASTitle: UILabel?
+    @IBOutlet var loadingTitle: UILabel?
+    @IBOutlet var gasClaimedSuccessTitle: UILabel?
+    @IBOutlet var gasClaimedSuccessSubTitle: UILabel?
     
+    func setupLocalizedStrings() {
+        estimatedTitle?.text = AccountStrings.estimatedClaimableGasTitle
+        estimatedClaimableGASTitle?.text = AccountStrings.claimableGasTitle
+        syncNowButton?.setTitle(AccountStrings.updateNowButton, for: .normal)
+        
+        loadingTitle?.text = AccountStrings.checkingForClaimableDataLoadingTitle
+        
+        confirmedTitle?.text = AccountStrings.confirmedClaimableGasTitle
+        confirmedClaimableGASTitle?.text = AccountStrings.claimableGasTitle
+        claimNowButton?.setTitle(AccountStrings.claimNowButton, for: .normal)
+        
+        gasClaimedSuccessTitle?.text = AccountStrings.successClaimTitle
+        gasClaimedSuccessSubTitle?.text = AccountStrings.successClaimSubTitle
+        
+    }
     
     func setupTheme() {
         estimatedClaimableGASLabel?.theme_textColor = O3Theme.titleColorPicker
@@ -68,6 +90,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.setupLocalizedStrings()
         self.setupView()
     }
     
@@ -75,7 +98,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
     func loadClaimableGAS() {
         O3APIClient(network: AppState.network).getClaims(address: (Authenticated.account?.address)!) { result in
             switch result {
-            case .failure:
+            case .failure(let error):
+                self.resetState()
+                OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: "OK", didDismiss: {})
                 return
             case .success(let claims):
                 DispatchQueue.main.async {
@@ -91,11 +116,11 @@ class ClaimableGASTableViewCell: UITableViewCell {
     func displayClaimableState(claimable: Claimable) {
         self.resetState()
       
-        //if user already sent NEO to the address and waiting for the claimable data then we show the loading
-        if AppState.claimingState(address: Authenticated.account!.address) == .WaitingForClaimableData {
-            self.startLoading()
-            return
-        }
+//        //if user already sent NEO to the address and waiting for the claimable data then we show the loading
+//        if AppState.claimingState(address: Authenticated.account!.address) == .WaitingForClaimableData {
+//            self.startLoading()
+//            return
+//        }
         
         
         let gasDouble = NSDecimalNumber(decimal: claimable.gas).doubleValue
@@ -131,8 +156,6 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
     
     func sendAllNEOToTheAddress() {
-        //set app state here
-        AppState.setClaimingState(address: (Authenticated.account?.address)!, claimingState: .WaitingForClaimableData)
         
         //show loading screen first
         DispatchQueue.main.async {

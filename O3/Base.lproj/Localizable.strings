@@ -43,7 +43,7 @@
 "Error" = "Error";
 
 /* PlaceHolder for searching tokens */
-"MARKETPLACE_search_tokens" = "Search tokens"; /* NEW */
+"MARKETPLACE_search_tokens" = "Search tokens";
 
 /* Title for marketplace section in app */
 "MARKETPLACE_title" = "Marketplace";
@@ -639,6 +639,27 @@
 /* A Title for the claim Action */
 "WALLET_Claim_Action" = "Claim";
 
+/* A title for a label in loading screen when checking for claimable data. 'Checking transaction data. Please wait...' */
+"WALLET_Claim_Check_Claimable_Data_Title" = "Requesting transaction data. Please wait...";
+
+/* A title for a button Claim Now */
+"WALLET_Claim_Claim_Now_Action" = "Claim"; /* NEW */
+
+/* A title for a label claimable gas. 'Claimable GAS' */
+"WALLET_Claim_Claimable_Gas_Title" = "Claimable GAS";
+
+/* A title for a label confirmed claimable gas. 'Confirmed' */
+"WALLET_Claim_Confirmed_Title" = "Confirmed";
+
+/* A title for a label estimated claimable gas. 'Estimated' */
+"WALLET_Claim_Estimated_Title" = "Estimated";
+
+/* A title for a label GAS claimed successfully saying it will be in your account shortly */
+"WALLET_Claim_Gas_Claimed_Success_Sub_Title" = "It will be in your account shortly";
+
+/* A title for a label GAS claimed successfully. 'GAS Claimed successfully' */
+"WALLET_Claim_Gas_Claimed_Success_Title" = "GAS Claimed successfully";
+
 /* A subtitle to display while claiming is in progress */
 "WALLET_Claim_In_Progress_Subtitle" = "This might take a little while...";
 
@@ -650,6 +671,9 @@
 
 /* Indicated that the transation in history originated from claim */
 "WALLET_Claim_Transaction" = "Claim";
+
+/* A title for a button Update Now */
+"WALLET_Claim_Update_Now_Action" = "Update now";
 
 /* Title of Contacts tab in wallet screen */
 "WALLET_Contacts" = "CONTACTS";

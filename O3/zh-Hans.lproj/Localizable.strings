@@ -43,7 +43,7 @@
 "Error" = "错误";
 
 /* PlaceHolder for searching tokens */
-"MARKETPLACE_search_tokens" = "MARKETPLACE_search_tokens"; /* NEW */
+"MARKETPLACE_search_tokens" = "MARKETPLACE_search_tokens";
 
 /* Title for marketplace section in app */
 "MARKETPLACE_title" = "MARKETPLACE_title";
@@ -639,6 +639,27 @@
 /* A Title for the claim Action */
 "WALLET_Claim_Action" = "提取";
 
+/* A title for a label in loading screen when checking for claimable data. 'Checking transaction data. Please wait...' */
+"WALLET_Claim_Check_Claimable_Data_Title" = "WALLET_Claim_Check_Claimable_Data_Title";
+
+/* A title for a button Claim Now */
+"WALLET_Claim_Claim_Now_Action" = "WALLET_Claim_Claim_Now_Action"; /* NEW */
+
+/* A title for a label claimable gas. 'Claimable GAS' */
+"WALLET_Claim_Claimable_Gas_Title" = "WALLET_Claim_Claimable_Gas_Title";
+
+/* A title for a label confirmed claimable gas. 'Confirmed' */
+"WALLET_Claim_Confirmed_Title" = "WALLET_Claim_Confirmed_Title";
+
+/* A title for a label estimated claimable gas. 'Estimated' */
+"WALLET_Claim_Estimated_Title" = "WALLET_Claim_Estimated_Title";
+
+/* A title for a label GAS claimed successfully saying it will be in your account shortly */
+"WALLET_Claim_Gas_Claimed_Success_Sub_Title" = "WALLET_Claim_Gas_Claimed_Success_Sub_Title";
+
+/* A title for a label GAS claimed successfully. 'GAS Claimed successfully' */
+"WALLET_Claim_Gas_Claimed_Success_Title" = "WALLET_Claim_Gas_Claimed_Success_Title";
+
 /* A subtitle to display while claiming is in progress */
 "WALLET_Claim_In_Progress_Subtitle" = "正在处理...请稍后";
 
@@ -650,6 +671,9 @@
 
 /* Indicated that the transation in history originated from claim */
 "WALLET_Claim_Transaction" = "提取";
+
+/* A title for a button Update Now */
+"WALLET_Claim_Update_Now_Action" = "WALLET_Claim_Update_Now_Action";
 
 /* Title of Contacts tab in wallet screen */
 "WALLET_Contacts" = "联系人";
