@@ -20,19 +20,19 @@ class CardView: UIView {
     }
 
     func setupView() {
-        self.layer.cornerRadius = 10.0
+        self.layer.cornerRadius = 8
         self.clipsToBounds = false
         self.theme_backgroundColor = O3Theme.cardColorPicker
         if shadowLayer == nil {
             shadowLayer = CAShapeLayer()
-            shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 6).cgPath
+            shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 8).cgPath
             shadowLayer.fillColor = UserDefaultsManager.theme.cardColor.cgColor
 
             shadowLayer.shadowColor = UIColor.black.cgColor
             shadowLayer.shadowPath = shadowLayer.path
-            shadowLayer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-            shadowLayer.shadowOpacity = 0.3
-            shadowLayer.shadowRadius = 2
+            shadowLayer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+            shadowLayer.shadowOpacity = 0.2
+            shadowLayer.shadowRadius = 4
 
             layer.insertSublayer(shadowLayer, at: 0)
         }

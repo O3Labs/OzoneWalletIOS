@@ -155,7 +155,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "segueToPrivateKey", sender: nil)
                 }
-
             } catch {
 
             }
@@ -168,6 +167,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
 
     func performLogoutCleanup() {
         O3Cache.clear()
+        SwiftTheme.ThemeManager.setTheme(index: 0)
+        UserDefaultsManager.themeIndex = 0
         try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
         Authenticated.account = nil
         UserDefaultsManager.o3WalletAddress = nil
@@ -180,6 +181,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         o3tab?.halfModalTransitioningDelegate?.presentingViewController = nil
         o3tab?.halfModalTransitioningDelegate?.interactionController = nil
         o3tab?.halfModalTransitioningDelegate = nil
+
     }
 
     //properly implement cell did tap

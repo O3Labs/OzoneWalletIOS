@@ -21,4 +21,6 @@ struct PortfolioStrings {
     static let allInterval = NSLocalizedString("PORTFOLIO_Interval_Button_ALL", comment: "Interval Button on portfolio page, interval specifies ALL of Time")
 
     static let portfolio = NSLocalizedString("PORTFOLIO_Portfolio_Title", comment: "Title of the portfolio page")
+
+    static let priceHistoryNotAvailable = NSLocalizedString("PORTFOLIO_Price_History_Not_Available", comment: "Error message to display when the price history of a token is not available")
 }

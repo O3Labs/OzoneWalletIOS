@@ -11,12 +11,19 @@ import KeychainAccess
 import LocalAuthentication
 import SwiftTheme
 
+protocol LoginToCurrentWalletViewControllerDelegate {
+    func authorized(launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
+}
+
 class LoginToCurrentWalletViewController: UIViewController {
 
     @IBOutlet var loginButton: UIButton?
     @IBOutlet var mainImageView: UIImageView?
     @IBOutlet weak var cancelButton: UIButton!
 
+    var launchOptions: [UIApplicationLaunchOptionsKey: Any]?
+    var delegate: LoginToCurrentWalletViewControllerDelegate?
+    
     func login() {
         let keychain = Keychain(service: "network.o3.neo.wallet")
         DispatchQueue.global().async {
@@ -42,7 +49,19 @@ class LoginToCurrentWalletViewController: UIViewController {
                         O3HUD.stop {
                             DispatchQueue.main.async {
                                 SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
-                                self.performSegue(withIdentifier: "loggedin", sender: nil) }
+                                //instead of doing segue here. we need to init the whole rootViewController
+
+                                UIView.transition(with: UIApplication.appDelegate.window!, duration: 0.5, options: .transitionCrossDissolve, animations: {
+                                    let oldState: Bool = UIView.areAnimationsEnabled
+                                    UIView.setAnimationsEnabled(false)
+                                    UIApplication.appDelegate.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+                                    UIView.setAnimationsEnabled(oldState)
+                                }, completion: { (finished: Bool) -> () in
+                                    if finished {
+                                        self.delegate?.authorized(launchOptions: self.launchOptions)
+                                    }
+                                })
+                            }
                         }
                     }
                 }
@@ -58,17 +77,34 @@ class LoginToCurrentWalletViewController: UIViewController {
         login()
     }
 
+    func performLogout() {
+        O3Cache.clear()
+        try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
+        Authenticated.account = nil
+        UserDefaultsManager.o3WalletAddress = nil
+        SwiftTheme.ThemeManager.setTheme(index: 0)
+        UserDefaultsManager.themeIndex = 0
+        NotificationCenter.default.post(name: Notification.Name("loggedOut"), object: nil)
+        self.dismiss(animated: false)
+    }
+
     @IBAction func didTapLogin(_ sender: Any) {
         login()
     }
 
     @IBAction func didTapCancel(_ sender: Any) {
-        SwiftTheme.ThemeManager.setTheme(index: 2)
-        UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()
+        OzoneAlert.confirmDialog(message: SettingsStrings.logoutWarning, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: SettingsStrings.logout, didCancel: {
+
+        }, didConfirm: {
+            self.performLogout()
+            self.view.window!.rootViewController?.dismiss(animated: false)
+            UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()
+
+        })
     }
 
     func setLocalizedStrings() {
-        cancelButton.setTitle(OzoneAlert.cancelNegativeConfirmString, for: UIControlState())
+        cancelButton.setTitle(SettingsStrings.logout, for: UIControlState())
         if #available(iOS 8.0, *) {
             var error: NSError?
             let hasTouchID = LAContext().canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error)

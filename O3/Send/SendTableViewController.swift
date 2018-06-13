@@ -36,6 +36,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     var transactionCompleted: Bool!
     var selectedAsset: TransferableAsset?
     var preselectedAddress = ""
+    var incomingQRData: String?
 
     func addThemedElements() {
         let themedTitleLabels = [toLabel, assetLabel, amountLabel]
@@ -66,6 +67,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         applyNavBarTheme()
         setLocalizedStrings()
         super.viewDidLoad()
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
+        
         //select best node
         DispatchQueue.global().async {
             if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
@@ -77,8 +81,15 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
         self.enableSendButton()
         self.toAddressField.text = preselectedAddress.trim()
+        if incomingQRData != nil {
+            qrScanned(data: incomingQRData!)
+        }
     }
 
+    @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 2 {
             amountField.becomeFirstResponder()

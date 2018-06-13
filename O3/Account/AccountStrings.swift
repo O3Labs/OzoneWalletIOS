@@ -8,7 +8,8 @@
 
 import Foundation
 
-struct AccountStrings {
+
+class AccountStrings: NSObject {
     //Top Tab Bar
     static let assets = NSLocalizedString("WALLET_Assets", comment: "Title of assets tab in wallet screen")
     static let transactions = NSLocalizedString("WALLET_Transactions", comment: "Title of Transactions tab in wallet screen")
@@ -21,10 +22,20 @@ struct AccountStrings {
     static let claimingInProgressTitle = NSLocalizedString("WALLET_Claim_In_Progress_Title", comment: "A title to display while claiming is in progress")
     static let claimingInProgressSubtitle = NSLocalizedString("WALLET_Claim_In_Progress_Subtitle", comment: "A subtitle to display while claiming is in progress")
     static let accountTitle = NSLocalizedString("WALLET_Account", comment: "A title for the account screen")
-    static let addNEP5Token = NSLocalizedString("WALLET_Add_NEP5_Token", comment: "A title for the button which allows you to add a NEP-5 Token to your wallet")
-    static let done = NSLocalizedString("WALLET_NEP_5_DONE", comment: "Done bar button item")
-    static let availableTokensTitle = NSLocalizedString("WALLET_NEP5_Tokens", comment: "Title for NEP-5 Tokens Selection View")
 
+    static let send = NSLocalizedString("WALLET_Send", comment: "A title for the send action in the wallet")
+    static let request = NSLocalizedString("WALLET_Request", comment: "A title for the request action in the wallet")
+    static let scan = NSLocalizedString("WALLET_Scan", comment: "A title for the scan action in the wallet")
+    
+    static let updateNowButton = NSLocalizedString("WALLET_Claim_Update_Now_Action", comment: "A title for a button Update Now")
+    static let claimNowButton = NSLocalizedString("WALLET_Claim_Claim_Now_Action", comment: "A title for a button Claim Now")
+    static let estimatedClaimableGasTitle = NSLocalizedString("WALLET_Claim_Estimated_Title", comment: "A title for a label estimated claimable gas. 'Estimated'")
+    static let confirmedClaimableGasTitle = NSLocalizedString("WALLET_Claim_Confirmed_Title", comment: "A title for a label confirmed claimable gas. 'Confirmed'")
+    static let checkingForClaimableDataLoadingTitle = NSLocalizedString("WALLET_Claim_Check_Claimable_Data_Title", comment: "A title for a label in loading screen when checking for claimable data. 'Checking transaction data. Please wait...'")
+    static let claimableGasTitle = NSLocalizedString("WALLET_Claim_Claimable_Gas_Title", comment: "A title for a label claimable gas. 'Claimable GAS'")
+    static let successClaimTitle = NSLocalizedString("WALLET_Claim_Gas_Claimed_Success_Title", comment: "A title for a label GAS claimed successfully. 'GAS Claimed successfully'")
+    static let successClaimSubTitle = NSLocalizedString("WALLET_Claim_Gas_Claimed_Success_Sub_Title", comment: "A title for a label GAS claimed successfully saying it will be in your account shortly")
+    
     //Transaction History
     static let fromPrefix = NSLocalizedString("WALLET_From_Prefix", comment: "Prefix used in the transaction history to indicate where the transaction came from")
     static let toPrefix = NSLocalizedString("WALLET_To_Prefix", comment: "Prefix used in the transaction history to indicate where the transaction went to")

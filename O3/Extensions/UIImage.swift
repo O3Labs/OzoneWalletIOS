@@ -8,7 +8,7 @@
 
 import UIKit
 extension UIImage {
-    convenience init(qrData: String, width: CGFloat, height: CGFloat) {
+    convenience init(qrData: String, width: CGFloat, height: CGFloat, qrLogoName: String = "qrLogo") {
         let filterQR = CIFilter(name: "CIQRCodeGenerator", withInputParameters: ["inputMessage": qrData.data(using: .utf8) ?? Data(), "inputCorrectionLevel": "H"])
         guard let ciImageQR = filterQR?.outputImage else {
             self.init()
@@ -24,7 +24,7 @@ extension UIImage {
         UIGraphicsPushContext(context)
         let qrImage = UIImage(ciImage: ciImageQR.transformed(by: transform))
         qrImage.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
-        let qrLogo = UIImage(named: "qrLogo")
+        let qrLogo = UIImage(named: qrLogoName)
         let x = (width - (width * 0.25)) * 0.5
         let y = (height - (height * 0.25)) * 0.5
         qrLogo?.draw(in: CGRect(x: x, y: y, width: width * 0.25, height: height * 0.25))
