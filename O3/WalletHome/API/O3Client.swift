@@ -180,7 +180,7 @@ public class O3Client {
     }
 
     func getTokens(completion: @escaping(O3ClientResult<[NEP5Token]>) -> Void) {
-        var endpoint = "https://cdn.o3.network/data/nep5.json"
+        var endpoint = "https://platform.o3.network/api/v1/neo/nep5"
         #if TESTNET
         endpoint = "https://s3-ap-northeast-1.amazonaws.com/network.o3.cdn/data/nep5.test.json"
         #endif
@@ -194,7 +194,9 @@ public class O3Client {
                 completion(.failure(error))
             case .success(let response):
                 let decoder = JSONDecoder()
-                guard let data = try? JSONSerialization.data(withJSONObject: response["nep5tokens"]!, options: .prettyPrinted),
+                let result = response["result"] as? JSONDictionary
+                let responseData = result!["data"] as? JSONDictionary
+                guard let data = try? JSONSerialization.data(withJSONObject: responseData!["nep5tokens"]!, options: .prettyPrinted),
                     let list = try? decoder.decode([NEP5Token].self, from: data) else {
                         return
                 }

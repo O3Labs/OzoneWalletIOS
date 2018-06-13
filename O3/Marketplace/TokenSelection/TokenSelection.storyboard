@@ -39,22 +39,22 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hdt-37-YIM" customClass="CardView" customModule="O3" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="8" width="129" height="116"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CEV-Wf-EFn">
-                                                            <rect key="frame" x="41.5" y="21" width="45" height="45"/>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CEV-Wf-EFn">
+                                                            <rect key="frame" x="41.5" y="13" width="45" height="45"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="c2z-15-Hro"/>
                                                                 <constraint firstAttribute="width" constant="45" id="xG9-uo-Rgw"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ontology" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTC-pu-AEo">
-                                                            <rect key="frame" x="0.0" y="67" width="129" height="20.5"/>
-                                                            <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="15"/>
+                                                            <rect key="frame" x="0.0" y="74" width="129" height="19.5"/>
+                                                            <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                                                             <color key="textColor" name="lightThemePrimary"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ONT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEe-s9-evG">
-                                                            <rect key="frame" x="48.5" y="87" width="33" height="21"/>
-                                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                                            <rect key="frame" x="49.5" y="93" width="31" height="19.5"/>
+                                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                                             <color key="textColor" name="grey"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -64,9 +64,9 @@
                                                         <constraint firstItem="PTC-pu-AEo" firstAttribute="leading" secondItem="Hdt-37-YIM" secondAttribute="leading" id="2Z9-rQ-2bb"/>
                                                         <constraint firstItem="dEe-s9-evG" firstAttribute="top" secondItem="PTC-pu-AEo" secondAttribute="bottom" id="7dX-MW-4hu"/>
                                                         <constraint firstItem="dEe-s9-evG" firstAttribute="centerX" secondItem="Hdt-37-YIM" secondAttribute="centerX" id="8Vc-Uz-L86"/>
-                                                        <constraint firstItem="PTC-pu-AEo" firstAttribute="top" secondItem="CEV-Wf-EFn" secondAttribute="bottom" constant="1" id="G3r-zV-Nqd"/>
+                                                        <constraint firstItem="PTC-pu-AEo" firstAttribute="top" secondItem="CEV-Wf-EFn" secondAttribute="bottom" constant="16" id="G3r-zV-Nqd"/>
                                                         <constraint firstItem="CEV-Wf-EFn" firstAttribute="centerX" secondItem="Hdt-37-YIM" secondAttribute="centerX" id="SiR-z0-jxh"/>
-                                                        <constraint firstItem="CEV-Wf-EFn" firstAttribute="centerY" secondItem="Hdt-37-YIM" secondAttribute="centerY" multiplier="0.75" id="cGc-2m-zf3"/>
+                                                        <constraint firstItem="CEV-Wf-EFn" firstAttribute="centerY" secondItem="Hdt-37-YIM" secondAttribute="centerY" multiplier="0.75" constant="-8" id="cGc-2m-zf3"/>
                                                         <constraint firstItem="PTC-pu-AEo" firstAttribute="centerX" secondItem="Hdt-37-YIM" secondAttribute="centerX" id="mN8-Ab-cpN"/>
                                                         <constraint firstAttribute="trailing" secondItem="PTC-pu-AEo" secondAttribute="trailing" id="vY6-Ng-8YK"/>
                                                     </constraints>

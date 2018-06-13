@@ -67,6 +67,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         applyNavBarTheme()
         setLocalizedStrings()
         super.viewDidLoad()
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
+        
         //select best node
         DispatchQueue.global().async {
             if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
@@ -83,6 +86,10 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         }
     }
 
+    @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 2 {
             amountField.becomeFirstResponder()

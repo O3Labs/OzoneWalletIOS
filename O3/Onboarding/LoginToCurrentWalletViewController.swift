@@ -11,12 +11,19 @@ import KeychainAccess
 import LocalAuthentication
 import SwiftTheme
 
+protocol LoginToCurrentWalletViewControllerDelegate {
+    func authorized(launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
+}
+
 class LoginToCurrentWalletViewController: UIViewController {
 
     @IBOutlet var loginButton: UIButton?
     @IBOutlet var mainImageView: UIImageView?
     @IBOutlet weak var cancelButton: UIButton!
 
+    var launchOptions: [UIApplicationLaunchOptionsKey: Any]?
+    var delegate: LoginToCurrentWalletViewControllerDelegate?
+    
     func login() {
         let keychain = Keychain(service: "network.o3.neo.wallet")
         DispatchQueue.global().async {
@@ -42,7 +49,19 @@ class LoginToCurrentWalletViewController: UIViewController {
                         O3HUD.stop {
                             DispatchQueue.main.async {
                                 SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
-                                self.performSegue(withIdentifier: "loggedin", sender: nil) }
+                                //instead of doing segue here. we need to init the whole rootViewController
+
+                                UIView.transition(with: UIApplication.appDelegate.window!, duration: 0.5, options: .transitionCrossDissolve, animations: {
+                                    let oldState: Bool = UIView.areAnimationsEnabled
+                                    UIView.setAnimationsEnabled(false)
+                                    UIApplication.appDelegate.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+                                    UIView.setAnimationsEnabled(oldState)
+                                }, completion: { (finished: Bool) -> () in
+                                    if finished {
+                                        self.delegate?.authorized(launchOptions: self.launchOptions)
+                                    }
+                                })
+                            }
                         }
                     }
                 }
