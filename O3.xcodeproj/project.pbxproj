@@ -148,6 +148,7 @@
 		6E68B6B0206CB771008C25E8 /* TokenSale.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E68B6AF206CB771008C25E8 /* TokenSale.storyboard */; };
 		6E6BD24B1FFC69330049098A /* PKHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6BD24A1FFC67E10049098A /* PKHUD.framework */; };
 		6E6BD24C1FFC69330049098A /* PKHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6BD24A1FFC67E10049098A /* PKHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6E72436420D0F0A5007D1201 /* LocalizableUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E72436320D0F0A5007D1201 /* LocalizableUILabel.swift */; };
 		6E7367992084AB0800F4202B /* success-blue.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E7367982084AB0800F4202B /* success-blue.json */; };
 		6E73679B2084B3B900F4202B /* TokenSaleSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E73679A2084B3B900F4202B /* TokenSaleSuccessViewController.swift */; };
 		6E73679D2084B3C400F4202B /* TokenSaleErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E73679C2084B3C400F4202B /* TokenSaleErrorViewController.swift */; };
@@ -392,6 +393,7 @@
 		6E61BBD01F729D3B00D2B30B /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
 		6E68B6AF206CB771008C25E8 /* TokenSale.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TokenSale.storyboard; sourceTree = "<group>"; };
 		6E6BD24A1FFC67E10049098A /* PKHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PKHUD.framework; path = Carthage/Build/iOS/PKHUD.framework; sourceTree = "<group>"; };
+		6E72436320D0F0A5007D1201 /* LocalizableUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableUILabel.swift; sourceTree = "<group>"; };
 		6E7367982084AB0800F4202B /* success-blue.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "success-blue.json"; sourceTree = "<group>"; };
 		6E73679A2084B3B900F4202B /* TokenSaleSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSaleSuccessViewController.swift; sourceTree = "<group>"; };
 		6E73679C2084B3C400F4202B /* TokenSaleErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSaleErrorViewController.swift; sourceTree = "<group>"; };
@@ -985,6 +987,7 @@
 				6E244EC42085BF71001B4B22 /* AssetInputToolbar.xib */,
 				6E244EC62085C15A001B4B22 /* AssetInputToolbar.swift */,
 				6E244EC82085D5CE001B4B22 /* NumberOnlyUITextField.swift */,
+				6E72436320D0F0A5007D1201 /* LocalizableUILabel.swift */,
 			);
 			path = UIControls;
 			sourceTree = "<group>";
@@ -1307,6 +1310,7 @@
 				6E97C4B51F7FBAA300526FF0 /* AssetView.swift in Sources */,
 				35AF806920CA6C0100E48457 /* LoginV2TableViewController.swift in Sources */,
 				35E5F6102029412900D65BEA /* PortfolioAssetCell.swift in Sources */,
+				6E72436420D0F0A5007D1201 /* LocalizableUILabel.swift in Sources */,
 				75DA59011F7A6C7D0065FE0D /* WatchOnlyAddressViewController.swift in Sources */,
 				35E5F6122029477400D65BEA /* HomeViewModel.swift in Sources */,
 				6E4E6F9A20147ABB001A5844 /* AccentButton.swift in Sources */,

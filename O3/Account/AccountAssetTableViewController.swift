@@ -134,9 +134,9 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == sections.unclaimedGAS.rawValue {
-            return 150.0
+            return 166.0
         } else if indexPath.section == sections.toolbar.rawValue {
-            return 80.0
+            return 60.0
         }
         return 66.0
     }

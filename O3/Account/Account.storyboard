@@ -41,16 +41,16 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="Fuw-MK-zk1">
-                            <rect key="frame" x="0.0" y="418" width="375" height="80"/>
+                            <rect key="frame" x="0.0" y="386" width="375" height="80"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell-claimable-gas" rowHeight="150" id="TIe-lF-Uu0" customClass="ClaimableGASTableViewCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="150"/>
+                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell-claimable-gas" rowHeight="166" id="TIe-lF-Uu0" customClass="ClaimableGASTableViewCell" customModule="O3" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="166"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TIe-lF-Uu0" id="UlV-wn-pQH">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="166"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6oU-p8-Lms" userLabel="Loader" customClass="CardView" customModule="O3" customModuleProvider="target">
@@ -249,7 +249,7 @@
                                                                 <constraint firstAttribute="height" constant="29" id="o1D-rt-O1V"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirmed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wCG-qr-NJ8">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirmed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wCG-qr-NJ8" customClass="LocalizableUILabel" customModule="O3" customModuleProvider="target">
                                                             <rect key="frame" x="44" y="23" width="67" height="15"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="15" id="WQd-yO-Gvp"/>
@@ -257,6 +257,10 @@
                                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                                             <color key="textColor" name="grey"/>
                                                             <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="stringClass" value="AccountStrings"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="stringProperty" value="confirmedClaimableGasTitle"/>
+                                                            </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Claimable GAS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="I97-rI-qtr">
                                                             <rect key="frame" x="44" y="42" width="137" height="19"/>
@@ -336,16 +340,16 @@
                                         <constraint firstItem="q2Y-dp-yfI" firstAttribute="top" secondItem="UlV-wn-pQH" secondAttribute="top" constant="16" id="AyW-9W-nrL"/>
                                         <constraint firstAttribute="trailing" secondItem="6oU-p8-Lms" secondAttribute="trailing" constant="16" id="Cbl-di-DdQ"/>
                                         <constraint firstItem="zZv-lc-Diw" firstAttribute="top" secondItem="UlV-wn-pQH" secondAttribute="top" constant="16" id="G5q-fH-MKK"/>
-                                        <constraint firstAttribute="bottom" secondItem="lYa-XG-lmL" secondAttribute="bottom" id="OBW-hj-SG5"/>
+                                        <constraint firstAttribute="bottom" secondItem="lYa-XG-lmL" secondAttribute="bottom" constant="16" id="OBW-hj-SG5"/>
                                         <constraint firstItem="lYa-XG-lmL" firstAttribute="leading" secondItem="UlV-wn-pQH" secondAttribute="leading" constant="16" id="UA3-Aq-ACW"/>
                                         <constraint firstItem="6oU-p8-Lms" firstAttribute="leading" secondItem="UlV-wn-pQH" secondAttribute="leading" constant="16" id="bT7-eM-M2d"/>
                                         <constraint firstItem="zZv-lc-Diw" firstAttribute="leading" secondItem="UlV-wn-pQH" secondAttribute="leading" constant="16" id="bsj-xk-quK"/>
-                                        <constraint firstAttribute="bottom" secondItem="6oU-p8-Lms" secondAttribute="bottom" id="c83-HO-kd7"/>
-                                        <constraint firstAttribute="bottom" secondItem="q2Y-dp-yfI" secondAttribute="bottom" id="k0b-jg-fhw"/>
+                                        <constraint firstAttribute="bottom" secondItem="6oU-p8-Lms" secondAttribute="bottom" constant="16" id="c83-HO-kd7"/>
+                                        <constraint firstAttribute="bottom" secondItem="q2Y-dp-yfI" secondAttribute="bottom" constant="16" id="k0b-jg-fhw"/>
                                         <constraint firstAttribute="trailing" secondItem="lYa-XG-lmL" secondAttribute="trailing" constant="16" id="oHg-c0-7XM"/>
                                         <constraint firstAttribute="trailing" secondItem="zZv-lc-Diw" secondAttribute="trailing" constant="16" id="pOy-Lm-HTN"/>
                                         <constraint firstItem="6oU-p8-Lms" firstAttribute="top" secondItem="UlV-wn-pQH" secondAttribute="top" constant="16" id="wpb-tO-mUf"/>
-                                        <constraint firstAttribute="bottom" secondItem="zZv-lc-Diw" secondAttribute="bottom" id="zqf-DO-Nrl"/>
+                                        <constraint firstAttribute="bottom" secondItem="zZv-lc-Diw" secondAttribute="bottom" constant="16" id="zqf-DO-Nrl"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -354,9 +358,16 @@
                                     <outlet property="claimingActivityIndicator" destination="NG4-ee-gKV" id="osk-3V-Wlb"/>
                                     <outlet property="confirmedClaimableGASContainer" destination="lYa-XG-lmL" id="zY9-83-Kpc"/>
                                     <outlet property="confirmedClaimableGASLabel" destination="VUc-GL-yYB" id="jDD-iw-pAL"/>
+                                    <outlet property="confirmedClaimableGASTitle" destination="I97-rI-qtr" id="oVg-up-qCi"/>
+                                    <outlet property="confirmedTitle" destination="wCG-qr-NJ8" id="a8O-GN-lIb"/>
                                     <outlet property="estimatedClaimableGASContainer" destination="q2Y-dp-yfI" id="Ij5-aK-Z16"/>
                                     <outlet property="estimatedClaimableGASLabel" destination="nin-ej-rrl" id="tep-NT-u9T"/>
+                                    <outlet property="estimatedClaimableGASTitle" destination="88G-L2-nOq" id="lfY-MB-YOR"/>
+                                    <outlet property="estimatedTitle" destination="ZzB-NZ-zOy" id="J7v-6t-58n"/>
+                                    <outlet property="gasClaimedSuccessSubTitle" destination="Puv-9p-FGa" id="J9f-04-pqz"/>
+                                    <outlet property="gasClaimedSuccessTitle" destination="WYp-Ub-NDX" id="yFe-NC-9hf"/>
                                     <outlet property="loaderView" destination="6oU-p8-Lms" id="mFt-Cd-nHh"/>
+                                    <outlet property="loadingTitle" destination="Pbn-q5-BA2" id="boJ-3K-kaa"/>
                                     <outlet property="progressBar" destination="vIQ-dC-3G8" id="lr6-KX-AZ6"/>
                                     <outlet property="progressBarBackToEstimated" destination="dgq-kB-gq9" id="cEU-A3-Gpv"/>
                                     <outlet property="successClaimableGASLabel" destination="UV7-Re-VJc" id="wsK-Xj-c6T"/>
@@ -364,18 +375,18 @@
                                     <outlet property="syncNowButton" destination="XPi-qg-IPl" id="vDb-Cx-zEv"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="walletToolbarCell" rowHeight="108" id="RdN-mi-al3" customClass="WalletToolBarCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="178" width="375" height="108"/>
+                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="walletToolbarCell" rowHeight="60" id="RdN-mi-al3" customClass="WalletToolBarCell" customModule="O3" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="194" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RdN-mi-al3" id="tdN-0H-iLz">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="108"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RdN-mi-al3" id="tdN-0H-iLz">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="mIj-9e-ZCv">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="108"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLt-ba-FLt">
-                                                    <rect key="frame" x="0.0" y="0.0" width="124.5" height="108"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="124.5" height="60"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                                                     <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <inset key="imageEdgeInsets" minX="-6" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -387,10 +398,10 @@
                                                     </connections>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sr7-J0-1jy">
-                                                    <rect key="frame" x="125.5" y="0.0" width="124" height="108"/>
+                                                    <rect key="frame" x="125.5" y="0.0" width="124" height="60"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BwE-al-jFD">
-                                                            <rect key="frame" x="0.0" y="39" width="1" height="30"/>
+                                                            <rect key="frame" x="0.0" y="15" width="1" height="30"/>
                                                             <color key="backgroundColor" name="lightGreyTransparent"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="aLd-YC-wx5"/>
@@ -398,7 +409,7 @@
                                                             </constraints>
                                                         </view>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azq-Zs-K2d">
-                                                            <rect key="frame" x="0.0" y="0.0" width="124" height="108"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="124" height="60"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                                                             <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                             <inset key="imageEdgeInsets" minX="-6" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -410,7 +421,7 @@
                                                             </connections>
                                                         </button>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mq1-n8-tQw">
-                                                            <rect key="frame" x="123" y="39" width="1" height="30"/>
+                                                            <rect key="frame" x="123" y="15" width="1" height="30"/>
                                                             <color key="backgroundColor" name="lightGreyTransparent"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="1" id="VAA-LF-ZUb"/>
@@ -431,7 +442,7 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nDM-Rf-vIt">
-                                                    <rect key="frame" x="250.5" y="0.0" width="124.5" height="108"/>
+                                                    <rect key="frame" x="250.5" y="0.0" width="124.5" height="60"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                                                     <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <inset key="imageEdgeInsets" minX="-6" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -443,7 +454,6 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" name="lightGreyTransparent"/>
                                         </stackView>
                                     </subviews>
                                     <constraints>
@@ -460,7 +470,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell-nativeasset" rowHeight="66" id="PPM-vd-ml7" customClass="NativeAssetTableViewCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="286" width="375" height="66"/>
+                                <rect key="frame" x="0.0" y="254" width="375" height="66"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PPM-vd-ml7" id="etX-se-Ux6">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
@@ -517,7 +527,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell-nep5token" rowHeight="66" id="IIb-YS-HV4" customClass="NEP5TokenTableViewCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="352" width="375" height="66"/>
+                                <rect key="frame" x="0.0" y="320" width="375" height="66"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IIb-YS-HV4" id="0Cn-S5-ICg">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
