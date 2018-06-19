@@ -13,5 +13,5 @@ class LocalizableUILabel: UILabel {
 
     @IBInspectable var stringClass: String?
     @IBInspectable var stringProperty: String?
-    
+
 }

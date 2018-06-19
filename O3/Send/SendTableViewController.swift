@@ -67,9 +67,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         applyNavBarTheme()
         setLocalizedStrings()
         super.viewDidLoad()
-        
+
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
-        
+
         //select best node
         DispatchQueue.global().async {
             if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
@@ -89,7 +89,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 2 {
             amountField.becomeFirstResponder()
@@ -257,9 +257,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             if asset != "" {
                 var selected: TransferableAsset?
 
-                if (asset?.lowercased() == "neo" || asset == AssetId.neoAssetId.rawValue) {
+                if asset?.lowercased() == "neo" || asset == AssetId.neoAssetId.rawValue {
                     selected = O3Cache.neo()
-                } else if (asset?.lowercased() == "gas" || asset == AssetId.gasAssetId.rawValue) {
+                } else if asset?.lowercased() == "gas" || asset == AssetId.gasAssetId.rawValue {
                     selected = O3Cache.gas()
                 } else {
                     let tokenAssets = O3Cache.tokenAssets()

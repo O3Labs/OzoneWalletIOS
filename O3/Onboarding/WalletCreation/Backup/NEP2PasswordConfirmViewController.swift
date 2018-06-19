@@ -106,7 +106,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
             }
         } else {
             OzoneAlert.alertDialog(message: OnboardingStrings.passwordMismatch, dismissTitle: OzoneAlert.okPositiveConfirmString) {
-
+                self.passwordField.text = ""
             }
         }
     }
