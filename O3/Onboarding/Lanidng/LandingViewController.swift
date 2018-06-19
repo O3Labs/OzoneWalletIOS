@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Lottie
 import LocalAuthentication
+import Crashlytics
 
 class LandingViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     @IBOutlet weak var animationViewContainer: UIView!
@@ -158,10 +159,7 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
             OzoneAlert.alertDialog(message: OnboardingStrings.createWalletNoPassCodeError, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
             return
         }
-        if UserDefaultsManager.o3WalletAddress == nil {
-            performSegue(withIdentifier: "segueToWelcome", sender: nil)
-            return
-        }
+        Answers.logCustomEvent(withName: "Wallet Created", customAttributes: [:])
         performSegue(withIdentifier: "segueToWelcome", sender: nil)
     }
 
