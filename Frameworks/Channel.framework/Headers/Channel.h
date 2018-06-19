@@ -12,6 +12,8 @@
 #import "CHNotificationButton.h"
 #import "CHMessage.h"
 #import "CHBlock.h"
+#import "CHClient.h"
+#import "CHApplication.h"
 
 @class Channel;
 @class CHNotification;
