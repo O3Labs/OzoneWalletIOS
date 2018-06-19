@@ -115,7 +115,7 @@ class TokenSalesListTableViewController: UITableViewController {
                 let selectedSale = sender as? TokenSales.SaleInfo
                 vc.saleInfo = selectedSale
             }
-            
+
         }
     }
 

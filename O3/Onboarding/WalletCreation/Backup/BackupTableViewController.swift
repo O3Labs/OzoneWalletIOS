@@ -12,6 +12,7 @@ import KeychainAccess
 import PKHUD
 import Channel
 import SwiftTheme
+import Crashlytics
 
 class BackupTableViewController: UITableViewController, HalfModalPresentable {
     @IBOutlet weak var emailBackupCell: UITableViewCell!
@@ -72,6 +73,7 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             maximizeToFullScreen(allowReverse: false)
+            Answers.logCustomEvent(withName: "Backup Selected", customAttributes: ["Option": 0])
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.performSegue(withIdentifier: "segueToEmailBackup", sender: nil)
             }
@@ -79,6 +81,7 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
 
         if indexPath.row == 1 {
             DispatchQueue.main.async {
+                Answers.logCustomEvent(withName: "Backup Selected", customAttributes: ["Option": 1])
                 OzoneAlert.confirmDialog(OnboardingStrings.screenShotTakenAlertTitle, message: OnboardingStrings.screenShotTakenAlertDescription, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
                     self.loginToApp()
                 }
@@ -86,12 +89,14 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
 
         } else if indexPath.row == 2 {
             DispatchQueue.main.async {
+                Answers.logCustomEvent(withName: "Backup Selected", customAttributes: ["Option": 2])
                 OzoneAlert.confirmDialog(OnboardingStrings.copiedToClipboardAlertTitle, message: OnboardingStrings.copiedToClipboardAlertDescription, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
                     self.loginToApp()
                 }
             }
 
         } else if indexPath.row == 3 {
+            Answers.logCustomEvent(withName: "Backup Selected", customAttributes: ["Option": 3])
             maximizeToFullScreen(allowReverse: false)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.performSegue(withIdentifier: "segueToPaperBackup", sender: nil)

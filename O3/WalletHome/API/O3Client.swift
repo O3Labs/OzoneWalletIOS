@@ -89,7 +89,9 @@ public class O3Client {
     }
 
     func getPriceHistory(_ symbol: String, interval: String, completion: @escaping (O3ClientResult<History>) -> Void) {
-        let endpoint = O3Endpoints.getPriceHistory.rawValue + symbol + String(format: "?i=%@", interval)
+        var endpoint = O3Endpoints.getPriceHistory.rawValue + symbol + String(format: "?i=%@", interval)
+        endpoint += String(format: "&currency=%@", UserDefaultsManager.referenceFiatCurrency.rawValue)
+
         sendRequest(endpoint, method: .GET, data: nil) { result in
             switch result {
             case .failure(let error):

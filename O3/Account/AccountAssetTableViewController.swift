@@ -57,7 +57,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadClaimableGAS()
@@ -265,4 +265,3 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         }
     }
 }
-

@@ -23,7 +23,7 @@ class LoginToCurrentWalletViewController: UIViewController {
 
     var launchOptions: [UIApplicationLaunchOptionsKey: Any]?
     var delegate: LoginToCurrentWalletViewControllerDelegate?
-    
+
     func login() {
         let keychain = Keychain(service: "network.o3.neo.wallet")
         DispatchQueue.global().async {
@@ -56,7 +56,7 @@ class LoginToCurrentWalletViewController: UIViewController {
                                     UIView.setAnimationsEnabled(false)
                                     UIApplication.appDelegate.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
                                     UIView.setAnimationsEnabled(oldState)
-                                }, completion: { (finished: Bool) -> () in
+                                }, completion: { (finished: Bool) -> Void in
                                     if finished {
                                         self.delegate?.authorized(launchOptions: self.launchOptions)
                                     }

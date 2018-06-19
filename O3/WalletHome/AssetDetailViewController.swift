@@ -34,7 +34,7 @@ class AssetDetailViewController: UIViewController, GraphPanDelegate, ScrollableG
     var selectedAsset: String!
     var selectedInterval: PriceInterval = .oneDay
     var priceHistory: History?
-    var referenceCurrency: Currency = .usd
+    var referenceCurrency: Currency = UserDefaultsManager.referenceFiatCurrency
 
     func selectedPriceIntervalString() -> String {
         switch selectedInterval {
@@ -144,7 +144,7 @@ class AssetDetailViewController: UIViewController, GraphPanDelegate, ScrollableG
 
     @objc func referenceCurrencyTapped(_ sender: UITapGestureRecognizer) {
         if referenceCurrency == .btc {
-            referenceCurrency = .usd
+            referenceCurrency = UserDefaultsManager.referenceFiatCurrency
         } else {
             referenceCurrency = .btc
         }
