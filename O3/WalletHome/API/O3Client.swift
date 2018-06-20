@@ -165,14 +165,22 @@ public class O3Client {
     }
 
     func getFeatures(completion: @escaping(O3ClientResult<FeatureFeed>) -> Void) {
-        let endpoint = "https://cdn.o3.network/data/featured.json"
+        var endpoint = "https://platform.o3.network/api/v1/neo/news/featured"
+        #if TESTNET
+        endpoint = "https://platform.o3.network/api/v1/neo/news/featured?network=test"
+        #endif
+        #if PRIVATENET
+        endpoint = "https://platform.o3.network/api/v1/neo/news/featured?network=private"
+        #endif
         sendRequest(endpoint, method: .GET, data: nil, noBaseURL: true) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
             case .success(let response):
                 let decoder = JSONDecoder()
-                guard let data = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted),
+                let result = response["result"] as? JSONDictionary
+                let responseData = result!["data"] as? JSONDictionary
+                guard let data = try? JSONSerialization.data(withJSONObject: responseData!, options: .prettyPrinted),
                     let featureFeed = try? decoder.decode(FeatureFeed.self, from: data) else {
                         return
                 }
