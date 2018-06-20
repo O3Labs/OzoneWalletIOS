@@ -1,740 +1,898 @@
-/* Created with Localizable Strings Merge, the swiss-army knife for iOS and OS X localization. */
 
-/* Negative Response to an alert message, it is a negative action stating that they want to cancel whatever their current action is */
+/*Created with Localizable Strings Merge, the swiss-army knife for iOS and OS X localization. 
+ Negative Response to an alert message, it is a negative action stating that they want to cancel whatever their current action is*/
 "ALERT_Cancel" = "キャンセル";
 
-/* Positive Response to an alert message, it is a positive action stating that they have read the alert and are confirming whatever action they are about to take */
+/*Positive Response to an alert message, it is a positive action stating that they have read the alert and are confirming whatever action they are about to take*/
 "ALERT_Confirm" = "確認";
 
-/* A text to display when the user is not connected to the internet */
-"ALERT_No_Internet" = "インターネット接続がありません。😵";
-
-/* Negative Response to an alert message, it is a negative action stating that they have not yet completed what they need to do */
+/*Negative Response to an alert message, it is a negative action stating that they have not yet completed what they need to do*/
 "ALERT_Not_Yet_Negative_Confirm" = "まだ";
 
-/* Positive Response to an alert message, it is a generic positive action replying ok to whatever the prompt is */
+/*Positive Response to an alert message, it is a generic positive action replying ok to whatever the prompt is*/
 "ALERT_OK" = "OK";
 
-/* Title for button when you add a contact to address book */
+/*Title for button when you add a contact to address book*/
 "CONTACTS_Add_Contact_Button_Title" = "アドレス追加";
 
-/* An informative description about what happens when you add a contact */
+/*NEW 
+ An informative description about what happens when you add a contact*/
 "CONTACTS_Add_Contact_Description" = "アドレスを追加すると、アドレスを覚えていなくても世界中どこへでも資金を送金することができます。";
 
-/* A prompt asking if you are sure that you want to delete this contact */
+/*NEW 
+ A prompt asking if you are sure that you want to delete this contact*/
 "CONTACTS_Are_You_Sure_To_Delete" = "このアドレスを本当に削除しますか？";
 
-/* Title to copy address */
+/*NEW 
+ Title to copy address*/
 "CONTACTS_Copy_Address" = "アドレスをコピー";
 
-/* Title to delete Contact */
+/*NEW 
+ Title to delete Contact*/
 "CONTACTS_Delete" = "削除";
 
-/* Title for editing name of a contact */
+/*NEW 
+ Title for editing name of a contact*/
 "CONTACTS_Edit_Name" = "名前を編集";
 
-/* Save Action for Contacts */
+/*NEW 
+ Save Action for Contacts*/
 "CONTACTS_Save" = "保存";
 
-/* Title for sending to contact */
+/*NEW 
+ Title for sending to contact*/
 "CONTACTS_Send_To" = "アドレスに送信";
 
-/* A title for error alert prompts */
+/*NEW 
+ A title for error alert prompts*/
 "Error" = "エラー";
 
-/* PlaceHolder for searching tokens */
-"MARKETPLACE_search_tokens" = "MARKETPLACE_search_tokens";
-
-/* Title for marketplace section in app */
-"MARKETPLACE_title" = "MARKETPLACE_title";
-
-/* Title of the news feed page */
+/*NEW 
+ Title of the news feed page*/
 "NEWSFEED_News_Title" = "ニュースフィード";
 
-/* A prompt asking the user to please confirm that they have indeed backed up their private key in a secure location before continuing */
+/*NEW 
+ A prompt asking the user to please confirm that they have indeed backed up their private key in a secure location before continuing*/
 "ONBARDING_Confirmed_Private_Key_Saved_Prompt" = "秘密鍵をインターネットと隔離された場所に保存したことを確認してください。";
 
-/* On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using TouchID */
+/*On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using TouchID*/
 "ONBOARDING Login_Button_Specifying_Biometric" = "TouchIDまたはFaceIDでログイン";
 
-/* On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using Passcode */
+/*On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using Passcode*/
 "ONBOARDING Login_Button_Specifying_PassCode" = "パスコードでログイン";
 
-/* When the user tries to create a new wallet, but they already have one saved on the devicve, this explanation/warning is given to the user */
-"ONBOARDING_Already_Have_Wallet_Explanation" = "既にデバイス上に既存のウォレットがあるようです。\n\n新しいウォレットを作る際、新しい秘密鍵が既存のウォレットに上書きされます。秘密鍵がバックアップされていることを確認して下さい。";
-
-/* Button title to go back in the tutorial page */
-"ONBOARDING_back" = "ONBOARDING_back";
-
-/* Title menu to backup private key */
-"ONBOARDING_Backup" = "ONBOARDING_Backup";
-
-/* Tutle for backing private key and moving to end */
-"ONBOARDING_backup_and_continue" = "ONBOARDING_backup_and_continue";
-
-/* Title for option to backup the key by copying to clipboard */
-"ONBOARDING_Backup_Copy_Title" = "ONBOARDING_Backup_Copy_Title";
-
-/* Title for option to backup the key by emailing an encrypted NEP2 */
-"ONBOARDING_Backup_Email_Title" = "ONBOARDING_Backup_Email_Title";
-
-/* Title for option to go back and view private key */
-"ONBOARDING_Backup_Go_Back" = "ONBOARDING_Backup_Go_Back";
-
-/* Title for option to backup private key using paperr */
-"ONBOARDING_Backup_Paper_Title" = "ONBOARDING_Backup_Paper_Title";
-
-/* Title for option to backup private key using screenshot */
-"ONBOARDING_Backup_Screenshot_Title" = "ONBOARDING_Backup_Screenshot_Title";
-
-/* Continue button when creating a password */
-"ONBOARDING_Continue_Button" = "ONBOARDING_Continue_Button";
-
-/* Description for when the key has been copied to your clipboard */
-"ONBOARDING_Copied_Description" = "ONBOARDING_Copied_Description";
-
-/* Title for when copied to clipboard */
-"ONBOARDING_Copied_Title" = "ONBOARDING_Copied_Title";
-
-/* Title For Creating a New Wallet in the onboarding flow */
+/*Title For Creating a New Wallet in the onboarding flow*/
 "ONBOARDING_Create_New _Wallet" = "新しいウォレットの作成";
 
-/* Description for when creating a password for NEP-2 Encryption */
-"ONBOARDING_Create_Password_Description" = "ONBOARDING_Create_Password_Description";
-
-/* Hint for text field when creating a password */
-"ONBOARDING_Create_Password_Hint" = "ONBOARDING_Create_Password_Hint";
-
-/* Title for when creating a password for encrypting your private key */
-"ONBOARDING_Create_Password_title" = "ONBOARDING_Create_Password_title";
-
-/* Error message that is displayed when the user tries to Create a New Wallet without a passcode */
+/*Error message that is displayed when the user tries to Create a New Wallet without a passcode*/
 "ONBOARDING_Create_Wallet_No_Passcode_Error" = "新しいウォレットを作成するにはデバイスのパスコードの設定が必要です。これにより資産が常に安全に保たれます。";
 
-/* Email body when sending Nep-2 backup */
-"ONBOARDING_email_body" = "ONBOARDING_email_body";
-
-/* Email subject when sending NEP-2 backup */
-"ONBOARDING_email_subject" = "ONBOARDING_email_subject";
-
-/* Title for when user tries to login with encrypted key */
-"ONBOARDING_encrypted_key_detected" = "ONBOARDING_encrypted_key_detected";
-
-/* Title when reentering backup */
-"ONBOARDING_enter_private_key" = "ONBOARDING_enter_private_key";
-
-/* Prompt asking the user to authenticate themselves when they already have a wallet stored on device. */
+/*Prompt asking the user to authenticate themselves when they already have a wallet stored on device.*/
 "ONBOARDING_Existing_Wallet_Authentication_Prompt" = "デバイスに保存された既存のウォレットにログイン";
 
-/* Message to display when send email could not finish correctly */
-"ONBOARDING_failed_to_send_email" = "ONBOARDING_failed_to_send_email";
-
-/* Button title to finish the tutorial */
-"ONBOARDING_finish" = "ONBOARDING_finish";
-
-/* Ok got it */
-"ONBOARDING_got_it" = "ONBOARDING_got_it";
-
-/* An alert message for when an invalid key is detected */
-"ONBOARDING_invalid_key" = "ONBOARDING_invalid_key";
-
-/* Message to display when password is too short */
-"ONBOARDING_invalid_password_length" = "ONBOARDING_invalid_password_length";
-
-/* Error message to display when the system fails to retrieve the private key from the keychain */
+/*Error message to display when the system fails to retrieve the private key from the keychain*/
 "ONBOARDING_Keychain_Failure_Error" = "キーチェーンからのデータ受信にエラーが発生しました。後ほどもう一度試すか我たちのチームに直接ご連絡ください。";
 
-/* The fifth subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Five" = "ONBOARDING_Landing_Subtitle_Five";
-
-/* The fourth subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Four" = "ONBOARDING_Landing_Subtitle_Four";
-
-/* The first subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_One" = "ONBOARDING_Landing_Subtitle_One";
-
-/* The third subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Three" = "ONBOARDING_Landing_Subtitle_Three";
-
-/* The second subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Two" = "ONBOARDING_Landing_Subtitle_Two";
-
-/* The fifth title in the landing pages */
-"ONBOARDING_Landing_Title_Five" = "ONBOARDING_Landing_Title_Five";
-
-/* The foruth title in the landing pages */
-"ONBOARDING_Landing_Title_Four" = "ONBOARDING_Landing_Title_Four";
-
-/* The first title in the landing pages */
-"ONBOARDING_Landing_Title_One" = "ONBOARDING_Landing_Title_One";
-
-/* The third title in the landing pages */
-"ONBOARDING_Landing_Title_Three" = "ONBOARDING_Landing_Title_Three";
-
-/* The second title in the landing pages */
-"ONBOARDING_Landing_Title_Two" = "ONBOARDING_Landing_Title_Two";
-
-/* Title for learn more buttong */
-"ONBOARDING_Learn_More" = "ONBOARDING_Learn_More";
-
-/* Subtitle under the text field of the login controller. Explains what to do in textfield */
+/*Subtitle under the text field of the login controller. Explains what to do in textfield*/
 "ONBOARDING_Login_Input_Info_Title" = "NEO秘密鍵でウォレットにログイン";
 
-/* Error message that is displayed when the user tries to login without a passcode */
+/*Error message that is displayed when the user tries to login without a passcode*/
 "ONBOARDING_Login_No_Passcode_Error" = "ログインするにはデバイスのパスコードの設定が必要です。これにより資産が常に安全に保たれます。";
 
-/* Title for all login items in the onboarding flow */
+/*Title for all login items in the onboarding flow*/
 "ONBOARDING_Login_Title" = "ログイン";
 
-/* Message to display when the email is not setup on the phone */
-"ONBOARDING_mail_not_setup_message" = "ONBOARDING_mail_not_setup_message";
+/*Welcome label to create a new wallet*/
+"ONBOARDING_New To O3?" = "初めてO3を使いますか？";
 
-/* Title when error and mail is not yet setup */
-"ONBOARDING_mail_not_setup_title" = "ONBOARDING_mail_not_setup_title";
-
-/* Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key */
-"ONBOARDING_not_matched_wif" = "ONBOARDING_not_matched_wif";
-
-/* Seperator for login and create new wallet */
-"ONBOARDING_OR" = "ONBOARDING_OR";
-
-/* First Info text when confirming that writing down on paper was successful */
-"ONBOARDING_paper_backup_info_one" = "ONBOARDING_paper_backup_info_one";
-
-/* Second Info text when confirming that writing down on paper was successful */
-"ONBOARDING_paper_backup_info_two" = "ONBOARDING_paper_backup_info_two";
-
-/* Message to display when the password is mismatched */
-"ONBOARDING_password_mismatch" = "ONBOARDING_password_mismatch";
-
-/* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
-"ONBOARDING_Please_Backup Warning" = "別の安全な場所に秘密鍵をバックアップして下さい。\n\nあなたのiPhoneにパスコードを設定することを強くお勧めします。あなたのデバイスからパスコードを削除すると、秘密鍵がキーチェーンから削除されます。";
-
-/* Subtitle for when unlocking the nep2 key */
-"ONBOARDING_please_enter_nep2_password" = "ONBOARDING_please_enter_nep2_password";
-
-/* Please take a moment to make a backup of your private key */
-"ONBOARDING_Please_Take_A_Moment" = "ONBOARDING_Please_Take_A_Moment";
-
-/* A label for entering the private key field, can be NEP2 or WIF */
-"ONBOARDING_private_key" = "ONBOARDING_private_key";
-
-/* A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF) */
+/*A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF)*/
 "ONBOARDING_Private_Key_title" = "あなたの秘密鍵（WIF）";
 
-/* Text showing reccommended backup option */
-"ONBOARDING_Reccommended" = "ONBOARDING_Reccommended";
-
-/* Description for when reentering password with NEP-2 Description */
-"ONBOARDING_Reenter_Password_Description" = "ONBOARDING_Reenter_Password_Description";
-
-/* Hint for text field when reentering a password */
-"ONBOARDING_Reenter_Password_Hint" = "ONBOARDING_Reenter_Password_Hint";
-
-/* Title for when when confirming password for NEP-2 Encryption */
-"ONBOARDING_Reenter_Password_title" = "ONBOARDING_Reenter_Password_title";
-
-/* Description for when the screenshot was taken */
-"ONBOARDING_Screenshot_Alert_Description" = "ONBOARDING_Screenshot_Alert_Description";
-
-/* Title for when a screenshot was taken */
-"ONBOARDING_Screenshot_Alert_Title" = "ONBOARDING_Screenshot_Alert_Title";
-
-/* Displayed when the app is waiting to connect to the network. It is finding the best NEO node to connect to */
+/*Displayed when the app is waiting to connect to the network. It is finding the best NEO node to connect to*/
 "ONBOARDING_Selecting_Best_Node" = "最適なノードを選択しています...";
 
-/* Title to start the app after completing the onboarding */
+/*Title to start the app after completing the onboarding*/
 "ONBOARDING_Start_Action_Title" = "始める";
 
-/* Title for button to decrypt private key and continue itno app */
-"ONBOARDING_submit" = "ONBOARDING_submit";
+/*NEW 
+ The first subtitle in the onboarding pages*/
+"ONBOARDING_Tutorial_Subtitle_One" = "ウォレットを手のひらで安全に管理する";
 
-/* Subtitle for the animation header when learning more */
-"ONBOARDING_Subtitle_Animation_Header" = "ONBOARDING_Subtitle_Animation_Header";
+/*The third subtitle in the onboarding pages*/
+"ONBOARDING_Tutorial_Subtitle_Three" = "GAS、NEO、NEP5トークンがすべてサポートされています";
 
-/* Title for the animation header when learning more */
-"ONBOARDING_Title_Animation_Header" = "ONBOARDING_Title_Animation_Header";
+/*The second subtitle in the onboarding pages*/
+"ONBOARDING_Tutorial_Subtitle_Two" = "あなたの秘密鍵は最新のセキュリティ技術で保護されます";
 
-/* Emphasis text for the third info paragraph on the fifth tutorial card */
-"ONBOARDING_Tutorial_Emphasis_Fuve" = "ONBOARDING_Tutorial_Emphasis_Fuve";
+/*The first title in the onboarding pages*/
+"ONBOARDING_Tutorial_Title_One" = "残高確認用アドレス追加";
 
-/* Emphasis text for the third info paragraph on the third tutorial card */
-"ONBOARDING_Tutorial_Emphasis_Three" = "ONBOARDING_Tutorial_Emphasis_Three";
+/*The third title in the onboarding pages*/
+"ONBOARDING_Tutorial_Title_Three" = "送金、入金、報酬受取";
 
-/* Text for the first info paragraph on the fifth tutorial card */
-"ONBOARDING_Tutorial_Info_One_Five" = "ONBOARDING_Tutorial_Info_One_Five";
+/*The second title in the onboarding pages*/
+"ONBOARDING_Tutorial_Title_Two" = "資産を安全に管理";
 
-/* Text for the first info paragraph on the fourth tutorial card */
-"ONBOARDING_Tutorial_Info_One_Four" = "ONBOARDING_Tutorial_Info_One_Four";
-
-/* Text for the first info paragraph on the first tutorial card */
-"ONBOARDING_Tutorial_Info_One_One" = "ONBOARDING_Tutorial_Info_One_One";
-
-/* Text for the first info paragraph on the third tutorial card */
-"ONBOARDING_Tutorial_Info_One_Three" = "ONBOARDING_Tutorial_Info_One_Three";
-
-/* Text for the first info paragraph on the second tutorial card */
-"ONBOARDING_Tutorial_Info_One_Two" = "ONBOARDING_Tutorial_Info_One_Two";
-
-/* Text for the second info paragraph on the fifth tutorial card */
-"ONBOARDING_Tutorial_Info_Two_Five" = "ONBOARDING_Tutorial_Info_Two_Five";
-
-/* Text for the second info paragraph on the first tutorial card */
-"ONBOARDING_Tutorial_Info_Two_One" = "ONBOARDING_Tutorial_Info_Two_One";
-
-/* Text for the second info paragraph on the third tutorial card */
-"ONBOARDING_Tutorial_Info_Two_Three" = "ONBOARDING_Tutorial_Info_Two_Three";
-
-/* Text for the second info paragraph on the second tutorial card */
-"ONBOARDING_Tutorial_Info_Two_Two" = "ONBOARDING_Tutorial_Info_Two_Two";
-
-/* Title for the fifth tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_Five" = "ONBOARDING_Tutorial_Title_Five";
-
-/* Title for the fourth tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_Four" = "ONBOARDING_Tutorial_Title_Four";
-
-/* Title for the first tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_One" = "ONBOARDING_Tutorial_Title_One";
-
-/* Title for the third tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_Three" = "ONBOARDING_Tutorial_Title_Three";
-
-/* Title for the second tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_Two" = "ONBOARDING_Tutorial_Title_Two";
-
-/* Title for wallet generated popup */
-"ONBOARDING_Wallet_Generated" = "ONBOARDING_Wallet_Generated";
-
-/* Title Welciming the user after successful wallet creation */
+/*Title Welciming the user after successful wallet creation*/
 "ONBOARDING_Welcome" = "ようこそ！";
 
-/* A header title on the portfolio screen, show the displayed funds are inside cold storage */
+/*A header title on the portfolio screen, show the displayed funds are inside cold storage*/
 "PORTFOLIO_Cold_Storage_Header" = "コールドストレージ";
 
-/* A header title on the portfolio screen, show the displayed funds are a combination of those store in O3 wallet and cold storage */
+/*NEW 
+ A header title on the portfolio screen, show the displayed funds are a combination of those store in O3 wallet and cold storage*/
 "PORTFOLIO_Combined_Header" = "結合済";
 
-/* Portfolio Percentage Change String */
-"PORTFOLIO_Interval" = "%@ (%.2f%@) %@ 以降";
-
-/* Interval Button on portfolio page, interval specifies 1 Month */
+/*NEW 
+ Interval Button on portfolio page, interval specifies 1 Month*/
 "PORTFOLIO_Interval_Button_1M" = "1M";
 
-/* Interval Button on portfolio page, interval specifies 1 Week */
+/*NEW 
+ Interval Button on portfolio page, interval specifies 1 Week*/
 "PORTFOLIO_Interval_Button_1W" = "1W";
 
-/* Interval Button on portfolio page, interval specifies 24 HOURS */
+/*NEW 
+ Interval Button on portfolio page, interval specifies 24 HOURS*/
 "PORTFOLIO_Interval_Button_24h" = "24H";
 
-/* Interval Button on portfolio page, interval specifies 3 Months */
+/*NEW 
+ Interval Button on portfolio page, interval specifies 3 Months*/
 "PORTFOLIO_Interval_Button_3M" = "3M";
 
-/* Interval Button on portfolio page, interval specifies SIX HOURS */
+/*NEW 
+ Interval Button on portfolio page, interval specifies SIX HOURS*/
 "PORTFOLIO_Interval_Button_6h" = "6H";
 
-/* Interval Button on portfolio page, interval specifies ALL of Time */
+/*NEW 
+ Interval Button on portfolio page, interval specifies ALL of Time*/
 "PORTFOLIO_Interval_Button_ALL" = "ALL";
 
-/* A header title on the portfolio screen, shows the displayed funds are located in the O3Wallet */
+/*NEW 
+ A header title on the portfolio screen, shows the displayed funds are located in the O3Wallet*/
 "PORTFOLIO_O3_Wallet_Header" = "O3ウォレット";
 
-/* Title of the portfolio page */
+/*NEW 
+ Title of the portfolio page*/
 "PORTFOLIO_Portfolio_Title" = "ポートフォリオ";
 
-/* Error message to display when the price history of a token is not available */
-"PORTFOLIO_Price_History_Not_Available" = "PORTFOLIO_Price_History_Not_Available";
-
-/* A title for the scan button in the send screen */
+/*NEW 
+ A title for the scan button in the send screen*/
 "SCAN_Button_Title" = "スキャン";
 
-/* A Title for the address book button in the send screen */
+/*NEW 
+ A Title for the address book button in the send screen*/
 "SEND_Address_Button_Title" = "アドレス帳";
 
-/* Label title for the amount on the send screen */
+/*NEW 
+ Label title for the amount on the send screen*/
 "SEND_Amount_Label" = "送金";
 
-/* Label title for the asset field on the send screen */
+/*NEW 
+ Label title for the asset field on the send screen*/
 "SEND_Asset_Label" = "資産";
 
-/* A prompt asking for user authentication before performing the send action */
+/*NEW 
+ A prompt asking for user authentication before performing the send action*/
 "SEND_Authenticate_To_Send" = "送金には認証が必要です。";
 
-/* Title for button to close send screen after transaction completed */
+/*NEW 
+ Title for button to close send screen after transaction completed*/
 "SEND_Close" = "閉じる";
 
-/* A confirmation dialog that asks the user to confirm the asset, amount, and recipient of their transaction */
+/*NEW 
+ A confirmation dialog that asks the user to confirm the asset, amount, and recipient of their transaction*/
 "SEND_Confirmation_Prompt" = "%.8f %@を%@に送金しますか？";
 
-/* Description to display when the transaction has failed to be submitted to the NEO blockchain */
+/*NEW 
+ Description to display when the transaction has failed to be submitted to the NEO blockchain*/
 "SEND_Created_Transaction_Failed_Description" = "エラーが発生しました。";
 
-/* Title to display when the transaction has failed to be submitted to the NEO blockchain */
+/*NEW 
+ Title to display when the transaction has failed to be submitted to the NEO blockchain*/
 "SEND_Created_Transaction_Failed_Title" = "後ほどもう一度お試しください。";
 
-/* Description to display when the transaction has successfuly been submitted to the NEO blockchain */
+/*NEW 
+ Description to display when the transaction has successfuly been submitted to the NEO blockchain*/
 "SEND_Created_Transaction_Successfully_Description" = "トランザクションが処理されてから取引履歴に表示されます。";
 
-/* Title to display when the transaction has successfuly been submitted to the NEO blockchain */
+/*NEW 
+ Title to display when the transaction has successfuly been submitted to the NEO blockchain*/
 "SEND_Created_Transaction_Successfully_Title" = "トランザクションが無事に作成されました。";
 
-/* Error to display when the user tries to send to an invalid NEO address */
+/*NEW 
+ Error to display when the user tries to send to an invalid NEO address*/
 "SEND_Invalid_Address_Error" = "無効なアドレスです";
 
-/* Error to display when the user tries to send an invalid amount */
+/*NEW 
+ Error to display when the user tries to send an invalid amount*/
 "SEND_Invalid_Amount_Error" = "無効な金額が入力されています";
 
-/* Error To display when the user is trying to send without enough balance */
+/*NEW 
+ Error To display when the user is trying to send without enough balance*/
 "SEND_Not_Enough_Balance_Error" = "十分な%@がありません。あなたの残高は%@です。";
 
-/* Error to display when the user is trying to send a token but does not have enough gas to make the invoke occur. It requires 0.00000001 GAS in the wallet in order to send a token */
-"SEND_Not_Enough_Gas_Token_Transfer" = "NEP5トークンを送るのに、少なくとも0.00000001GASをウォレットに保有していないと送金できません。このGASは使用されませんが、ウォレットに常に保有している必要があります。";
-
-/* A title for the paste button in the send screen */
+/*NEW 
+ A title for the paste button in the send screen*/
 "SEND_Paste_Button_Title" = "貼り付け";
 
-/* Error to display when the user is trying to send gas, but the amount they are sending is the max amount. The user can round down the gas amount a small amount to precent this error */
-"SEND_Rounding_Gas_Error" = "すべてのGASを送信する場合は、合計額から0.00000001を引いてください。これにより、エラーを回避しトランザクションが正常に処理されます。";
-
-/* A title for the Select Asset pull up menu */
+/*NEW 
+ A title for the Select Asset pull up menu*/
 "SEND_Select_Asset_Title" = "資産を選択";
 
-/* A title for the the selected asset label, before the user has selected any asset. */
+/*NEW 
+ A title for the the selected asset label, before the user has selected any asset.*/
 "SEND_Selected_Asset_Title" = "資産を選択";
 
-/* A title indicating a send action */
+/*NEW 
+ A title indicating a send action*/
 "SEND_Send_Title" = "送金";
 
-/* A place holder text, indicating that the NEO Wallet Address should go in this text field */
+/*NEW 
+ A place holder text, indicating that the NEO Wallet Address should go in this text field*/
 "SEND_To_Address_Placeholder" = "NEOウォレットアドレス";
 
-/* Label title for the send to field on the send screen */
+/*NEW 
+ Label title for the send to field on the send screen*/
 "SEND_To_Label" = "To";
 
-/* A generic add button title */
-"SETTINGS_Add_Button" = "追加";
-
-/* Title for add watch address button */
+/*NEW 
+ Title for add watch address button*/
 "SETTINGS_Add_Watch_Address" = "残高確認用アドレス追加";
 
-/* Description under add address button that describes what a watch address is and how it will work in the app */
-"SETTINGS_Add_Watch_Description" = "残高確認用アドレスでは、隔離された環境でポートフォリオを確認できます。 このアドレスから送金することはできませんが、残高を確認することができます。";
-
-/* Label to describe an address input field */
+/*NEW 
+ Label to describe an address input field*/
 "SETTINGS_Address_Label" = "アドレス";
 
-/* Prompt requesting user to authenticate before viewing sensitive information like private key */
+/*NEW 
+ Prompt requesting user to authenticate before viewing sensitive information like private key*/
 "SETTINGS_Authenticate_To_View" = "秘密鍵を見るには認証が必要です。";
 
-/* String to describe a close action */
+/*NEW 
+ String to describe a close action*/
 "SETTINGS_Close_Title" = "閉じる";
 
-/* Settings Menu Title For Contact */
+/*NEW 
+ Settings Menu Title For Contact*/
 "SETTINGS_Contact" = "お問い合わせ";
 
-/* Title for Currency Menu in Settings */
+/*NEW 
+ Title for Currency Menu in Settings*/
 "SETTINGS_Currency_Title" = "通貨：%@";
 
-/* Title for Currency Menu, but does not include the type like USD or BTC */
-"SETTINGS_Currency_Title_No_Type" = "通貨";
-
-/* Error To display when user tries to add an invalid address */
+/*NEW 
+ Error To display when user tries to add an invalid address*/
 "SETTINGS_Invalid_Address" = "無効なアドレス";
 
-/* Settings Menu Title for Logout */
+/*NEW 
+ Settings Menu Title for Logout*/
 "SETTINGS_Logout" = "ログアウト";
 
-/* Warning that appears when attempting to logout from settings */
+/*NEW 
+ Warning that appears when attempting to logout from settings*/
 "SETTINGS_Logout_Warning" = "ログアウトしたら秘密鍵がデバイスから削除されます。秘密鍵をバックアップまたは紙に書いて保存しているか確認してください。アプリケーションへの再度ログインには秘密鍵の再入力が必要です。";
 
-/* Settings Menu Title for Private Key */
+/*NEW 
+ Settings Menu Title for Private Key*/
 "SETTINGS_My_Private_Key" = "自分の秘密鍵";
 
-/* Warning to display when the user decied to manually switch the network node that they are connected to */
+/*NEW 
+ Warning to display when the user decied to manually switch the network node that they are connected to*/
 "SETTINGS_Network_Switch_Warning" = "このノードを選択するとネットワーク管理がマニュアルモードに切り替わります。";
 
-/* Title for Network Screen In Settings */
+/*NEW 
+ Title for Network Screen In Settings*/
 "SETTINGS_Network_Title" = "ネットワーク";
 
-/* Lavel to describe a nickname input field */
+/*NEW 
+ Lavel to describe a nickname input field*/
 "SETTINGS_Nickname_LAbel" = "ニックネーム";
 
-/* Title for Settings Menu */
+/*NEW 
+ Title for Settings Menu*/
 "SETTINGS_Settings_Title" = "設定";
 
-/* Settings Mneu Title For Support */
+/*NEW 
+ Settings Mneu Title For Support*/
 "SETTINGS_Support" = "サポート";
 
-/* Settings Menu Title for Theme */
+/*NEW 
+ Settings Menu Title for Theme*/
 "SETTINGS_Theme" = "テーマ";
 
-/* Label For Classic Theme */
+/*NEW 
+ Label For Classic Theme*/
 "SETTINGS_Theme_Classic" = "テーマ：クラシック";
 
-/* Label For Dark Theme */
+/*NEW 
+ Label For Dark Theme*/
 "SETTINGS_Theme_Dark" = "テーマ：ダーク";
 
-/* Settings Menu Title For Version */
+/*NEW 
+ Settings Menu Title For Version*/
 "SETTINGS_Version" = "%@版";
 
-/* Settings Menu Title For Watch Only Address */
+/*NEW 
+ Settings Menu Title For Watch Only Address*/
 "SETTINGS_Watch_Only_Address" = "残高確認用アドレス";
 
-/* A title for the Watch Only Address Title Screen */
+/*NEW 
+ A title for the Watch Only Address Title Screen*/
 "SETTINGS_Watch_Only_Address_Title" = "残高確認用アドレス";
 
-/* Title for receive action in tabbar */
+/*NEW 
+ Title for receive action in tabbar*/
 "TABBAR_Receive_Action" = "入金";
 
-/* Title for send action in tabbar */
+/*NEW 
+ Title for send action in tabbar*/
 "TABBAR_Send_Action" = "送金";
 
-/* Title for Token Sale Action in tabbar */
+/*NEW 
+ Title for Token Sale Action in tabbar*/
 "TABBAR_Token_Sale_Action" = "トークンセール";
 
-/* Displayed when xhecking the whitelist status of a participant */
+/*NEW 
+ Displayed when xhecking the whitelist status of a participant*/
 "TOKENSALE_Checking_Status" = "ホワイトリストの状態を確認しています...";
 
-/* Text for close button to close the tokensale screen */
+/*NEW 
+ Text for close button to close the tokensale screen*/
 "TOKENSALE_Close" = "閉じる";
 
-/* Title for button to allow for contacting after ato kensale transaction fails */
+/*NEW 
+ Title for button to allow for contacting after ato kensale transaction fails*/
 "TOKENSALE_Contact_Title" = "O3のメンバーに問い合わせる";
 
-/* String showing that the token sale has already ended */
+/*NEW 
+ String showing that the token sale has already ended*/
 "TOKENSALE_Ended" = "終了";
 
-/* A string displaying how muc time is left in the token sale */
+/*NEW 
+ A string displaying how muc time is left in the token sale*/
 "TOKENSALE_Ends_In" = "%@後に終了";
 
-/* A detailed description about what will happen if the user signs up for the email list to get notified about token sales */
-"TOKENSALE_Get_Notified_Description" = "メーリングリストに登録すると、最新のトークンセールに関する情報が送信されます。メールアドレスが第三者に共有されることはありません。また、掲載されているすべてのトークンは事前にO3に確認されます。詐欺通貨の情報はもちろん送りません！";
-
-/* A title showing users can get notified about the latest token sales */
+/*NEW 
+ A title showing users can get notified about the latest token sales*/
 "TOKENSALE_Get_Notified_Title" = "通知をオンにする";
 
-/* Error that shows when the user tries to partcipate in a tokensale that has already ended */
+/*NEW 
+ Error that shows when the user tries to partcipate in a tokensale that has already ended*/
 "TOKENSALE_Has_Ended_Error" = "このトークンセールはすでに終了しました";
 
-/* String on the review screen describing that this transaction will have priority */
+/*NEW 
+ String on the review screen describing that this transaction will have priority*/
 "TOKENSALE_Has_Priority_Label" = "🚀 プライオリティ（0.001GAS）";
 
-/* An error indicating the user has entered an invalid contribution amount */
+/*NEW 
+ An error indicating the user has entered an invalid contribution amount*/
 "TOKENSALE_Invalid_Amount_Error" = "無効な金額です";
 
-/* Disclaimer text asking the user to aggree that they have read the agreement provided by the tokensale issuer */
+/*NEW 
+ Disclaimer text asking the user to aggree that they have read the agreement provided by the tokensale issuer*/
 "TOKENSALE_Issuer_Agreement" = "このトークンセールでのトークン発行者の同意書を読み、内容を理解しました。";
 
-/* A string showing that the displayed token sale is currently active */
+/*NEW 
+ A string showing that the displayed token sale is currently active*/
 "TOKENSALE_Live_Status" = "• 受付中";
 
-/* An error that shows when the user tries to contribute more than the max contribution amount */
+/*NEW 
+ An error that shows when the user tries to contribute more than the max contribution amount*/
 "TOKENSALE_Max_Contribution_Error" = "%@の最大受付額は%@です";
 
-/* An error that show when the user tries to contribute less than the min contribution amount */
+/*NEW 
+ An error that show when the user tries to contribute less than the min contribution amount*/
 "TOKENSALE_Min_Contribution_Error" = "%@の最小受付額は%@です";
 
-/* An error when the user has not yet agreed to the tokensale disclaimers */
+/*NEW 
+ An error when the user has not yet agreed to the tokensale disclaimers*/
 "TOKENSALE_Not_Agreed_To_Disclaimers Error" = "続けるには免責規定に同意してください。";
 
-/* An error indicating that the user does not have enough balance for the amount entered */
+/*NEW 
+ An error indicating that the user does not have enough balance for the amount entered*/
 "TOKENSALE_Not_Enough_Balance_Error" = "十分な%@がありません。あなたの残高は%@です。";
 
-/* A string showing the user is not whitelisted for this tokensale */
+/*NEW 
+ A string showing the user is not whitelisted for this tokensale*/
 "TOKENSALE_Not_WhiteListed" = "ホワイトリストに登録されていません。";
 
-/* An error to display when the user is not whitelisted for the tokensale */
+/*NEW 
+ An error to display when the user is not whitelisted for the tokensale*/
 "TOKENSALE_Not_Whitelisted_Error" = "まだこのトークンセールのホワイトリストに登録していないようです。トークン発行者のウェブサイトでホワイトリスト登録の方法を確認してください。";
 
-/* Disclaimer text asking the user to agree to the terms of the O3 Application. States that the user is interacting directly with the smart contract */
+/*NEW 
+ Disclaimer text asking the user to agree to the terms of the O3 Application. States that the user is interacting directly with the smart contract*/
 "TOKENSALE_O3_Agreement" = "ブロックチェーン上のスマートコントラクトに直接接続していることを理解しています。O3はいかなる資産預託を行っていません。";
 
-/* Text for the participate action */
+/*NEW 
+ Text for the participate action*/
 "TOKENSALE_Participate" = "参加";
 
-/* A Dialog that shows explaining when, what is priority is tapped. Explains that priority allows your transactions to process faster on the blockchain */
+/*NEW 
+ A Dialog that shows explaining when, what is priority is tapped. Explains that priority allows your transactions to process faster on the blockchain*/
 "TOKENSALE_Priority_Explanation" = "プライオリティによりブロックへの到達が早くなります。トラフィック量の多いときは、プライオリティを付けることでトランザクションがブロックに到達する可能性が上がります。";
 
-/* Label showing priority. Also displays the gas cost for priority. This is fixed at 0.0011GAS */
+/*NEW 
+ Label showing priority. Also displays the gas cost for priority. This is fixed at 0.0011GAS*/
 "TOKENSALE_Priority_Label" = "プライオリティ（0.0011 GAS）";
 
-/* Label for the date in the token sale receipt in transaction success screen */
+/*NEW 
+ Label for the date in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_Date_Label" = "日付";
 
-/* Email Text For the receipt that the user can send to themselves */
+/*NEW 
+ Email Text For the receipt that the user can send to themselves*/
 "TOKENSALE_Receipt_Email_Full_Text" = "このレシートはあなたのトランザクションがNEOブロックチェーン上での処理に送信されたことを証明します。\n\nブロックチェーン上にて承認された場合は、資産があなたのウォレットから引かれ、トークン発行者がトークン配布の責任を負います。このトランザクションIDはトークンセール参加の証明になるものです。詳細は以下の通りです。\n\n日付：%@\nトークンセール名：%@\nトランザクションID：%@\n送金先：%@\n受取予定額：%@\n\nO3チーム\n\n";
 
-/* Label for the priority in the token sale receipt in transaction success screen */
+/*NEW 
+ Label for the priority in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_Priority_Label" = "プライオリティ 🚀";
 
-/* Label for the receiving asset and amount in the token sale receipt in transaction success screen */
+/*NEW 
+ Label for the receiving asset and amount in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_Receiving_Label" = "受取通貨";
 
-/* Label for the sending asset and amount in the token sale receipt in transaction success screen */
+/*NEW 
+ Label for the sending asset and amount in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_Sending_Label" = "送金通貨";
 
-/* Label for token sale name in the token sale receipt in transaction success screen */
+/*NEW 
+ Label for token sale name in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_Tokensale_Name_Label" = "トークンセール";
 
-/* Label for the transaction id in the token sale receipt in transaction success screen */
+/*NEW 
+ Label for the transaction id in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_txid_Label" = "トランザクションID";
 
-/* A title for reviewing token sale participation buttton */
+/*NEW 
+ A title for reviewing token sale participation buttton*/
 "TOKENSALE_Review_Button_Title" = "確認";
 
-/* An error occurs when the user tries to send the max amount of gas. This is due to a potential rounding error, ro prevent this, send slightly les than the max amount */
+/*NEW 
+ An error occurs when the user tries to send the max amount of gas. This is due to a potential rounding error, ro prevent this, send slightly les than the max amount*/
 "TOKENSALE_Rounding_Error" = "GASを全額送金する場合は0.00000001GASを引いてください。エラーが発生しトランザクションが処理されない可能性があります。";
 
-/* Button title to save your receipt */
+/*NEW 
+ Button title to save your receipt*/
 "TOKENSALE_save_button_title" = "保存";
 
-/* Description showing that the transaction is currently being submitted to the NEO blockchain */
+/*NEW 
+ Description showing that the transaction is currently being submitted to the NEO blockchain*/
 "TOKENSALE_Sending_In_Progress" = "送信中";
 
-/* Button title for allowing users to subscribe to token sale news */
+/*NEW 
+ Button title for allowing users to subscribe to token sale news*/
 "TOKENSALE_Subscribe" = "購読する";
 
-/* Title text showing your tokensale transaction has been successfully submitted to the blockchain */
+/*NEW 
+ Title text showing your tokensale transaction has been successfully submitted to the blockchain*/
 "TOKENSALE_Successful_Transaction_Title" = "トランザクションが正常に処理されました。";
 
-/* A title for the token sales screen */
+/*NEW 
+ A title for the token sales screen*/
 "TOKENSALE_Token_Sales_Title" = "トークンセール";
 
-/* A Title for the transction receipt in the tokensale success */
+/*NEW 
+ A Title for the transction receipt in the tokensale success*/
 "TOKENSALE_Transaction" = "トランザクション";
 
-/* Description that shows when there is an error */
-"TOKENSALE_Transaction_Error_Description" = "トランザクションは処理されていません。スマートコントラクトがトランザクションを拒否した可能性があります。後ほどやり直すか、トークン発行者に直接お問い合わせ下さい。";
-
-/* A title for a button that directs the user to the tokensale website button */
+/*NEW 
+ A title for a button that directs the user to the tokensale website button*/
 "TOKENSALE_Website_Button_Title" = "ウェブサイト";
 
-/* A title for the button that gives additional information about what priority does */
-"TOKENSALE_What_Is_Priority" = "プライオリティとは？";
-
-/* Title Describing the send amount in the tokensale review screen */
+/*NEW 
+ Title Describing the send amount in the tokensale review screen*/
 "TOKENSALE_You_Are_Sending_Title" = "あなたが送金するのは";
 
-/* A title indicating how much the user will receive with a given contribution amount */
+/*NEW 
+ A title indicating how much the user will receive with a given contribution amount*/
 "TOKENSALE_You_Will_receive_Title" = "受け取るのは";
 
-/* Title for digital art and collectibles */
-"TOKENSelection_art_and_collectibles" = "デジタルアイテム";
-
-/* Title for NEP5 Section of Tab */
-"TOKENSELECTION_nep5_title" = "NEP5トークン";
-
-/* Text to show that non fungible tokens are still under construction */
-"TOKENSELECTION_Under_Construction" = "準備中";
-
-/* A title for the account screen */
+/*NEW 
+ A title for the account screen*/
 "WALLET_Account" = "アカウント";
 
-/* Title of assets tab in wallet screen */
+/*NEW 
+ A title for the button which allows you to add a NEP-5 Token to your wallet*/
+"WALLET_Add_NEP5_Token" = "NEP5トークンの追加";
+
+/*NEW 
+ Title of assets tab in wallet screen*/
 "WALLET_Assets" = "資産状況";
 
-/* Prefix used to indicate the block number in the transaction history */
+/*NEW 
+ Prefix used to indicate the block number in the transaction history*/
 "WALLET_Block_Prefix" = "ブロック：%@";
 
-/* A Title for the claim Action */
+/*NEW 
+ A Title for the claim Action*/
 "WALLET_Claim_Action" = "請求";
 
-/* A title for a label in loading screen when checking for claimable data. 'Checking transaction data. Please wait...' */
-"WALLET_Claim_Check_Claimable_Data_Title" = "WALLET_Claim_Check_Claimable_Data_Title";
-
-/* A title for a button Claim Now */
-"WALLET_Claim_Claim_Now_Action" = "WALLET_Claim_Claim_Now_Action"; /* NEW */
-
-/* A title for a label claimable gas. 'Claimable GAS' */
-"WALLET_Claim_Claimable_Gas_Title" = "WALLET_Claim_Claimable_Gas_Title";
-
-/* A title for a label confirmed claimable gas. 'Confirmed' */
-"WALLET_Claim_Confirmed_Title" = "WALLET_Claim_Confirmed_Title";
-
-/* A title for a label estimated claimable gas. 'Estimated' */
-"WALLET_Claim_Estimated_Title" = "WALLET_Claim_Estimated_Title";
-
-/* A title for a label GAS claimed successfully saying it will be in your account shortly */
-"WALLET_Claim_Gas_Claimed_Success_Sub_Title" = "WALLET_Claim_Gas_Claimed_Success_Sub_Title";
-
-/* A title for a label GAS claimed successfully. 'GAS Claimed successfully' */
-"WALLET_Claim_Gas_Claimed_Success_Title" = "WALLET_Claim_Gas_Claimed_Success_Title";
-
-/* A subtitle to display while claiming is in progress */
+/*NEW 
+ A subtitle to display while claiming is in progress*/
 "WALLET_Claim_In_Progress_Subtitle" = "もう少しお待ちください";
 
-/* A title to display while claiming is in progress */
+/*NEW 
+ A title to display while claiming is in progress*/
 "WALLET_Claim_In_Progress_Title" = "GASを請求中";
 
-/* A Message to display in the alert after the user hs successfully claimed their gas */
+/*NEW 
+ A Message to display in the alert after the user hs successfully claimed their gas*/
 "WALLET_Claim_Succeeded_Prompt" = "GAS請求が正常に完了しました。トランザクション履歴に反映されるまで数分かかる場合があります。また、次のGAS請求は5分後に可能です。";
 
-/* Indicated that the transation in history originated from claim */
+/*NEW 
+ Indicated that the transation in history originated from claim*/
 "WALLET_Claim_Transaction" = "請求";
 
-/* A title for a button Update Now */
-"WALLET_Claim_Update_Now_Action" = "WALLET_Claim_Update_Now_Action";
-
-/* Title of Contacts tab in wallet screen */
+/*NEW 
+ Title of Contacts tab in wallet screen*/
 "WALLET_Contacts" = "アドレス帳";
 
-/* An action title for copying our address */
+/*NEW 
+ An action title for copying our address*/
 "WALLET_Copy_Address" = "アドレスをコピー";
 
-/* Prefix used in the transaction history to indicate where the transaction came from */
+/*NEW 
+ Prefix used in the transaction history to indicate where the transaction came from*/
 "WALLET_From_Prefix" = "FROM：%@";
 
-/* Informative text explaining you can store neo, gas, and nep-5 tokens using this address */
+/*NEW 
+ Informative text explaining you can store neo, gas, and nep-5 tokens using this address*/
 "WALLET_My_Address_Explanation" = "このアドレスを用いて取引所やウォレットからNEOやGAS、NEP5トークンを受け取ることができます。";
 
-/* Title of the My Address Page */
+/*NEW 
+ Title of the My Address Page*/
 "WALLET_My_Address_Title" = "マイアドレス";
 
-/* String in transaction history indicating O3 Wallet */
+/*NEW 
+ Title for NEP-5 Tokens Selection View*/
+"WALLET_NEP5_Tokens" = "NEP5トークン";
+
+/*NEW 
+ Done bar button item*/
+"WALLET_NEP_5_DONE" = "完了";
+
+/*NEW 
+ String in transaction history indicating O3 Wallet*/
 "WALLET_O3_Wallet" = "O3ウォレット";
 
-/* A title for the request action in the wallet */
-"WALLET_Request" = "WALLET_Request";
-
-/* An Action Title for saving your QR code */
+/*NEW 
+ An Action Title for saving your QR code*/
 "WALLET_Save_Qr_Action" = "QRコードの保存";
 
-/* A description to give more information about saving the address */
+/*NEW 
+ A description to give more information about saving the address*/
 "WALLET_Saved_Description" = "画像は正常に保存されました";
 
-/* A title to display when you've successfully saved your wallet address qr code */
+/*NEW 
+ A title to display when you've successfully saved your wallet address qr code*/
 "WALLET_Saved_Title" = "保存完了！";
 
-/* A title for the scan action in the wallet */
-"WALLET_Scan" = "WALLET_Scan";
-
-/* A title for the send action in the wallet */
-"WALLET_Send" = "WALLET_Send";
-
-/* An action title for sharing O3 */
+/*NEW 
+ An action title for sharing O3*/
 "WALLET_Share" = "シェア";
 
-/* Prefix used in the transaction history to indicate where the transaction went to */
+/*NEW 
+ Prefix used in the transaction history to indicate where the transaction went to*/
 "WALLET_To_Prefix" = "TO：%@";
 
-/* Title of Transactions tab in wallet screen */
+/*NEW 
+ Title of Transactions tab in wallet screen*/
 "WALLET_Transactions" = "トランザクション";
 
-/* A title for Unclaimed Gas in the wallet */
+/*NEW 
+ A title for Unclaimed Gas in the wallet*/
 "WALLET_Unclaimed_Gas_Title" = "未請求GAS";
 
-/* Title to copy watch address */
+/*NEW 
+ Title to copy watch address*/
 "WATCH_ADDRESS_Copy_Address" = "アドレスをコピー";
 
-/* Title to delete Watch Address */
+/*NEW 
+ Title to delete Watch Address*/
 "WATCH_ADDRESS_Delete" = "消去";
 
-/* A prompt asking for user confirmation to delete the watch address */
+/*NEW 
+ A prompt asking for user confirmation to delete the watch address*/
 "WATCH_ADDRESS_Delete_Confirmation" = "このアドレスを本当に削除しますか？";
 
-/* Title for editing name of a watch address */
+/*NEW 
+ Title for editing name of a watch address*/
 "WATCH_ADDRESS_Edit_Name" = "名前を編集";
 
-/* Save Action for Watch Addresses */
+/*NEW 
+ Save Action for Watch Addresses*/
 "WATCH_ADDRESS_Save" = "保存";
 
+/*When the user tries to create a new wallet, but they already have one saved on the devicve, this explanation/warning is given to the user*/
+"ONBOARDING_Already_Have_Wallet_Explanation" = "既にデバイス上に既存のウォレットがあるようです。\n\n新しいウォレットを作る際、新しい秘密鍵が既存のウォレットに上書きされます。秘密鍵がバックアップされていることを確認して下さい。";
+
+/*A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device*/
+"ONBOARDING_Please_Backup Warning" = "別の安全な場所に秘密鍵をバックアップして下さい。\n\nあなたのiPhoneにパスコードを設定することを強くお勧めします。あなたのデバイスからパスコードを削除すると、秘密鍵がキーチェーンから削除されます。";
+
+/*NEW 
+ Error to display when the user is trying to send a token but does not have enough gas to make the invoke occur. It requires 0.00000001 GAS in the wallet in order to send a token*/
+"SEND_Not_Enough_Gas_Token_Transfer" = "NEP5トークンを送るのに、少なくとも0.00000001GASをウォレットに保有していないと送金できません。このGASは使用されませんが、ウォレットに常に保有している必要があります。";
+
+/*NEW 
+ Error to display when the user is trying to send gas, but the amount they are sending is the max amount. The user can round down the gas amount a small amount to precent this error*/
+"SEND_Rounding_Gas_Error" = "すべてのGASを送信する場合は、合計額から0.00000001を引いてください。これにより、エラーを回避しトランザクションが正常に処理されます。";
+
+/*NEW 
+ Description under add address button that describes what a watch address is and how it will work in the app*/
+"SETTINGS_Add_Watch_Description" = "残高確認用アドレスでは、隔離された環境でポートフォリオを確認できます。 このアドレスから送金することはできませんが、残高を確認することができます。";
+
+/*NEW 
+ A detailed description about what will happen if the user signs up for the email list to get notified about token sales*/
+"TOKENSALE_Get_Notified_Description" = "メーリングリストに登録すると、最新のトークンセールに関する情報が送信されます。メールアドレスが第三者に共有されることはありません。また、掲載されているすべてのトークンは事前にO3に確認されます。詐欺通貨の情報はもちろん送りません！";
+
+/*NEW 
+ Description that shows when there is an error*/
+"TOKENSALE_Transaction_Error_Description" = "トランザクションは処理されていません。スマートコントラクトがトランザクションを拒否した可能性があります。後ほどやり直すか、トークン発行者に直接お問い合わせ下さい。";
+
+/*A text to display when the user is not connected to the internet*/
+"ALERT_No_Internet" = "インターネット接続がありません。😵";
+
+/*Title for digital art and collectibles*/
+"TOKENSelection_art_and_collectibles" = "デジタルアイテム";
+
+/*Title for NEP5 Section of Tab*/
+"TOKENSELECTION_nep5_title" = "NEP5トークン";
+
+/*Text to show that non fungible tokens are still under construction*/
+"TOKENSELECTION_Under_Construction" = "準備中";
+
+/*A generic add button title*/
+"SETTINGS_Add_Button" = "追加";
+
+/*Title for Currency Menu, but does not include the type like USD or BTC*/
+"SETTINGS_Currency_Title_No_Type" = "通貨";
+
+/*A title for the button that gives additional information about what priority does*/
+"TOKENSALE_What_Is_Priority" = "プライオリティとは？";
+
+/*Portfolio Percentage Change String*/
+"PORTFOLIO_Interval" = "%@ (%.2f%@) %@ 以降";
+
+/*PlaceHolder for searching tokens*/
+"MARKETPLACE_search_tokens" = "トークンを探す";
+
+/*Title for marketplace section in app*/
+"MARKETPLACE_title" = "マーケットプレイス";
+
+/*Button title to go back in the tutorial page*/
+"ONBOARDING_back" = "戻る";
+
+/*Title menu to backup private key*/
+"ONBOARDING_Backup" = "バックアップ";
+
+/*Tutle for backing private key and moving to end*/
+"ONBOARDING_backup_and_continue" = "バックアップを続ける";
+
+/*Title for option to backup the key by copying to clipboard*/
+"ONBOARDING_Backup_Copy_Title" = "クリップボードにコピー";
+
+/*Title for option to backup the key by emailing an encrypted NEP2*/
+"ONBOARDING_Backup_Email_Title" = "メールでバックアップを送る";
+
+/*Title for option to go back and view private key*/
+"ONBOARDING_Backup_Go_Back" = "秘密鍵を確認する";
+
+/*Title for option to backup private key using paperr*/
+"ONBOARDING_Backup_Paper_Title" = "紙に書き留めた";
+
+/*Title for option to backup private key using screenshot*/
+"ONBOARDING_Backup_Screenshot_Title" = "スクリーンショットを保存した";
+
+/*Continue button when creating a password*/
+"ONBOARDING_Continue_Button" = "続ける";
+
+/*Description for when the key has been copied to your clipboard*/
+"ONBOARDING_Copied_Description" = "安全な場所に貼り付け、必要な際に取り出せる場所に保存してください";
+
+/*Title for when copied to clipboard*/
+"ONBOARDING_Copied_Title" = "秘密鍵がコピーされました";
+
+/*Description for when creating a password for NEP-2 Encryption*/
+"ONBOARDING_Create_Password_Description" = "秘密鍵を安全に保存するために、パスワードにより暗号化する必要があります。ログインする際には、秘密鍵とパスワードの双方が必要となります。パスワードは8文字以上である必要があります。";
+
+/*Hint for text field when creating a password*/
+"ONBOARDING_Create_Password_Hint" = "パスワードの入力";
+
+/*Title for when creating a password for encrypting your private key*/
+"ONBOARDING_Create_Password_title" = "パスワードの作成";
+
+/*Email body when sending Nep-2 backup*/
+"ONBOARDING_email_body" = "O3ウォレットを選んでいただきありがとうございます！\n\nこちらは作成された暗号化された秘密鍵です。\n\nこれと作成したパスワードを用いてウォレットを確認することができます。\n\n%@\n\nログイン手順\n1）O3アプリを開く\n2）「ログイン」を選択する\n3）秘密鍵を入力するか、又はQRコードを読み取る\n4）パスワードを入力する\n\nこれでログイン完了です。\n\n改めて、O3を利用していただきありがとうございます！";
+
+/*Email subject when sending NEP-2 backup*/
+"ONBOARDING_email_subject" = "O3ウォレットの暗号化キーのバックアップ";
+
+/*Title for when user tries to login with encrypted key*/
+"ONBOARDING_encrypted_key_detected" = "暗号化キーを検知しました";
+
+/*Title when reentering backup*/
+"ONBOARDING_enter_private_key" = "秘密鍵の入力";
+
+/*Message to display when send email could not finish correctly*/
+"ONBOARDING_failed_to_send_email" = "メールの送信に失敗しました。バックアップを安全に行うために再度送信してください。";
+
+/*Button title to finish the tutorial*/
+"ONBOARDING_finish" = "完了";
+
+/*Ok got it*/
+"ONBOARDING_got_it" = "わかりました。";
+
+/*An alert message for when an invalid key is detected*/
+"ONBOARDING_invalid_key" = "秘密鍵が無効です。再度入力してください。";
+
+/*Message to display when password is too short*/
+"ONBOARDING_invalid_password_length" = "パスワードが短すぎます。パスワードは8文字以上である必要があります。";
+
+/*The fifth subtitle in the landing pages*/
+"ONBOARDING_Landing_Subtitle_Five" = "新しくウォレットを作成して利用を開始する、又は秘密鍵でログインする";
+
+/*The fourth subtitle in the landing pages*/
+"ONBOARDING_Landing_Subtitle_Four" = "アプリ内でNEOの最新情報を取得して新しいプロジェクトを発見する。";
+
+/*The first subtitle in the landing pages*/
+"ONBOARDING_Landing_Subtitle_One" = "スマートエコノミーのために設計されたシンプルで使い勝手のよいウォレット";
+
+/*The third subtitle in the landing pages*/
+"ONBOARDING_Landing_Subtitle_Three" = "最新のセキュリティにより、あなたの資産は安全に保たれます。";
+
+/*The second subtitle in the landing pages*/
+"ONBOARDING_Landing_Subtitle_Two" = "送金、入金、ガス請求及びNEP5トークンの管理をこれひとつでお手軽に。";
+
+/*The fifth title in the landing pages*/
+"ONBOARDING_Landing_Title_Five" = "開始しますか？";
+
+/*The foruth title in the landing pages*/
+"ONBOARDING_Landing_Title_Four" = "最新の情報を得る";
+
+/*The first title in the landing pages*/
+"ONBOARDING_Landing_Title_One" = "O3にようこそ";
+
+/*The third title in the landing pages*/
+"ONBOARDING_Landing_Title_Three" = "安全かつ確実に。";
+
+/*The second title in the landing pages*/
+"ONBOARDING_Landing_Title_Two" = "NEOスマートエコノミーのための設計";
+
+/*Title for learn more buttong*/
+"ONBOARDING_Learn_More" = "もっと知る";
+
+/*Message to display when the email is not setup on the phone*/
+"ONBOARDING_mail_not_setup_message" = "バックアップを送信せずに続ける場合、後でバックアップのコピーを取る必要があります。";
+
+/*Title when error and mail is not yet setup*/
+"ONBOARDING_mail_not_setup_title" = "メールが設定されていません";
+
+/*Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key*/
+"ONBOARDING_not_matched_wif" = "バックアップと秘密鍵が一致しません。再度試すか、秘密鍵をご確認ください。";
+
+/*Seperator for login and create new wallet*/
+"ONBOARDING_OR" = "—— 又は ——";
+
+/*First Info text when confirming that writing down on paper was successful*/
+"ONBOARDING_paper_backup_info_one" = "秘密鍵をペーパーウォレットに書き写す際、間違えることがあります。";
+
+/*Second Info text when confirming that writing down on paper was successful*/
+"ONBOARDING_paper_backup_info_two" = "下記の秘密鍵を確認して、バックアップが正確に作成されているかどうか確認してください。";
+
+/*Message to display when the password is mismatched*/
+"ONBOARDING_password_mismatch" = "パスワードが一致しません。秘密鍵の暗号化に失敗しました。パスワードを再度確認してください。";
+
+/*Subtitle for when unlocking the nep2 key*/
+"ONBOARDING_please_enter_nep2_password" = "秘密鍵の保管に利用していたパスワードを入力してください。";
+
+/*Please take a moment to make a backup of your private key*/
+"ONBOARDING_Please_Take_A_Moment" = "秘密鍵のコピーのバックアップには時間を置いてください";
+
+/*A label for entering the private key field, can be NEP2 or WIF*/
+"ONBOARDING_private_key" = "秘密鍵（WIF又は暗号化されたもの）を入力するか、又はスキャンしてください";
+
+/*Text showing reccommended backup option*/
+"ONBOARDING_Reccommended" = "最も安全性が高い";
+
+/*Description for when reentering password with NEP-2 Description*/
+"ONBOARDING_Reenter_Password_Description" = "暗号化キーが正しく作成されたかどうか確認するために、パスワードを再入力してください。";
+
+/*Hint for text field when reentering a password*/
+"ONBOARDING_Reenter_Password_Hint" = "パスワードの再入力";
+
+/*Title for when when confirming password for NEP-2 Encryption*/
+"ONBOARDING_Reenter_Password_title" = "パスワードの再入力";
+
+/*Description for when the screenshot was taken*/
+"ONBOARDING_Screenshot_Alert_Description" = "秘密鍵は後で確認することもできますが、スクリーンショットが正常に完了したか再度確認することをお勧めします。";
+
+/*Title for when a screenshot was taken*/
+"ONBOARDING_Screenshot_Alert_Title" = "スクリーンショットは正常に完了しましたか？";
+
+/*Title for button to decrypt private key and continue itno app*/
+"ONBOARDING_submit" = "確認";
+
+/*Subtitle for the animation header when learning more*/
+"ONBOARDING_Subtitle_Animation_Header" = "この秘密鍵はウォレットにログインする際に必要となります。続ける前にバックアップをしてください。";
+
+/*Title for the animation header when learning more*/
+"ONBOARDING_Title_Animation_Header" = "自分の秘密鍵";
+
+/*Emphasis text for the third info paragraph on the fifth tutorial card*/
+"ONBOARDING_Tutorial_Emphasis_Fuve" = "スマートエコノミーへようこそ！";
+
+/*Emphasis text for the third info paragraph on the third tutorial card*/
+"ONBOARDING_Tutorial_Emphasis_Three" = "コピーしてください";
+
+/*Text for the first info paragraph on the fifth tutorial card*/
+"ONBOARDING_Tutorial_Info_One_Five" = "秘密鍵は、アカウントと資産へのアクセスに必要となります。";
+
+/*Text for the first info paragraph on the fourth tutorial card*/
+"ONBOARDING_Tutorial_Info_One_Four" = "盗難やその他の被害を防ぐために、秘密鍵をコピーし安全な場所に保管することを推奨します。可能であれば複数の場所に保管することが望ましいです。";
+
+/*Text for the first info paragraph on the first tutorial card*/
+"ONBOARDING_Tutorial_Info_One_One" = "あなたのトークンを安全に保つ上で、秘密鍵は非常に重要です。";
+
+/*Text for the first info paragraph on the third tutorial card*/
+"ONBOARDING_Tutorial_Info_One_Three" = "ログアウトする、アプリを消去する、又は携帯電話を失くした場合、それ以降アプリ内で秘密鍵にアクセスすることはできません。";
+
+/*Text for the first info paragraph on the second tutorial card*/
+"ONBOARDING_Tutorial_Info_One_Two" = "O3アプリでは、秘密鍵を用いてあなたのトークンが保管されているブロックチェーンにアクセスします。";
+
+/*Text for the second info paragraph on the fifth tutorial card*/
+"ONBOARDING_Tutorial_Info_Two_Five" = "絶対に秘密鍵を他人に教えたり、インターネット上に投稿しないでください。あなたの資産が盗まれる危険性があります。";
+
+/*Text for the second info paragraph on the first tutorial card*/
+"ONBOARDING_Tutorial_Info_Two_One" = "秘密鍵に関する豆知識";
+
+/*Text for the second info paragraph on the third tutorial card*/
+"ONBOARDING_Tutorial_Info_Two_Three" = "秘密鍵はウォレットに再度ログインする際に必要となります。";
+
+/*Text for the second info paragraph on the second tutorial card*/
+"ONBOARDING_Tutorial_Info_Two_Two" = "秘密鍵はあなたのデバイス上にローカルに保存されます。セキュリティ上の理由から、O3は秘密鍵のコピーを保存しません。";
+
+/*Title for the fifth tutorial card when creating new wallet*/
+"ONBOARDING_Tutorial_Title_Five" = "他者への公開は避けてください。";
+
+/*Title for the fourth tutorial card when creating new wallet*/
+"ONBOARDING_Tutorial_Title_Four" = "バックアップを行う";
+
+/*Title for wallet generated popup*/
+"ONBOARDING_Wallet_Generated" = "ウォレットが作成されました";
+
+/*Error message to display when the price history of a token is not available*/
+"PORTFOLIO_Price_History_Not_Available" = "現在、このトークンの価格履歴を閲覧することはできません。";
+
+/*A title for a label in loading screen when checking for claimable data. 'Checking transaction data. Please wait...'*/
+"WALLET_Claim_Check_Claimable_Data_Title" = "トランザクションの送信中です。お待ち下さい。";
+
+/*A title for a button Claim Now*/
+"WALLET_Claim_Claim_Now_Action" = "請求";
+
+/*NEW 
+ A title for a label claimable gas. 'Claimable GAS'*/
+"WALLET_Claim_Claimable_Gas_Title" = "請求可能なGAS量";
+
+/*A title for a label confirmed claimable gas. 'Confirmed'*/
+"WALLET_Claim_Confirmed_Title" = "確認";
+
+/*A title for a label estimated claimable gas. 'Estimated'*/
+"WALLET_Claim_Estimated_Title" = "見積もり";
+
+/*A title for a label GAS claimed successfully saying it will be in your account shortly*/
+"WALLET_Claim_Gas_Claimed_Success_Sub_Title" = "即時にアカウントへ入金されます";
+
+/*A title for a label GAS claimed successfully. 'GAS Claimed successfully'*/
+"WALLET_Claim_Gas_Claimed_Success_Title" = "GAS請求に成功しました";
+
+/*A title for a button Update Now*/
+"WALLET_Claim_Update_Now_Action" = "アップデートを行う";
+
+/*A title for the request action in the wallet*/
+"WALLET_Request" = "リクエスト";
+
+/*A title for the scan action in the wallet*/
+"WALLET_Scan" = "スキャン";
+
+/*A title for the send action in the wallet*/
+"WALLET_Send" = "送金";
