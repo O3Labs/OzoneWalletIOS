@@ -16,6 +16,7 @@ public struct AccountState: Codable {
     var scriptHash: String
     var assets: [TransferableAsset]
     var nep5Tokens: [TransferableAsset]
+    var ontology: [TransferableAsset]
 
     enum CodingKeys: String, CodingKey {
         case version
@@ -23,15 +24,17 @@ public struct AccountState: Codable {
         case scriptHash
         case assets
         case nep5Tokens
+        case ontology
     }
 
     public init(version: Int, address: String, scriptHash: String,
-                assets: [TransferableAsset], nep5Tokens: [TransferableAsset]) {
+                assets: [TransferableAsset], nep5Tokens: [TransferableAsset], ontology: [TransferableAsset]) {
         self.version = version
         self.address = address
         self.scriptHash = scriptHash
         self.assets = assets
         self.nep5Tokens = nep5Tokens
+        self.ontology = ontology
     }
 
     public init(from decoder: Decoder) throws {
@@ -41,7 +44,8 @@ public struct AccountState: Codable {
         let scriptHash: String = try container.decode(String.self, forKey: .scriptHash)
         let assets: [TransferableAsset] = try container.decode([TransferableAsset].self, forKey: .assets)
         let nep5Tokens: [TransferableAsset] = try container.decode([TransferableAsset].self, forKey: .nep5Tokens)
-        self.init(version: version, address: address, scriptHash: scriptHash, assets: assets, nep5Tokens: nep5Tokens)
+        let ontology: [TransferableAsset] = try container.decode([TransferableAsset].self, forKey: .ontology)
+        self.init(version: version, address: address, scriptHash: scriptHash, assets: assets, nep5Tokens: nep5Tokens, ontology: ontology)
     }
 
     public struct TransferableAsset: Codable {
@@ -53,8 +57,9 @@ public struct AccountState: Codable {
         var assetType: AssetType
 
         public enum AssetType: String, Codable {
-            case nativeAsset
+            case neoAsset
             case nep5Token
+            case ontologyAsset
         }
 
         enum CodingKeys: String, CodingKey {
@@ -80,8 +85,12 @@ public struct AccountState: Codable {
             let name = try container.decode(String.self, forKey: .name)
             let symbol = try container.decode(String.self, forKey: .symbol)
             let decimals = try container.decode(Int.self, forKey: .decimals)
-            let assetType: AssetType = id.hasPrefix("0x") ? .nativeAsset : .nep5Token
+            var assetType: AssetType = id.hasPrefix("0x") ? .neoAsset : .nep5Token
 
+            if id.contains("00000000000000000000000000000000000000") {
+                assetType = .ontologyAsset
+            }
+            
             //If the value is given in string format, the assumption is that is coming from the
             // server and it is not ready to use, and needs to be adjusted for decimals
             // Otherwise the value can be given and it doesnt have to be adjusted
@@ -90,7 +99,7 @@ public struct AccountState: Codable {
                 let valueString = try container.decode(String.self, forKey: .value)
                 let valueDecimal = Decimal(string: valueString)
 
-                if assetType == .nativeAsset {
+                if assetType == .neoAsset {
                     value = Double(truncating: (valueDecimal as NSNumber?)!)
                 } else {
                     let dividedBalance = (valueDecimal! / pow(10, decimals))
@@ -125,7 +134,7 @@ extension TransferableAsset {
             symbol: "NEO",
             decimals: 0,
             value: O3Cache.neo().value,
-            assetType: .nativeAsset)
+            assetType: .neoAsset)
     }
 
     static func NEONoBalance() -> TransferableAsset {
@@ -135,7 +144,7 @@ extension TransferableAsset {
             symbol: "NEO",
             decimals: 0,
             value: 0,
-            assetType: .nativeAsset)
+            assetType: .neoAsset)
     }
 
     static func GAS() -> TransferableAsset {
@@ -145,7 +154,7 @@ extension TransferableAsset {
             symbol: "GAS",
             decimals: 8,
             value: O3Cache.gas().value,
-            assetType: .nativeAsset)
+            assetType: .neoAsset)
     }
 
     static func GASNoBalance() -> TransferableAsset {
@@ -155,6 +164,6 @@ extension TransferableAsset {
             symbol: "GAS",
             decimals: 8,
             value: 0,
-            assetType: .nativeAsset)
+            assetType: .neoAsset)
     }
 }

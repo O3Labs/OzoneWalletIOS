@@ -11,6 +11,7 @@ import UIKit
 import KeychainAccess
 import SwiftTheme
 import Crashlytics
+import Neoutils
 
 class SendTableViewController: UITableViewController, AddressSelectDelegate, QRScanDelegate {
     // swiftlint:disable weak_delegate
@@ -30,7 +31,8 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
 
     @IBOutlet weak var recipientCell: UITableViewCell!
     @IBOutlet weak var sendAmountCell: UITableViewCell!
-    @IBOutlet weak var sendAssetCell: UITableViewCell!
+    @IBOutlet weak var selectedAssetIcon: UIImageView!
+    @IBOutlet weak var selectedAssetBalance: UILabel!
 
     var gasBalance: Double = 0.0
     var transactionCompleted: Bool!
@@ -45,7 +47,6 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         }
         recipientCell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
         sendAmountCell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
-        sendAssetCell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -84,6 +85,8 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         if incomingQRData != nil {
             qrScanned(data: incomingQRData!)
         }
+        //default to NEO
+        self.assetSelected(selected: O3Cache.neo(), gasBalance: O3Cache.gas().value)
     }
 
     @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
@@ -95,6 +98,22 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             amountField.becomeFirstResponder()
         }
     }
+    
+    func sendOntology(assetSymbol: String, amount: Double, toAddress: String) {
+        //TODO get best node for Ontology nodes
+        let wif = Authenticated.account?.wif
+        var error: NSError?
+        let endpoint = "http://polaris2.ont.io:20336"
+        let txid = NeoutilsOntologyTransfer(endpoint, wif, assetSymbol, toAddress, amount, &error)
+        if txid != "" {
+            transactionCompleted = true
+            self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
+        } else {
+            transactionCompleted = false
+            self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
+        }
+    }
+    
     func sendNEP5Token(tokenHash: String, assetName: String, amount: Double, toAddress: String) {
 
         DispatchQueue.main.async {
@@ -174,6 +193,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
 
         var assetId: String! = self.selectedAsset!.id
         let assetName: String! = self.selectedAsset!.name
+        let assetSymbol: String! = self.selectedAsset!.symbol
         let amountFormatter = NumberFormatter()
         amountFormatter.minimumFractionDigits = 0
         amountFormatter.maximumFractionDigits = self.selectedAsset!.decimals
@@ -220,11 +240,14 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             }
         }
 
-        if self.selectedAsset?.assetType == .nativeAsset {
+        if self.selectedAsset?.assetType == .neoAsset {
             assetId = String(assetId.dropFirst(2))
             self.sendNativeAsset(assetId: AssetId(rawValue: assetId)!, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
         } else if self.selectedAsset?.assetType == .nep5Token {
             self.sendNEP5Token(tokenHash: assetId, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
+        } else if self.selectedAsset?.assetType == .ontologyAsset {
+            self.sendOntology(assetSymbol: assetSymbol, amount: amount!.doubleValue, toAddress: toAddress)
+            
         }
     }
 
@@ -356,6 +379,9 @@ extension SendTableViewController: AssetSelectorDelegate {
             self.gasBalance = gasBalance
             self.selectedAsset = selected
             self.selectedAssetLabel.text = selected.symbol
+            self.selectedAssetBalance.text = selected.value.string(selected.decimals, removeTrailing: true)
+            let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", selected.symbol.uppercased())
+            self.selectedAssetIcon?.kf.setImage(with: URL(string: imageURL))
             self.enableSendButton()
         }
     }

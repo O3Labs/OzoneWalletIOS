@@ -352,7 +352,7 @@
 "SEND_Address_Button_Title" = "Address";
 
 /* Label title for the amount on the send screen */
-"SEND_Amount_Label" = "Send";
+"SEND_Amount_Label" = "Amount";
 
 /* Label title for the asset field on the send screen */
 "SEND_Asset_Label" = "Asset";

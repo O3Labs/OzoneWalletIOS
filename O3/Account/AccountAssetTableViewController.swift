@@ -18,7 +18,9 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     private enum sections: Int {
         case unclaimedGAS = 0
         case toolbar
-        case assets
+        case neoAssets
+        case ontologyAssets
+        case nep5tokens
     }
 
     var sendModal: SendTableViewController?
@@ -30,6 +32,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     var tokenAssets = O3Cache.tokenAssets()
     var neoBalance: Int = Int(O3Cache.neo().value)
     var gasBalance: Double = O3Cache.gas().value
+    var ontologyAssets: [TransferableAsset] = O3Cache.ontologyAssets()
     var mostRecentClaimAmount = 0.0
     var qrController: QRScannerController?
 
@@ -95,6 +98,8 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
                 gasBalance = asset.value
             }
         }
+        ontologyAssets = accountState.ontology
+        
         tokenAssets = []
         for token in accountState.nep5Tokens {
             tokenAssets.append(token)
@@ -102,6 +107,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         O3Cache.setGASForSession(gasBalance: gasBalance)
         O3Cache.setNEOForSession(neoBalance: neoBalance)
         O3Cache.setTokenAssetsForSession(tokens: tokenAssets)
+        O3Cache.setOntologyAssetsForSession(tokens: ontologyAssets)
     }
 
     func loadAccountState() {
@@ -120,7 +126,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 5
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -128,8 +134,12 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             return 1
         } else if section == sections.toolbar.rawValue {
             return 1
+        } else if section == sections.neoAssets.rawValue {
+            return 2
+        } else if section == sections.ontologyAssets.rawValue {
+            return ontologyAssets.count
         }
-        return 2 + tokenAssets.count
+        return tokenAssets.count
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -138,6 +148,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         } else if indexPath.section == sections.toolbar.rawValue {
             return 60.0
         }
+        // All the asset cell has the same height
         return 66.0
     }
 
@@ -161,43 +172,61 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             return cell
         }
 
-        if indexPath.section == sections.assets.rawValue && indexPath.row < 2 {
+        if indexPath.section == sections.neoAssets.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nativeasset") as? NativeAssetTableViewCell else {
                 let cell =  UITableViewCell()
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
-
+            
             if indexPath.row == 0 {
                 cell.titleLabel.text = "NEO"
                 cell.amountLabel.text = neoBalance.description
                 let imageURL = "https://cdn.o3.network/img/neo/NEO.png"
                 cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             }
-
+            
             if indexPath.row == 1 {
                 cell.titleLabel.text = "GAS"
                 cell.amountLabel.text = gasBalance.string(8, removeTrailing: true)
                 let imageURL = "https://cdn.o3.network/img/neo/GAS.png"
                 cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             }
-
+            
+            return cell
+        }
+        
+        if indexPath.section == sections.nep5tokens.rawValue {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
+                let cell =  UITableViewCell()
+                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                return cell
+            }
+            let list = tokenAssets
+            let token = list[indexPath.row]
+            cell.amountLabel.text = token.value.string(token.decimals, removeTrailing: true)
+            cell.titleLabel.text = token.symbol
+            cell.subtitleLabel.text = token.name
+            let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", token.symbol.uppercased())
+            cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             return cell
         }
 
+        //ontology asset using the same nep5 token cell
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
             let cell =  UITableViewCell()
             cell.theme_backgroundColor = O3Theme.backgroundColorPicker
             return cell
         }
-        let list = tokenAssets
-        let token = list[indexPath.row - 2]
+        let list = ontologyAssets
+        let token = list[indexPath.row]
         cell.amountLabel.text = token.value.string(token.decimals, removeTrailing: true)
         cell.titleLabel.text = token.symbol
         cell.subtitleLabel.text = token.name
         let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", token.symbol.uppercased())
         cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
         return cell
+       
     }
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         if indexPath.section == sections.unclaimedGAS.rawValue {
