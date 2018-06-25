@@ -27,26 +27,6 @@
                   "peercount": 0
                   },
                   {
-                  "url": "http://seed1.cityofzion.io:8080",
-                  "blockcount": 0,
-                  "peercount": 0
-                  },
-                  {
-                  "url": "http://seed2.cityofzion.io:8080",
-                  "blockcount": 0,
-                  "peercount": 0
-                  },
-                  {
-                  "url": "http://seed3.cityofzion.io:8080",
-                  "blockcount": 0,
-                  "peercount": 0
-                  },
-                  {
-                  "url": "http://seed4.cityofzion.io:8080",
-                  "blockcount": 0,
-                  "peercount": 0
-                  },
-                  {
                   "url": "http://seed2.aphelion-neo.com:10332",
                   "blockcount": 0,
                   "peercount": 0

@@ -13,6 +13,7 @@ import Channel
 import KeychainAccess
 import SwiftTheme
 import PKHUD
+import Crashlytics
 
 class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDelegate {
     @IBOutlet weak var paperBackupInfoOneLabel: UILabel!
@@ -105,6 +106,7 @@ class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDe
 
     @objc func continueButtonTapped(_ sender: Any?) {
         if wifTextView.text.trim() == wif {
+            Answers.logCustomEvent(withName: "Paper Backup Completed", customAttributes: [:])
             loginToApp()
         } else {
             DispatchQueue.main.async {

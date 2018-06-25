@@ -82,13 +82,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.setupChannel()
         self.setupReachability()
         AppDelegate.setNavbarAppearance()
-        print(NSHomeDirectory())
         
         //check if there is an existing wallet in keychain
         //if so, present LoginToCurrentWalletViewController
         let walletExists =  UserDefaultsManager.o3WalletAddress != nil
         if walletExists {
-            let login = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "LoginToCurrentWalletViewController") as! LoginToCurrentWalletViewController
+            guard let login = UIStoryboard(name: "Onboarding", bundle: nil)
+                .instantiateViewController(withIdentifier: "LoginToCurrentWalletViewController") as? LoginToCurrentWalletViewController else {
+                    return false
+            }
             if let window = self.window {
                 login.delegate = self
                 //pass the launchOptions to the login screen
@@ -146,9 +148,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    //mark: - deeplink
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-       if app.applicationState == .inactive {
+    // MARK: - deeplink
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+        if app.applicationState == .inactive {
             parseNEP9URL(url: url)
         }
         return false
@@ -201,7 +203,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         Controller().openSend(to: address!, selectedAsset: TransferableAsset.NEO(), amount: amount)
                     } else if asset?.lowercased() == "gas" {
                         Controller().openSend(to: address!, selectedAsset: TransferableAsset.GAS(), amount: amount)
-                    }else if selectedAsset != nil {
+                    } else if selectedAsset != nil {
                         Controller().openSend(to: address!, selectedAsset: selectedAsset!, amount: amount)
                     }
                 }
@@ -211,7 +213,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: LoginToCurrentWalletViewControllerDelegate {
-    func authorized(launchOptions: [UIApplicationLaunchOptionsKey : Any]?) {
+    func authorized(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
         if let url = launchOptions?[UIApplicationLaunchOptionsKey.url] as? URL {
             self.parseNEP9URL(url: url)
         }

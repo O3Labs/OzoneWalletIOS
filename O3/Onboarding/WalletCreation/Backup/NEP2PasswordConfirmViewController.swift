@@ -15,6 +15,7 @@ import Channel
 import KeychainAccess
 import SwiftTheme
 import PKHUD
+import Crashlytics
 
 class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeViewControllerDelegate {
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -106,7 +107,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
             }
         } else {
             OzoneAlert.alertDialog(message: OnboardingStrings.passwordMismatch, dismissTitle: OzoneAlert.okPositiveConfirmString) {
-
+                self.passwordField.text = ""
             }
         }
     }
@@ -119,6 +120,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
                     return
                 }
             } else {
+                Answers.logCustomEvent(withName: "Email Backup Completed", customAttributes: [:])
                 self.loginToApp()
             }
         }

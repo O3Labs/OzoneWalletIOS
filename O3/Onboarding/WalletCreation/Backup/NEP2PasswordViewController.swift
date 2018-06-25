@@ -58,7 +58,7 @@ class NEP2PasswordViewController: UITableViewController {
             self.performSegue(withIdentifier: "segueToConfirmPassword", sender: nil)
         } else {
             OzoneAlert.alertDialog(message: OnboardingStrings.invalidPasswordLength, dismissTitle: OzoneAlert.okPositiveConfirmString) {
-
+                self.passwordTextField.text = ""
             }
         }
     }

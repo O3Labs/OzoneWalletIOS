@@ -22,7 +22,7 @@ class AppState: NSObject {
     }
 
     static var bestSeedNodeURL: String = ""
-    
+   
     enum ClaimingState: String {
         case Fresh = ""
         case WaitingForClaimableData = "0"
@@ -35,8 +35,8 @@ class AppState: NSObject {
         }
         return  AppState.ClaimingState(rawValue: UserDefaults.standard.value(forKey: address + "_claimingState") as! String)!
     }
-    
-    static func setClaimingState(address: String, claimingState: ClaimingState){
+
+    static func setClaimingState(address: String, claimingState: ClaimingState) {
         UserDefaults.standard.setValue(claimingState.rawValue, forKey: address + "_claimingState")
         UserDefaults.standard.synchronize()
     }

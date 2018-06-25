@@ -89,7 +89,9 @@ public class O3Client {
     }
 
     func getPriceHistory(_ symbol: String, interval: String, completion: @escaping (O3ClientResult<History>) -> Void) {
-        let endpoint = O3Endpoints.getPriceHistory.rawValue + symbol + String(format: "?i=%@", interval)
+        var endpoint = O3Endpoints.getPriceHistory.rawValue + symbol + String(format: "?i=%@", interval)
+        endpoint += String(format: "&currency=%@", UserDefaultsManager.referenceFiatCurrency.rawValue)
+
         sendRequest(endpoint, method: .GET, data: nil) { result in
             switch result {
             case .failure(let error):
@@ -163,14 +165,22 @@ public class O3Client {
     }
 
     func getFeatures(completion: @escaping(O3ClientResult<FeatureFeed>) -> Void) {
-        let endpoint = "https://cdn.o3.network/data/featured.json"
+        var endpoint = "https://platform.o3.network/api/v1/neo/news/featured"
+        #if TESTNET
+        endpoint = "https://platform.o3.network/api/v1/neo/news/featured?network=test"
+        #endif
+        #if PRIVATENET
+        endpoint = "https://platform.o3.network/api/v1/neo/news/featured?network=private"
+        #endif
         sendRequest(endpoint, method: .GET, data: nil, noBaseURL: true) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
             case .success(let response):
                 let decoder = JSONDecoder()
-                guard let data = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted),
+                let result = response["result"] as? JSONDictionary
+                let responseData = result!["data"] as? JSONDictionary
+                guard let data = try? JSONSerialization.data(withJSONObject: responseData!, options: .prettyPrinted),
                     let featureFeed = try? decoder.decode(FeatureFeed.self, from: data) else {
                         return
                 }
@@ -182,10 +192,10 @@ public class O3Client {
     func getTokens(completion: @escaping(O3ClientResult<[NEP5Token]>) -> Void) {
         var endpoint = "https://platform.o3.network/api/v1/neo/nep5"
         #if TESTNET
-        endpoint = "https://platform.o3.network/api/v1/neo/nep5"
+        endpoint = "https://platform.o3.network/api/v1/neo/nep5?network=test"
         #endif
         #if PRIVATENET
-        endpoint = "https://s3-ap-northeast-1.amazonaws.com/network.o3.cdn/data/nep5.private.json"
+        endpoint = "https://platform.o3.network/api/v1/neo/nep5?network=private"
         #endif
 
         sendRequest(endpoint, method: .GET, data: nil, noBaseURL: true) { result in

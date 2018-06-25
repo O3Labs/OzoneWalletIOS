@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Lottie
+import Crashlytics
 
 class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, TutorialCardDelegate, PrivateKeyCardDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
@@ -210,6 +211,8 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
     }
 
     @IBAction func learnMoreButtonTapped(_ sender: Any) {
+        Answers.logCustomEvent(withName: "Learn More About Private Key",
+                               customAttributes: [:])
         swipedLeft(nil)
     }
 
