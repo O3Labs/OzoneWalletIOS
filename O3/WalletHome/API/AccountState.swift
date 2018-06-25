@@ -28,13 +28,17 @@ public struct AccountState: Codable {
     }
 
     public init(version: Int, address: String, scriptHash: String,
-                assets: [TransferableAsset], nep5Tokens: [TransferableAsset], ontology: [TransferableAsset]) {
+                assets: [TransferableAsset], nep5Tokens: [TransferableAsset], ontology: [TransferableAsset]?) {
         self.version = version
         self.address = address
         self.scriptHash = scriptHash
         self.assets = assets
         self.nep5Tokens = nep5Tokens
-        self.ontology = ontology
+        if ontology != nil {
+            self.ontology = ontology!
+        } else {
+            self.ontology = []
+        }
     }
 
     public init(from decoder: Decoder) throws {
@@ -44,7 +48,7 @@ public struct AccountState: Codable {
         let scriptHash: String = try container.decode(String.self, forKey: .scriptHash)
         let assets: [TransferableAsset] = try container.decode([TransferableAsset].self, forKey: .assets)
         let nep5Tokens: [TransferableAsset] = try container.decode([TransferableAsset].self, forKey: .nep5Tokens)
-        let ontology: [TransferableAsset] = try container.decode([TransferableAsset].self, forKey: .ontology)
+        let ontology: [TransferableAsset]? = try? container.decode([TransferableAsset].self, forKey: .ontology)
         self.init(version: version, address: address, scriptHash: scriptHash, assets: assets, nep5Tokens: nep5Tokens, ontology: ontology)
     }
 

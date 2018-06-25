@@ -105,8 +105,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="77"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUv-g8-fWQ">
-                                                    <rect key="frame" x="16" y="16" width="288" height="0.0"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUv-g8-fWQ" customClass="SMIconLabel" customModule="O3" customModuleProvider="target">
+                                                    <rect key="frame" x="16" y="16" width="0.0" height="0.0"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" name="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -120,13 +120,21 @@
                                                         <action selector="enableSendButton" destination="VaG-FZ-R5v" eventType="editingChanged" id="1Io-Wg-ngi"/>
                                                     </connections>
                                                 </textField>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shield-check" translatesAutoresizingMaskIntoConstraints="NO" id="Hid-UQ-SWP">
+                                                    <rect key="frame" x="24" y="8.5" width="15" height="15"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="15" id="Szi-sH-kvg"/>
+                                                        <constraint firstAttribute="height" constant="15" id="ytX-QL-TpR"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="VdJ-Y3-cv0" firstAttribute="leading" secondItem="JSK-Ek-kNJ" secondAttribute="leading" constant="16" id="1cU-Hd-HfU"/>
+                                                <constraint firstItem="Hid-UQ-SWP" firstAttribute="leading" secondItem="mUv-g8-fWQ" secondAttribute="trailing" constant="8" id="7ea-ie-ABU"/>
                                                 <constraint firstItem="mUv-g8-fWQ" firstAttribute="leading" secondItem="JSK-Ek-kNJ" secondAttribute="leading" constant="16" id="A5a-zk-Z94"/>
+                                                <constraint firstItem="Hid-UQ-SWP" firstAttribute="centerY" secondItem="mUv-g8-fWQ" secondAttribute="centerY" id="LSe-Vx-PDF"/>
                                                 <constraint firstAttribute="trailing" secondItem="VdJ-Y3-cv0" secondAttribute="trailing" constant="16" id="P2u-4d-fre"/>
-                                                <constraint firstAttribute="trailing" secondItem="mUv-g8-fWQ" secondAttribute="trailing" constant="16" id="SBF-9S-Q9J"/>
                                                 <constraint firstItem="mUv-g8-fWQ" firstAttribute="top" secondItem="JSK-Ek-kNJ" secondAttribute="top" constant="16" id="XCj-n1-whr"/>
                                                 <constraint firstItem="VdJ-Y3-cv0" firstAttribute="top" secondItem="mUv-g8-fWQ" secondAttribute="bottom" constant="8" id="c2f-Wk-1ta"/>
                                                 <constraint firstAttribute="bottom" secondItem="VdJ-Y3-cv0" secondAttribute="bottom" id="v7Z-d9-JGf"/>
@@ -306,6 +314,8 @@
                         <outlet property="sendButton" destination="hc8-Fj-ahK" id="PuG-1n-UTv"/>
                         <outlet property="toAddressField" destination="VdJ-Y3-cv0" id="adM-oS-kYZ"/>
                         <outlet property="toLabel" destination="9eu-wM-z0U" id="a9J-pT-Gbb"/>
+                        <outlet property="verifiedAddressBadge" destination="Hid-UQ-SWP" id="Ijt-xD-OGK"/>
+                        <outlet property="verifiedAddressDisplayNameLabel" destination="mUv-g8-fWQ" id="tyc-a7-0w7"/>
                         <segue destination="apJ-tv-Dug" kind="presentation" identifier="segueToTransactionComplete" id="FwU-th-5pk"/>
                         <segue destination="VdC-Si-otx" kind="presentation" identifier="segueToAddressSelect" id="rNF-NR-QQ1"/>
                         <segue destination="Leg-a3-ZXh" kind="presentation" identifier="segueToQR" id="1oY-bc-yk9"/>
@@ -475,7 +485,7 @@
             <objects>
                 <tableViewController title="Address Book" id="HRS-tm-Fpj" customClass="AddressSelectTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="75" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ps6-ex-1wx">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="452"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -598,7 +608,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VdC-Si-otx" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" largeTitles="YES" id="vgF-AM-hmW">
-                        <rect key="frame" x="0.0" y="20" width="320" height="96"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="93"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -634,6 +644,7 @@
         <image name="angle-down" width="52" height="30"/>
         <image name="cameraSend" width="17" height="15"/>
         <image name="paste" width="14" height="15"/>
+        <image name="shield-check" width="18" height="20"/>
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

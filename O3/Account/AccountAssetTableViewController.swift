@@ -18,6 +18,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     private enum sections: Int {
         case unclaimedGAS = 0
         case toolbar
+        case inbox
         case neoAssets
         case ontologyAssets
         case nep5tokens
@@ -35,6 +36,8 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     var ontologyAssets: [TransferableAsset] = O3Cache.ontologyAssets()
     var mostRecentClaimAmount = 0.0
     var qrController: QRScannerController?
+    
+    var addressInbox: Inbox?
 
     @objc func reloadCells() {
         DispatchQueue.main.async { self.tableView.reloadData() }
@@ -59,11 +62,28 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         applyNavBarTheme()
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
+        
+        self.loadInbox()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadClaimableGAS()
+    }
+    
+    func loadInbox() {
+        O3APIClient(network: AppState.network).getInbox(address: Authenticated.account!.address) { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+                return
+            case .success(let inbox):
+                DispatchQueue.main.async {
+                    self.addressInbox = inbox
+                    self.tableView.reloadSections([sections.inbox.rawValue], with: .automatic)
+                }
+            }
+        }
     }
 
     @objc func reloadAllData() {
@@ -126,12 +146,14 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return 6
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == sections.unclaimedGAS.rawValue {
             return 1
+        } else if section == sections.inbox.rawValue {
+            return addressInbox?.items.count ?? 0
         } else if section == sections.toolbar.rawValue {
             return 1
         } else if section == sections.neoAssets.rawValue {
@@ -146,8 +168,12 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         if indexPath.section == sections.unclaimedGAS.rawValue {
             return 166.0
         } else if indexPath.section == sections.toolbar.rawValue {
-            return 60.0
+            return 44.0
         }
+        if indexPath.section == sections.inbox.rawValue {
+            return 190.0
+        }
+        
         // All the asset cell has the same height
         return 66.0
     }
@@ -171,6 +197,17 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             cell.delegate = self
             return cell
         }
+        if indexPath.section == sections.inbox.rawValue {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-inbox-item") as? InboxItemTableViewCell else {
+                let cell =  UITableViewCell()
+                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                return cell
+            }
+            let item = addressInbox?.items[indexPath.row]
+            cell.inboxItem = item
+            return cell
+        }
+    
 
         if indexPath.section == sections.neoAssets.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nativeasset") as? NativeAssetTableViewCell else {

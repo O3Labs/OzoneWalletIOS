@@ -28,6 +28,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     @IBOutlet weak var pasteButton: UIButton!
     @IBOutlet weak var scanButton: UIButton!
     @IBOutlet weak var addressButton: UIButton!
+    
+    @IBOutlet weak var verifiedAddressDisplayNameLabel: UILabel!
+    @IBOutlet weak var verifiedAddressBadge: UIImageView!
 
     @IBOutlet weak var recipientCell: UITableViewCell!
     @IBOutlet weak var sendAmountCell: UITableViewCell!
@@ -325,8 +328,44 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         self.present(nav, animated: true, completion: nil)
     }
 
+    func showVerifiedAddress(verifiedAddress: VerifiedAddress?) {
+        if verifiedAddress == nil {
+            verifiedAddressDisplayNameLabel.text = ""
+            verifiedAddressBadge.isHidden = true
+            return
+        }
+        verifiedAddressDisplayNameLabel.text = verifiedAddress!.displayName
+        verifiedAddressBadge.isHidden = false
+    }
+    
     @IBAction func enableSendButton() {
-        sendButton.isEnabled = toAddressField.text?.isEmpty == false && amountField.text?.isEmpty == false && selectedAsset != nil
+        self.showVerifiedAddress(verifiedAddress: nil)
+        if toAddressField.text?.isEmpty == true {
+            sendButton.isEnabled = false
+            return
+        }
+        let validAddress = NeoutilsValidateNEOAddress(toAddressField.text?.trim())
+        if validAddress == false {
+            sendButton.isEnabled = false
+            return
+        }
+        //check verified address here
+        O3APIClient(network: AppState.network).checkVerifiedAddress(address: toAddressField.text!) { result in
+            switch result {
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.showVerifiedAddress(verifiedAddress: nil)
+                }
+                return
+            case .success(let verifiedAddress):
+                DispatchQueue.main.async {
+                    //show green verified badge
+                    self.showVerifiedAddress(verifiedAddress: verifiedAddress)
+                }
+            }
+        }
+        
+        sendButton.isEnabled = validAddress == true && amountField.text?.isEmpty == false && selectedAsset != nil
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

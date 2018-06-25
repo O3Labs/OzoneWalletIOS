@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import Neoutils
 
 public enum O3APIClientError: Error {
-    case invalidSeed, invalidBodyRequest, invalidData, invalidRequest, noInternet
+    case invalidSeed, invalidBodyRequest, invalidData, invalidRequest, noInternet, invalidAddress
 
     var localizedDescription: String {
         switch self {
@@ -23,7 +24,10 @@ public enum O3APIClientError: Error {
             return "Invalid server request"
         case .noInternet:
             return "No Internet connection"
+        case .invalidAddress:
+            return "Invalid address"
         }
+        
     }
 }
 
@@ -45,6 +49,7 @@ class O3APIClient: NSObject {
         case getBalances = "balances"
         case getUTXO = "utxo"
         case getClaims = "claimablegas"
+        case getInbox = "inbox"
     }
 
     func sendRESTAPIRequest(_ resourceEndpoint: String, params: [Any]?, completion :@escaping (O3APIClientResult<JSONDictionary>) -> Void) {
@@ -152,6 +157,49 @@ class O3APIClient: NSObject {
                 }
                 let balancesResult = O3APIClientResult.success(accountState)
                 completion(balancesResult)
+            }
+        }
+    }
+    
+    func getInbox(address: String, completion: @escaping(O3APIClientResult<Inbox>) -> Void) {
+        let url = "/v1/inbox/" + address
+        sendRESTAPIRequest(url, params: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let data = try? JSONSerialization.data(withJSONObject: response["result"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(Inbox.self, from: data) else {
+                        completion(.failure(.invalidData))
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
+    
+    func checkVerifiedAddress(address: String, completion: @escaping(O3APIClientResult<VerifiedAddress>) -> Void) {
+        let validAddress = NeoutilsValidateNEOAddress(address)
+        if validAddress == false {
+            completion(.failure(.invalidAddress))
+            return
+        }
+        let url = "/v1/verification/" + address
+        sendRESTAPIRequest(url, params: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(VerifiedAddress.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
             }
         }
     }

@@ -175,6 +175,11 @@
 		6EEE3DEA20D9E97D0030A4AB /* DAppBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE3DE920D9E97D0030A4AB /* DAppBrowserViewController.swift */; };
 		6EEE3DEC20D9E99E0030A4AB /* Browser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EEE3DEB20D9E99E0030A4AB /* Browser.storyboard */; };
 		6EEE3DF620DBB70D0030A4AB /* neoutils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEE3DF520DBB70D0030A4AB /* neoutils.framework */; };
+		6EEE3DF820E0A8280030A4AB /* Inbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE3DF720E0A8280030A4AB /* Inbox.swift */; };
+		6EEE3DFA20E0AFD30030A4AB /* InboxItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE3DF920E0AFD30030A4AB /* InboxItemTableViewCell.swift */; };
+		6EEE3DFC20E0C5E00030A4AB /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE3DFB20E0C5E00030A4AB /* Router.swift */; };
+		6EEE3DFE20E0D75F0030A4AB /* VerifiedAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE3DFD20E0D75F0030A4AB /* VerifiedAddress.swift */; };
+		6EEE3E0020E0DAC60030A4AB /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE3DFF20E0DAC60030A4AB /* UILabel.swift */; };
 		6EFF839A20148CD700BDBE52 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFF839920148CD700BDBE52 /* CardView.swift */; };
 		7501C0271F7BBFF400B4B2FF /* AddressEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501C0261F7BBFF400B4B2FF /* AddressEntryTableViewController.swift */; };
 		7501E8431F79536300123EA8 /* SettingsMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501E8421F79536300123EA8 /* SettingsMenuTableViewController.swift */; };
@@ -421,6 +426,11 @@
 		6EEE3DEB20D9E99E0030A4AB /* Browser.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Browser.storyboard; sourceTree = "<group>"; };
 		6EEE3DF020DB2D840030A4AB /* ontmobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ontmobile.framework; path = "../../../../gocode/src/github.com/o3labs/ont-mobile/output/ios/ontmobile.framework"; sourceTree = "<group>"; };
 		6EEE3DF520DBB70D0030A4AB /* neoutils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = neoutils.framework; sourceTree = "<group>"; };
+		6EEE3DF720E0A8280030A4AB /* Inbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inbox.swift; sourceTree = "<group>"; };
+		6EEE3DF920E0AFD30030A4AB /* InboxItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxItemTableViewCell.swift; sourceTree = "<group>"; };
+		6EEE3DFB20E0C5E00030A4AB /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		6EEE3DFD20E0D75F0030A4AB /* VerifiedAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAddress.swift; sourceTree = "<group>"; };
+		6EEE3DFF20E0DAC60030A4AB /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		6EFF839920148CD700BDBE52 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		7501C0261F7BBFF400B4B2FF /* AddressEntryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressEntryTableViewController.swift; sourceTree = "<group>"; };
 		7501E8421F79536300123EA8 /* SettingsMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuTableViewController.swift; sourceTree = "<group>"; };
@@ -644,6 +654,8 @@
 				3557BAB620AA9D0A0034937C /* Token.swift */,
 				3557BAB720AA9D0A0034937C /* Transaction.swift */,
 				3557BAB820AA9D0A0034937C /* TransactionAttritbute.swift */,
+				6EEE3DF720E0A8280030A4AB /* Inbox.swift */,
+				6EEE3DFD20E0D75F0030A4AB /* VerifiedAddress.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -688,6 +700,7 @@
 				35E5F613202ADE4300D65BEA /* NativeAssetSelectorTableViewCell.swift */,
 				6E4E6F8A20146627001A5844 /* NEP5TokenTableViewCell.swift */,
 				6E60CC6120CE3B5D0062F1CE /* ClaimableGASTableViewCell.swift */,
+				6EEE3DF920E0AFD30030A4AB /* InboxItemTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -891,6 +904,7 @@
 				75D5BFC31F6D1A4F00E64855 /* AppAssets.xcassets */,
 				3557BADD20AAA0940034937C /* O3-Bridging-Header.h */,
 				6E60CC6B20CF884E0062F1CE /* Controller.swift */,
+				6EEE3DFB20E0C5E00030A4AB /* Router.swift */,
 			);
 			path = O3;
 			sourceTree = "<group>";
@@ -930,6 +944,7 @@
 				6E7F3D8E20B6805200835963 /* Data.swift */,
 				35AF806220CA366A00E48457 /* UITextField.swift */,
 				6E60CC6920CF73B00062F1CE /* URL.swift */,
+				6EEE3DFF20E0DAC60030A4AB /* UILabel.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1200,6 +1215,8 @@
 			files = (
 				3557BAD520AA9D310034937C /* NEP9.swift in Sources */,
 				3557BAA320AA9C930034937C /* OpCodes.swift in Sources */,
+				6EEE3DFE20E0D75F0030A4AB /* VerifiedAddress.swift in Sources */,
+				6EEE3DFC20E0C5E00030A4AB /* Router.swift in Sources */,
 				752006871F7F6F5D00D19B5F /* HalfModalPresentationController.swift in Sources */,
 				3557BAC320AA9D0B0034937C /* NEONetwork.swift in Sources */,
 				752006881F7F6F5D00D19B5F /* HalfModalTransitioningDelegate.swift in Sources */,
@@ -1252,6 +1269,7 @@
 				353E11E520C676E000697359 /* LandingViewController.swift in Sources */,
 				3537848F20809D3B00648AF2 /* TokenSaleReviewTableViewController.swift in Sources */,
 				7575ADC61F6006AC0077007B /* AppDelegate.swift in Sources */,
+				6EEE3DF820E0A8280030A4AB /* Inbox.swift in Sources */,
 				6E4E6F84201462D7001A5844 /* NEP5Token.swift in Sources */,
 				6E4E6F8B20146627001A5844 /* NEP5TokenTableViewCell.swift in Sources */,
 				75E28F2B1F9B2241006C6E37 /* NetworkTableViewController.swift in Sources */,
@@ -1265,6 +1283,7 @@
 				6E60CC6A20CF73B00062F1CE /* URL.swift in Sources */,
 				7520068C1F7F8AC400D19B5F /* PrivateKeyViewController.swift in Sources */,
 				35B426C1209825D800957211 /* TokenSelectionTabViewController.swift in Sources */,
+				6EEE3E0020E0DAC60030A4AB /* UILabel.swift in Sources */,
 				353E11E420C676E000697359 /* LandingCollectionCell.swift in Sources */,
 				75DA590B1F7A83940065FE0D /* UIViewController.swift in Sources */,
 				35AD2B70209312600024A900 /* OnboardingStrings.swift in Sources */,
@@ -1284,6 +1303,7 @@
 				75D5BFB61F6CF59C00E64855 /* LoginTableViewController.swift in Sources */,
 				35AF806320CA366A00E48457 /* UITextField.swift in Sources */,
 				6EA7F9281F6E2F7F00E31B78 /* O3Client.swift in Sources */,
+				6EEE3DFA20E0AFD30030A4AB /* InboxItemTableViewCell.swift in Sources */,
 				7513FAD71F6952B8003450ED /* TransactionCell.swift in Sources */,
 				35AD2B682092F7110024A900 /* TokenSaleStrings.swift in Sources */,
 				353E79A220C7A7E700B9AB1F /* BackupTableViewController.swift in Sources */,
