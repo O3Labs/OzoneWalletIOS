@@ -45,6 +45,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         for label in themedTitleLabels {
             label?.theme_textColor = O3Theme.titleColorPicker
         }
+        selectedAssetLabel.theme_textColor = O3Theme.titleColorPicker
         recipientCell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
         sendAmountCell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
         view.theme_backgroundColor = O3Theme.backgroundColorPicker

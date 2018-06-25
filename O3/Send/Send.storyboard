@@ -28,7 +28,9 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jMC-I3-S6K" id="b41-BX-RbE">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="recipientCell" id="8W3-rc-lrN">
                                         <rect key="frame" x="0.0" y="16" width="320" height="44"/>
@@ -85,6 +87,7 @@
                                                     </constraints>
                                                 </stackView>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="WaM-LG-7gx" secondAttribute="trailing" constant="16" id="1HP-TV-7VE"/>
                                                 <constraint firstItem="WaM-LG-7gx" firstAttribute="top" secondItem="QEB-DL-LMt" secondAttribute="top" id="8ww-gn-ouN"/>
@@ -93,6 +96,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="WaM-LG-7gx" secondAttribute="bottom" id="W1Y-Dv-ea8"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="recipientCell" rowHeight="77" id="Ot6-GR-SXB">
                                         <rect key="frame" x="0.0" y="60" width="320" height="77"/>
@@ -107,7 +111,7 @@
                                                     <color key="textColor" name="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Wallet Address" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="VdJ-Y3-cv0">
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Wallet Address" clearsOnBeginEditing="YES" minimumFontSize="12" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="VdJ-Y3-cv0">
                                                     <rect key="frame" x="16" y="24" width="288" height="53"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
@@ -117,6 +121,7 @@
                                                     </connections>
                                                 </textField>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="VdJ-Y3-cv0" firstAttribute="leading" secondItem="JSK-Ek-kNJ" secondAttribute="leading" constant="16" id="1cU-Hd-HfU"/>
                                                 <constraint firstItem="mUv-g8-fWQ" firstAttribute="leading" secondItem="JSK-Ek-kNJ" secondAttribute="leading" constant="16" id="A5a-zk-Z94"/>
@@ -127,6 +132,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="VdJ-Y3-cv0" secondAttribute="bottom" id="v7Z-d9-JGf"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="110" id="2Xf-Lr-lwE">
                                         <rect key="frame" x="0.0" y="137" width="320" height="110"/>
@@ -166,7 +172,7 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SOUL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="v7g-ob-iQs">
                                                             <rect key="frame" x="28" y="39.5" width="42" height="22"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
-                                                            <color key="textColor" name="textColor"/>
+                                                            <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="angle-down" translatesAutoresizingMaskIntoConstraints="NO" id="L5f-Na-oy6">
@@ -177,7 +183,7 @@
                                                             </constraints>
                                                         </imageView>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="4GN-cT-xIN" firstAttribute="top" secondItem="tXT-cR-fEo" secondAttribute="top" constant="16" id="C8i-k6-dDT"/>
                                                         <constraint firstItem="On3-ov-GD3" firstAttribute="leading" secondItem="4GN-cT-xIN" secondAttribute="leading" id="DMu-QI-62w"/>
@@ -220,7 +226,7 @@
                                                             </connections>
                                                         </textField>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="bGg-fs-bbW" firstAttribute="leading" secondItem="scU-IC-UN9" secondAttribute="leading" id="6KG-I9-hO4"/>
                                                         <constraint firstItem="scU-IC-UN9" firstAttribute="top" secondItem="Fzp-eN-3Xp" secondAttribute="top" constant="16" id="9Zd-X8-6ch"/>
@@ -230,6 +236,7 @@
                                                     </constraints>
                                                 </view>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="Fzp-eN-3Xp" firstAttribute="leading" secondItem="JaQ-ZI-8fA" secondAttribute="leading" id="8bc-uX-k3u"/>
                                                 <constraint firstItem="Fzp-eN-3Xp" firstAttribute="top" secondItem="JaQ-ZI-8fA" secondAttribute="top" id="I3J-W3-JeV"/>
@@ -627,9 +634,6 @@
         <image name="angle-down" width="52" height="30"/>
         <image name="cameraSend" width="17" height="15"/>
         <image name="paste" width="14" height="15"/>
-        <namedColor name="grey">
-            <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
