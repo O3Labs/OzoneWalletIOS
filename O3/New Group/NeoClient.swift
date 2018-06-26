@@ -11,7 +11,7 @@ import Neoutils
 
 public enum NeoClientError: Error {
     case invalidSeed, invalidBodyRequest, invalidData, invalidRequest, noInternet
-
+    
     var localizedDescription: String {
         switch self {
         case .invalidSeed:
@@ -40,59 +40,66 @@ public enum Network: String {
 }
 
 public class NEONetworkMonitor {
-    private init() {
-        self.network =  self.load()
-    }
+    
     public static let sharedInstance = NEONetworkMonitor()
-    public var network: NEONetwork?
-
-    private func load() -> NEONetwork? {
-        guard let path = Bundle(for: type(of: self)).path(forResource: "nodes", ofType: "json") else {
-            return nil
-        }
-        guard let fileData = try? Data(contentsOf: URL(fileURLWithPath: path)) else {
-            return nil
-        }
-        let decoder = JSONDecoder()
-
-        guard let json = try? JSONSerialization.jsonObject(with: fileData, options: []) as? JSONDictionary else {
-            return nil
-        }
-
-        if json == nil {
-            return nil
-        }
-
-        guard let data = try? JSONSerialization.data(withJSONObject: json!, options: []),
-            let result = try? decoder.decode(NEONetwork.self, from: data) else {
-                return nil
-        }
-        return result
-    }
-
+    
     public static func autoSelectBestNode(network: Network) -> String? {
-        let networks = NEONetworkMonitor().load()
-        var nodes = networks?.mainNet.nodes.map({$0.URL}).joined(separator: ",")
-        if network == .test {
-            nodes = networks?.testNet.nodes.map({$0.URL}).joined(separator: ",")
-        } else if network == .privateNet {
-             nodes = networks?.privateNet.nodes.map({$0.URL}).joined(separator: ",")
+        
+        var bestNode = ""
+        //load from https://platform.o3.network/api/v1/nodes instead
+        let semaphore = DispatchSemaphore(value: 0)
+        O3APIClient(network: network).getNodes { result in
+            switch result {
+            case .failure(let error):
+                
+                #if DEBUG
+                print(error)
+                #endif
+                bestNode = ""
+            case .success(let nodes):
+                bestNode = nodes.neo.best
+            }
+            semaphore.signal()
         }
-        guard let bestNode =  NeoutilsSelectBestSeedNode(nodes) else {
-            return nil
-        }
-        return bestNode.url()
+        semaphore.wait()
+        return bestNode
     }
+    
+}
 
+
+public class ONTNetworkMonitor {
+    
+    public static let sharedInstance = ONTNetworkMonitor()
+    
+    public static func autoSelectBestNode(network: Network) -> String? {
+        var bestNode = ""
+        let semaphore = DispatchSemaphore(value: 0)
+        O3APIClient(network: network).getNodes { result in
+            switch result {
+            case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
+                bestNode = ""
+                
+            case .success(let nodes):
+                bestNode = nodes.ontology.best
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
+        return bestNode
+    }
 }
 
 public class NeoClient {
-
+    
     public var seed = "http://seed3.o3node.org:10332"
-
+    
     private init() {}
     private let tokenInfoCache = NSCache<NSString, AnyObject>()
-
+    
     enum RPCMethod: String {
         case getBestBlockHash = "getbestblockhash"
         case getBlock = "getblock"
@@ -110,68 +117,68 @@ public class NeoClient {
         case invokeFunction = "invokefunction"
         case invokeContract = "invokescript"
     }
-
+    
     enum NEP5Method: String {
         case balanceOf
         case decimal
         case symbol
     }
-
+    
     public init(seed: String) {
         self.seed = seed
     }
-
+    
     func sendJSONRPCRequest(_ method: RPCMethod, params: [Any]?, completion: @escaping (NeoClientResult<JSONDictionary>) -> Void) {
         guard let url = URL(string: seed) else {
             completion(.failure(.invalidSeed))
             return
         }
-
+        
         let request = NSMutableURLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json-rpc", forHTTPHeaderField: "Content-Type")
         request.cachePolicy = .reloadIgnoringLocalCacheData
-
+        
         let requestDictionary: [String: Any?] = [
             "jsonrpc": "2.0",
             "id": 2,
             "method": method.rawValue,
             "params": params ?? []
         ]
-
+        
         guard let body = try? JSONSerialization.data(withJSONObject: requestDictionary, options: []) else {
             completion(.failure(.invalidBodyRequest))
             return
         }
         request.httpBody = body
-
+        
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, _, err) in
             if err != nil {
                 completion(.failure(.invalidRequest))
                 return
             }
-
+            
             if data == nil {
                 completion(.failure(.invalidData))
                 return
             }
-
+            
             guard let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? JSONDictionary else {
                 completion(.failure(.invalidData))
                 return
             }
-
+            
             if json == nil {
                 completion(.failure(.invalidData))
                 return
             }
-
+            
             let resultJson = NeoClientResult.success(json!)
             completion(resultJson)
         }
         task.resume()
     }
-
+    
     public func sendRawTransaction(with data: Data, completion: @escaping(NeoClientResult<Bool>) -> Void) {
         sendJSONRPCRequest(.sendTransaction, params: [data.fullHexString]) { result in
             switch result {
@@ -187,7 +194,7 @@ public class NeoClient {
             }
         }
     }
-
+    
     public func getBlockCount(completion: @escaping (NeoClientResult<Int64>) -> Void) {
         sendJSONRPCRequest(.getBlockCount, params: nil) { result in
             switch result {
@@ -198,13 +205,13 @@ public class NeoClient {
                     completion(.failure(.invalidData))
                     return
                 }
-
+                
                 let result = NeoClientResult.success(count)
                 completion(result)
             }
         }
     }
-
+    
     public func getConnectionCount(completion: @escaping (NeoClientResult<Int64>) -> Void) {
         sendJSONRPCRequest(.getConnectionCount, params: nil) { result in
             switch result {
@@ -215,13 +222,13 @@ public class NeoClient {
                     completion(.failure(.invalidData))
                     return
                 }
-
+                
                 let result = NeoClientResult.success(count)
                 completion(result)
             }
         }
     }
-
+    
     public func getAccountState(for address: String, completion: @escaping(NeoClientResult<AccountState>) -> Void) {
         sendJSONRPCRequest(.getAccountState, params: [address]) { result in
             switch result {
@@ -234,13 +241,13 @@ public class NeoClient {
                         completion(.failure(.invalidData))
                         return
                 }
-
+                
                 let result = NeoClientResult.success(accountState)
                 completion(result)
             }
         }
     }
-
+    
     public func invokeContract(with script: String, completion: @escaping(NeoClientResult<ContractResult>) -> Void) {
         sendJSONRPCRequest(.invokeContract, params: [script]) { result in
             switch result {
@@ -257,13 +264,13 @@ public class NeoClient {
                         completion(.failure(.invalidData))
                         return
                 }
-
+                
                 let result = NeoClientResult.success(contractResult)
                 completion(result)
             }
         }
     }
-
+    
     public func getTokenInfo(with scriptHash: String, completion: @escaping(NeoClientResult<NEP5TokenContract>) -> Void) {
         let cacheKey: NSString = scriptHash as NSString
         if let tokenInfo = tokenInfoCache.object(forKey: cacheKey) as? NEP5TokenContract {
@@ -289,7 +296,7 @@ public class NeoClient {
             }
         }
     }
-
+    
     public func getTokenBalance(_ scriptHash: String, address: String, completion: @escaping(NeoClientResult<Double>) -> Void) {
         let scriptBuilder = ScriptBuilder()
         let cacheKey: NSString = scriptHash as NSString
@@ -306,7 +313,7 @@ public class NeoClient {
             })
             return
         }
-
+        
         scriptBuilder.pushContractInvoke(scriptHash: scriptHash, operation: "balanceOf", args: [address.hashFromAddress()])
         self.invokeContract(with: scriptBuilder.rawHexString) { contractResult in
             switch contractResult {
@@ -321,7 +328,7 @@ public class NeoClient {
                     completion(.success(0))
                     return
                 }
-
+                
                 let balance = Double(balanceData.littleEndianHexToUInt)
                 let divider = pow(Double(10), Double(tokenInfo.decimals))
                 let amount = balance / divider
@@ -329,10 +336,10 @@ public class NeoClient {
             }
         }
     }
-
+    
     public func getTokenBalanceUInt(_ scriptHash: String, address: String, completion: @escaping(NeoClientResult<UInt>) -> Void) {
         let scriptBuilder = ScriptBuilder()
-
+        
         scriptBuilder.pushContractInvoke(scriptHash: scriptHash, operation: "balanceOf", args: [address.hashFromAddress()])
         self.invokeContract(with: scriptBuilder.rawHexString) { contractResult in
             switch contractResult {
@@ -352,7 +359,7 @@ public class NeoClient {
             }
         }
     }
-
+    
     public func getTokenSaleStatus(for address: String, scriptHash: String, completion: @escaping(NeoClientResult<Bool>) -> Void) {
         let scriptBuilder = ScriptBuilder()
         scriptBuilder.pushContractInvoke(scriptHash: scriptHash, operation: "kycStatus", args: [address.hashFromAddress()])

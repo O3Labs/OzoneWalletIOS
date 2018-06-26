@@ -95,7 +95,7 @@ class AssetSelectorTableViewController: UITableViewController {
             //NEO
             if indexPath.row == 0 {
                 cell.titleLabel.text = "NEO"
-                cell.amountLabel.text = neoAssets[0].value.description
+                cell.amountLabel.text = neoAssets[0].value.string(0, removeTrailing: true)
                 let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", "NEO")
                 cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             }

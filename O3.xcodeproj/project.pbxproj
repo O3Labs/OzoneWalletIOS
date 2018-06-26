@@ -233,8 +233,6 @@
 		75DA590B1F7A83940065FE0D /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DA590A1F7A83940065FE0D /* UIViewController.swift */; };
 		75E14E541F7D27F900BEAE22 /* O3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75E14E521F7D27F900BEAE22 /* O3.xcdatamodeld */; };
 		75E14E571F7D2AEC00BEAE22 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E14E561F7D2AEC00BEAE22 /* UIApplication.swift */; };
-		75E28F2B1F9B2241006C6E37 /* NetworkTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28F2A1F9B2241006C6E37 /* NetworkTableViewController.swift */; };
-		75E28F2F1F9B24B4006C6E37 /* NetworkSeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28F2E1F9B24B4006C6E37 /* NetworkSeedCell.swift */; };
 		75E28F311F9B3B34006C6E37 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28F301F9B3B34006C6E37 /* ThemeManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -486,8 +484,6 @@
 		75DA590A1F7A83940065FE0D /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		75E14E531F7D27F900BEAE22 /* O3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = O3.xcdatamodel; sourceTree = "<group>"; };
 		75E14E561F7D2AEC00BEAE22 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
-		75E28F2A1F9B2241006C6E37 /* NetworkTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTableViewController.swift; sourceTree = "<group>"; };
-		75E28F2E1F9B24B4006C6E37 /* NetworkSeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSeedCell.swift; sourceTree = "<group>"; };
 		75E28F301F9B3B34006C6E37 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1051,8 +1047,6 @@
 		75E28F291F9B222C006C6E37 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				75E28F2A1F9B2241006C6E37 /* NetworkTableViewController.swift */,
-				75E28F2E1F9B24B4006C6E37 /* NetworkSeedCell.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1272,7 +1266,6 @@
 				6EEE3DF820E0A8280030A4AB /* Inbox.swift in Sources */,
 				6E4E6F84201462D7001A5844 /* NEP5Token.swift in Sources */,
 				6E4E6F8B20146627001A5844 /* NEP5TokenTableViewCell.swift in Sources */,
-				75E28F2B1F9B2241006C6E37 /* NetworkTableViewController.swift in Sources */,
 				757FEB711F77E2790099E26F /* UIView.swift in Sources */,
 				3557BAD320AA9D310034937C /* validator.swift in Sources */,
 				6E73679D2084B3C400F4202B /* TokenSaleErrorViewController.swift in Sources */,
@@ -1291,7 +1284,6 @@
 				3557BAC820AA9D180034937C /* NeoScan.swift in Sources */,
 				7501E8431F79536300123EA8 /* SettingsMenuTableViewController.swift in Sources */,
 				351200C1207F2649003CA07D /* TokenSaleTableViewCell.swift in Sources */,
-				75E28F2F1F9B24B4006C6E37 /* NetworkSeedCell.swift in Sources */,
 				3557BAC220AA9D0B0034937C /* Script.swift in Sources */,
 				35AF806B20CA6CF700E48457 /* NEP2DetectedViewController.swift in Sources */,
 				35AD2B72209317950024A900 /* SettingsStrings.swift in Sources */,

@@ -108,7 +108,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         //TODO get best node for Ontology nodes
         let wif = Authenticated.account?.wif
         var error: NSError?
-        let endpoint = "http://polaris2.ont.io:20336"
+        let endpoint = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
         let txid = NeoutilsOntologyTransfer(endpoint, wif, assetSymbol, toAddress, amount, &error)
         if txid != "" {
             transactionCompleted = true

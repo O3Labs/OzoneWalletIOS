@@ -180,6 +180,25 @@ class O3APIClient: NSObject {
         }
     }
     
+    func getNodes(completion: @escaping(O3APIClientResult<Nodes>) -> Void) {
+        let url = "/v1/nodes"
+        sendRESTAPIRequest(url, params: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(Nodes.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
+    
     func checkVerifiedAddress(address: String, completion: @escaping(O3APIClientResult<VerifiedAddress>) -> Void) {
         let validAddress = NeoutilsValidateNEOAddress(address)
         if validAddress == false {
