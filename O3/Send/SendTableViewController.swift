@@ -90,6 +90,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         }
 
         //default to NEO
+        self.selectedAsset = O3Cache.neo()
         self.assetSelected(selected: O3Cache.neo(), gasBalance: O3Cache.gas().value)
     }
 
@@ -105,7 +106,6 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     }
     
     func sendOntology(assetSymbol: String, amount: Double, toAddress: String) {
-        //TODO get best node for Ontology nodes
         let wif = Authenticated.account?.wif
         var error: NSError?
         let endpoint = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
@@ -246,7 +246,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         }
 
         if self.selectedAsset?.assetType == .neoAsset {
-            assetId = String(assetId.dropFirst(2))
+            if assetId.hasPrefix("0x") {
+                assetId = String(assetId.dropFirst(2))
+            }
             self.sendNativeAsset(assetId: AssetId(rawValue: assetId)!, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
         } else if self.selectedAsset?.assetType == .nep5Token {
             self.sendNEP5Token(tokenHash: assetId, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)

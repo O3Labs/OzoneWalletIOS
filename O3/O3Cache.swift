@@ -104,7 +104,7 @@ class O3Cache {
 
     static func neo() -> TransferableAsset {
         var cachedNEOBalance = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
-                                                 decimals: 8, value: 0, assetType: .neoAsset)
+                                                 decimals: 0, value: 0, assetType: .neoAsset)
         if let storage =  try? Storage(diskConfig: DiskConfig(name: storageName)) {
             cachedNEOBalance = (try? storage.object(ofType: TransferableAsset.self, forKey: keys.neo.rawValue)) ?? cachedNEOBalance
         }
