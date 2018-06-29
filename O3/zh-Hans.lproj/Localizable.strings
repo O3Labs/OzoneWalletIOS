@@ -1,338 +1,109 @@
-/* Created with Localizable Strings Merge, the swiss-army knife for iOS and OS X localization. */
 
-/* Negative Response to an alert message, it is a negative action stating that they want to cancel whatever their current action is */
+/*Created with Localizable Strings Merge, the swiss-army knife for iOS and OS X localization.
+ Negative Response to an alert message, it is a negative action stating that they want to cancel whatever their current action is*/
 "ALERT_Cancel" = "取消";
 
-/* Positive Response to an alert message, it is a positive action stating that they have read the alert and are confirming whatever action they are about to take */
+/*Positive Response to an alert message, it is a positive action stating that they have read the alert and are confirming whatever action they are about to take*/
 "ALERT_Confirm" = "确认";
 
-/* A text to display when the user is not connected to the internet */
-"ALERT_No_Internet" = "网络未连接！";
-
-/* Negative Response to an alert message, it is a negative action stating that they have not yet completed what they need to do */
+/*Negative Response to an alert message, it is a negative action stating that they have not yet completed what they need to do*/
 "ALERT_Not_Yet_Negative_Confirm" = "否";
 
-/* Positive Response to an alert message, it is a generic positive action replying ok to whatever the prompt is */
+/*Positive Response to an alert message, it is a generic positive action replying ok to whatever the prompt is*/
 "ALERT_OK" = "是";
 
-/* Title for button when you add a contact to address book */
+/*Title for button when you add a contact to address book*/
 "CONTACTS_Add_Contact_Button_Title" = "添加联系人";
 
-<<<<<<< HEAD
-/* An informative description about what happens when you add a contact */
-"CONTACTS_Add_Contact_Description" = "将此人添加到通讯录以便交易，即无需记住对方的地址亦可打款给对方。";
-=======
-/*NEW 
+/*NEW
  An informative description about what happens when you add a contact*/
 "CONTACTS_Add_Contact_Description" = "将此人添加到通讯录，不需要记住对方地址即可打款给对方";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* A prompt asking if you are sure that you want to delete this contact */
+/*NEW
+ A prompt asking if you are sure that you want to delete this contact*/
 "CONTACTS_Are_You_Sure_To_Delete" = "确定删除该联系人？";
 
-/* Title to copy address */
+/*NEW
+ Title to copy address*/
 "CONTACTS_Copy_Address" = "复制地址";
 
-/* Title to delete Contact */
+/*NEW
+ Title to delete Contact*/
 "CONTACTS_Delete" = "删除";
 
-/* Title for editing name of a contact */
+/*NEW
+ Title for editing name of a contact*/
 "CONTACTS_Edit_Name" = "编辑名字";
 
-/* Save Action for Contacts */
+/*NEW
+ Save Action for Contacts*/
 "CONTACTS_Save" = "保存";
 
-/* Title for sending to contact */
+/*NEW
+ Title for sending to contact*/
 "CONTACTS_Send_To" = "添加地址";
 
-/* A title for error alert prompts */
+/*NEW
+ A title for error alert prompts*/
 "Error" = "错误";
 
-/* PlaceHolder for searching tokens */
-"MARKETPLACE_search_tokens" = "MARKETPLACE_search_tokens";
-
-/* Title for marketplace section in app */
-"MARKETPLACE_title" = "MARKETPLACE_title";
-
-/* Title of the news feed page */
+/*NEW
+ Title of the news feed page*/
 "NEWSFEED_News_Title" = "动态消息";
 
-/* A prompt asking the user to please confirm that they have indeed backed up their private key in a secure location before continuing */
+/*NEW
+ A prompt asking the user to please confirm that they have indeed backed up their private key in a secure location before continuing*/
 "ONBARDING_Confirmed_Private_Key_Saved_Prompt" = "请确认在离线且安全的情况下备份好私钥";
 
-/* On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using TouchID */
+/*On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using TouchID*/
 "ONBOARDING Login_Button_Specifying_Biometric" = "使用指纹或人脸识别登录";
 
-/* On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using Passcode */
+/*On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using Passcode*/
 "ONBOARDING Login_Button_Specifying_PassCode" = "使用密码登录";
 
-/* When the user tries to create a new wallet, but they already have one saved on the devicve, this explanation/warning is given to the user */
-"ONBOARDING_Already_Have_Wallet_Explanation" = "您在该设备上已有一个创建好的钱包。\n\n若要创建新钱包，现有的私钥将会被新私钥覆盖。 请确保你现有钱包的私钥已备份。";
-
-/* Button title to go back in the tutorial page */
-"ONBOARDING_back" = "ONBOARDING_back";
-
-/* Title menu to backup private key */
-"ONBOARDING_Backup" = "ONBOARDING_Backup";
-
-/* Tutle for backing private key and moving to end */
-"ONBOARDING_backup_and_continue" = "ONBOARDING_backup_and_continue";
-
-/* Title for option to backup the key by copying to clipboard */
-"ONBOARDING_Backup_Copy_Title" = "ONBOARDING_Backup_Copy_Title";
-
-/* Title for option to backup the key by emailing an encrypted NEP2 */
-"ONBOARDING_Backup_Email_Title" = "ONBOARDING_Backup_Email_Title";
-
-/* Title for option to go back and view private key */
-"ONBOARDING_Backup_Go_Back" = "ONBOARDING_Backup_Go_Back";
-
-/* Title for option to backup private key using paperr */
-"ONBOARDING_Backup_Paper_Title" = "ONBOARDING_Backup_Paper_Title";
-
-/* Title for option to backup private key using screenshot */
-"ONBOARDING_Backup_Screenshot_Title" = "ONBOARDING_Backup_Screenshot_Title";
-
-/* Continue button when creating a password */
-"ONBOARDING_Continue_Button" = "ONBOARDING_Continue_Button";
-
-/* Description for when the key has been copied to your clipboard */
-"ONBOARDING_Copied_Description" = "ONBOARDING_Copied_Description";
-
-/* Title for when copied to clipboard */
-"ONBOARDING_Copied_Title" = "ONBOARDING_Copied_Title";
-
-/* Title For Creating a New Wallet in the onboarding flow */
+/*Title For Creating a New Wallet in the onboarding flow*/
 "ONBOARDING_Create_New _Wallet" = "创建新钱包";
 
-<<<<<<< HEAD
-/* Description for when creating a password for NEP-2 Encryption */
-"ONBOARDING_Create_Password_Description" = "ONBOARDING_Create_Password_Description";
-
-/* Hint for text field when creating a password */
-"ONBOARDING_Create_Password_Hint" = "ONBOARDING_Create_Password_Hint";
-
-/* Title for when creating a password for encrypting your private key */
-"ONBOARDING_Create_Password_title" = "ONBOARDING_Create_Password_title";
-
-/* Error message that is displayed when the user tries to Create a New Wallet without a passcode */
-"ONBOARDING_Create_Wallet_No_Passcode_Error" = "若要创建新钱包，请确认已在该设备上设置好密码，以确保您的资金安全。";
-=======
 /*Error message that is displayed when the user tries to Create a New Wallet without a passcode*/
 "ONBOARDING_Create_Wallet_No_Passcode_Error" = "若要创建新钱包，请确认已在该设备上设置好密码，以确保您的资金安全";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Email body when sending Nep-2 backup */
-"ONBOARDING_email_body" = "ONBOARDING_email_body";
-
-/* Email subject when sending NEP-2 backup */
-"ONBOARDING_email_subject" = "ONBOARDING_email_subject";
-
-/* Title for when user tries to login with encrypted key */
-"ONBOARDING_encrypted_key_detected" = "ONBOARDING_encrypted_key_detected";
-
-/* Title when reentering backup */
-"ONBOARDING_enter_private_key" = "ONBOARDING_enter_private_key";
-
-/* Prompt asking the user to authenticate themselves when they already have a wallet stored on device. */
+/*Prompt asking the user to authenticate themselves when they already have a wallet stored on device.*/
 "ONBOARDING_Existing_Wallet_Authentication_Prompt" = "使用已保存在该设备上的钱包登录";
 
-<<<<<<< HEAD
-/* Message to display when send email could not finish correctly */
-"ONBOARDING_failed_to_send_email" = "ONBOARDING_failed_to_send_email";
-
-/* Button title to finish the tutorial */
-"ONBOARDING_finish" = "ONBOARDING_finish";
-
-/* Ok got it */
-"ONBOARDING_got_it" = "ONBOARDING_got_it";
-
-/* An alert message for when an invalid key is detected */
-"ONBOARDING_invalid_key" = "ONBOARDING_invalid_key";
-
-/* Message to display when password is too short */
-"ONBOARDING_invalid_password_length" = "ONBOARDING_invalid_password_length";
-
-/* Error message to display when the system fails to retrieve the private key from the keychain */
-"ONBOARDING_Keychain_Failure_Error" = "从钥匙串获取资料过程中出现错误！请稍后再试，或直接联系我们的团队。";
-=======
 /*Error message to display when the system fails to retrieve the private key from the keychain*/
 "ONBOARDING_Keychain_Failure_Error" = "从钥匙串获取资料过程中出现错误！请稍后再试，或直接联系我们的团队";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* The fifth subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Five" = "ONBOARDING_Landing_Subtitle_Five";
-
-/* The fourth subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Four" = "ONBOARDING_Landing_Subtitle_Four";
-
-/* The first subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_One" = "ONBOARDING_Landing_Subtitle_One";
-
-/* The third subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Three" = "ONBOARDING_Landing_Subtitle_Three";
-
-/* The second subtitle in the landing pages */
-"ONBOARDING_Landing_Subtitle_Two" = "ONBOARDING_Landing_Subtitle_Two";
-
-/* The fifth title in the landing pages */
-"ONBOARDING_Landing_Title_Five" = "ONBOARDING_Landing_Title_Five";
-
-/* The foruth title in the landing pages */
-"ONBOARDING_Landing_Title_Four" = "ONBOARDING_Landing_Title_Four";
-
-/* The first title in the landing pages */
-"ONBOARDING_Landing_Title_One" = "ONBOARDING_Landing_Title_One";
-
-/* The third title in the landing pages */
-"ONBOARDING_Landing_Title_Three" = "ONBOARDING_Landing_Title_Three";
-
-/* The second title in the landing pages */
-"ONBOARDING_Landing_Title_Two" = "ONBOARDING_Landing_Title_Two";
-
-/* Title for learn more buttong */
-"ONBOARDING_Learn_More" = "ONBOARDING_Learn_More";
-
-/* Subtitle under the text field of the login controller. Explains what to do in textfield */
+/*Subtitle under the text field of the login controller. Explains what to do in textfield*/
 "ONBOARDING_Login_Input_Info_Title" = "使用您的NEO私钥登录钱包";
 
-<<<<<<< HEAD
-/* Error message that is displayed when the user tries to login without a passcode */
-"ONBOARDING_Login_No_Passcode_Error" = "若要登录，必须在您的设备上设置好密码，以确保您的资金安全。\n";
-=======
 /*Error message that is displayed when the user tries to login without a passcode*/
 "ONBOARDING_Login_No_Passcode_Error" = "若要登录，您必须在设备上设置好密码，以确保您的资金安全\n";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Title for all login items in the onboarding flow */
+/*Title for all login items in the onboarding flow*/
 "ONBOARDING_Login_Title" = "登录";
 
-<<<<<<< HEAD
-/* Message to display when the email is not setup on the phone */
-"ONBOARDING_mail_not_setup_message" = "ONBOARDING_mail_not_setup_message";
-
-/* Title when error and mail is not yet setup */
-"ONBOARDING_mail_not_setup_title" = "ONBOARDING_mail_not_setup_title";
-
-/* Oh no! Looks like your backup copy doesn't match your private key. Try again, or go back to review your private key */
-"ONBOARDING_not_matched_wif" = "ONBOARDING_not_matched_wif";
-
-/* Seperator for login and create new wallet */
-"ONBOARDING_OR" = "ONBOARDING_OR";
-
-/* First Info text when confirming that writing down on paper was successful */
-"ONBOARDING_paper_backup_info_one" = "ONBOARDING_paper_backup_info_one";
-
-/* Second Info text when confirming that writing down on paper was successful */
-"ONBOARDING_paper_backup_info_two" = "ONBOARDING_paper_backup_info_two";
-
-/* Message to display when the password is mismatched */
-"ONBOARDING_password_mismatch" = "ONBOARDING_password_mismatch";
-
-/* A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device */
-"ONBOARDING_Please_Backup Warning" = "请在安全的情况下备份该私钥。\n\n我们强烈建议您在自己的iPhone上设置好密码。若删除您设备上的密码，钥匙串上的私钥也将被删除。";
-
-/* Subtitle for when unlocking the nep2 key */
-"ONBOARDING_please_enter_nep2_password" = "ONBOARDING_please_enter_nep2_password";
-
-/* Please take a moment to make a backup of your private key */
-"ONBOARDING_Please_Take_A_Moment" = "ONBOARDING_Please_Take_A_Moment";
-
-/* A label for entering the private key field, can be NEP2 or WIF */
-"ONBOARDING_private_key" = "ONBOARDING_private_key";
-
-/* A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF) */
-"ONBOARDING_Private_Key_title" = "您的私钥（WIF）";
-=======
 /*Welcome label to create a new wallet*/
 "ONBOARDING_New To O3?" = "第一次使用O3钱包？";
 
 /*A title presented over the top of the private key, specifies WIF format. e.g. Your Private Key (WIF)*/
 "ONBOARDING_Private_Key_title" = "您的私钥（WIF或加密）";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Text showing reccommended backup option */
-"ONBOARDING_Reccommended" = "ONBOARDING_Reccommended";
-
-/* Description for when reentering password with NEP-2 Description */
-"ONBOARDING_Reenter_Password_Description" = "ONBOARDING_Reenter_Password_Description";
-
-/* Hint for text field when reentering a password */
-"ONBOARDING_Reenter_Password_Hint" = "ONBOARDING_Reenter_Password_Hint";
-
-/* Title for when when confirming password for NEP-2 Encryption */
-"ONBOARDING_Reenter_Password_title" = "ONBOARDING_Reenter_Password_title";
-
-/* Description for when the screenshot was taken */
-"ONBOARDING_Screenshot_Alert_Description" = "ONBOARDING_Screenshot_Alert_Description";
-
-/* Title for when a screenshot was taken */
-"ONBOARDING_Screenshot_Alert_Title" = "ONBOARDING_Screenshot_Alert_Title";
-
-/* Displayed when the app is waiting to connect to the network. It is finding the best NEO node to connect to */
+/*Displayed when the app is waiting to connect to the network. It is finding the best NEO node to connect to*/
 "ONBOARDING_Selecting_Best_Node" = "选择最佳节点";
 
-/* Title to start the app after completing the onboarding */
+/*Title to start the app after completing the onboarding*/
 "ONBOARDING_Start_Action_Title" = "开始";
 
-/* Title for button to decrypt private key and continue itno app */
-"ONBOARDING_submit" = "ONBOARDING_submit";
+/*NEW
+ The first subtitle in the onboarding pages*/
+"ONBOARDING_Tutorial_Subtitle_One" = "安全管控自己的钱包";
 
-/* Subtitle for the animation header when learning more */
-"ONBOARDING_Subtitle_Animation_Header" = "ONBOARDING_Subtitle_Animation_Header";
+/*The third subtitle in the onboarding pages*/
+"ONBOARDING_Tutorial_Subtitle_Three" = "支持GAS、NEO、NEP5所有代币";
 
-/* Title for the animation header when learning more */
-"ONBOARDING_Title_Animation_Header" = "ONBOARDING_Title_Animation_Header";
+/*The second subtitle in the onboarding pages*/
+"ONBOARDING_Tutorial_Subtitle_Two" = "您的隐私受到最新安全措施的保护";
 
-/* Emphasis text for the third info paragraph on the fifth tutorial card */
-"ONBOARDING_Tutorial_Emphasis_Fuve" = "ONBOARDING_Tutorial_Emphasis_Fuve";
-
-/* Emphasis text for the third info paragraph on the third tutorial card */
-"ONBOARDING_Tutorial_Emphasis_Three" = "ONBOARDING_Tutorial_Emphasis_Three";
-
-/* Text for the first info paragraph on the fifth tutorial card */
-"ONBOARDING_Tutorial_Info_One_Five" = "ONBOARDING_Tutorial_Info_One_Five";
-
-/* Text for the first info paragraph on the fourth tutorial card */
-"ONBOARDING_Tutorial_Info_One_Four" = "ONBOARDING_Tutorial_Info_One_Four";
-
-/* Text for the first info paragraph on the first tutorial card */
-"ONBOARDING_Tutorial_Info_One_One" = "ONBOARDING_Tutorial_Info_One_One";
-
-/* Text for the first info paragraph on the third tutorial card */
-"ONBOARDING_Tutorial_Info_One_Three" = "ONBOARDING_Tutorial_Info_One_Three";
-
-/* Text for the first info paragraph on the second tutorial card */
-"ONBOARDING_Tutorial_Info_One_Two" = "ONBOARDING_Tutorial_Info_One_Two";
-
-/* Text for the second info paragraph on the fifth tutorial card */
-"ONBOARDING_Tutorial_Info_Two_Five" = "ONBOARDING_Tutorial_Info_Two_Five";
-
-/* Text for the second info paragraph on the first tutorial card */
-"ONBOARDING_Tutorial_Info_Two_One" = "ONBOARDING_Tutorial_Info_Two_One";
-
-/* Text for the second info paragraph on the third tutorial card */
-"ONBOARDING_Tutorial_Info_Two_Three" = "ONBOARDING_Tutorial_Info_Two_Three";
-
-/* Text for the second info paragraph on the second tutorial card */
-"ONBOARDING_Tutorial_Info_Two_Two" = "ONBOARDING_Tutorial_Info_Two_Two";
-
-/* Title for the fifth tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_Five" = "ONBOARDING_Tutorial_Title_Five";
-
-/* Title for the fourth tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_Four" = "ONBOARDING_Tutorial_Title_Four";
-
-<<<<<<< HEAD
-/* Title for the first tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_One" = "ONBOARDING_Tutorial_Title_One";
-
-/* Title for the third tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_Three" = "ONBOARDING_Tutorial_Title_Three";
-
-/* Title for the second tutorial card when creating new wallet */
-"ONBOARDING_Tutorial_Title_Two" = "ONBOARDING_Tutorial_Title_Two";
-=======
 /*The first title in the onboarding pages*/
 "ONBOARDING_Tutorial_Title_One" = "快速提示";
 
@@ -341,560 +112,520 @@
 
 /*The second title in the onboarding pages*/
 "ONBOARDING_Tutorial_Title_Two" = "您的私钥";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Title for wallet generated popup */
-"ONBOARDING_Wallet_Generated" = "ONBOARDING_Wallet_Generated";
-
-/* Title Welciming the user after successful wallet creation */
+/*Title Welciming the user after successful wallet creation*/
 "ONBOARDING_Welcome" = "欢迎使用O3钱包";
 
-/* A header title on the portfolio screen, show the displayed funds are inside cold storage */
+/*A header title on the portfolio screen, show the displayed funds are inside cold storage*/
 "PORTFOLIO_Cold_Storage_Header" = "冷储存";
 
-/* A header title on the portfolio screen, show the displayed funds are a combination of those store in O3 wallet and cold storage */
+/*NEW
+ A header title on the portfolio screen, show the displayed funds are a combination of those store in O3 wallet and cold storage*/
 "PORTFOLIO_Combined_Header" = "综合";
 
-/* Portfolio Percentage Change String */
-"PORTFOLIO_Interval" = "%@（%.2f%@）自从%@";
-
-/* Interval Button on portfolio page, interval specifies 1 Month */
+/*NEW
+ Interval Button on portfolio page, interval specifies 1 Month*/
 "PORTFOLIO_Interval_Button_1M" = "1个月";
 
-/* Interval Button on portfolio page, interval specifies 1 Week */
+/*NEW
+ Interval Button on portfolio page, interval specifies 1 Week*/
 "PORTFOLIO_Interval_Button_1W" = "1周";
 
-/* Interval Button on portfolio page, interval specifies 24 HOURS */
+/*NEW
+ Interval Button on portfolio page, interval specifies 24 HOURS*/
 "PORTFOLIO_Interval_Button_24h" = "24小时";
 
-/* Interval Button on portfolio page, interval specifies 3 Months */
+/*NEW
+ Interval Button on portfolio page, interval specifies 3 Months*/
 "PORTFOLIO_Interval_Button_3M" = "3个月";
 
-/* Interval Button on portfolio page, interval specifies SIX HOURS */
+/*NEW
+ Interval Button on portfolio page, interval specifies SIX HOURS*/
 "PORTFOLIO_Interval_Button_6h" = "6小时";
 
-/* Interval Button on portfolio page, interval specifies ALL of Time */
+/*NEW
+ Interval Button on portfolio page, interval specifies ALL of Time*/
 "PORTFOLIO_Interval_Button_ALL" = "全部";
 
-/* A header title on the portfolio screen, shows the displayed funds are located in the O3Wallet */
+/*NEW
+ A header title on the portfolio screen, shows the displayed funds are located in the O3Wallet*/
 "PORTFOLIO_O3_Wallet_Header" = "O3钱包";
 
-/* Title of the portfolio page */
+/*NEW
+ Title of the portfolio page*/
 "PORTFOLIO_Portfolio_Title" = "个人资产";
 
-/* Error message to display when the price history of a token is not available */
-"PORTFOLIO_Price_History_Not_Available" = "PORTFOLIO_Price_History_Not_Available";
-
-/* A title for the scan button in the send screen */
+/*NEW
+ A title for the scan button in the send screen*/
 "SCAN_Button_Title" = "浏览";
 
-/* A Title for the address book button in the send screen */
+/*NEW
+ A Title for the address book button in the send screen*/
 "SEND_Address_Button_Title" = "地址";
 
-/* Label title for the amount on the send screen */
+/*NEW
+ Label title for the amount on the send screen*/
 "SEND_Amount_Label" = "发送";
 
-/* Label title for the asset field on the send screen */
+/*NEW
+ Label title for the asset field on the send screen*/
 "SEND_Asset_Label" = "资产";
 
-/* A prompt asking for user authentication before performing the send action */
+/*NEW
+ A prompt asking for user authentication before performing the send action*/
 "SEND_Authenticate_To_Send" = "确认发送";
 
-/* Title for button to close send screen after transaction completed */
+/*NEW
+ Title for button to close send screen after transaction completed*/
 "SEND_Close" = "关闭";
 
-/* A confirmation dialog that asks the user to confirm the asset, amount, and recipient of their transaction */
+/*NEW
+ A confirmation dialog that asks the user to confirm the asset, amount, and recipient of their transaction*/
 "SEND_Confirmation_Prompt" = "确认发送%.8f %@到%@";
 
-/* Description to display when the transaction has failed to be submitted to the NEO blockchain */
+/*NEW
+ Description to display when the transaction has failed to be submitted to the NEO blockchain*/
 "SEND_Created_Transaction_Failed_Description" = "交易失败";
 
-/* Title to display when the transaction has failed to be submitted to the NEO blockchain */
+/*NEW
+ Title to display when the transaction has failed to be submitted to the NEO blockchain*/
 "SEND_Created_Transaction_Failed_Title" = "请稍后再试";
 
-/* Description to display when the transaction has successfuly been submitted to the NEO blockchain */
+/*NEW
+ Description to display when the transaction has successfuly been submitted to the NEO blockchain*/
 "SEND_Created_Transaction_Successfully_Description" = "一旦确认交易，便可在交易记录中查看信息";
 
-/* Title to display when the transaction has successfuly been submitted to the NEO blockchain */
+/*NEW
+ Title to display when the transaction has successfuly been submitted to the NEO blockchain*/
 "SEND_Created_Transaction_Successfully_Title" = "交易成功";
 
-/* Error to display when the user tries to send to an invalid NEO address */
+/*NEW
+ Error to display when the user tries to send to an invalid NEO address*/
 "SEND_Invalid_Address_Error" = "无效地址";
 
-/* Error to display when the user tries to send an invalid amount */
+/*NEW
+ Error to display when the user tries to send an invalid amount*/
 "SEND_Invalid_Amount_Error" = "输入金额无效";
 
-<<<<<<< HEAD
-/* Error To display when the user is trying to send without enough balance */
-"SEND_Not_Enough_Balance_Error" = "您的金额不足%@。当前余额为%@。";
-=======
-/*NEW 
+/*NEW
  Error To display when the user is trying to send without enough balance*/
 "SEND_Not_Enough_Balance_Error" = "您的金额不足%@，当前余额为%@";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Error to display when the user is trying to send a token but does not have enough gas to make the invoke occur. It requires 0.00000001 GAS in the wallet in order to send a token */
-"SEND_Not_Enough_Gas_Token_Transfer" = "若要发送NEP5代币，您钱包中必须有至少0.00000001 GAS。GAS不会被使用，但仍需要您钱包中有。";
-
-/* A title for the paste button in the send screen */
+/*NEW
+ A title for the paste button in the send screen*/
 "SEND_Paste_Button_Title" = "粘贴";
 
-/* Error to display when the user is trying to send gas, but the amount they are sending is the max amount. The user can round down the gas amount a small amount to precent this error */
-"SEND_Rounding_Gas_Error" = "当发送所有GAS时，请从总金额中减去0.00000001，以避免化整误差，导致交易无法处理。";
-
-/* A title for the Select Asset pull up menu */
+/*NEW
+ A title for the Select Asset pull up menu*/
 "SEND_Select_Asset_Title" = "选择资产";
 
-/* A title for the the selected asset label, before the user has selected any asset. */
+/*NEW
+ A title for the the selected asset label, before the user has selected any asset.*/
 "SEND_Selected_Asset_Title" = "选择资产";
 
-/* A title indicating a send action */
+/*NEW
+ A title indicating a send action*/
 "SEND_Send_Title" = "发送";
 
-/* A place holder text, indicating that the NEO Wallet Address should go in this text field */
+/*NEW
+ A place holder text, indicating that the NEO Wallet Address should go in this text field*/
 "SEND_To_Address_Placeholder" = "NEO钱包地址";
 
-/* Label title for the send to field on the send screen */
+/*NEW
+ Label title for the send to field on the send screen*/
 "SEND_To_Label" = "到";
 
-/* A generic add button title */
-"SETTINGS_Add_Button" = "添加";
-
-/* Title for add watch address button */
+/*NEW
+ Title for add watch address button*/
 "SETTINGS_Add_Watch_Address" = "添加观察地址";
 
-/* Description under add address button that describes what a watch address is and how it will work in the app */
-"SETTINGS_Add_Watch_Description" = "您可在周围没人的情况下，利用观察地址监控个人资产。 虽然无法发送代币，但您可以通过地址查看余额。";
-
-/* Label to describe an address input field */
+/*NEW
+ Label to describe an address input field*/
 "SETTINGS_Address_Label" = "地址";
 
-/* Prompt requesting user to authenticate before viewing sensitive information like private key */
+/*NEW
+ Prompt requesting user to authenticate before viewing sensitive information like private key*/
 "SETTINGS_Authenticate_To_View" = "请认证您的私钥";
 
-/* String to describe a close action */
+/*NEW
+ String to describe a close action*/
 "SETTINGS_Close_Title" = "关闭";
 
-/* Settings Menu Title For Contact */
+/*NEW
+ Settings Menu Title For Contact*/
 "SETTINGS_Contact" = "联系人";
 
-/* Title for Currency Menu in Settings */
+/*NEW
+ Title for Currency Menu in Settings*/
 "SETTINGS_Currency_Title" = "货币";
 
-/* Title for Currency Menu, but does not include the type like USD or BTC */
-"SETTINGS_Currency_Title_No_Type" = "货币";
-
-/* Error To display when user tries to add an invalid address */
+/*NEW
+ Error To display when user tries to add an invalid address*/
 "SETTINGS_Invalid_Address" = "无效地址";
 
-/* Settings Menu Title for Logout */
+/*NEW
+ Settings Menu Title for Logout*/
 "SETTINGS_Logout" = "退出";
 
-<<<<<<< HEAD
-/* Warning that appears when attempting to logout from settings */
-"SETTINGS_Logout_Warning" = "退出程序后，您的私钥将会从该设备上移除。请确认私钥已备份或记下。下次登入该应用程序，需要从备份中恢复私钥。";
-=======
-/*NEW 
+/*NEW
  Warning that appears when attempting to logout from settings*/
 "SETTINGS_Logout_Warning" = "退出程序后，您的私钥将会从该设备上移除。请确认私钥已备份或记下。下次登入该应用程序，需要从备份中恢复私钥";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Settings Menu Title for Private Key */
+/*NEW
+ Settings Menu Title for Private Key*/
 "SETTINGS_My_Private_Key" = "我的私钥";
 
-<<<<<<< HEAD
-/* Warning to display when the user decied to manually switch the network node that they are connected to */
-"SETTINGS_Network_Switch_Warning" = "选择该节点后，网络管理将切换到手动模式。";
-=======
-/*NEW 
+/*NEW
  Warning to display when the user decied to manually switch the network node that they are connected to*/
 "SETTINGS_Network_Switch_Warning" = "选择该节点后，网络管理将切换到手动模式";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Title for Network Screen In Settings */
+/*NEW
+ Title for Network Screen In Settings*/
 "SETTINGS_Network_Title" = "网络";
 
-/* Lavel to describe a nickname input field */
+/*NEW
+ Lavel to describe a nickname input field*/
 "SETTINGS_Nickname_LAbel" = "昵称";
 
-/* Title for Settings Menu */
+/*NEW
+ Title for Settings Menu*/
 "SETTINGS_Settings_Title" = "设置";
 
-/* Settings Mneu Title For Support */
+/*NEW
+ Settings Mneu Title For Support*/
 "SETTINGS_Support" = "服务支持";
 
-/* Settings Menu Title for Theme */
+/*NEW
+ Settings Menu Title for Theme*/
 "SETTINGS_Theme" = "主题";
 
-<<<<<<< HEAD
-/* Label For Classic Theme */
-"SETTINGS_Theme_Classic" = "主题：经典";
-
-/* Label For Dark Theme */
-"SETTINGS_Theme_Dark" = "主题：黑暗";
-=======
-/*NEW 
+/*NEW
  Label For Classic Theme*/
 "SETTINGS_Theme_Classic" = "经典";
 
-/*NEW 
+/*NEW
  Label For Dark Theme*/
 "SETTINGS_Theme_Dark" = "黑暗";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Settings Menu Title For Version */
+/*NEW
+ Settings Menu Title For Version*/
 "SETTINGS_Version" = "版本：%@";
 
-/* Settings Menu Title For Watch Only Address */
+/*NEW
+ Settings Menu Title For Watch Only Address*/
 "SETTINGS_Watch_Only_Address" = "观察地址";
 
-/* A title for the Watch Only Address Title Screen */
+/*NEW
+ A title for the Watch Only Address Title Screen*/
 "SETTINGS_Watch_Only_Address_Title" = "观察地址";
 
-/* Title for receive action in tabbar */
+/*NEW
+ Title for receive action in tabbar*/
 "TABBAR_Receive_Action" = "接收";
 
-/* Title for send action in tabbar */
+/*NEW
+ Title for send action in tabbar*/
 "TABBAR_Send_Action" = "发送";
 
-/* Title for Token Sale Action in tabbar */
+/*NEW
+ Title for Token Sale Action in tabbar*/
 "TABBAR_Token_Sale_Action" = "代币销售";
 
-/* Displayed when xhecking the whitelist status of a participant */
+/*NEW
+ Displayed when xhecking the whitelist status of a participant*/
 "TOKENSALE_Checking_Status" = "正在查看白名单";
 
-/* Text for close button to close the tokensale screen */
+/*NEW
+ Text for close button to close the tokensale screen*/
 "TOKENSALE_Close" = "关闭";
 
-<<<<<<< HEAD
-/* Title for button to allow for contacting after ato kensale transaction fails */
-"TOKENSALE_Contact_Title" = "在O3中联系某人";
-=======
-/*NEW 
+/*NEW
  Title for button to allow for contacting after ato kensale transaction fails*/
 "TOKENSALE_Contact_Title" = "在O3钱包联系他人";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* String showing that the token sale has already ended */
+/*NEW
+ String showing that the token sale has already ended*/
 "TOKENSALE_Ended" = "已结束";
 
-/* A string displaying how muc time is left in the token sale */
+/*NEW
+ A string displaying how muc time is left in the token sale*/
 "TOKENSALE_Ends_In" = "已完成%@";
 
-/* A detailed description about what will happen if the user signs up for the email list to get notified about token sales */
-"TOKENSALE_Get_Notified_Description" = "分享您的邮箱，我们将为您提供最新代币销售信息。O3上出现的所有代币都是经过审核的，您的电子邮件也绝不会与第三方共享。 没有垃圾代币！";
-
-/* A title showing users can get notified about the latest token sales */
+/*NEW
+ A title showing users can get notified about the latest token sales*/
 "TOKENSALE_Get_Notified_Title" = "收到通知";
 
-/* Error that shows when the user tries to partcipate in a tokensale that has already ended */
+/*NEW
+ Error that shows when the user tries to partcipate in a tokensale that has already ended*/
 "TOKENSALE_Has_Ended_Error" = "代币销售已结束";
 
-/* String on the review screen describing that this transaction will have priority */
+/*NEW
+ String on the review screen describing that this transaction will have priority*/
 "TOKENSALE_Has_Priority_Label" = "优先级（0.001GAS）";
 
-/* An error indicating the user has entered an invalid contribution amount */
+/*NEW
+ An error indicating the user has entered an invalid contribution amount*/
 "TOKENSALE_Invalid_Amount_Error" = "无效值";
 
-/* Disclaimer text asking the user to aggree that they have read the agreement provided by the tokensale issuer */
+/*NEW
+ Disclaimer text asking the user to aggree that they have read the agreement provided by the tokensale issuer*/
 "TOKENSALE_Issuer_Agreement" = "我已阅读并同意该协议";
 
-/* A string showing that the displayed token sale is currently active */
+/*NEW
+ A string showing that the displayed token sale is currently active*/
 "TOKENSALE_Live_Status" = "进行中";
 
-/* An error that shows when the user tries to contribute more than the max contribution amount */
+/*NEW
+ An error that shows when the user tries to contribute more than the max contribution amount*/
 "TOKENSALE_Max_Contribution_Error" = "对%@的最大贡献是%@";
 
-/* An error that show when the user tries to contribute less than the min contribution amount */
+/*NEW
+ An error that show when the user tries to contribute less than the min contribution amount*/
 "TOKENSALE_Min_Contribution_Error" = "对%@的最小贡献值是%@";
 
-/* An error when the user has not yet agreed to the tokensale disclaimers */
+/*NEW
+ An error when the user has not yet agreed to the tokensale disclaimers*/
 "TOKENSALE_Not_Agreed_To_Disclaimers Error" = "请在代币销售之前，同意该免责声明";
 
-<<<<<<< HEAD
-/* An error indicating that the user does not have enough balance for the amount entered */
-"TOKENSALE_Not_Enough_Balance_Error" = "您的金额不足%@。当前余额是%@。";
-=======
-/*NEW 
+/*NEW
  An error indicating that the user does not have enough balance for the amount entered*/
 "TOKENSALE_Not_Enough_Balance_Error" = "您的金额不足%@，当前余额是%@";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* A string showing the user is not whitelisted for this tokensale */
+/*NEW
+ A string showing the user is not whitelisted for this tokensale*/
 "TOKENSALE_Not_WhiteListed" = "未列入白名单";
 
-<<<<<<< HEAD
-/* An error to display when the user is not whitelisted for the tokensale */
-"TOKENSALE_Not_Whitelisted_Error" = "您不在此次代币销售的白名单内。请前往代币发行网站查找如何加入名单。";
-
-/* Disclaimer text asking the user to agree to the terms of the O3 Application. States that the user is interacting directly with the smart contract */
-"TOKENSALE_O3_Agreement" = "我知道我将直接在区块链上与智能合约交互， O3不托管任何资金。";
-=======
-/*NEW 
+/*NEW
  An error to display when the user is not whitelisted for the tokensale*/
 "TOKENSALE_Not_Whitelisted_Error" = "您不在此次代币销售的白名单内。请前往代币发行网站查找如何加入白名单";
 
-/*NEW 
+/*NEW
  Disclaimer text asking the user to agree to the terms of the O3 Application. States that the user is interacting directly with the smart contract*/
 "TOKENSALE_O3_Agreement" = "我知道我将直接在区块链上与智能合约交互， O3钱包不托管任何资金";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Text for the participate action */
+/*NEW
+ Text for the participate action*/
 "TOKENSALE_Participate" = "参加";
 
-<<<<<<< HEAD
-/* A Dialog that shows explaining when, what is priority is tapped. Explains that priority allows your transactions to process faster on the blockchain */
-"TOKENSALE_Priority_Explanation" = "较高的优先级允许您先加入到新的区块中。 在高流量期间，优先级将提高您获得代币销售的机会。\n";
-=======
-/*NEW 
+/*NEW
  A Dialog that shows explaining when, what is priority is tapped. Explains that priority allows your transactions to process faster on the blockchain*/
 "TOKENSALE_Priority_Explanation" = "优先级允许您先加入到新的区块中。 在高流量期间，优先级将提高您获得代币销售的机会\n";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Label showing priority. Also displays the gas cost for priority. This is fixed at 0.0011GAS */
+/*NEW
+ Label showing priority. Also displays the gas cost for priority. This is fixed at 0.0011GAS*/
 "TOKENSALE_Priority_Label" = "优先级（0.0011GAS）";
 
-/* Label for the date in the token sale receipt in transaction success screen */
+/*NEW
+ Label for the date in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_Date_Label" = "日期";
 
-<<<<<<< HEAD
-/* Email Text For the receipt that the user can send to themselves */
-"TOKENSALE_Receipt_Email_Full_Text" = "该收据证明您的交易已提交到NEO，平台正在处理中。\n\n一旦授权成功，将从您的钱包扣除金额。我们会对货币分配负责到底。请持该交易账号作为凭证，参加代币销售活动。其他细节如下：\n\n日期：%@\n代币销售名字：%@\n交易ID：%@\n发送者：%@\n接收者：%@\n\n此致\n\nO3团队\n\n\n";
-=======
-/*NEW 
+/*NEW
  Email Text For the receipt that the user can send to themselves*/
 "TOKENSALE_Receipt_Email_Full_Text" = "该收据证明您的交易已提交到NEO，平台正在处理中。\n\n一旦授权成功，将从您的钱包扣除金额。我们会对货币分配负责到底。请持该交易账号作为凭证，参加代币销售活动。其他细节如下：\n\n日期：%@\n代币销售名字：%@\n交易ID：%@\n发送者：%@\n应收：%@\n\n此致\n\nO3团队\n\n\n";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Label for the priority in the token sale receipt in transaction success screen */
+/*NEW
+ Label for the priority in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_Priority_Label" = "优先级";
 
-/* Label for the receiving asset and amount in the token sale receipt in transaction success screen */
+/*NEW
+ Label for the receiving asset and amount in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_Receiving_Label" = "接收";
 
-/* Label for the sending asset and amount in the token sale receipt in transaction success screen */
+/*NEW
+ Label for the sending asset and amount in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_Sending_Label" = "发送中";
 
-/* Label for token sale name in the token sale receipt in transaction success screen */
+/*NEW
+ Label for token sale name in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_Tokensale_Name_Label" = "代币销售";
 
-/* Label for the transaction id in the token sale receipt in transaction success screen */
+/*NEW
+ Label for the transaction id in the token sale receipt in transaction success screen*/
 "TOKENSALE_Receipt_txid_Label" = "交易ID";
 
-/* A title for reviewing token sale participation buttton */
+/*NEW
+ A title for reviewing token sale participation buttton*/
 "TOKENSALE_Review_Button_Title" = "评论";
 
-/* An error occurs when the user tries to send the max amount of gas. This is due to a potential rounding error, ro prevent this, send slightly les than the max amount */
+/*NEW
+ An error occurs when the user tries to send the max amount of gas. This is due to a potential rounding error, ro prevent this, send slightly les than the max amount*/
 "TOKENSALE_Rounding_Error" = "当发送所有GAS时，请从总金额中减去0.00000001，以避免化整误差，导致交易无法处理。";
 
-/* Button title to save your receipt */
+/*NEW
+ Button title to save your receipt*/
 "TOKENSALE_save_button_title" = "保存";
 
-/* Description showing that the transaction is currently being submitted to the NEO blockchain */
+/*NEW
+ Description showing that the transaction is currently being submitted to the NEO blockchain*/
 "TOKENSALE_Sending_In_Progress" = "发送中";
 
-/* Button title for allowing users to subscribe to token sale news */
+/*NEW
+ Button title for allowing users to subscribe to token sale news*/
 "TOKENSALE_Subscribe" = "订阅";
 
-/* Title text showing your tokensale transaction has been successfully submitted to the blockchain */
+/*NEW
+ Title text showing your tokensale transaction has been successfully submitted to the blockchain*/
 "TOKENSALE_Successful_Transaction_Title" = "交易提交成功";
 
-/* A title for the token sales screen */
+/*NEW
+ A title for the token sales screen*/
 "TOKENSALE_Token_Sales_Title" = "代币销售";
 
-/* A Title for the transction receipt in the tokensale success */
+/*NEW
+ A Title for the transction receipt in the tokensale success*/
 "TOKENSALE_Transaction" = "交易";
 
-/* Description that shows when there is an error */
-"TOKENSALE_Transaction_Error_Description" = "您的交易未完成。 这可能是因为智能合同拒绝了您的交易。 请稍后再试，或直接联系代币发行者。";
-
-/* A title for a button that directs the user to the tokensale website button */
+/*NEW
+ A title for a button that directs the user to the tokensale website button*/
 "TOKENSALE_Website_Button_Title" = "网站";
 
-/* A title for the button that gives additional information about what priority does */
-"TOKENSALE_What_Is_Priority" = "什么是优先级？";
-
-/* Title Describing the send amount in the tokensale review screen */
+/*NEW
+ Title Describing the send amount in the tokensale review screen*/
 "TOKENSALE_You_Are_Sending_Title" = "正在发送";
 
-/* A title indicating how much the user will receive with a given contribution amount */
+/*NEW
+ A title indicating how much the user will receive with a given contribution amount*/
 "TOKENSALE_You_Will_receive_Title" = "即将接收";
 
-/* Title for digital art and collectibles */
-"TOKENSelection_art_and_collectibles" = "艺术和收藏品";
-
-/* Title for NEP5 Section of Tab */
-"TOKENSELECTION_nep5_title" = "NEP5代币";
-
-/* Text to show that non fungible tokens are still under construction */
-"TOKENSELECTION_Under_Construction" = "";
-
-/* A title for the account screen */
+/*NEW
+ A title for the account screen*/
 "WALLET_Account" = "账户";
 
-/* Title of assets tab in wallet screen */
+/*NEW
+ A title for the button which allows you to add a NEP-5 Token to your wallet*/
+"WALLET_Add_NEP5_Token" = "添加NEP5代币";
+
+/*NEW
+ Title of assets tab in wallet screen*/
 "WALLET_Assets" = "资产";
 
-<<<<<<< HEAD
-/* Prefix used to indicate the block number in the transaction history */
-"WALLET_Block_Prefix" = "屏蔽：%@";
-=======
-/*NEW 
+/*NEW
  Prefix used to indicate the block number in the transaction history*/
 "WALLET_Block_Prefix" = "区块高度：%@";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* A Title for the claim Action */
+/*NEW
+ A Title for the claim Action*/
 "WALLET_Claim_Action" = "提取";
 
-/* A title for a label in loading screen when checking for claimable data. 'Checking transaction data. Please wait...' */
-"WALLET_Claim_Check_Claimable_Data_Title" = "WALLET_Claim_Check_Claimable_Data_Title";
-
-/* A title for a button Claim Now */
-"WALLET_Claim_Claim_Now_Action" = "WALLET_Claim_Claim_Now_Action"; /* NEW */
-
-/* A title for a label claimable gas. 'Claimable GAS' */
-"WALLET_Claim_Claimable_Gas_Title" = "WALLET_Claim_Claimable_Gas_Title";
-
-/* A title for a label confirmed claimable gas. 'Confirmed' */
-"WALLET_Claim_Confirmed_Title" = "WALLET_Claim_Confirmed_Title";
-
-/* A title for a label estimated claimable gas. 'Estimated' */
-"WALLET_Claim_Estimated_Title" = "WALLET_Claim_Estimated_Title";
-
-/* A title for a label GAS claimed successfully saying it will be in your account shortly */
-"WALLET_Claim_Gas_Claimed_Success_Sub_Title" = "WALLET_Claim_Gas_Claimed_Success_Sub_Title";
-
-/* A title for a label GAS claimed successfully. 'GAS Claimed successfully' */
-"WALLET_Claim_Gas_Claimed_Success_Title" = "WALLET_Claim_Gas_Claimed_Success_Title";
-
-/* A subtitle to display while claiming is in progress */
+/*NEW
+ A subtitle to display while claiming is in progress*/
 "WALLET_Claim_In_Progress_Subtitle" = "正在处理...请稍后";
 
-/* A title to display while claiming is in progress */
+/*NEW
+ A title to display while claiming is in progress*/
 "WALLET_Claim_In_Progress_Title" = "正在提取GAS";
 
-<<<<<<< HEAD
-/* A Message to display in the alert after the user hs successfully claimed their gas */
-"WALLET_Claim_Succeeded_Prompt" = "您已成功提取代币，可能需要几分钟才能体现在您的交易记录中。 你可以在5分钟后再次提取代币。";
-=======
-/*NEW 
+/*NEW
  A Message to display in the alert after the user hs successfully claimed their gas*/
 "WALLET_Claim_Succeeded_Prompt" = "您已成功提取代币，可能要几分钟之后才能在交易记录中查看信息。 你可以在5分钟后再次提取代币";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Indicated that the transation in history originated from claim */
+/*NEW
+ Indicated that the transation in history originated from claim*/
 "WALLET_Claim_Transaction" = "提取";
 
-/* A title for a button Update Now */
-"WALLET_Claim_Update_Now_Action" = "WALLET_Claim_Update_Now_Action";
-
-/* Title of Contacts tab in wallet screen */
+/*NEW
+ Title of Contacts tab in wallet screen*/
 "WALLET_Contacts" = "联系人";
 
-/* An action title for copying our address */
+/*NEW
+ An action title for copying our address*/
 "WALLET_Copy_Address" = "复制地址";
 
-/* Prefix used in the transaction history to indicate where the transaction came from */
+/*NEW
+ Prefix used in the transaction history to indicate where the transaction came from*/
 "WALLET_From_Prefix" = "来自：%@";
 
-<<<<<<< HEAD
-/* Informative text explaining you can store neo, gas, and nep-5 tokens using this address */
-"WALLET_My_Address_Explanation" = "您可以使用该地址接收任何来自交易所或钱包的NEO、GAS、NEP5等任何代币。";
-=======
-/*NEW 
+/*NEW
  Informative text explaining you can store neo, gas, and nep-5 tokens using this address*/
 "WALLET_My_Address_Explanation" = "您可以使用该地址接收任何来自交易所或钱包的NEO、GAS、NEP5等任何代币";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Title of the My Address Page */
+/*NEW
+ Title of the My Address Page*/
 "WALLET_My_Address_Title" = "我的地址";
 
-/* String in transaction history indicating O3 Wallet */
+/*NEW
+ Title for NEP-5 Tokens Selection View*/
+"WALLET_NEP5_Tokens" = "NEP5代币";
+
+/*NEW
+ Done bar button item*/
+"WALLET_NEP_5_DONE" = "完成";
+
+/*NEW
+ String in transaction history indicating O3 Wallet*/
 "WALLET_O3_Wallet" = "O3钱包";
 
-/* A title for the request action in the wallet */
-"WALLET_Request" = "WALLET_Request";
-
-/* An Action Title for saving your QR code */
+/*NEW
+ An Action Title for saving your QR code*/
 "WALLET_Save_Qr_Action" = "保存二维码图片";
 
-/* A description to give more information about saving the address */
+/*NEW
+ A description to give more information about saving the address*/
 "WALLET_Saved_Description" = "图片保存成功";
 
-<<<<<<< HEAD
-/* A title to display when you've successfully saved your wallet address qr code */
-"WALLET_Saved_Title" = "保存";
-=======
-/*NEW 
+/*NEW
  A title to display when you've successfully saved your wallet address qr code*/
 "WALLET_Saved_Title" = "已保存！";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* A title for the scan action in the wallet */
-"WALLET_Scan" = "WALLET_Scan";
-
-/* A title for the send action in the wallet */
-"WALLET_Send" = "WALLET_Send";
-
-/* An action title for sharing O3 */
+/*NEW
+ An action title for sharing O3*/
 "WALLET_Share" = "分享";
 
-/* Prefix used in the transaction history to indicate where the transaction went to */
+/*NEW
+ Prefix used in the transaction history to indicate where the transaction went to*/
 "WALLET_To_Prefix" = "到：%@";
 
-/* Title of Transactions tab in wallet screen */
+/*NEW
+ Title of Transactions tab in wallet screen*/
 "WALLET_Transactions" = "交易记录";
 
-/* A title for Unclaimed Gas in the wallet */
+/*NEW
+ A title for Unclaimed Gas in the wallet*/
 "WALLET_Unclaimed_Gas_Title" = "未提取的GAS";
 
-/* Title to copy watch address */
+/*NEW
+ Title to copy watch address*/
 "WATCH_ADDRESS_Copy_Address" = "复制地址";
 
-/* Title to delete Watch Address */
+/*NEW
+ Title to delete Watch Address*/
 "WATCH_ADDRESS_Delete" = "删除";
 
-<<<<<<< HEAD
-/* A prompt asking for user confirmation to delete the watch address */
-"WATCH_ADDRESS_Delete_Confirmation" = "确定删除该观察地址";
-=======
-/*NEW 
+/*NEW
  A prompt asking for user confirmation to delete the watch address*/
 "WATCH_ADDRESS_Delete_Confirmation" = "是否确定删除该观察地址？";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
 
-/* Title for editing name of a watch address */
+/*NEW
+ Title for editing name of a watch address*/
 "WATCH_ADDRESS_Edit_Name" = "编辑用户名";
 
-/* Save Action for Watch Addresses */
+/*NEW
+ Save Action for Watch Addresses*/
 "WATCH_ADDRESS_Save" = "保存";
 
-<<<<<<< HEAD
-=======
 /*When the user tries to create a new wallet, but they already have one saved on the devicve, this explanation/warning is given to the user*/
 "ONBOARDING_Already_Have_Wallet_Explanation" = "您在该设备上已有一个创建好的钱包。\n\n若要创建新钱包，现有的私钥将会被新私钥覆盖。 请确保你现有钱包的私钥已备份。";
 
 /*A warning given to the user to make sure that they have backed up their private key in a secure location. Also states that deletibg the passcode will delete the key from the device*/
 "ONBOARDING_Please_Backup Warning" = "请在安全的情况下备份该私钥。\n\n我们强烈建议您在自己的iPhone上设置好密码。若删除您设备上的密码，钥匙串上的私钥也将被删除。";
 
-/*NEW 
+/*NEW
  Error to display when the user is trying to send a token but does not have enough gas to make the invoke occur. It requires 0.00000001 GAS in the wallet in order to send a token*/
 "SEND_Not_Enough_Gas_Token_Transfer" = "若要发送NEP5代币，您钱包中必须有至少0.00000001 GAS。过程中不需要使用GAS，但要求您钱包中要有GAS";
 
-/*NEW 
+/*NEW
  Error to display when the user is trying to send gas, but the amount they are sending is the max amount. The user can round down the gas amount a small amount to precent this error*/
 "SEND_Rounding_Gas_Error" = "当发送所有GAS时，请从总金额中减去0.00000001，以避免化整误差，导致交易无法处理";
 
-/*NEW 
+/*NEW
  Description under add address button that describes what a watch address is and how it will work in the app*/
 "SETTINGS_Add_Watch_Description" = "您可在周围没人的情况下，利用观察地址监控个人资产。 虽然无法发送代币，但您可以通过地址查看余额";
 
-/*NEW 
+/*NEW
  A detailed description about what will happen if the user signs up for the email list to get notified about token sales*/
 "TOKENSALE_Get_Notified_Description" = "分享您的邮箱，我们将为您提供最新代币销售信息。O3上出现的所有代币都是经过审核的，您的电子邮件也绝不会与第三方共享。 没有垃圾代币！";
 
-/*NEW 
+/*NEW
  Description that shows when there is an error*/
 "TOKENSALE_Transaction_Error_Description" = "您的交易未完成。 这可能是因为智能合同拒绝了您的交易。 请稍后再试，或直接联系代币发行方";
 
@@ -1138,7 +869,7 @@
 /*A title for a button Claim Now*/
 "WALLET_Claim_Claim_Now_Action" = "提取";
 
-/*NEW 
+/*NEW
  A title for a label claimable gas. 'Claimable GAS'*/
 "WALLET_Claim_Claimable_Gas_Title" = "可提取的GAS";
 
@@ -1165,4 +896,3 @@
 
 /*A title for the send action in the wallet*/
 "WALLET_Send" = "发送";
->>>>>>> 152d0399b65121679b56420a097ac0a7889dc981
