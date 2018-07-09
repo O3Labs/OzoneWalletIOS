@@ -45,7 +45,7 @@ public class O3Client {
     enum HTTPMethod: String {
         case GET
     }
-    var baseURL = "https://api.o3.network"
+    var baseURL = "https://platform.o3.network/api"
 
     public static let shared = O3Client()
 
