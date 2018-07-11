@@ -89,6 +89,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     @objc func reloadAllData() {
         loadAccountState()
         loadClaimableGAS()
+        loadInbox()
         DispatchQueue.main.async {
             self.tableView.refreshControl?.endRefreshing()
             self.tableView.reloadData()

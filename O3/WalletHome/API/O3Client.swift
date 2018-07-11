@@ -38,14 +38,14 @@ public class O3Client {
         case getPriceHistory = "/v1/price/"
         case getPortfolioValue = "/v1/historical"
         case getNewsFeed = "/v1/feed/"
-        case getFeatureFeed = "/v1/features"
         case getTokenSales = "https://platform.o3.network/api/v1/neo/tokensales"
     }
 
     enum HTTPMethod: String {
         case GET
     }
-    var baseURL = "https://platform.o3.network/api"
+    
+    var baseURL = "https://api.o3.network/"
 
     public static let shared = O3Client()
 

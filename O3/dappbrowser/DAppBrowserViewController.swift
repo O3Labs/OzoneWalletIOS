@@ -45,7 +45,8 @@ class DAppBrowserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        // let url = URL(string: "https://s3-ap-northeast-1.amazonaws.com/network.o3.cdn/____dapp/example/index.html")
-        let url = URL(string: "http://localhost:8000/example/app.html")
+        let url = URL(string: "https://beta.switcheo.exchange/markets/SWTH_NEO")
+        self.title = "O3 dApp Platform"
         let req = URLRequest(url: url!)
         self.webView!.load(req)
         self.webView?.navigationDelegate = self
