@@ -319,7 +319,45 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         }
     }
 
+    
+    func postToChannel(channel: String) {
+        
+        let headers = ["content-type": "application/json"]
+        let parameters = ["address": Authenticated.account!.address,
+                          "device":"iOS",] as [String : Any]
+        
+        let postData = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+        
+        let request = NSMutableURLRequest(url: NSURL(string: "https://platform.o3.network/api/v1/channel/" + channel)! as URL,
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
+        request.httpMethod = "POST"
+        request.allHTTPHeaderFields = headers
+        request.httpBody = postData as! Data
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            if (error != nil) {
+                print(error)
+            } else {
+                let httpResponse = response as? HTTPURLResponse
+                print(httpResponse)
+            }
+        })
+        
+        dataTask.resume()
+        
+    }
+    
     func qrScanned(data: String) {
+        //if there is more type of string we have to check it here
+        if data.hasPrefix("o3://channel") {
+            //post to utility communication channel
+            let channel = URL(string: data)?.lastPathComponent
+            print(channel)
+            postToChannel(channel: channel!)
+            return
+        }
         DispatchQueue.main.async {
             self.sendTapped(qrData: data)
         }

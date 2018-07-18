@@ -61,7 +61,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "qrCode-button"), style: .plain, target: self, action: #selector(myAddressTapped(_:)))
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
 
-        #if TEST
+        #if TESTNET
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openDAppBrowser(_:)))
         #endif
     }
