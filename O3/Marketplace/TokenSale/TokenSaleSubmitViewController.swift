@@ -16,9 +16,9 @@ class TokenSaleSubmitViewController: UIViewController {
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
 
-    func submitTransaction() {
+    func performContractBasedTransaction() {
         let fee = transactionInfo.priorityIncluded == true ? Float64(0.0011) : Float64(0)
-        let remark = String(format: "O3X%@", transactionInfo.saleInfo.name)
+        let remark = String(format: "O3X%@", transactionInfo.saleInfo.companyID)
         Authenticated.account?.participateTokenSales(network: AppState.network, seedURL: AppState.bestSeedNodeURL, scriptHash: transactionInfo.tokenSaleContractHash, assetID: transactionInfo.assetIDUsedToPurchase, amount: transactionInfo.assetAmount, remark: remark, networkFee: fee) { success, txID, _ in
 
             //make delay to 5 seconds in production
@@ -30,6 +30,28 @@ class TokenSaleSubmitViewController: UIViewController {
                 }
                 self.performSegue(withIdentifier: "error", sender: nil)
             }
+        }
+    }
+
+    func performAddressBasedTransaction() {
+        let remark = String(format: "O3X%@", transactionInfo.saleInfo.companyID)
+        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId(rawValue: transactionInfo.assetIDUsedToPurchase)!, amount: transactionInfo.assetAmount, toAddress: transactionInfo.saleInfo.address, attributes: [TransactionAttritbute(remark: remark)]) { txid, _ in
+            //make delay to 5 seconds in production
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                if txid != nil {
+                    self.performSegue(withIdentifier: "success", sender: self.transactionInfo)
+                    return
+                }
+                self.performSegue(withIdentifier: "error", sender: nil)
+            }
+        }
+    }
+
+    func submitTransaction() {
+        if transactionInfo.saleInfo.address == "" {
+            performContractBasedTransaction()
+        } else {
+            performAddressBasedTransaction()
         }
     }
 
@@ -55,7 +77,6 @@ class TokenSaleSubmitViewController: UIViewController {
                 let info = sender as? TokenSaleTableViewController.TokenSaleTransactionInfo? else {
                 return
             }
-
             vc.transactionInfo = info
         }
     }

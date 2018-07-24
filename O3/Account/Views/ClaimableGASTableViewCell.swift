@@ -174,8 +174,8 @@ class ClaimableGASTableViewCell: UITableViewCell {
         let remark = String(format: "O3XFORCLAIM")
         customAttributes.append(TransactionAttritbute(remark: remark))
 
-        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: O3Cache.neo().value, toAddress: (Authenticated.account?.address)!, attributes: customAttributes) { completed, _ in
-            if completed == false {
+        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: O3Cache.neo().value, toAddress: (Authenticated.account?.address)!, attributes: customAttributes) { txid, _ in
+            if txid == nil {
                 //if sending failed then show error message and load the claimable gas again to reset the state
                 OzoneAlert.alertDialog(message: "Error while trying to send", dismissTitle: "OK", didDismiss: {
 

@@ -148,10 +148,10 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                     let remark = String(format: "O3XSEND")
                     customAttributes.append(TransactionAttritbute(remark: remark))
 
-                    Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes) { completed, _ in
+                    Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes) { txid, _ in
                         O3HUD.stop {
-                            self.transactionCompleted = completed ?? false
-                            if self.transactionCompleted {
+                            if txid != nil {
+                                self.transactionCompleted = true
                                 Answers.logCustomEvent(withName: "Native Asset Sent",
                                                        customAttributes: [
                                                         "Asset Name": assetName,
