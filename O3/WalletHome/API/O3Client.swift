@@ -215,13 +215,13 @@ public class O3Client {
         }
     }
 
-    func getTokenSales(completion: @escaping(O3ClientResult<TokenSales>) -> Void) {
-        var endpoint = "https://platform.o3.network/api/v1/neo/tokensales"
+    func getTokenSales(address: String, completion: @escaping(O3ClientResult<TokenSales>) -> Void) {
+        var endpoint = "https://platform.o3.network/api/v1/neo/" + address + "/tokensales"
         #if TESTNET
-        endpoint = "https://platform.o3.network/api/v1/neo/tokensales?network=test"
+        endpoint = "https://platform.o3.network/api/v1/neo/" + address + "/tokensales?network=test"
         #endif
         #if PRIVATENET
-        endpoint = "https://platform.o3.network/api/v1/neo/tokensales?network=private"
+        endpoint = "https://platform.o3.network/api/v1/neo/" + address + "/tokensales?network=private"
         #endif
         sendRequest(endpoint, method: .GET, data: nil, noBaseURL: true) { result in
             switch result {

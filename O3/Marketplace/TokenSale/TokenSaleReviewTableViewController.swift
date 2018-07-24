@@ -70,7 +70,7 @@ class TokenSaleReviewTableViewController: UITableViewController {
         setLocalizedStrings()
         setThemedElements()
 
-        if transactionInfo.saleInfo.allowToParticipate == false {
+        if transactionInfo.saleInfo.kycStatus.verified == false {
              let message = String(format: TokenSaleStrings.notWhiteListedError, transactionInfo.saleInfo.name)
             notWhitelistedLabel.text = message
             notWhitelistedContainer.isHidden = false

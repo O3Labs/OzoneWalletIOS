@@ -36,7 +36,7 @@ class TokenSalesListTableViewController: UITableViewController {
         //assign datasource and delegate only when data is loaded
         self.tableView.delegate = nil
         self.tableView.dataSource = nil
-        O3Client().getTokenSales { result in
+        O3Client().getTokenSales(address: (Authenticated.account?.address)!) { result in
             switch result {
             case .failure:
                 return
@@ -125,26 +125,13 @@ class TokenSalesListTableViewController: UITableViewController {
             guard let cell = self.tableView.cellForRow(at: indexPath) as? TokenSaleTableViewCell else {
                 return
             }
-
-            Authenticated.account?.allowToParticipateInTokenSale(seedURL: AppState.bestSeedNodeURL, scriptHash: sale.scriptHash, completion: { (result) in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .failure:
-                        cell.actionLabel.text = TokenSaleStrings.notWhitelisted
-                        cell.actionLabel.theme_textColor = O3Theme.disabledColorPicker
-                        self.tokenSales?.live[indexPath.row].allowToParticipate = false
-                    case .success(let whitelisted):
-                        self.tokenSales?.live[indexPath.row].allowToParticipate = whitelisted
-                        if whitelisted == true {
-                            cell.actionLabel.text = TokenSaleStrings.participate
-                            cell.actionLabel.theme_textColor = O3Theme.primaryColorPicker
-                        } else {
-                            cell.actionLabel.text = TokenSaleStrings.notWhitelisted
-                            cell.actionLabel.theme_textColor = O3Theme.disabledColorPicker
-                        }
-                    }
-                }
-            })
+            if sale.kycStatus.verified {
+                cell.actionLabel.text = TokenSaleStrings.participate
+                cell.actionLabel.theme_textColor = O3Theme.primaryColorPicker
+            } else {
+                cell.actionLabel.text = TokenSaleStrings.notWhitelisted
+                cell.actionLabel.theme_textColor = O3Theme.disabledColorPicker
+            }
         }
     }
 
