@@ -38,13 +38,13 @@ public class O3Client {
         case getPriceHistory = "/v1/price/"
         case getPortfolioValue = "/v1/historical"
         case getNewsFeed = "/v1/feed/"
-        case getFeatureFeed = "/v1/features"
         case getTokenSales = "https://platform.o3.network/api/v1/neo/tokensales"
     }
 
     enum HTTPMethod: String {
         case GET
     }
+    
     var baseURL = "https://api.o3.network"
 
     public static let shared = O3Client()
@@ -60,7 +60,7 @@ public class O3Client {
         let url = URL(string: urlString)
         let request = NSMutableURLRequest(url: url!)
         request.httpMethod = "GET"
-        request.setValue("application/json-rpc", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.cachePolicy = .reloadIgnoringLocalCacheData
         if data != nil {
             guard let body = try? JSONSerialization.data(withJSONObject: data!, options: []) else {

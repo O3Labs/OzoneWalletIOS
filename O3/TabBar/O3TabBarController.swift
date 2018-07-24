@@ -17,6 +17,8 @@ class O3TabBarController: UITabBarController {
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
     // swiftlint:enable weak_delegate
 
+    let transitionDelegate = DeckTransitioningDelegate()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.theme_barStyle = O3Theme.tabBarStylePicker
@@ -60,4 +62,5 @@ class O3TabBarController: UITabBarController {
         segue.destination.modalPresentationStyle = .custom
         segue.destination.transitioningDelegate = self.halfModalTransitioningDelegate
     }
+    
 }

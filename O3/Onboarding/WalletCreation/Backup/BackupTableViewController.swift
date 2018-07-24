@@ -74,6 +74,7 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
         if indexPath.row == 0 {
             maximizeToFullScreen(allowReverse: false)
             Answers.logCustomEvent(withName: "Backup Selected", customAttributes: ["Option": 0])
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.performSegue(withIdentifier: "segueToEmailBackup", sender: nil)
             }

@@ -39,17 +39,18 @@ class ClaimableGASTableViewCell: UITableViewCell {
         estimatedTitle?.text = AccountStrings.estimatedClaimableGasTitle
         estimatedClaimableGASTitle?.text = AccountStrings.claimableGasTitle
         syncNowButton?.setTitle(AccountStrings.updateNowButton, for: .normal)
-
+        
         loadingTitle?.text = AccountStrings.checkingForClaimableDataLoadingTitle
-
+        
         confirmedTitle?.text = AccountStrings.confirmedClaimableGasTitle
         confirmedClaimableGASTitle?.text = AccountStrings.claimableGasTitle
         claimNowButton?.setTitle(AccountStrings.claimNowButton, for: .normal)
-
+        
         gasClaimedSuccessTitle?.text = AccountStrings.successClaimTitle
         gasClaimedSuccessSubTitle?.text = AccountStrings.successClaimSubTitle
 
     }
+
 
     func setupTheme() {
         estimatedClaimableGASLabel?.theme_textColor = O3Theme.titleColorPicker
@@ -67,7 +68,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
         super.layoutSubviews()
         self.setupTheme()
     }
-
+    
     func setupView() {
         estimatedClaimableGASContainer?.isHidden = false
         loaderView?.isHidden = true
@@ -115,12 +116,6 @@ class ClaimableGASTableViewCell: UITableViewCell {
     func displayClaimableState(claimable: Claimable) {
         self.resetState()
 
-//        //if user already sent NEO to the address and waiting for the claimable data then we show the loading
-//        if AppState.claimingState(address: Authenticated.account!.address) == .WaitingForClaimableData {
-//            self.startLoading()
-//            return
-//        }
-
         let gasDouble = NSDecimalNumber(decimal: claimable.gas).doubleValue
         if claimable.claims.count == 0 {
             //if claim array is empty then we show estimated
@@ -150,11 +145,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
         self.confirmedClaimableGASContainer?.isHidden = false
         self.confirmedClaimableGASLabel?.text = value
         self.successClaimableGASLabel?.text = value
-
     }
 
     func sendAllNEOToTheAddress() {
-
         //show loading screen first
         DispatchQueue.main.async {
             self.startLoading()
@@ -210,9 +203,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
                 }
 
                 if success == true {
-
                     self.claimedSuccess()
-
                     Answers.logCustomEvent(withName: "Gas Claimed",
                                            customAttributes: ["Amount": self.confirmedClaimableGASLabel?.text ?? ""])
                 } else {
@@ -222,7 +213,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
             }
         }
     }
-
+    
     @objc @IBAction func syncNowTapped(_ sender: Any) {
         self.sendAllNEOToTheAddress()
     }
@@ -262,7 +253,6 @@ class ClaimableGASTableViewCell: UITableViewCell {
         animationView?.layer.transform = CATransform3DScale(CATransform3DMakeRotation(0, 0, 0, 0), -1, 1, 1)
         animationView?.loopAnimation = true
         animationView?.play()
-
         let targetSec = 60
         var sec = 0
         let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
@@ -279,5 +269,4 @@ class ClaimableGASTableViewCell: UITableViewCell {
         }
         timer.fire()
     }
-
 }

@@ -352,7 +352,7 @@
 "SEND_Address_Button_Title" = "Address";
 
 /* Label title for the amount on the send screen */
-"SEND_Amount_Label" = "Send";
+"SEND_Amount_Label" = "Amount";
 
 /* Label title for the asset field on the send screen */
 "SEND_Asset_Label" = "Asset";
@@ -406,7 +406,7 @@
 "SEND_Send_Title" = "Send";
 
 /* A place holder text, indicating that the NEO Wallet Address should go in this text field */
-"SEND_To_Address_Placeholder" = "NEO Wallet Address";
+"SEND_To_Address_Placeholder" = "NEO/Ontology Wallet Address";
 
 /* Label title for the send to field on the send screen */
 "SEND_To_Label" = "To";

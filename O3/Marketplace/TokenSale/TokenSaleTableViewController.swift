@@ -69,7 +69,6 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         self.title = saleInfo.name
 
         self.navigationController?.hideHairline()
-
         let date1: Date = Date()
         let date2: Date = Date(timeIntervalSince1970: saleInfo.endTime)
         let calender: Calendar = Calendar.current
@@ -92,7 +91,6 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         priorityLabel?.addGestureRecognizer(tap)
 
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "external-link-alt"), style: .plain, target: self, action: #selector(externalLinkTapped(_:)))
-
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(dismiss(_:)))
     }
 
@@ -120,7 +118,8 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
             }
         }
     }
-
+    
+    
     @objc func dismiss(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -153,7 +152,6 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         if indexPath.section == 1 {
             return UITableViewAutomaticDimension
         }
-
         if indexPath.section == 0 {
             return 35.0
         }

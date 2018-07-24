@@ -23,7 +23,6 @@ class LoginToCurrentWalletViewController: UIViewController {
 
     var launchOptions: [UIApplicationLaunchOptionsKey: Any]?
     var delegate: LoginToCurrentWalletViewControllerDelegate?
-
     func login() {
         let keychain = Keychain(service: "network.o3.neo.wallet")
         DispatchQueue.global().async {
