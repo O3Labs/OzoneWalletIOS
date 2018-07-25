@@ -27,7 +27,7 @@ public enum O3APIClientError: Error {
         case .invalidAddress:
             return "Invalid address"
         }
-        
+
     }
 }
 
@@ -50,9 +50,10 @@ class O3APIClient: NSObject {
         case getUTXO = "utxo"
         case getClaims = "claimablegas"
         case getInbox = "inbox"
+        case postTokenSaleLog = "tokensales"
     }
 
-    func sendRESTAPIRequest(_ resourceEndpoint: String, params: [Any]?, completion :@escaping (O3APIClientResult<JSONDictionary>) -> Void) {
+    func sendRESTAPIRequest(_ resourceEndpoint: String, data: Data?, requestType: String = "GET", completion :@escaping (O3APIClientResult<JSONDictionary>) -> Void) {
 
         var fullURL = apiBaseEndpoint + resourceEndpoint
         if network == .test {
@@ -62,11 +63,13 @@ class O3APIClient: NSObject {
         }
 
         let request = NSMutableURLRequest(url: URL(string: fullURL)!)
-        request.httpMethod = "GET"
+        request.httpMethod = requestType
         request.timeoutInterval = 60
         request.cachePolicy = .reloadIgnoringLocalCacheData
+        request.httpBody = data
 
-        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, _, err) in
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, result, err) in
+            print(result)
             if err != nil {
                 completion(.failure(.invalidRequest))
                 return
@@ -100,9 +103,9 @@ class O3APIClient: NSObject {
         task.resume()
     }
 
-    public func getUTXO(for address: String, params: [Any]?, completion: @escaping(O3APIClientResult<Assets>) -> Void) {
+    public func getUTXO(for address: String, completion: @escaping(O3APIClientResult<Assets>) -> Void) {
         let url = "/v1/neo/" + address + "/" + o3APIResource.getUTXO.rawValue
-        sendRESTAPIRequest(url, params: params) { result in
+        sendRESTAPIRequest(url, data: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -122,7 +125,7 @@ class O3APIClient: NSObject {
 
     public func getClaims(address: String, completion: @escaping(O3APIClientResult<Claimable>) -> Void) {
         let url = "/v1/neo/" + address + "/" + o3APIResource.getClaims.rawValue
-        sendRESTAPIRequest(url, params: nil) { result in
+        sendRESTAPIRequest(url, data: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -144,7 +147,7 @@ class O3APIClient: NSObject {
 
     func getAccountState(address: String, completion: @escaping(O3APIClientResult<AccountState>) -> Void) {
         let url = "/v1/neo/" + address + "/" + o3APIResource.getBalances.rawValue
-        sendRESTAPIRequest(url, params: nil) { result in
+        sendRESTAPIRequest(url, data: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -160,10 +163,10 @@ class O3APIClient: NSObject {
             }
         }
     }
-    
+
     func getInbox(address: String, completion: @escaping(O3APIClientResult<Inbox>) -> Void) {
         let url = "/v1/inbox/" + address
-        sendRESTAPIRequest(url, params: nil) { result in
+        sendRESTAPIRequest(url, data: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -179,10 +182,10 @@ class O3APIClient: NSObject {
             }
         }
     }
-    
+
     func getNodes(completion: @escaping(O3APIClientResult<Nodes>) -> Void) {
         let url = "/v1/nodes"
-        sendRESTAPIRequest(url, params: nil) { result in
+        sendRESTAPIRequest(url, data: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -198,7 +201,7 @@ class O3APIClient: NSObject {
             }
         }
     }
-    
+
     func checkVerifiedAddress(address: String, completion: @escaping(O3APIClientResult<VerifiedAddress>) -> Void) {
         let validAddress = NeoutilsValidateNEOAddress(address)
         if validAddress == false {
@@ -206,7 +209,7 @@ class O3APIClient: NSObject {
             return
         }
         let url = "/v1/verification/" + address
-        sendRESTAPIRequest(url, params: nil) { result in
+        sendRESTAPIRequest(url, data: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -223,4 +226,26 @@ class O3APIClient: NSObject {
         }
     }
 
+    func postTokenSaleLog(address: String, companyID: String, tokenSaleLog: TokenSaleLog,
+                          completion: @escaping(O3APIClientResult<Bool>) -> Void) {
+        let url = "/v1/neo/" + address + "/tokensales/" + companyID
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        let data = try? encoder.encode(tokenSaleLog)
+        sendRESTAPIRequest(url, data: data!, requestType: "POST") { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(String.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(true)
+                completion(success)
+            }
+        }
+    }
 }

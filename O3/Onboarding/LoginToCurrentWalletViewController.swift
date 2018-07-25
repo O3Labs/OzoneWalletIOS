@@ -55,6 +55,7 @@ class LoginToCurrentWalletViewController: UIViewController {
                                     UIView.setAnimationsEnabled(false)
                                     UIApplication.appDelegate.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
                                     UIView.setAnimationsEnabled(oldState)
+
                                 }, completion: { (finished: Bool) -> Void in
                                     if finished {
                                         self.delegate?.authorized(launchOptions: self.launchOptions)

@@ -9,7 +9,7 @@
 import UIKit
 
 class Router: NSObject {
-    
+
     static func parseNEP9URL(url: URL) {
         if Authenticated.account == nil {
             return
@@ -29,10 +29,10 @@ class Router: NSObject {
                 case .failure:
                     return
                 case .success(let accountState):
-                    
+
                     var neoBalance: Int = Int(O3Cache.neo().value)
                     var gasBalance: Double = O3Cache.gas().value
-                    
+
                     for asset in accountState.assets {
                         if asset.id.contains(AssetId.neoAssetId.rawValue) {
                             neoBalance = Int(asset.value)
@@ -40,9 +40,9 @@ class Router: NSObject {
                             gasBalance = asset.value
                         }
                     }
-                    
+
                     var tokenAssets = O3Cache.tokenAssets()
-                    
+
                     var selectedAsset: TransferableAsset?
                     for token in accountState.nep5Tokens {
                         tokenAssets.append(token)
@@ -54,7 +54,7 @@ class Router: NSObject {
                     O3Cache.setNEOForSession(neoBalance: neoBalance)
                     O3Cache.setTokenAssetsForSession(tokens: tokenAssets)
                     O3Cache.setReadOnlyOntologyAssetsForSession(tokens: accountState.ontology)
-                    
+
                     if asset?.lowercased() == "neo" {
                         Controller().openSend(to: address!, selectedAsset: TransferableAsset.NEO(), amount: amount)
                     } else if asset?.lowercased() == "gas" {
@@ -66,5 +66,5 @@ class Router: NSObject {
             }
         }
     }
-    
+
 }

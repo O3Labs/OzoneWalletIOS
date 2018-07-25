@@ -10,9 +10,9 @@ import Foundation
 import Cache
 
 class O3Cache {
-    
+
     static let storageName: String = "O3Cache"
-    
+
     enum keys: String {
         case gas
         case neo
@@ -52,13 +52,13 @@ class O3Cache {
             try? storage.setObject(tokens, forKey: keys.tokens.rawValue)
         }
     }
-    
+
     static func setOntologyAssetsForSession(tokens: [TransferableAsset]) {
         if let storage = try? Storage(diskConfig: DiskConfig(name: storageName)) {
             try? storage.setObject(tokens, forKey: keys.ontology.rawValue)
         }
     }
-    
+
     // MARK: Cache Setters for Read Only Balances
     static func setReadOnlyNEOForSession(neoBalance: Int) {
         if let storage = try? Storage(diskConfig: DiskConfig(name: storageName)) {
@@ -81,7 +81,7 @@ class O3Cache {
             try? storage.setObject(tokens, forKey: keys.readOnlyTokens.rawValue)
         }
     }
-    
+
     static func setReadOnlyOntologyAssetsForSession(tokens: [TransferableAsset]) {
         if let storage = try? Storage(diskConfig: DiskConfig(name: storageName)) {
             try? storage.setObject(tokens, forKey: keys.readOnlyOntologyAssets.rawValue)
@@ -118,7 +118,7 @@ class O3Cache {
         }
         return cachedTokens
     }
-    
+
     static func ontologyAssets() -> [TransferableAsset] {
         var cachedTokens = [TransferableAsset]()
         if let storage =  try? Storage(diskConfig: DiskConfig(name: storageName)) {

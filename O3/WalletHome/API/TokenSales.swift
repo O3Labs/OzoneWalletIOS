@@ -98,6 +98,7 @@ public struct TokenSales: Codable {
             let address: String? = try? container.decode(String.self, forKey: .address)
             let companyID: String = try container.decode(String.self, forKey: .companyID)
             let kycStatus: KYCStatus = try container.decode(KYCStatus.self, forKey: .kycStatus)
+
             self.init(name: name, symbol: symbol, shortDescription: shortDescription,
                       scriptHash: scriptHash, webURL: webURL, imageURL: imageURL,
                       squareLogoURL: squareLogoURL, startTime: startTime, endTime: endTime,
@@ -129,31 +130,65 @@ public struct TokenSales: Codable {
 
         public struct AcceptingAsset: Codable {
             var asset: String
-            var basicRate: Double
-            var min: Double
+            var basicRate: Decimal
             var max: Double
+            var min: Double
+            var price: RealTimePricing?
 
             enum CodingKeys: String, CodingKey {
                 case asset
                 case basicRate
-                case min
                 case max
+                case min
+                case price
             }
 
-            public init(asset: String, basicRate: Double, min: Double, max: Double) {
+            public init(asset: String, basicRate: Decimal, max: Double, min: Double, price: RealTimePricing?) {
                 self.asset = asset
                 self.basicRate = basicRate
-                self.min = min
                 self.max = max
+                self.min = min
+                self.price = price
             }
 
             public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 let asset: String = try container.decode(String.self, forKey: .asset)
-                let basicRate: Double = try container.decode(Double.self, forKey: .basicRate)
-                let min: Double = try container.decode(Double.self, forKey: .min)
+                let basicRate: Decimal = try container.decode(Decimal.self, forKey: .basicRate)
                 let max: Double = try container.decode(Double.self, forKey: .max)
-                self.init(asset: asset, basicRate: basicRate, min: min, max: max)
+                let min: Double = try container.decode(Double.self, forKey: .min)
+                let price: RealTimePricing? = try? container.decode(RealTimePricing.self, forKey: .price)
+                self.init(asset: asset, basicRate: basicRate, max: max, min: min, price: price)
+            }
+
+            public struct RealTimePricing: Codable {
+                var currency: String
+                var lastUpdate: Int
+                var price: Decimal
+                var symbol: String
+
+                enum CodingKeys: String, CodingKey {
+                    case currency
+                    case lastUpdate
+                    case price
+                    case symbol
+                }
+
+                public init(currency: String, lastUpdate: Int, price: Decimal, symbol: String) {
+                    self.currency = currency
+                    self.lastUpdate = lastUpdate
+                    self.price = price
+                    self.symbol = symbol
+                }
+
+                public init(from decoder: Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let currency = try container.decode(String.self, forKey: .currency)
+                    let lastUpdate = try container.decode(Int.self, forKey: .lastUpdate)
+                    let price = try container.decode(Decimal.self, forKey: .price)
+                    let symbol = try container.decode(String.self, forKey: .symbol)
+                    self.init(currency: currency, lastUpdate: lastUpdate, price: price, symbol: symbol)
+                }
             }
         }
 

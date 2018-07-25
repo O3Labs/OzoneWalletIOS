@@ -39,18 +39,17 @@ class ClaimableGASTableViewCell: UITableViewCell {
         estimatedTitle?.text = AccountStrings.estimatedClaimableGasTitle
         estimatedClaimableGASTitle?.text = AccountStrings.claimableGasTitle
         syncNowButton?.setTitle(AccountStrings.updateNowButton, for: .normal)
-        
+
         loadingTitle?.text = AccountStrings.checkingForClaimableDataLoadingTitle
-        
+
         confirmedTitle?.text = AccountStrings.confirmedClaimableGasTitle
         confirmedClaimableGASTitle?.text = AccountStrings.claimableGasTitle
         claimNowButton?.setTitle(AccountStrings.claimNowButton, for: .normal)
-        
+
         gasClaimedSuccessTitle?.text = AccountStrings.successClaimTitle
         gasClaimedSuccessSubTitle?.text = AccountStrings.successClaimSubTitle
 
     }
-
 
     func setupTheme() {
         estimatedClaimableGASLabel?.theme_textColor = O3Theme.titleColorPicker
@@ -68,7 +67,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
         super.layoutSubviews()
         self.setupTheme()
     }
-    
+
     func setupView() {
         estimatedClaimableGASContainer?.isHidden = false
         loaderView?.isHidden = true
@@ -213,7 +212,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
             }
         }
     }
-    
+
     @objc @IBAction func syncNowTapped(_ sender: Any) {
         self.sendAllNEOToTheAddress()
     }

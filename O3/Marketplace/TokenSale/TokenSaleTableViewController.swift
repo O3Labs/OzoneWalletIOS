@@ -22,7 +22,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
     var neoRateInfo: TokenSales.SaleInfo.AcceptingAsset?
     var gasRateInfo: TokenSales.SaleInfo.AcceptingAsset?
     var amountString: String?
-    var totalTokens: Double = 0.0
+    var totalTokens: Decimal = 0.0
     var endingSoon: Bool = false
 
     public struct TokenSaleTransactionInfo {
@@ -31,7 +31,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         var assetNameUsedToPurchase: String
         var assetAmount: Double
         var tokenSaleContractHash: String
-        var tokensToRecieveAmount: Double
+        var tokensToRecieveAmount: Decimal
         var tokensToReceiveName: String
         var saleInfo: TokenSales.SaleInfo
         //this will be set when submitting the raw transaction
@@ -67,6 +67,11 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         super.viewDidLoad()
         setLocalizedStrings()
         self.title = saleInfo.name
+        if saleInfo.address != "" {
+            priorityLabel?.isHidden = true
+            checkboxPriority?.isHidden = true
+            priorityInfoButton.isHidden = true
+        }
 
         self.navigationController?.hideHairline()
         let date1: Date = Date()
@@ -118,8 +123,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
             }
         }
     }
-    
-    
+
     @objc func dismiss(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -364,7 +368,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         }
     }
 
-    func setTokenAmount(totalTokens: Double) {
+    func setTokenAmount(totalTokens: Decimal) {
         self.totalTokens = totalTokens
     }
 

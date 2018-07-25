@@ -8,10 +8,9 @@
 
 import UIKit
 
-
 struct Inbox: Codable {
     let items: [InboxItem]
-    
+
     enum CodingKeys: String, CodingKey {
         case items = "data"
     }
@@ -26,7 +25,7 @@ struct InboxItem: Codable {
     let readmoreTitle: String
     let readmoreURL: String
     let iconURL: String
-    
+
     enum CodingKeys: String, CodingKey {
         case title = "title"
         case subtitle = "subtitle"

@@ -250,7 +250,7 @@ public class Account {
 
     public func sendAssetTransaction(network: Network, seedURL: String, asset: AssetId, amount: Double,
                                      toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(String?, Error?) -> Void) {
-        O3APIClient(network: network).getUTXO(for: self.address, params: []) { result in
+        O3APIClient(network: network).getUTXO(for: self.address) { result in
             switch result {
             case .failure(let error):
                 completion(nil, error)

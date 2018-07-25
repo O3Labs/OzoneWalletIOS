@@ -65,7 +65,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openDAppBrowser(_:)))
         #endif
     }
-    
+
     @objc func openDAppBrowser(_ sender: Any) {
         let vc = UIStoryboard(name: "Browser", bundle: nil).instantiateInitialViewController()
         self.present(vc!, animated: true, completion: nil)

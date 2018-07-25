@@ -13,6 +13,7 @@ import SwiftTheme
 
 class MarketplaceController: TabmanViewController, PageboyViewControllerDataSource {
     var viewControllers: [UIViewController] = []
+    var startAtTokenSale = false
 
     func addThemeObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.changedTheme), name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
@@ -34,6 +35,10 @@ class MarketplaceController: TabmanViewController, PageboyViewControllerDataSour
 
     override func viewWillAppear(_ animated: Bool) {
         applyNavBarTheme()
+        if startAtTokenSale {
+            scrollToPage(.at(index: 1), animated: true)
+            startAtTokenSale = false
+        }
         super.viewWillAppear(animated)
     }
 

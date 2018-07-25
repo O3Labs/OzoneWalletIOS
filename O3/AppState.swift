@@ -22,18 +22,18 @@ class AppState: NSObject {
     }
 
     static var bestSeedNodeURL: String = ""
-   
+
     enum ClaimingState: String {
         case Fresh = ""
         case WaitingForClaimableData = "0"
         case ReadyToClaim = "1"
     }
-    
+
     static func claimingState(address: String) -> ClaimingState {
         if UserDefaults.standard.value(forKey: address + "_claimingState") == nil {
             return ClaimingState.Fresh
         }
-        return  AppState.ClaimingState(rawValue: UserDefaults.standard.value(forKey: address + "_claimingState") as! String)!
+        return  AppState.ClaimingState(rawValue: UserDefaults.standard.string(forKey: address + "_claimingState") ?? "")!
     }
 
     static func setClaimingState(address: String, claimingState: ClaimingState) {

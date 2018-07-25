@@ -17,14 +17,14 @@ import Neoutils
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
+
     var window: UIWindow?
-    
+
     func setupChannel() {
         //O3 Development on Channel app_gUHDmimXT8oXRSpJvCxrz5DZvUisko_mliB61uda9iY
         Channel.setup(withApplicationId: "app_gUHDmimXT8oXRSpJvCxrz5DZvUisko_mliB61uda9iY")
     }
-    
+
     static func setNavbarAppearance() {
         UINavigationBar.appearance().theme_largeTitleTextAttributes = O3Theme.largeTitleAttributesPicker
         UINavigationBar.appearance().theme_titleTextAttributes =
@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().theme_backgroundColor = O3Theme.navBarColorPicker
         UIApplication.shared.theme_setStatusBarStyle(O3Theme.statusBarStylePicker, animated: true)
     }
-    
+
     func registerDefaults() {
         let userDefaultsDefaults: [String: Any] = [
             "networkKey": "main",
@@ -45,14 +45,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
         UserDefaults.standard.register(defaults: userDefaultsDefaults)
     }
-    
+
     let alertController = UIAlertController(title: OzoneAlert.noInternetError, message: nil, preferredStyle: .alert)
     @objc func reachabilityChanged(_ note: Notification) {
         switch reachability.connection {
         case .wifi:
             print("Reachable via WiFi")
             alertController.dismiss(animated: true, completion: nil)
-            
+
         case .cellular:
             print("Reachable via cellular")
             alertController.dismiss(animated: true, completion: nil)
@@ -70,19 +70,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("could not start reachability notifier")
         }
     }
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         #if DEBUG
         print("DEBUG BUILD")
         #else
         Fabric.with([Crashlytics.self])
         #endif
-        
+
         self.registerDefaults()
         self.setupChannel()
         self.setupReachability()
         AppDelegate.setNavbarAppearance()
-        
+
         //check if there is an existing wallet in keychain
         //if so, present LoginToCurrentWalletViewController
         let walletExists =  UserDefaultsManager.o3WalletAddress != nil
@@ -91,6 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 .instantiateViewController(withIdentifier: "LoginToCurrentWalletViewController") as? LoginToCurrentWalletViewController else {
                     return false
             }
+
             if let window = self.window {
                 login.delegate = self
                 //pass the launchOptions to the login screen
@@ -102,9 +103,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Onboarding Theme
         return true
     }
-    
+
     // MARK: - Core Data stack
-    
+
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -117,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                
+
                 /*
                  Typical reasons for an error here include:
                  * The parent directory does not exist, cannot be created, or disallows writing.
@@ -131,9 +132,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         return container
     }()
-    
+
     // MARK: - Core Data Saving support
-    
+
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -147,7 +148,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
+
     // MARK: - deeplink
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
         if app.applicationState == .inactive {
@@ -155,14 +156,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return false
     }
-    
-    
 }
 
 extension AppDelegate: LoginToCurrentWalletViewControllerDelegate {
+    func parsePushLink(link: String) {
+        guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {
+            return
+        }
+
+        let url = URL(string: link)
+        let components = url!.pathComponents
+        guard let baseUrl = components.first else {
+            return
+        }
+        if baseUrl != "o3.app" || components.count < 2 {
+            return
+        }
+
+        guard let tabItem = Int(components[1]) else {
+                return
+        }
+        tabbar.selectedIndex = tabItem
+
+        //marketplace
+        if (tabItem == 2 && components.count > 2) {
+            guard let marketplaceNav = tabbar.selectedViewController as? UINavigationController,
+                let marketplace = marketplaceNav.childViewControllers[0] as? MarketplaceController else {
+                return
+            }
+            marketplace.startAtTokenSale = true
+        }
+    }
+
     func authorized(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
         if let url = launchOptions?[UIApplicationLaunchOptionsKey.url] as? URL {
             Router.parseNEP9URL(url: url)
+        }
+        if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject] {
+            if let notificationLink = notification["link"] as? String {
+                parsePushLink(link: notificationLink)
+            }
         }
     }
 }

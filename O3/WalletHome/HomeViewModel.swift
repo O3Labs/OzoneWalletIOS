@@ -21,11 +21,11 @@ class HomeViewModel {
 
     var writableTokens = O3Cache.tokenAssets()
     var readOnlyTokens = O3Cache.readOnlyTokens()
-    
+
     //Added for ontology
     var writableOntologyAssets = O3Cache.ontologyAssets()
     var readOnlyOntologyAssets = O3Cache.readOnlyOntologyAssets()
-    
+
     var neo = O3Cache.neo()
     var gas = O3Cache.gas()
     var readOnlyNeo = O3Cache.readOnlyNeo()
@@ -157,7 +157,7 @@ class HomeViewModel {
         }
         //assign writable ontology asset
         writableOntologyAssets = accountState.ontology
-        
+
         O3Cache.setGASForSession(gasBalance: gas.value)
         O3Cache.setNEOForSession(neoBalance: Int(neo.value))
         O3Cache.setTokenAssetsForSession(tokens: writableTokens)
@@ -184,7 +184,7 @@ class HomeViewModel {
         for token in accountState.nep5Tokens {
             addReadOnlyToken(token)
         }
-        
+
         readOnlyOntologyAssets = accountState.ontology
     }
 

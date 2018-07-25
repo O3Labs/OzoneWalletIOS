@@ -12,7 +12,7 @@ import UIKit
 protocol ContributionCellDelegate: class {
     func setContributionAmount(amountString: String)
     func setContributionAsset(asset: TransferableAsset)
-    func setTokenAmount(totalTokens: Double)
+    func setTokenAmount(totalTokens: Decimal)
 }
 
 class ContributionTableViewCell: UITableViewCell {
@@ -50,8 +50,12 @@ class ContributionTableViewCell: UITableViewCell {
 
     var tokenName: String! {
         didSet {
-            let neoRateAmountString = neoRateInfo?.basicRate.string(0, removeTrailing: true) ?? ""
-            let gasRateAmountString = gasRateInfo?.basicRate.string(0, removeTrailing: true) ?? ""
+            let amountFormatter = NumberFormatter()
+            amountFormatter.minimumFractionDigits = 0
+            amountFormatter.numberStyle = .decimal
+            amountFormatter.maximumFractionDigits = 0
+            let neoRateAmountString = amountFormatter.string(for: neoRateInfo?.basicRate ?? 0)!
+            let gasRateAmountString = amountFormatter.string(for: gasRateInfo?.basicRate  ?? 0)!
             neoRateLabel.text = "1 NEO = " + neoRateAmountString + " " + tokenName
             gasRateLabel.text = "1 GAS = " + gasRateAmountString + " " + tokenName
         }
@@ -83,7 +87,7 @@ class ContributionTableViewCell: UITableViewCell {
         //formatter to format string to a proper numbers
         let amountFormatter = NumberFormatter()
         amountFormatter.minimumFractionDigits = 0
-        amountFormatter.maximumFractionDigits = selectedAsset.decimals
+        amountFormatter.maximumFractionDigits = 0
         amountFormatter.numberStyle = .decimal
         amountFormatter.locale = Locale.current
         amountFormatter.usesGroupingSeparator = true
@@ -96,9 +100,9 @@ class ContributionTableViewCell: UITableViewCell {
 
         //calculate the rate
         let rate = selectedAsset.symbol.lowercased() == "neo" ? neoRateInfo : gasRateInfo
-        let totalTokens = amount!.doubleValue * (rate?.basicRate ?? 0)
+        let totalTokens = amount!.decimalValue * (rate?.basicRate ?? 0)
 
-        tokenAmountLabel.text = String(format: "%@ %@", amountFormatter.string(from: NSNumber(value: totalTokens))!, tokenName)
+        tokenAmountLabel.text = String(format: "%@ %@", amountFormatter.string(for: totalTokens)!, tokenName)
         delegate?.setContributionAmount(amountString: amountString)
         delegate?.setTokenAmount(totalTokens: totalTokens)
     }

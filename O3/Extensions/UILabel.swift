@@ -8,7 +8,6 @@
 
 import UIKit
 
-extension UILabel
-{
-   
+extension UILabel {
+
 }

@@ -89,10 +89,7 @@ class TokenSaleReviewTableViewController: UITableViewController {
         amountFormatter.numberStyle = .decimal
         amountFormatter.locale = Locale.current
         amountFormatter.usesGroupingSeparator = true
-
-        if transactionInfo.assetNameUsedToPurchase.lowercased() == TransferableAsset.GAS().name.lowercased() {
-            amountFormatter.maximumFractionDigits = 8
-        }
+        amountFormatter.maximumFractionDigits = 8
 
         if transactionInfo.priorityIncluded == false {
             priorityLabel.isHidden = true
@@ -101,7 +98,8 @@ class TokenSaleReviewTableViewController: UITableViewController {
 
         assetToSendLabel.text = String(format: "%@ %@", amountFormatter.string(from: NSNumber(value: transactionInfo.assetAmount))!, transactionInfo.assetNameUsedToPurchase)
 
-        assetToRecieveLabel.text = String(format: "%@ %@", amountFormatter.string(from: NSNumber(value: transactionInfo.tokensToRecieveAmount))!, transactionInfo.tokensToReceiveName)
+        amountFormatter.maximumFractionDigits = 0
+        assetToRecieveLabel.text = String(format: "%@ %@", amountFormatter.string(for: transactionInfo.tokensToRecieveAmount)!, transactionInfo.tokensToReceiveName)
     }
 
     @objc func externalLinkTapped(_ sender: Any) {

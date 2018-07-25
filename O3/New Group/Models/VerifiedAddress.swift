@@ -12,7 +12,7 @@ struct VerifiedAddress: Codable {
     let address: String
     let publicKey: String
     let displayName: String
-    
+
     enum CodingKeys: String, CodingKey {
         case address = "address"
         case publicKey = "publicKey"

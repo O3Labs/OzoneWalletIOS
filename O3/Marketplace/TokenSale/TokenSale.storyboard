@@ -79,20 +79,20 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="37b-NX-ot5">
-                                                    <rect key="frame" x="16" y="54" width="60" height="60"/>
+                                                    <rect key="frame" x="16" y="46" width="60" height="60"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="60" id="CaN-Ue-c57"/>
                                                         <constraint firstAttribute="width" constant="60" id="VA0-NV-KWm"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5V-N3-z7c">
-                                                    <rect key="frame" x="92" y="54" width="235" height="22"/>
+                                                    <rect key="frame" x="92" y="46" width="235" height="22"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsw-OV-rTu">
-                                                    <rect key="frame" x="92" y="76" width="235" height="19.5"/>
+                                                    <rect key="frame" x="92" y="68" width="235" height="19.5"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -116,7 +116,7 @@
                                                 <constraint firstItem="CQ9-cg-Af7" firstAttribute="top" secondItem="BXw-X8-nD3" secondAttribute="top" constant="16" id="6u1-uE-RC8"/>
                                                 <constraint firstAttribute="trailing" secondItem="h5V-N3-z7c" secondAttribute="trailing" constant="16" id="Kmi-Rl-pOa"/>
                                                 <constraint firstAttribute="bottom" secondItem="RfO-Q3-eWN" secondAttribute="bottom" constant="16" id="Nbb-fX-Wp0"/>
-                                                <constraint firstItem="37b-NX-ot5" firstAttribute="top" secondItem="a6u-I7-peq" secondAttribute="bottom" constant="16" id="S6z-ff-rnb"/>
+                                                <constraint firstItem="37b-NX-ot5" firstAttribute="top" secondItem="a6u-I7-peq" secondAttribute="bottom" constant="8" id="S6z-ff-rnb"/>
                                                 <constraint firstItem="fsw-OV-rTu" firstAttribute="top" secondItem="h5V-N3-z7c" secondAttribute="bottom" id="XwN-Z5-29F"/>
                                                 <constraint firstAttribute="trailing" secondItem="RfO-Q3-eWN" secondAttribute="trailing" constant="16" id="Z3N-WZ-vYb"/>
                                                 <constraint firstItem="fsw-OV-rTu" firstAttribute="width" secondItem="h5V-N3-z7c" secondAttribute="width" id="cP2-rg-J5V"/>

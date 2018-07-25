@@ -57,7 +57,8 @@ class TokenSaleSuccessViewController: UIViewController, UITableViewDelegate, UIT
         let sending = TokenSaleTransactionInfoTableViewCell.TokenSaleTransactionItem(title: TokenSaleStrings.sendingReceiptLabel, value: String(format: "%@ %@", amountFormatter.string(from: NSNumber(value: transactionInfo.assetAmount))!, transactionInfo.assetNameUsedToPurchase))
         tokenSaleTransactionItems.append(sending)
 
-        let forTokens = TokenSaleTransactionInfoTableViewCell.TokenSaleTransactionItem(title: TokenSaleStrings.receivingReceiptLabel, value: String(format: "%@ %@", amountFormatter.string(from: NSNumber(value: transactionInfo.tokensToRecieveAmount))!, transactionInfo.tokensToReceiveName))
+        amountFormatter.maximumFractionDigits = 0
+        let forTokens = TokenSaleTransactionInfoTableViewCell.TokenSaleTransactionItem(title: TokenSaleStrings.receivingReceiptLabel, value: String(format: "%@ %@", amountFormatter.string(for: transactionInfo.tokensToRecieveAmount)!, transactionInfo.tokensToReceiveName))
         tokenSaleTransactionItems.append(forTokens)
 
         //better move fee to its own const
@@ -131,5 +132,4 @@ extension TokenSaleSuccessViewController {
     saveButton.setTitle(TokenSaleStrings.saveTitle, for: UIControlState())
         closeButton.setTitle(TokenSaleStrings.closeTitle, for: UIControlState())
     }
-
 }

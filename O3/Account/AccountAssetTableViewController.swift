@@ -36,7 +36,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     var ontologyAssets: [TransferableAsset] = O3Cache.ontologyAssets()
     var mostRecentClaimAmount = 0.0
     var qrController: QRScannerController?
-    
+
     var addressInbox: Inbox?
 
     @objc func reloadCells() {
@@ -62,15 +62,15 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         applyNavBarTheme()
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
-        
+
         self.loadInbox()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadClaimableGAS()
     }
-    
+
     func loadInbox() {
         O3APIClient(network: AppState.network).getInbox(address: Authenticated.account!.address) { result in
             switch result {
@@ -120,7 +120,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             }
         }
         ontologyAssets = accountState.ontology
-        
+
         tokenAssets = []
         for token in accountState.nep5Tokens {
             tokenAssets.append(token)
@@ -174,7 +174,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         if indexPath.section == sections.inbox.rawValue {
             return 190.0
         }
-        
+
         // All the asset cell has the same height
         return 66.0
     }
@@ -208,7 +208,6 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             cell.inboxItem = item
             return cell
         }
-    
 
         if indexPath.section == sections.neoAssets.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nativeasset") as? NativeAssetTableViewCell else {
@@ -216,24 +215,24 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
-            
+
             if indexPath.row == 0 {
                 cell.titleLabel.text = "NEO"
                 cell.amountLabel.text = neoBalance.description
                 let imageURL = "https://cdn.o3.network/img/neo/NEO.png"
                 cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             }
-            
+
             if indexPath.row == 1 {
                 cell.titleLabel.text = "GAS"
                 cell.amountLabel.text = gasBalance.string(8, removeTrailing: true)
                 let imageURL = "https://cdn.o3.network/img/neo/GAS.png"
                 cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             }
-            
+
             return cell
         }
-        
+
         if indexPath.section == sections.nep5tokens.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
                 let cell =  UITableViewCell()
@@ -264,7 +263,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", token.symbol.uppercased())
         cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
         return cell
-       
+
     }
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         if indexPath.section == sections.unclaimedGAS.rawValue {
@@ -319,24 +318,23 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         }
     }
 
-    
     func postToChannel(channel: String) {
-        
+
         let headers = ["content-type": "application/json"]
         let parameters = ["address": Authenticated.account!.address,
-                          "device":"iOS",] as [String : Any]
-        
+                          "device": "iOS" ] as [String: Any]
+
         let postData = try? JSONSerialization.data(withJSONObject: parameters, options: [])
-        
+
         let request = NSMutableURLRequest(url: NSURL(string: "https://platform.o3.network/api/v1/channel/" + channel)! as URL,
                                           cachePolicy: .useProtocolCachePolicy,
                                           timeoutInterval: 10.0)
         request.httpMethod = "POST"
         request.allHTTPHeaderFields = headers
-        request.httpBody = postData as! Data
-        
+        request.httpBody = postData
+
         let session = URLSession.shared
-        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (_, response, error) -> Void in
             if (error != nil) {
                 print(error)
             } else {
@@ -344,11 +342,11 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
                 print(httpResponse)
             }
         })
-        
+
         dataTask.resume()
-        
+
     }
-    
+
     func qrScanned(data: String) {
         //if there is more type of string we have to check it here
         if data.hasPrefix("o3://channel") {
@@ -370,4 +368,3 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         }
     }
 }
-

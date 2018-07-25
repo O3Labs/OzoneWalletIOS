@@ -26,6 +26,24 @@ class TokenSalesListTableViewController: UITableViewController {
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
 
+    @objc func loadTokenSales() {
+        DispatchQueue.global().async {
+            O3Client().getTokenSales(address: (Authenticated.account?.address)!) { result in
+                switch result {
+                case .failure:
+                    return
+                case .success(let tokenSales):
+                    self.tokenSales = tokenSales
+                    DispatchQueue.main.async {
+                        self.tableView.delegate = self
+                        self.tableView.dataSource = self
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
@@ -36,19 +54,9 @@ class TokenSalesListTableViewController: UITableViewController {
         //assign datasource and delegate only when data is loaded
         self.tableView.delegate = nil
         self.tableView.dataSource = nil
-        O3Client().getTokenSales(address: (Authenticated.account?.address)!) { result in
-            switch result {
-            case .failure:
-                return
-            case .success(let tokenSales):
-                self.tokenSales = tokenSales
-                DispatchQueue.main.async {
-                    self.tableView.delegate = self
-                    self.tableView.dataSource = self
-                    self.tableView.reloadData()
-                }
-            }
-        }
+        loadTokenSales()
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(loadTokenSales), for: .valueChanged)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(tappedLeftBarButtonItem(_:)))
     }
 

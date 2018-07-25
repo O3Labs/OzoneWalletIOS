@@ -28,7 +28,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     @IBOutlet weak var pasteButton: UIButton!
     @IBOutlet weak var scanButton: UIButton!
     @IBOutlet weak var addressButton: UIButton!
-    
+
     @IBOutlet weak var verifiedAddressDisplayNameLabel: UILabel!
     @IBOutlet weak var verifiedAddressBadge: UIImageView!
 
@@ -94,17 +94,16 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         self.assetSelected(selected: O3Cache.neo(), gasBalance: O3Cache.gas().value)
     }
 
-
     @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 2 {
             amountField.becomeFirstResponder()
         }
     }
-    
+
     func sendOntology(assetSymbol: String, amount: Double, toAddress: String) {
         let wif = Authenticated.account?.wif
         var error: NSError?
@@ -118,7 +117,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
         }
     }
-    
+
     func sendNEP5Token(tokenHash: String, assetName: String, amount: Double, toAddress: String) {
 
         DispatchQueue.main.async {
@@ -254,7 +253,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             self.sendNEP5Token(tokenHash: assetId, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
         } else if self.selectedAsset?.assetType == .ontologyAsset {
             self.sendOntology(assetSymbol: assetSymbol, amount: amount!.doubleValue, toAddress: toAddress)
-            
+
         }
     }
 
@@ -339,7 +338,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         verifiedAddressDisplayNameLabel.text = verifiedAddress!.displayName
         verifiedAddressBadge.isHidden = false
     }
-    
+
     @IBAction func enableSendButton() {
         self.showVerifiedAddress(verifiedAddress: nil)
         if toAddressField.text?.isEmpty == true {
@@ -366,7 +365,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                 }
             }
         }
-        
+
         sendButton.isEnabled = validAddress == true && amountField.text?.isEmpty == false && selectedAsset != nil
     }
 

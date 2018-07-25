@@ -11,7 +11,7 @@ import Foundation
 struct Nodes: Codable {
     let neo: ChainNetwork
     let ontology: ChainNetwork
-    
+
     enum CodingKeys: String, CodingKey {
         case neo = "neo"
         case ontology = "ontology"
@@ -22,7 +22,7 @@ struct ChainNetwork: Codable {
     let blockCount: Int
     let best: String
     let nodes: [String]
-    
+
     enum CodingKeys: String, CodingKey {
         case blockCount = "blockCount"
         case best = "best"
