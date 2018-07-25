@@ -55,7 +55,6 @@ class TokenSaleSubmitViewController: UIViewController {
     }
 
     func performAddressBasedTransaction() {
-        //self.submitRealTimePricingData(hellllo)
         let remark = String(format: "O3X%@", transactionInfo.saleInfo.companyID)
         Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId(rawValue: transactionInfo.assetIDUsedToPurchase)!, amount: transactionInfo.assetAmount, toAddress: transactionInfo.saleInfo.address, attributes: [TransactionAttritbute(remark: remark)]) { txid, _ in
             //make delay to 5 seconds in production
