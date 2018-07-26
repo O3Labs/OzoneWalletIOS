@@ -59,6 +59,6 @@ class AccountStrings: NSObject {
     static let editName = NSLocalizedString("CONTACTS_Edit_Name", comment: "Title for editing name of a contact")
     static let sendToAddress = NSLocalizedString("CONTACTS_Send_To", comment: "Title for sending to contact")
     static let copyAddress = NSLocalizedString("CONTACTS_Copy_Address", comment: "Title to copy address")
-   static let delete = NSLocalizedString("CONTACTS_Delete", comment: "Title to delete Contact")
+    static let delete = NSLocalizedString("CONTACTS_Delete", comment: "Title to delete Contact")
     static let save = NSLocalizedString("CONTACTS_Save", comment: "Save Action for Contacts")
 }

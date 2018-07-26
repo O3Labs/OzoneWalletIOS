@@ -33,7 +33,7 @@ class AppState: NSObject {
         if UserDefaults.standard.value(forKey: address + "_claimingState") == nil {
             return ClaimingState.Fresh
         }
-        return AppState.ClaimingState(rawValue: UserDefaults.standard.string(forKey: address + "_claimingState")!)!
+        return  AppState.ClaimingState(rawValue: UserDefaults.standard.string(forKey: address + "_claimingState") ?? "")!
     }
 
     static func setClaimingState(address: String, claimingState: ClaimingState) {

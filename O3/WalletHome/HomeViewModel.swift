@@ -21,6 +21,11 @@ class HomeViewModel {
 
     var writableTokens = O3Cache.tokenAssets()
     var readOnlyTokens = O3Cache.readOnlyTokens()
+
+    //Added for ontology
+    var writableOntologyAssets = O3Cache.ontologyAssets()
+    var readOnlyOntologyAssets = O3Cache.readOnlyOntologyAssets()
+
     var neo = O3Cache.neo()
     var gas = O3Cache.gas()
     var readOnlyNeo = O3Cache.readOnlyNeo()
@@ -61,11 +66,11 @@ class HomeViewModel {
     }
 
     func getWritableAssets() -> [TransferableAsset] {
-        return [neo, gas] + writableTokens
+        return [neo, gas] + writableTokens + writableOntologyAssets
     }
 
     func getReadOnlyAssets() -> [TransferableAsset] {
-        return [readOnlyNeo, readOnlyGas] + readOnlyTokens
+        return [readOnlyNeo, readOnlyGas] + readOnlyTokens + readOnlyOntologyAssets
     }
 
     func getTransferableAssets() -> [TransferableAsset] {
@@ -132,6 +137,7 @@ class HomeViewModel {
             O3Cache.setReadOnlyNEOForSession(neoBalance: Int(self.readOnlyNeo.value))
             O3Cache.setReadOnlyGasForSession(gasBalance: self.readOnlyGas.value)
             O3Cache.setReadOnlyTokensForSession(tokens: self.readOnlyTokens)
+            O3Cache.setReadOnlyOntologyAssetsForSession(tokens: self.readOnlyOntologyAssets)
             self.loadPortfolioValue()
             self.delegate?.updateWithBalanceData(self.getTransferableAssets())
         }
@@ -149,9 +155,13 @@ class HomeViewModel {
         for token in accountState.nep5Tokens {
             writableTokens.append(token)
         }
+        //assign writable ontology asset
+        writableOntologyAssets = accountState.ontology
+
         O3Cache.setGASForSession(gasBalance: gas.value)
         O3Cache.setNEOForSession(neoBalance: Int(neo.value))
         O3Cache.setTokenAssetsForSession(tokens: writableTokens)
+        O3Cache.setOntologyAssetsForSession(tokens: accountState.ontology)
     }
 
     func addReadOnlyToken(_ token: TransferableAsset) {
@@ -174,6 +184,8 @@ class HomeViewModel {
         for token in accountState.nep5Tokens {
             addReadOnlyToken(token)
         }
+
+        readOnlyOntologyAssets = accountState.ontology
     }
 
     func loadAccountState(address: String, isReadOnly: Bool) {

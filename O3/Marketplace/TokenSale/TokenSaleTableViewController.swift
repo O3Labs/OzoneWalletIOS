@@ -22,7 +22,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
     var neoRateInfo: TokenSales.SaleInfo.AcceptingAsset?
     var gasRateInfo: TokenSales.SaleInfo.AcceptingAsset?
     var amountString: String?
-    var totalTokens: Double = 0.0
+    var totalTokens: Decimal = 0.0
     var endingSoon: Bool = false
 
     public struct TokenSaleTransactionInfo {
@@ -31,7 +31,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         var assetNameUsedToPurchase: String
         var assetAmount: Double
         var tokenSaleContractHash: String
-        var tokensToRecieveAmount: Double
+        var tokensToRecieveAmount: Decimal
         var tokensToReceiveName: String
         var saleInfo: TokenSales.SaleInfo
         //this will be set when submitting the raw transaction
@@ -67,9 +67,13 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         super.viewDidLoad()
         setLocalizedStrings()
         self.title = saleInfo.name
+        if saleInfo.address != "" {
+            priorityLabel?.isHidden = true
+            checkboxPriority?.isHidden = true
+            priorityInfoButton.isHidden = true
+        }
 
         self.navigationController?.hideHairline()
-
         let date1: Date = Date()
         let date2: Date = Date(timeIntervalSince1970: saleInfo.endTime)
         let calender: Calendar = Calendar.current
@@ -92,7 +96,6 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         priorityLabel?.addGestureRecognizer(tap)
 
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "external-link-alt"), style: .plain, target: self, action: #selector(externalLinkTapped(_:)))
-
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(dismiss(_:)))
     }
 
@@ -153,7 +156,6 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         if indexPath.section == 1 {
             return UITableViewAutomaticDimension
         }
-
         if indexPath.section == 0 {
             return 35.0
         }
@@ -366,7 +368,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         }
     }
 
-    func setTokenAmount(totalTokens: Double) {
+    func setTokenAmount(totalTokens: Decimal) {
         self.totalTokens = totalTokens
     }
 

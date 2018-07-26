@@ -112,11 +112,9 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         var transactionData: TransactionCell.TransactionData?
         var assetName = "Token"
         var assetDecimals = 8
-        var divisor = 1.0
         if let i = supportedTokens.index(where: {transactionEntry.asset.contains($0.tokenHash)}) {
             assetName = supportedTokens[i].symbol.uppercased()
             assetDecimals = supportedTokens[i].decimal
-            divisor = 100000000.0
         } else if AssetId.gasAssetId.rawValue.contains(transactionEntry.asset) {
             assetName = "GAS"
             assetDecimals = 8
@@ -129,7 +127,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
                                                         date: UInt64(transactionEntry.block_height),
                                                         asset: assetName, toAddress: transactionEntry.address_to,
                                                         fromAddress: transactionEntry.address_from,
-                                                        amount: (transactionEntry.amount / divisor), precision: assetDecimals)
+                                                        amount: transactionEntry.amount, precision: assetDecimals)
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "transactionCell") as? TransactionCell else {
             fatalError("Undefined table view behavior")

@@ -227,32 +227,46 @@ public class Account {
         return Data(bytes: payload)
     }
 
-    func generateSendTransactionPayload(asset: AssetId, amount: Double, toAddress: String, assets: Assets, attributes: [TransactionAttritbute]? = nil) -> Data {
+    func generateSendTransactionPayload(asset: AssetId, amount: Double, toAddress: String, assets: Assets, attributes: [TransactionAttritbute]? = nil) -> (Data, Data) {
         var error: NSError?
         let inputData = getInputsNecessaryToSendAsset(asset: asset, amount: amount, assets: assets)
         let payloadPrefix: [UInt8] = [0x80, 0x00]
         let rawTransaction = packRawTransactionBytes(payloadPrefix: payloadPrefix,
                                                      asset: asset, with: inputData.payload!, runningAmount: inputData.totalAmount!,
                                                      toSendAmount: amount, toAddress: toAddress, attributes: attributes)
+
         let signatureData = NeoutilsSign(rawTransaction, privateKey.fullHexString, &error)
         let finalPayload = concatenatePayloadData(txData: rawTransaction, signatureData: signatureData!)
-        return finalPayload
+        return (rawTransaction, finalPayload)
 
     }
 
-    public func sendAssetTransaction(network: Network, seedURL: String, asset: AssetId, amount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(Bool?, Error?) -> Void) {
-        O3APIClient(network: network).getUTXO(for: self.address, params: []) { result in
+    func unsignedPayloadToTransactionId(_ unsignedPayload: Data) -> String {
+        let unsignedPayloadString = unsignedPayload.fullHexString
+        let firstHash = unsignedPayloadString.dataWithHexString().sha256.fullHexString
+        let reversed: [UInt8] = firstHash.dataWithHexString().sha256.bytes.reversed()
+        return reversed.fullHexString
+    }
+
+    public func sendAssetTransaction(network: Network, seedURL: String, asset: AssetId, amount: Double,
+                                     toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(String?, Error?) -> Void) {
+        O3APIClient(network: network).getUTXO(for: self.address) { result in
             switch result {
             case .failure(let error):
                 completion(nil, error)
             case .success(let assets):
                 let payload = self.generateSendTransactionPayload(asset: asset, amount: amount, toAddress: toAddress, assets: assets, attributes: attributes)
-                NeoClient(seed: seedURL).sendRawTransaction(with: payload) { (result) in
+                let txid = self.unsignedPayloadToTransactionId(payload.0)
+                NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
                     switch result {
                     case .failure(let error):
                         completion(nil, error)
                     case .success(let response):
-                        completion(response, nil)
+                        if response {
+                            completion(txid, nil)
+                        } else {
+                            completion(nil, nil)
+                        }
                     }
                 }
             }

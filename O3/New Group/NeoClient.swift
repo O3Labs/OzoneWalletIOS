@@ -40,50 +40,56 @@ public enum Network: String {
 }
 
 public class NEONetworkMonitor {
-    private init() {
-        self.network =  self.load()
-    }
+
     public static let sharedInstance = NEONetworkMonitor()
-    public var network: NEONetwork?
-
-    private func load() -> NEONetwork? {
-        guard let path = Bundle(for: type(of: self)).path(forResource: "nodes", ofType: "json") else {
-            return nil
-        }
-        guard let fileData = try? Data(contentsOf: URL(fileURLWithPath: path)) else {
-            return nil
-        }
-        let decoder = JSONDecoder()
-
-        guard let json = try? JSONSerialization.jsonObject(with: fileData, options: []) as? JSONDictionary else {
-            return nil
-        }
-
-        if json == nil {
-            return nil
-        }
-
-        guard let data = try? JSONSerialization.data(withJSONObject: json!, options: []),
-            let result = try? decoder.decode(NEONetwork.self, from: data) else {
-                return nil
-        }
-        return result
-    }
 
     public static func autoSelectBestNode(network: Network) -> String? {
-        let networks = NEONetworkMonitor().load()
-        var nodes = networks?.mainNet.nodes.map({$0.URL}).joined(separator: ",")
-        if network == .test {
-            nodes = networks?.testNet.nodes.map({$0.URL}).joined(separator: ",")
-        } else if network == .privateNet {
-             nodes = networks?.privateNet.nodes.map({$0.URL}).joined(separator: ",")
+
+        var bestNode = ""
+        //load from https://platform.o3.network/api/v1/nodes instead
+        let semaphore = DispatchSemaphore(value: 0)
+        O3APIClient(network: network).getNodes { result in
+            switch result {
+            case .failure(let error):
+
+                #if DEBUG
+                print(error)
+                #endif
+                bestNode = ""
+            case .success(let nodes):
+                bestNode = nodes.neo.best
+            }
+            semaphore.signal()
         }
-        guard let bestNode =  NeoutilsSelectBestSeedNode(nodes) else {
-            return nil
-        }
-        return bestNode.url()
+        semaphore.wait()
+        return bestNode
     }
 
+}
+
+public class ONTNetworkMonitor {
+
+    public static let sharedInstance = ONTNetworkMonitor()
+
+    public static func autoSelectBestNode(network: Network) -> String? {
+        var bestNode = ""
+        let semaphore = DispatchSemaphore(value: 0)
+        O3APIClient(network: network).getNodes { result in
+            switch result {
+            case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
+                bestNode = ""
+
+            case .success(let nodes):
+                bestNode = nodes.ontology.best
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
+        return bestNode
+    }
 }
 
 public class NeoClient {

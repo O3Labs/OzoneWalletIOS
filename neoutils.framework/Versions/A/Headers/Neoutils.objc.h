@@ -304,6 +304,8 @@ FOUNDATION_EXPORT NeoutilsNEP2* NeoutilsNEP2Encrypt(NSString* wif, NSString* pas
  */
 FOUNDATION_EXPORT NeoutilsWallet* NeoutilsNewWallet(NSError** error);
 
+FOUNDATION_EXPORT NSString* NeoutilsOntologyTransfer(NSString* endpoint, NSString* wif, NSString* asset, NSString* to, double amount, NSError** error);
+
 FOUNDATION_EXPORT NeoutilsSimplifiedNEP9* NeoutilsParseNEP9URI(NSString* uri, NSError** error);
 
 FOUNDATION_EXPORT NSString* NeoutilsPublicKeyToNEOAddress(NSData* publicKeyBytes);

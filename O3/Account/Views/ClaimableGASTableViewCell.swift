@@ -115,12 +115,6 @@ class ClaimableGASTableViewCell: UITableViewCell {
     func displayClaimableState(claimable: Claimable) {
         self.resetState()
 
-//        //if user already sent NEO to the address and waiting for the claimable data then we show the loading
-//        if AppState.claimingState(address: Authenticated.account!.address) == .WaitingForClaimableData {
-//            self.startLoading()
-//            return
-//        }
-
         let gasDouble = NSDecimalNumber(decimal: claimable.gas).doubleValue
         if claimable.claims.count == 0 {
             //if claim array is empty then we show estimated
@@ -150,11 +144,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
         self.confirmedClaimableGASContainer?.isHidden = false
         self.confirmedClaimableGASLabel?.text = value
         self.successClaimableGASLabel?.text = value
-
     }
 
     func sendAllNEOToTheAddress() {
-
         //show loading screen first
         DispatchQueue.main.async {
             self.startLoading()
@@ -174,8 +166,8 @@ class ClaimableGASTableViewCell: UITableViewCell {
         let remark = String(format: "O3XFORCLAIM")
         customAttributes.append(TransactionAttritbute(remark: remark))
 
-        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: O3Cache.neo().value, toAddress: (Authenticated.account?.address)!, attributes: customAttributes) { completed, _ in
-            if completed == false {
+        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: O3Cache.neo().value, toAddress: (Authenticated.account?.address)!, attributes: customAttributes) { txid, _ in
+            if txid == nil {
                 //if sending failed then show error message and load the claimable gas again to reset the state
                 OzoneAlert.alertDialog(message: "Error while trying to send", dismissTitle: "OK", didDismiss: {
 
@@ -210,9 +202,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
                 }
 
                 if success == true {
-
                     self.claimedSuccess()
-
                     Answers.logCustomEvent(withName: "Gas Claimed",
                                            customAttributes: ["Amount": self.confirmedClaimableGASLabel?.text ?? ""])
                 } else {
@@ -262,7 +252,6 @@ class ClaimableGASTableViewCell: UITableViewCell {
         animationView?.layer.transform = CATransform3DScale(CATransform3DMakeRotation(0, 0, 0, 0), -1, 1, 1)
         animationView?.loopAnimation = true
         animationView?.play()
-
         let targetSec = 60
         var sec = 0
         let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
@@ -279,5 +268,4 @@ class ClaimableGASTableViewCell: UITableViewCell {
         }
         timer.fire()
     }
-
 }

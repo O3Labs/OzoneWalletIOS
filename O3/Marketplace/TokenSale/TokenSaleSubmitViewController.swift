@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Neoutils
 class TokenSaleSubmitViewController: UIViewController {
 
     var transactionInfo: TokenSaleTableViewController.TokenSaleTransactionInfo!
@@ -16,9 +17,9 @@ class TokenSaleSubmitViewController: UIViewController {
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
 
-    func submitTransaction() {
+    func performContractBasedTransaction() {
         let fee = transactionInfo.priorityIncluded == true ? Float64(0.0011) : Float64(0)
-        let remark = String(format: "O3X%@", transactionInfo.saleInfo.name)
+        let remark = String(format: "O3X%@", transactionInfo.saleInfo.companyID)
         Authenticated.account?.participateTokenSales(network: AppState.network, seedURL: AppState.bestSeedNodeURL, scriptHash: transactionInfo.tokenSaleContractHash, assetID: transactionInfo.assetIDUsedToPurchase, amount: transactionInfo.assetAmount, remark: remark, networkFee: fee) { success, txID, _ in
 
             //make delay to 5 seconds in production
@@ -30,6 +31,50 @@ class TokenSaleSubmitViewController: UIViewController {
                 }
                 self.performSegue(withIdentifier: "error", sender: nil)
             }
+        }
+    }
+
+    func submitRealTimePricingData(txid: String) {
+        let acceptedAssetRate = transactionInfo.saleInfo.acceptingAssets.filter({ $0.asset.uppercased() == transactionInfo.assetNameUsedToPurchase.uppercased() }).first!
+        let unsignedData = TokenSaleUnsignedData(amount: transactionInfo.assetAmount, asset: acceptedAssetRate, txid: txid)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        let jsonData = try? encoder.encode(unsignedData)
+        var error: NSError?
+        let signature = NeoutilsSign(jsonData, Authenticated.account!.privateKeyString, &error)?.fullHexString
+
+        let tokenSaleLog = TokenSaleLog(data: unsignedData, signature: signature!, publicKey: Authenticated.account!.publicKeyString)
+        O3APIClient(network: AppState.network).postTokenSaleLog(address: (Authenticated.account?.address)!, companyID: transactionInfo.saleInfo.companyID, tokenSaleLog: tokenSaleLog) { result in
+            switch result {
+            case .failure:
+                return
+            case .success:
+                return
+            }
+        }
+    }
+
+    func performAddressBasedTransaction() {
+        let remark = String(format: "O3X%@", transactionInfo.saleInfo.companyID)
+        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId(rawValue: transactionInfo.assetIDUsedToPurchase)!, amount: transactionInfo.assetAmount, toAddress: transactionInfo.saleInfo.address, attributes: [TransactionAttritbute(remark: remark)]) { txid, _ in
+            //make delay to 5 seconds in production
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                if txid != nil {
+                    self.transactionInfo.txID = txid!
+                    self.submitRealTimePricingData(txid: txid!)
+                    self.performSegue(withIdentifier: "success", sender: self.transactionInfo)
+                    return
+                }
+                self.performSegue(withIdentifier: "error", sender: nil)
+            }
+        }
+    }
+
+    func submitTransaction() {
+        if transactionInfo.saleInfo.address == "" {
+            performContractBasedTransaction()
+        } else {
+            performAddressBasedTransaction()
         }
     }
 
@@ -55,7 +100,6 @@ class TokenSaleSubmitViewController: UIViewController {
                 let info = sender as? TokenSaleTableViewController.TokenSaleTransactionInfo? else {
                 return
             }
-
             vc.transactionInfo = info
         }
     }

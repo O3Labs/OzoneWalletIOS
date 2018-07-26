@@ -26,6 +26,24 @@ class TokenSalesListTableViewController: UITableViewController {
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
 
+    @objc func loadTokenSales() {
+        DispatchQueue.global().async {
+            O3Client().getTokenSales(address: (Authenticated.account?.address)!) { result in
+                switch result {
+                case .failure:
+                    return
+                case .success(let tokenSales):
+                    self.tokenSales = tokenSales
+                    DispatchQueue.main.async {
+                        self.tableView.delegate = self
+                        self.tableView.dataSource = self
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
@@ -36,19 +54,9 @@ class TokenSalesListTableViewController: UITableViewController {
         //assign datasource and delegate only when data is loaded
         self.tableView.delegate = nil
         self.tableView.dataSource = nil
-        O3Client().getTokenSales { result in
-            switch result {
-            case .failure:
-                return
-            case .success(let tokenSales):
-                self.tokenSales = tokenSales
-                DispatchQueue.main.async {
-                    self.tableView.delegate = self
-                    self.tableView.dataSource = self
-                    self.tableView.reloadData()
-                }
-            }
-        }
+        loadTokenSales()
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(loadTokenSales), for: .valueChanged)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(tappedLeftBarButtonItem(_:)))
     }
 
@@ -79,7 +87,7 @@ class TokenSalesListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 182.0
+        return 190.0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -115,7 +123,6 @@ class TokenSalesListTableViewController: UITableViewController {
                 let selectedSale = sender as? TokenSales.SaleInfo
                 vc.saleInfo = selectedSale
             }
-
         }
     }
 
@@ -125,26 +132,13 @@ class TokenSalesListTableViewController: UITableViewController {
             guard let cell = self.tableView.cellForRow(at: indexPath) as? TokenSaleTableViewCell else {
                 return
             }
-
-            Authenticated.account?.allowToParticipateInTokenSale(seedURL: AppState.bestSeedNodeURL, scriptHash: sale.scriptHash, completion: { (result) in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .failure:
-                        cell.actionLabel.text = TokenSaleStrings.notWhitelisted
-                        cell.actionLabel.theme_textColor = O3Theme.disabledColorPicker
-                        self.tokenSales?.live[indexPath.row].allowToParticipate = false
-                    case .success(let whitelisted):
-                        self.tokenSales?.live[indexPath.row].allowToParticipate = whitelisted
-                        if whitelisted == true {
-                            cell.actionLabel.text = TokenSaleStrings.participate
-                            cell.actionLabel.theme_textColor = O3Theme.primaryColorPicker
-                        } else {
-                            cell.actionLabel.text = TokenSaleStrings.notWhitelisted
-                            cell.actionLabel.theme_textColor = O3Theme.disabledColorPicker
-                        }
-                    }
-                }
-            })
+            if sale.kycStatus.verified {
+                cell.actionLabel.text = TokenSaleStrings.participate
+                cell.actionLabel.theme_textColor = O3Theme.primaryColorPicker
+            } else {
+                cell.actionLabel.text = TokenSaleStrings.notWhitelisted
+                cell.actionLabel.theme_textColor = O3Theme.disabledColorPicker
+            }
         }
     }
 

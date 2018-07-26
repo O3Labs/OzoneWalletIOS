@@ -14,9 +14,10 @@ import Fabric
 import Crashlytics
 import SwiftTheme
 import Neoutils
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
@@ -71,6 +72,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler:
+        @escaping () -> Void) {
+        guard let link = response.notification.request.content.userInfo["link"] as? String else {
+            return
+        }
+
+        if Authenticated.account != nil {
+            parsePushLink(link: link)
+        }
+    }
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         #if DEBUG
         print("DEBUG BUILD")
@@ -78,11 +92,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Crashlytics.self])
         #endif
 
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { (_, _) in
+            DispatchQueue.main.async {
+                application.registerForRemoteNotifications()
+            }
+        }
+
         self.registerDefaults()
         self.setupChannel()
         self.setupReachability()
         AppDelegate.setNavbarAppearance()
-        print(NSHomeDirectory())
 
         //check if there is an existing wallet in keychain
         //if so, present LoginToCurrentWalletViewController
@@ -92,6 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 .instantiateViewController(withIdentifier: "LoginToCurrentWalletViewController") as? LoginToCurrentWalletViewController else {
                     return false
             }
+
             if let window = self.window {
                 login.delegate = self
                 //pass the launchOptions to the login screen
@@ -151,72 +173,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - deeplink
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
-       if app.applicationState == .inactive {
-            parseNEP9URL(url: url)
+        if app.applicationState == .inactive {
+            Router.parseNEP9URL(url: url)
         }
         return false
-    }
-
-    func parseNEP9URL(url: URL) {
-        if Authenticated.account == nil {
-            return
-        }
-        var updatedURL: URL = url
-        if !url.absoluteString.contains("neo://") {
-            let fullURL = updatedURL.absoluteString.replacingOccurrences(of: "neo:", with: "neo://")
-            updatedURL = URL(string: fullURL)!
-        }
-        let address = updatedURL.host?.removingPercentEncoding
-        let asset = updatedURL.valueOf("asset")
-        let amount = updatedURL.valueOf("amount")
-        //Get account state
-        O3APIClient(network: AppState.network).getAccountState(address: Authenticated.account!.address) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .failure:
-                    return
-                case .success(let accountState):
-
-                    var neoBalance: Int = Int(O3Cache.neo().value)
-                    var gasBalance: Double = O3Cache.gas().value
-
-                    for asset in accountState.assets {
-                        if asset.id.contains(AssetId.neoAssetId.rawValue) {
-                            neoBalance = Int(asset.value)
-                        } else {
-                            gasBalance = asset.value
-                        }
-                    }
-
-                    var tokenAssets = O3Cache.tokenAssets()
-                    var selectedAsset: TransferableAsset?
-                    for token in accountState.nep5Tokens {
-                        tokenAssets.append(token)
-                        if token.id == asset {
-                            selectedAsset = token
-                        }
-                    }
-                    O3Cache.setGASForSession(gasBalance: gasBalance)
-                    O3Cache.setNEOForSession(neoBalance: neoBalance)
-                    O3Cache.setTokenAssetsForSession(tokens: tokenAssets)
-
-                    if asset?.lowercased() == "neo" {
-                        Controller().openSend(to: address!, selectedAsset: TransferableAsset.NEO(), amount: amount)
-                    } else if asset?.lowercased() == "gas" {
-                        Controller().openSend(to: address!, selectedAsset: TransferableAsset.GAS(), amount: amount)
-                    } else if selectedAsset != nil {
-                        Controller().openSend(to: address!, selectedAsset: selectedAsset!, amount: amount)
-                    }
-                }
-            }
-        }
     }
 }
 
 extension AppDelegate: LoginToCurrentWalletViewControllerDelegate {
+    func parsePushLink(link: String) {
+        UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+        guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {
+            return
+        }
+
+        let url = URL(string: link)
+        let components = url!.pathComponents
+        guard let baseUrl = components.first else {
+            return
+        }
+        if baseUrl != "o3.app" || components.count < 2 {
+            return
+        }
+
+        guard let tabItem = Int(components[1]) else {
+                return
+        }
+        tabbar.selectedIndex = tabItem
+
+        //marketplace
+        if (tabItem == 2 && components.count > 2) {
+            guard let marketplaceNav = tabbar.selectedViewController as? UINavigationController,
+                let marketplace = marketplaceNav.childViewControllers[0] as? MarketplaceController else {
+                return
+            }
+            marketplace.startAtTokenSale = true
+        }
+    }
+
     func authorized(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
         if let url = launchOptions?[UIApplicationLaunchOptionsKey.url] as? URL {
-            self.parseNEP9URL(url: url)
+            Router.parseNEP9URL(url: url)
+        }
+        if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject] {
+            if let notificationLink = notification["link"] as? String {
+                parsePushLink(link: notificationLink)
+            }
         }
     }
 }
