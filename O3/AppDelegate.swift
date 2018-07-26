@@ -14,9 +14,10 @@ import Fabric
 import Crashlytics
 import SwiftTheme
 import Neoutils
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
@@ -71,12 +72,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler:
+        @escaping () -> Void) {
+        guard let link = response.notification.request.content.userInfo["link"] as? String else {
+            return
+        }
+
+        if Authenticated.account != nil {
+            parsePushLink(link: link)
+        }
+    }
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         #if DEBUG
         print("DEBUG BUILD")
         #else
         Fabric.with([Crashlytics.self])
         #endif
+
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { (_, _) in
+            DispatchQueue.main.async {
+                application.registerForRemoteNotifications()
+            }
+        }
 
         self.registerDefaults()
         self.setupChannel()
@@ -160,6 +182,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: LoginToCurrentWalletViewControllerDelegate {
     func parsePushLink(link: String) {
+        UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {
             return
         }
