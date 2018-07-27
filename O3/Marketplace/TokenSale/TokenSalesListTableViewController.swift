@@ -29,6 +29,7 @@ class TokenSalesListTableViewController: UITableViewController {
     @objc func loadTokenSales() {
         DispatchQueue.global().async {
             O3Client().getTokenSales(address: (Authenticated.account?.address)!) { result in
+                DispatchQueue.main.async { self.refreshControl?.endRefreshing() }
                 switch result {
                 case .failure:
                     return

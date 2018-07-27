@@ -56,7 +56,16 @@ class TokenSaleSubmitViewController: UIViewController {
 
     func performAddressBasedTransaction() {
         let remark = String(format: "O3X%@", transactionInfo.saleInfo.companyID)
-        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId(rawValue: transactionInfo.assetIDUsedToPurchase)!, amount: transactionInfo.assetAmount, toAddress: transactionInfo.saleInfo.address, attributes: [TransactionAttritbute(remark: remark)]) { txid, _ in
+        let acceptedAssetRate = transactionInfo.saleInfo.acceptingAssets.filter({ $0.asset.uppercased() == transactionInfo.assetNameUsedToPurchase.uppercased() }).first!
+        let amountFormatter = NumberFormatter()
+        amountFormatter.maximumFractionDigits = 0
+        amountFormatter.numberStyle = .decimal
+        amountFormatter.locale = Locale.current
+        amountFormatter.usesGroupingSeparator = false
+
+        let descriptionAttribute = TransactionAttritbute(description: amountFormatter.string(for: acceptedAssetRate.basicRate)!)
+        let remarkAttribute = TransactionAttritbute(remark: remark)
+        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId(rawValue: transactionInfo.assetIDUsedToPurchase)!, amount: transactionInfo.assetAmount, toAddress: transactionInfo.saleInfo.address, attributes: [remarkAttribute, descriptionAttribute]) { txid, _ in
             //make delay to 5 seconds in production
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 if txid != nil {
