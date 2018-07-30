@@ -390,6 +390,9 @@
 /* Error to display when the user is trying to send a token but does not have enough gas to make the invoke occur. It requires 0.00000001 GAS in the wallet in order to send a token */
 "SEND_Not_Enough_Gas_Token_Transfer" = "When Sending a NEP5 Token you must have at least 0.00000001 GAS in your wallet. This GAS is not used, but still required to be in your wallet.";
 
+/* A label to show that ontology requires a network fee in order to send */
+"SEND_Ontology_requires_gas" = "Sending Ontology Assets has a network fee of (%.2f) ONG"; /* NEW */
+
 /* A title for the paste button in the send screen */
 "SEND_Paste_Button_Title" = "Paste";
 
@@ -643,7 +646,7 @@
 "WALLET_Claim_Check_Claimable_Data_Title" = "Requesting transaction data. Please wait...";
 
 /* A title for a button Claim Now */
-"WALLET_Claim_Claim_Now_Action" = "Claim"; /* NEW */
+"WALLET_Claim_Claim_Now_Action" = "Claim";
 
 /* A title for a label claimable gas. 'Claimable GAS' */
 "WALLET_Claim_Claimable_Gas_Title" = "Claimable GAS";

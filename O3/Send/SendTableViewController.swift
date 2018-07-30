@@ -36,6 +36,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     @IBOutlet weak var sendAmountCell: UITableViewCell!
     @IBOutlet weak var selectedAssetIcon: UIImageView!
     @IBOutlet weak var selectedAssetBalance: UILabel!
+    @IBOutlet weak var networkFeeLabel: UILabel!
 
     var gasBalance: Double = 0.0
     var transactionCompleted: Bool!
@@ -108,14 +109,25 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         let wif = Authenticated.account?.wif
         var error: NSError?
         let endpoint = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
-        //let txid = NeoutilsOntologyTransfer(endpoint, wif, assetSymbol, toAddress, amount, &error)
-        let txid = ""
-        if txid != "" {
-            transactionCompleted = true
-            self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
-        } else {
-            transactionCompleted = false
-            self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
+        OntologyClient().getGasPrice { result in
+            switch result {
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.transactionCompleted = false
+                    self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
+                }
+            case .success(let gasPrice):
+                let txid = NeoutilsOntologyTransfer(endpoint, gasPrice, 20000, wif, assetSymbol, toAddress, amount, &error)
+                DispatchQueue.main.async {
+                    if txid != "" {
+                        self.transactionCompleted = true
+                        self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
+                    } else {
+                        self.transactionCompleted = false
+                        self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
+                    }
+                }
+            }
         }
     }
 
@@ -402,6 +414,23 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         dismiss(animated: true, completion: nil)
     }
 
+    func showNetworkFeeLabel() {
+        ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
+        OntologyClient().getGasPrice { result in
+            switch result {
+            case (.failure):
+                DispatchQueue.main.async {
+                    self.networkFeeLabel.text = String(format: SendStrings.ontologySendRequiresGas, (0.01))
+                }
+            case(.success(let price)):
+                DispatchQueue.main.async {
+                    self.networkFeeLabel.isHidden = false
+                    self.networkFeeLabel.text = String(format: SendStrings.ontologySendRequiresGas, (Double(price) * 20000.0) / 1000000000.0)
+                }
+            }
+        }
+    }
+
     func setLocalizedStrings() {
         toLabel.text = SendStrings.toLabel
         assetLabel.text = SendStrings.assetLabel
@@ -419,6 +448,11 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
 extension SendTableViewController: AssetSelectorDelegate {
     func assetSelected(selected: TransferableAsset, gasBalance: Double) {
         DispatchQueue.main.async {
+            if selected.symbol == "ONT" || selected.symbol == "ONG" {
+                self.showNetworkFeeLabel()
+            } else {
+                self.networkFeeLabel.isHidden = true
+            }
             self.gasBalance = gasBalance
             self.selectedAsset = selected
             self.selectedAssetLabel.text = selected.symbol

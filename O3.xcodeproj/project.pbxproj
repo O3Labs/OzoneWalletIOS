@@ -97,6 +97,7 @@
 		35AF806D20CA6F9B00E48457 /* EnterPasswordKey.json in Resources */ = {isa = PBXBuildFile; fileRef = 35AF806C20CA6F9B00E48457 /* EnterPasswordKey.json */; };
 		35B399D32106F65100284BFA /* TokenSaleLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B399D22106F65100284BFA /* TokenSaleLog.swift */; };
 		35B399D5210ECDB400284BFA /* OntologyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B399D4210ECDB400284BFA /* OntologyClient.swift */; };
+		35B399DF210EDE4500284BFA /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B399DE210EDE4500284BFA /* GasPrice.swift */; };
 		35B426BA20980CAE00957211 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B426B920980CAE00957211 /* LaunchScreen.storyboard */; };
 		35B426BC20980CC400957211 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B426BB20980CC400957211 /* Main.storyboard */; };
 		35B426BF2098242600957211 /* TokenSelection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B426BE2098242600957211 /* TokenSelection.storyboard */; };
@@ -344,6 +345,7 @@
 		35AF806C20CA6F9B00E48457 /* EnterPasswordKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EnterPasswordKey.json; sourceTree = "<group>"; };
 		35B399D22106F65100284BFA /* TokenSaleLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSaleLog.swift; sourceTree = "<group>"; };
 		35B399D4210ECDB400284BFA /* OntologyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OntologyClient.swift; sourceTree = "<group>"; };
+		35B399DE210EDE4500284BFA /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
 		35B426B920980CAE00957211 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		35B426BB20980CC400957211 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		35B426BE2098242600957211 /* TokenSelection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TokenSelection.storyboard; sourceTree = "<group>"; };
@@ -624,13 +626,12 @@
 		3557BAB320AA9D010034937C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				35B399DD210EDE3600284BFA /* Ontology */,
 				35B399DB210EDAD100284BFA /* Marketplace */,
 				35B399DA210EDA9500284BFA /* Wallet */,
 				35B399D9210EDA7700284BFA /* Portfolio */,
 				35B399D8210EDA6500284BFA /* News */,
-				3557BA9B20AA9C870034937C /* AssetIdConstants.swift */,
-				3557BABA20AA9D0A0034937C /* NEONetwork.swift */,
-				3557BAB820AA9D0A0034937C /* TransactionAttritbute.swift */,
+				35B399DC210EDDFD00284BFA /* NEO */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -699,6 +700,24 @@
 				35B399D22106F65100284BFA /* TokenSaleLog.swift */,
 			);
 			path = Marketplace;
+			sourceTree = "<group>";
+		};
+		35B399DC210EDDFD00284BFA /* NEO */ = {
+			isa = PBXGroup;
+			children = (
+				3557BAB820AA9D0A0034937C /* TransactionAttritbute.swift */,
+				3557BA9B20AA9C870034937C /* AssetIdConstants.swift */,
+				3557BABA20AA9D0A0034937C /* NEONetwork.swift */,
+			);
+			path = NEO;
+			sourceTree = "<group>";
+		};
+		35B399DD210EDE3600284BFA /* Ontology */ = {
+			isa = PBXGroup;
+			children = (
+				35B399DE210EDE4500284BFA /* GasPrice.swift */,
+			);
+			path = Ontology;
 			sourceTree = "<group>";
 		};
 		35B426BD2098240B00957211 /* TokenSelection */ = {
@@ -1217,6 +1236,7 @@
 				752006881F7F6F5D00D19B5F /* HalfModalTransitioningDelegate.swift in Sources */,
 				752006891F7F6F5D00D19B5F /* HalfModalInteractiveTransition.swift in Sources */,
 				35B426D820998B6300957211 /* UISearchBar.swift in Sources */,
+				35B399DF210EDE4500284BFA /* GasPrice.swift in Sources */,
 				6E4E6F7F20146086001A5844 /* AccountTabViewController.swift in Sources */,
 				7520068A1F7F6F5D00D19B5F /* HalfModalTransitionAnimator.swift in Sources */,
 				351200BF207F1AA8003CA07D /* TokenSalesListTableViewController.swift in Sources */,

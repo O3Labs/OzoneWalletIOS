@@ -25,6 +25,7 @@ public class ONTNetworkMonitor {
 
             case .success(let nodes):
                 bestNode = nodes.ontology.best
+                AppState.bestOntologyNodeURL = bestNode
             }
             semaphore.signal()
         }
@@ -58,7 +59,7 @@ public enum OntologyClientResult<T> {
 }
 
 public class OntologyClient {
-    private init() {}
+    public init() {}
 
     enum RPCMethod: String {
         case getGasPrice = "getgasprice"
@@ -115,14 +116,20 @@ public class OntologyClient {
         task.resume()
     }
 
- /*   func getGasPrice(completion: @escaping(OntologyClientResult<Int>) -> Void) {
+ public func getGasPrice(completion: @escaping(OntologyClientResult<Int>) -> Void) {
         sendJSONRPCRequest(.getGasPrice, params: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
             case .success(let response):
-                
+                let decoder = JSONDecoder()
+                let result = response["result"] as? JSONDictionary
+                guard let data = try? JSONSerialization.data(withJSONObject: result!, options: .prettyPrinted),
+                    let gasPrice = try? decoder.decode(GasPrice.self, from: data) else {
+                        return
+                }
+                completion(.success(gasPrice.gasprice))
             }
         }
-    }*/
+    }
 }
