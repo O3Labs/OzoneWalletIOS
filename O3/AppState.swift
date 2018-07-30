@@ -22,6 +22,7 @@ class AppState: NSObject {
     }
 
     static var bestSeedNodeURL: String = ""
+    static var bestOntologyNodeURL: String = ""
 
     enum ClaimingState: String {
         case Fresh = ""

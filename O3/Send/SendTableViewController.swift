@@ -108,7 +108,8 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         let wif = Authenticated.account?.wif
         var error: NSError?
         let endpoint = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
-        let txid = NeoutilsOntologyTransfer(endpoint, wif, assetSymbol, toAddress, amount, &error)
+        //let txid = NeoutilsOntologyTransfer(endpoint, wif, assetSymbol, toAddress, amount, &error)
+        let txid = ""
         if txid != "" {
             transactionCompleted = true
             self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)

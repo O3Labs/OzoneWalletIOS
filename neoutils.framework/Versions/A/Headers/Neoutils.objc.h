@@ -35,8 +35,6 @@
 @protocol NeoutilsMultiSigInterface <NSObject>
 // skipped method MultiSigInterface.CreateMultiSigRedeemScript with unsupported parameter or return types
 
-// skipped method MultiSigInterface.CreateMultiSignedAddress with unsupported parameter or return types
-
 @end
 
 @protocol NeoutilsNEP5Interface <NSObject>
@@ -47,6 +45,8 @@
 @end
 
 @protocol NeoutilsNativeAssetInterface <NSObject>
+// skipped method NativeAssetInterface.GenerateRawTx with unsupported parameter or return types
+
 // skipped method NativeAssetInterface.SendNativeAssetRawTransaction with unsupported parameter or return types
 
 @end
@@ -94,8 +94,6 @@
 - (instancetype)init;
 // skipped method MultiSig.CreateMultiSigRedeemScript with unsupported parameter or return types
 
-// skipped method MultiSig.CreateMultiSignedAddress with unsupported parameter or return types
-
 @end
 
 @interface NeoutilsNEP2 : NSObject <goSeqRefInterface> {
@@ -133,6 +131,8 @@
 - (instancetype)initWithRef:(id)ref;
 - (instancetype)init;
 // skipped field NativeAsset.NetworkFeeAmount with unsupported type: github.com/o3labs/neo-utils/neoutils/smartcontract.NetworkFeeAmount
+
+// skipped method NativeAsset.GenerateRawTx with unsupported parameter or return types
 
 // skipped method NativeAsset.SendNativeAssetRawTransaction with unsupported parameter or return types
 
@@ -304,7 +304,7 @@ FOUNDATION_EXPORT NeoutilsNEP2* NeoutilsNEP2Encrypt(NSString* wif, NSString* pas
  */
 FOUNDATION_EXPORT NeoutilsWallet* NeoutilsNewWallet(NSError** error);
 
-FOUNDATION_EXPORT NSString* NeoutilsOntologyTransfer(NSString* endpoint, NSString* wif, NSString* asset, NSString* to, double amount, NSError** error);
+FOUNDATION_EXPORT NSString* NeoutilsOntologyTransfer(NSString* endpoint, long gasPrice, long gasLimit, NSString* wif, NSString* asset, NSString* to, double amount, NSError** error);
 
 FOUNDATION_EXPORT NeoutilsSimplifiedNEP9* NeoutilsParseNEP9URI(NSString* uri, NSError** error);
 
@@ -341,6 +341,8 @@ FOUNDATION_EXPORT id<NeoutilsSmartContractInterface> NeoutilsUseSmartContract(NS
 // skipped function UseSmartContractWithNetworkFee with unsupported parameter or return types
 
 
+FOUNDATION_EXPORT NSString* NeoutilsVMCodeToNEOAddress(NSData* vmCode);
+
 /**
  * Validate NEO address
  */
@@ -366,8 +368,6 @@ FOUNDATION_EXPORT BOOL NeoutilsVerify(NSData* publicKey, NSData* signature, NSDa
 - (instancetype)initWithRef:(id)ref;
 // skipped method MultiSigInterface.CreateMultiSigRedeemScript with unsupported parameter or return types
 
-// skipped method MultiSigInterface.CreateMultiSignedAddress with unsupported parameter or return types
-
 @end
 
 @interface NeoutilsNEP5Interface : NSObject <goSeqRefInterface, NeoutilsNEP5Interface> {
@@ -386,6 +386,8 @@ FOUNDATION_EXPORT BOOL NeoutilsVerify(NSData* publicKey, NSData* signature, NSDa
 @property(strong, readonly) id _ref;
 
 - (instancetype)initWithRef:(id)ref;
+// skipped method NativeAssetInterface.GenerateRawTx with unsupported parameter or return types
+
 // skipped method NativeAssetInterface.SendNativeAssetRawTransaction with unsupported parameter or return types
 
 @end
