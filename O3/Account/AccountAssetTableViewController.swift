@@ -335,11 +335,10 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
 
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (_, response, error) -> Void in
-            if (error != nil) {
-                print(error)
+            if error != nil {
+                return
             } else {
-                let httpResponse = response as? HTTPURLResponse
-                print(httpResponse)
+                _ = response as? HTTPURLResponse
             }
         })
 
@@ -352,7 +351,6 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         if data.hasPrefix("o3://channel") {
             //post to utility communication channel
             let channel = URL(string: data)?.lastPathComponent
-            print(channel)
             postToChannel(channel: channel!)
             return
         }

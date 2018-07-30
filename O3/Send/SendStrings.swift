@@ -38,4 +38,6 @@ struct SendStrings {
     static let transactionFailedSubtitle = NSLocalizedString("SEND_Created_Transaction_Failed_Description", comment: "Description to display when the transaction has failed to be submitted to the NEO blockchain")
 
     static let assetSelectorTitle = NSLocalizedString("SEND_Select_Asset_Title", comment: "A title for the Select Asset pull up menu")
+
+    static let ontologySendRequiresGas = NSLocalizedString("SEND_Ontology_requires_gas", comment: "A label to show that ontology requires a network fee in order to send")
 }
