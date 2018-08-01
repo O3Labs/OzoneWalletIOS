@@ -21,6 +21,8 @@
 		351200C1207F2649003CA07D /* TokenSaleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351200C0207F2649003CA07D /* TokenSaleTableViewCell.swift */; };
 		351200C3207F3586003CA07D /* TokenSaleInfoRowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351200C2207F3586003CA07D /* TokenSaleInfoRowTableViewCell.swift */; };
 		351200C5207F3740003CA07D /* TokenSaleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351200C4207F3740003CA07D /* TokenSaleTableViewController.swift */; };
+		3522945821117790004A03A7 /* claim_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522945621117790004A03A7 /* claim_success.json */; };
+		3522945921117790004A03A7 /* loader_portfolio.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522945721117790004A03A7 /* loader_portfolio.json */; };
 		3527F8CD20C5349200C2FCB9 /* Marketplace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */; };
 		3527F8CF20C539A500C2FCB9 /* MarketplaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3527F8CE20C539A500C2FCB9 /* MarketplaceController.swift */; };
 		3537848A2080713200648AF2 /* M13Checkbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 353784892080713100648AF2 /* M13Checkbox.framework */; };
@@ -274,6 +276,8 @@
 		351200C0207F2649003CA07D /* TokenSaleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSaleTableViewCell.swift; sourceTree = "<group>"; };
 		351200C2207F3586003CA07D /* TokenSaleInfoRowTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSaleInfoRowTableViewCell.swift; sourceTree = "<group>"; };
 		351200C4207F3740003CA07D /* TokenSaleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSaleTableViewController.swift; sourceTree = "<group>"; };
+		3522945621117790004A03A7 /* claim_success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = claim_success.json; sourceTree = "<group>"; };
+		3522945721117790004A03A7 /* loader_portfolio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loader_portfolio.json; sourceTree = "<group>"; };
 		3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Marketplace.storyboard; sourceTree = "<group>"; };
 		3527F8CE20C539A500C2FCB9 /* MarketplaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceController.swift; sourceTree = "<group>"; };
 		353784892080713100648AF2 /* M13Checkbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = M13Checkbox.framework; path = Carthage/Build/iOS/M13Checkbox.framework; sourceTree = "<group>"; };
@@ -985,6 +989,8 @@
 		75CEACEA1F66B73C005974CE /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				3522945621117790004A03A7 /* claim_success.json */,
+				3522945721117790004A03A7 /* loader_portfolio.json */,
 				6E60CC6320CE43280062F1CE /* Loader_running.json */,
 				6E60CC5F20CE38630062F1CE /* AccountAssets.xcassets */,
 				6E4E6F8520146514001A5844 /* Views */,
@@ -1164,6 +1170,7 @@
 				7520173F1F73ED1D00090C4F /* Send.storyboard in Resources */,
 				6E244EC52085BF71001B4B22 /* AssetInputToolbar.xib in Resources */,
 				6EEE3DEC20D9E99E0030A4AB /* Browser.storyboard in Resources */,
+				3522945921117790004A03A7 /* loader_portfolio.json in Resources */,
 				6E68B6B0206CB771008C25E8 /* TokenSale.storyboard in Resources */,
 				35B426BA20980CAE00957211 /* LaunchScreen.storyboard in Resources */,
 				3527F8CD20C5349200C2FCB9 /* Marketplace.storyboard in Resources */,
@@ -1172,6 +1179,7 @@
 				75B6E5C21F6D4E8A00F53CA8 /* QR.storyboard in Resources */,
 				7520068E1F7FC56400D19B5F /* SendAssets.xcassets in Resources */,
 				35B426BC20980CC400957211 /* Main.storyboard in Resources */,
+				3522945821117790004A03A7 /* claim_success.json in Resources */,
 				6ED6001E1F76559E006760E6 /* LogoAssets.xcassets in Resources */,
 				6E60CC6420CE43290062F1CE /* Loader_running.json in Resources */,
 				75BEB2641F89FB8A00DC20E9 /* O3HUD.storyboard in Resources */,

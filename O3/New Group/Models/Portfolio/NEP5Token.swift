@@ -41,17 +41,16 @@ struct NEP5Token: Codable, Hashable {
         self.tokenHash = tokenHash
         self.name = name
         self.symbol = symbol
-        self.decimal = decimal
         self.totalSupply = totalSupply
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        let symbol: String = try container.decode(String.self, forKey: .symbol)
         let logoURL: String = try container.decode(String.self, forKey: .logoURL)
         let webURL: String = try container.decode(String.self, forKey: .webURL)
         let tokenHash: String = try container.decode(String.self, forKey: .tokenHash)
         let name: String = try container.decode(String.self, forKey: .name)
-        let symbol: String = try container.decode(String.self, forKey: .symbol)
         let decimal: Int = try container.decode(Int.self, forKey: .decimal)
         let totalSupply: Int = try container.decode(Int.self, forKey: .totalSupply)
         self.init(logoURL: logoURL, webURL: webURL, tokenHash: tokenHash, name: name, symbol: symbol, decimal: decimal, totalSupply: totalSupply)

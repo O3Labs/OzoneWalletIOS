@@ -14,7 +14,7 @@ import Crashlytics
 import StoreKit
 import DeckTransition
 
-class AccountAssetTableViewController: UITableViewController, WalletToolbarDelegate, QRScanDelegate {
+class AccountAssetTableViewController: UITableViewController, WalletToolbarDelegate, QRScanDelegate, ClaimingGasCellDelegate {
     private enum sections: Int {
         case unclaimedGAS = 0
         case toolbar
@@ -96,6 +96,10 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         }
     }
 
+    func setIsClaiming(_ isClaiming: Bool) {
+        self.isClaiming = isClaiming
+    }
+
     @objc func loadClaimableGAS() {
         if Authenticated.account == nil {
             return
@@ -108,7 +112,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         guard let cell = self.tableView.cellForRow(at: indexPath) as? ClaimableGASTableViewCell else {
             return
         }
-        cell.loadClaimableGAS()
+        cell.loadClaimableGASNeo()
     }
 
     func updateCacheAndLocalBalance(accountState: AccountState) {
@@ -186,6 +190,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
+            cell.delegate = self
             return cell
         }
 
