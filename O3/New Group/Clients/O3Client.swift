@@ -237,4 +237,29 @@ public class O3Client {
             }
         }
     }
+
+    func getUnboundOng(address: String, completion: @escaping(O3ClientResult<UnboundOng>) -> Void) {
+        var endpoint = "https://platform.o3.network/api/v1/ont/" + address + "/unboundong"
+        #if TESTNET
+        endpoint = "https://platform.o3.network/api/v1/ont/" + address + "/unboundong?network=test"
+        #endif
+        #if PRIVATENET
+        endpoint = "https://platform.o3.network/api/v1/ont/" + address + "/unboundong?network=private"
+        #endif
+        sendRequest(endpoint, method: .GET, data: nil, noBaseURL: true) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                let result = response["result"] as? JSONDictionary
+                let responseData = result!["data"] as? JSONDictionary
+                guard let data = try? JSONSerialization.data(withJSONObject: responseData!, options: .prettyPrinted),
+                    let unboundong = try? decoder.decode(UnboundOng.self, from: data) else {
+                        return
+                }
+                completion(.success(unboundong))
+            }
+        }
+    }
 }
