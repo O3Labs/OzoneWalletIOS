@@ -169,30 +169,30 @@ class ClaimableGASTableViewCell: UITableViewCell {
         let doubleAmount = Double(Int(unboundOng.ong)!) / 1000000000.0
 
         if unboundOng.calculated == true {
-            //if claim array is empty then we show estimated
-//            let gas = gasDouble.string(8, removeTrailing: true)
             self.showEstimatedClaimableOngState(value: doubleAmount)
         } else {
-            //if claim array is not empty then we show the confirmed claimable and let user claims
-            //let gas = gasDouble.string(8, removeTrailing: true)
             self.showConfirmedClaimableOngState(value: doubleAmount)
         }
     }
 
-    func showEstimatedClaimableOngState(value: Double) {
+    func showEstimatedClaimableOngState(value: Double?) {
         self.resetOntState()
         DispatchQueue.main.async {
             self.ontSyncButton.isHidden = false
-            self.claimableOntAmountLabel.text = value.string(8, removeTrailing: true)
+            if value != nil {
+                self.claimableOntAmountLabel.text = value!.string(8, removeTrailing: true)
+            }
         }
     }
 
-    func showConfirmedClaimableOngState(value: Double) {
+    func showConfirmedClaimableOngState(value: Double?) {
         self.resetOntState()
         DispatchQueue.main.async {
             self.ontClaimButton.isHidden = false
-            self.claimableOntAmountLabel.text = value.string(8, removeTrailing: true)
             self.ontClaimingLoadingContainer.isHidden = true
+            if value != nil {
+                self.claimableOntAmountLabel.text = value!.string(8, removeTrailing: true)
+            }
         }
     }
 
@@ -301,11 +301,66 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
 
     func sendOneOntBackToAddress() {
+        let endpoint = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
+        self.delegate?.setIsClaimingOnt(true)
+        DispatchQueue.main.async {
+            self.ontSyncButton.isHidden = true
+            self.startLoadingOntClaims()
+        }
 
+        OntologyClient().getGasPrice { result in
+            switch result {
+            case .failure(let error):
+                //throw some error here
+                DispatchQueue.main.async {
+                    self.delegate?.setIsClaimingOnt(false)
+                    OzoneAlert.alertDialog(SendStrings.transactionFailedTitle, message: SendStrings.transactionFailedSubtitle, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
+                    self.loadClaimableOng()
+                }
+            case .success(let gasPrice):
+                var error: NSError?
+                let txid = NeoutilsOntologyTransfer(endpoint, gasPrice, 20000, Authenticated.account!.wif, "ONT", Authenticated.account!.address, 1.0, &error)
+                DispatchQueue.main.async {
+                    if txid == "" {
+                        OzoneAlert.alertDialog(SendStrings.transactionFailedTitle, message: SendStrings.transactionFailedSubtitle, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
+                        self.loadClaimableOng()
+                    }
+                }
+            }
+        }
     }
 
-    func claimConfirmedOntGasGAS() {
-
+    func claimConfirmedOng() {
+        self.delegate?.setIsClaimingOnt(true)
+        DispatchQueue.main.async {
+            self.ontClaimButton?.isHidden = true
+            self.ontClaimingLoadingContainer.isHidden = false
+        }
+        //select best node if necessary
+        let endpoint = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
+        OntologyClient().getGasPrice { result in
+            switch result {
+            case .failure:
+                //throw some error here
+                DispatchQueue.main.async {
+                    OzoneAlert.alertDialog(SendStrings.transactionFailedTitle, message: SendStrings.transactionFailedSubtitle, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
+                    self.delegate?.setIsClaimingOnt(false)
+                    self.showConfirmedClaimableOngState(value: nil)
+                }
+            case .success(let gasPrice):
+                var error: NSError?
+                let txid = NeoutilsClaimONG(endpoint, gasPrice, 20000, Authenticated.account!.wif, &error)
+                DispatchQueue.main.async {
+                    if txid != "" {
+                        self.ontClaimedSuccess()
+                    } else {
+                        OzoneAlert.alertDialog(SendStrings.transactionFailedTitle, message: SendStrings.transactionFailedSubtitle, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
+                        self.delegate?.setIsClaimingOnt(false)
+                        self.showConfirmedClaimableOngState(value: nil)
+                    }
+                }
+            }
+        }
     }
 
     @objc func ontSyncNowTapped(_ sender: Any) {
@@ -313,7 +368,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
 
     @objc func ontClaimNowTapped(_ sender: Any) {
-        self.claimConfirmedOntGasGAS()
+        self.claimConfirmedOng()
     }
 
     func neoClaimedSuccess() {
@@ -324,6 +379,16 @@ class ClaimableGASTableViewCell: UITableViewCell {
             self.neoClaimSuccessAnimation.play()
             self.neoGasClaimingStateLabel?.theme_textColor = O3Theme.positiveGainColorPicker
             self.startCountdownBackToNeoEstimated()
+        }
+    }
+
+    func ontClaimedSuccess() {
+        DispatchQueue.main.async {
+            self.ontClaimingLoadingContainer.isHidden = true
+            self.ontClaimingSuccessContainer.isHidden = false
+            self.ontClaimSuccessAnimation.play()
+            self.ontClaimingStateTitle?.theme_textColor = O3Theme.positiveGainColorPicker
+            self.startCountdownBackToOntEstimated()
         }
     }
 
@@ -338,6 +403,22 @@ class ClaimableGASTableViewCell: UITableViewCell {
                     timer.invalidate()
                     self.delegate?.setIsClaimingNeo(false)
                     self.loadClaimableGASNeo()
+                }
+            }
+        }
+        timer.fire()
+    }
+
+    func startCountdownBackToOntEstimated() {
+        let targetSec = 30
+        var sec = 0
+        let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            DispatchQueue.main.async {
+                sec += 1
+                if sec == targetSec {
+                    timer.invalidate()
+                    self.delegate?.setIsClaimingOnt(false)
+                    self.loadClaimableOng()
                 }
             }
         }
@@ -362,4 +443,24 @@ class ClaimableGASTableViewCell: UITableViewCell {
         }
         timer.fire()
     }
+
+    func startLoadingOntClaims() {
+        self.ontClaimingLoadingContainer.isHidden = false
+        let targetSec = 60
+        var sec = 0
+        let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            DispatchQueue.main.async {
+                sec += 1
+                self.delegate?.setIsClaimingNeo(true)
+                if sec == targetSec {
+                    timer.invalidate()
+                    self.delegate?.setIsClaimingNeo(false)
+                    //load claimable api again to check the claim array
+                    self.loadClaimableOng()
+                }
+            }
+        }
+        timer.fire()
+    }
+
 }
