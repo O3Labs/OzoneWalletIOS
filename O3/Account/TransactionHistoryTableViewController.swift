@@ -114,7 +114,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         var assetDecimals = 8
         if let i = supportedTokens.index(where: {transactionEntry.asset.contains($0.tokenHash)}) {
             assetName = supportedTokens[i].symbol.uppercased()
-            assetDecimals = supportedTokens[i].decimal
+            assetDecimals = supportedTokens[i].decimal ?? 8
         } else if AssetId.gasAssetId.rawValue.contains(transactionEntry.asset) {
             assetName = "GAS"
             assetDecimals = 8

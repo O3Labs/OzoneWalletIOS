@@ -391,7 +391,7 @@
 "SEND_Not_Enough_Gas_Token_Transfer" = "若要发送NEP5代币，您钱包中必须有至少0.00000001 GAS。过程中不需要使用GAS，但要求您钱包中要有GAS";
 
 /* A label to show that ontology requires a network fee in order to send */
-"SEND_Ontology_requires_gas" = "Sending Ontology Assets has a network fee of (%.2f) ONG"; /* NEW */
+"SEND_Ontology_requires_gas" = "Sending Ontology Assets has a network fee of (%.2f) ONG";
 
 /* A title for the paste button in the send screen */
 "SEND_Paste_Button_Title" = "粘贴";
@@ -661,7 +661,7 @@
 "WALLET_Claim_Gas_Claimed_Success_Sub_Title" = "很快就会在您账户";
 
 /* A title for a label GAS claimed successfully. 'GAS Claimed successfully' */
-"WALLET_Claim_Gas_Claimed_Success_Title" = "GAS提取成功";
+"WALLET_Claim_Gas_Claimed_Success_Title" = "提取成功";
 
 /* A subtitle to display while claiming is in progress */
 "WALLET_Claim_In_Progress_Subtitle" = "正在处理...请稍后";
@@ -688,13 +688,16 @@
 "WALLET_From_Prefix" = "来自：%@";
 
 /* Informative text explaining you can store neo, gas, and nep-5 tokens using this address */
-"WALLET_My_Address_Explanation" = "您可以使用该地址接收任何来自交易所或钱包的NEO、GAS、NEP5等任何代币";
+"WALLET_My_Address_Explanation" = "您可以使用该地址接收任何来自交易所或钱包的NEO、GAS、ONT、ONG、NEP5等任何代币";
 
 /* Title of the My Address Page */
 "WALLET_My_Address_Title" = "我的地址";
 
 /* String in transaction history indicating O3 Wallet */
 "WALLET_O3_Wallet" = "O3钱包";
+
+/* A label to show that ontology requires a network fee in order to sync */
+"WALLET_Ontology_sync_requires_gas" = " Syncing Ontology requires a network fee of 0.01 ONG"; /* NEW */
 
 /* A title for the request action in the wallet */
 "WALLET_Request" = "请求";

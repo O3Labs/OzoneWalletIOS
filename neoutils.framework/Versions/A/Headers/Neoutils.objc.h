@@ -251,6 +251,8 @@ FOUNDATION_EXPORT NSString* const NeoutilsVERSION;
  */
 FOUNDATION_EXPORT NSString* NeoutilsBytesToHex(NSData* b);
 
+FOUNDATION_EXPORT NSString* NeoutilsClaimONG(NSString* endpoint, long gasPrice, long gasLimit, NSString* wif, NSError** error);
+
 // skipped function ConvertByteArrayToBigInt with unsupported parameter or return types
 
 

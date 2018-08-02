@@ -14,7 +14,7 @@ import Crashlytics
 import StoreKit
 import DeckTransition
 
-class AccountAssetTableViewController: UITableViewController, WalletToolbarDelegate, QRScanDelegate {
+class AccountAssetTableViewController: UITableViewController, WalletToolbarDelegate, QRScanDelegate, ClaimingGasCellDelegate {
     private enum sections: Int {
         case unclaimedGAS = 0
         case toolbar
@@ -27,7 +27,8 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     var sendModal: SendTableViewController?
 
     var claims: Claimable?
-    var isClaiming: Bool = false
+    var isClaimingNeo: Bool = false
+    var isClaimingOnt: Bool = false
     /// var refreshClaimableGasTimer = Timer()
 
     var tokenAssets = O3Cache.tokenAssets()
@@ -69,6 +70,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadClaimableGAS()
+        loadClaimableOng()
     }
 
     func loadInbox() {
@@ -89,6 +91,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     @objc func reloadAllData() {
         loadAccountState()
         loadClaimableGAS()
+        loadClaimableOng()
         loadInbox()
         DispatchQueue.main.async {
             self.tableView.refreshControl?.endRefreshing()
@@ -96,19 +99,42 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         }
     }
 
+    func setIsClaimingNeo(_ isClaiming: Bool) {
+        self.isClaimingNeo = isClaiming
+    }
+
+    func setIsClaimingOnt(_ isClaiming: Bool) {
+        self.isClaimingOnt = isClaiming
+    }
+
     @objc func loadClaimableGAS() {
         if Authenticated.account == nil {
             return
         }
 
-        if self.isClaiming == true {
+        if self.isClaimingNeo == true {
             return
         }
         let indexPath = IndexPath(row: 0, section: sections.unclaimedGAS.rawValue)
         guard let cell = self.tableView.cellForRow(at: indexPath) as? ClaimableGASTableViewCell else {
             return
         }
-        cell.loadClaimableGAS()
+        cell.loadClaimableGASNeo()
+    }
+
+    @objc func loadClaimableOng() {
+        if Authenticated.account == nil {
+            return
+        }
+
+        if self.isClaimingNeo == true {
+            return
+        }
+        let indexPath = IndexPath(row: 0, section: sections.unclaimedGAS.rawValue)
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? ClaimableGASTableViewCell else {
+            return
+        }
+        cell.loadClaimableOng()
     }
 
     func updateCacheAndLocalBalance(accountState: AccountState) {
@@ -167,7 +193,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == sections.unclaimedGAS.rawValue {
-            return 166.0
+            return 178.0
         } else if indexPath.section == sections.toolbar.rawValue {
             return 44.0
         }
@@ -186,6 +212,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
+            cell.delegate = self
             return cell
         }
 

@@ -391,7 +391,7 @@
 "SEND_Not_Enough_Gas_Token_Transfer" = "When Sending a NEP5 Token you must have at least 0.00000001 GAS in your wallet. This GAS is not used, but still required to be in your wallet.";
 
 /* A label to show that ontology requires a network fee in order to send */
-"SEND_Ontology_requires_gas" = "Sending Ontology Assets has a network fee of (%.2f) ONG"; /* NEW */
+"SEND_Ontology_requires_gas" = "Sending Ontology Assets has a network fee of (%.2f) ONG";
 
 /* A title for the paste button in the send screen */
 "SEND_Paste_Button_Title" = "Paste";
@@ -661,7 +661,7 @@
 "WALLET_Claim_Gas_Claimed_Success_Sub_Title" = "It will be in your account shortly";
 
 /* A title for a label GAS claimed successfully. 'GAS Claimed successfully' */
-"WALLET_Claim_Gas_Claimed_Success_Title" = "GAS Claimed successfully";
+"WALLET_Claim_Gas_Claimed_Success_Title" = "Claimed successfully";
 
 /* A subtitle to display while claiming is in progress */
 "WALLET_Claim_In_Progress_Subtitle" = "This might take a little while...";
@@ -688,13 +688,16 @@
 "WALLET_From_Prefix" = "FROM: %@";
 
 /* Informative text explaining you can store neo, gas, and nep-5 tokens using this address */
-"WALLET_My_Address_Explanation" = "You can use this address to receive NEO, GAS, or any NEP5 Token from an exchange or another wallet.";
+"WALLET_My_Address_Explanation" = "You can use this address to receive NEO, GAS, ONT, ONG, or any NEP5 Token from an exchange or another wallet.";
 
 /* Title of the My Address Page */
 "WALLET_My_Address_Title" = "My Address";
 
 /* String in transaction history indicating O3 Wallet */
 "WALLET_O3_Wallet" = "O3 Wallet";
+
+/* A label to show that ontology requires a network fee in order to sync */
+"WALLET_Ontology_sync_requires_gas" = "Syncing Ontology requires a network fee of 0.01 ONG"; /* NEW */
 
 /* A title for the request action in the wallet */
 "WALLET_Request" = "request";
