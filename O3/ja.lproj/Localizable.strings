@@ -391,7 +391,7 @@
 "SEND_Not_Enough_Gas_Token_Transfer" = "NEP5トークンを送るのに、少なくとも0.00000001GASをウォレットに保有していないと送金できません。このGASは使用されませんが、ウォレットに常に保有している必要があります。";
 
 /* A label to show that ontology requires a network fee in order to send */
-"SEND_Ontology_requires_gas" = "Ontologyブロックチェーンのトークンの送金には(%.2f)ONGの手数料がかかります"; /* NEW */
+"SEND_Ontology_requires_gas" = "Ontologyブロックチェーンのトークンの送金には(%.2f)ONGの手数料がかかります";
 
 /* A title for the paste button in the send screen */
 "SEND_Paste_Button_Title" = "貼り付け";
@@ -661,7 +661,7 @@
 "WALLET_Claim_Gas_Claimed_Success_Sub_Title" = "即時にアカウントへ入金されます";
 
 /* A title for a label GAS claimed successfully. 'GAS Claimed successfully' */
-"WALLET_Claim_Gas_Claimed_Success_Title" = "GAS請求に成功しました";
+"WALLET_Claim_Gas_Claimed_Success_Title" = "請求に成功しました";
 
 /* A subtitle to display while claiming is in progress */
 "WALLET_Claim_In_Progress_Subtitle" = "もう少しお待ちください";
@@ -688,13 +688,16 @@
 "WALLET_From_Prefix" = "FROM：%@";
 
 /* Informative text explaining you can store neo, gas, and nep-5 tokens using this address */
-"WALLET_My_Address_Explanation" = "このアドレスを用いて取引所やウォレットからNEOやGAS、NEP5トークンを受け取ることができます。";
+"WALLET_My_Address_Explanation" = "このアドレスを用いて取引所やウォレットからNEOやGASやONTやONG、NEP5トークンを受け取ることができます。";
 
 /* Title of the My Address Page */
-"WALLET_My_Address_Title" = "マイアドレス";
+"WALLET_My_Address_Title" = "マイアドレス";   
 
 /* String in transaction history indicating O3 Wallet */
 "WALLET_O3_Wallet" = "O3ウォレット";
+
+/* A label to show that ontology requires a network fee in order to sync */
+"WALLET_Ontology_sync_requires_gas" = "Ontologyチェーンのシンクロには0.01 ONGの手数料がかかります。   "; /* NEW */
 
 /* A title for the request action in the wallet */
 "WALLET_Request" = "リクエスト";

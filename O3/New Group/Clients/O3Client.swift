@@ -82,6 +82,13 @@ public class O3Client {
                     return
             }
 
+            if let code = json["code"] as? Int {
+                if code != 200 {
+                    completion(.failure(.invalidData))
+                    return
+                }
+            }
+
             let result = O3ClientResult.success(json)
             completion(result)
         }

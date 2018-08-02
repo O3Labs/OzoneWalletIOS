@@ -42,17 +42,29 @@ class ClaimableGASTableViewCell: UITableViewCell {
     @IBOutlet weak var ontClaimingSuccessContainer: UIView!
     @IBOutlet weak var ontClaimingLoadingContainer: UIView!
 
+    let estimatedString = AccountStrings.estimatedClaimableGasTitle
+    let confirmedString = AccountStrings.confirmedClaimableGasTitle
+    let claimSucceededString = AccountStrings.successClaimTitle
+    let loadingString = AccountStrings.claimingInProgressTitle
+
     func setupLocalizedStrings() {
         neoGasClaimingStateLabel?.text = AccountStrings.confirmedClaimableGasTitle
-        confirmedClaimableGASTitle?.text = "GAS"
+        ontClaimingStateTitle?.text = AccountStrings.confirmedClaimableGasTitle
         neoClaimNowButton?.setTitle(AccountStrings.claimNowButton, for: .normal)
+        neoSyncNowButton?.setTitle(AccountStrings.updateNowButton, for: UIControlState())
+        ontClaimButton?.setTitle(AccountStrings.claimNowButton, for: .normal)
+        ontSyncButton?.setTitle(AccountStrings.updateNowButton, for: UIControlState())
         claimContainerTitleLabel.text = AccountStrings.claimNowButton
     }
 
     func setupTheme() {
         neoGasClaimingStateLabel?.theme_textColor = O3Theme.lightTextColorPicker
+        ontClaimingStateTitle?.theme_textColor = O3Theme.lightTextColorPicker
+        claimableOntAmountLabel?.theme_textColor = O3Theme.titleColorPicker
         claimableGasAmountLabel?.theme_textColor = O3Theme.titleColorPicker
         neoSyncNowButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControlState())
+        ontSyncButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControlState())
+
         claimContainerTitleLabel.theme_textColor = O3Theme.titleColorPicker
         confirmedClaimableGASContainer?.theme_backgroundColor = O3Theme.backgroundColorPicker
         contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -72,7 +84,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
         ontLoaderView.loopAnimation = true
         ontLoaderView.play()
 
-        neoClaimLoadingContainer.embed(ontLoaderView)
+        neoClaimLoadingContainer.embed(neoLoaderView)
         neoClaimSuccessContainer.embed(neoClaimSuccessAnimation)
 
         ontClaimingLoadingContainer.embed(ontLoaderView)
@@ -87,7 +99,6 @@ class ClaimableGASTableViewCell: UITableViewCell {
 
     func resetNEOState() {
         DispatchQueue.main.async {
-            self.neoGasClaimingStateLabel?.theme_textColor = O3Theme.lightTextColorPicker
             self.neoClaimLoadingContainer.isHidden = true
             self.neoClaimSuccessContainer.isHidden = true
             self.neoClaimNowButton.isHidden = true
@@ -97,7 +108,6 @@ class ClaimableGASTableViewCell: UITableViewCell {
 
     func resetOntState() {
         DispatchQueue.main.async {
-            self.ontClaimingStateTitle?.theme_textColor = O3Theme.lightTextColorPicker
             self.ontClaimingLoadingContainer.isHidden = true
             self.ontClaimingSuccessContainer.isHidden = true
             self.ontClaimButton.isHidden = true
@@ -155,7 +165,6 @@ class ClaimableGASTableViewCell: UITableViewCell {
             //if claim array is empty then we show estimated
             let gas = gasDouble.string(8, removeTrailing: true)
             self.showEstimatedClaimableNeoState(value: gas)
-            self.neoSyncNowButton?.isEnabled = !gasDouble.isZero
         } else {
             //if claim array is not empty then we show the confirmed claimable and let user claims
             let gas = gasDouble.string(8, removeTrailing: true)
@@ -167,7 +176,6 @@ class ClaimableGASTableViewCell: UITableViewCell {
         self.resetOntState()
 
         let doubleAmount = Double(Int(unboundOng.ong)!) / 1000000000.0
-
         if unboundOng.calculated == true {
             self.showEstimatedClaimableOngState(value: doubleAmount)
         } else {
@@ -177,9 +185,11 @@ class ClaimableGASTableViewCell: UITableViewCell {
 
     func showEstimatedClaimableOngState(value: Double?) {
         self.resetOntState()
+        self.ontClaimingStateTitle?.text = estimatedString
         DispatchQueue.main.async {
             self.ontSyncButton.isHidden = false
             if value != nil {
+                self.ontSyncButton.isHidden = value!        .isZero
                 self.claimableOntAmountLabel.text = value!.string(8, removeTrailing: true)
             }
         }
@@ -187,6 +197,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
 
     func showConfirmedClaimableOngState(value: Double?) {
         self.resetOntState()
+        self.ontClaimingStateTitle?.text = confirmedString
         DispatchQueue.main.async {
             self.ontClaimButton.isHidden = false
             self.ontClaimingLoadingContainer.isHidden = true
@@ -200,6 +211,8 @@ class ClaimableGASTableViewCell: UITableViewCell {
         self.resetNEOState()
         DispatchQueue.main.async {
             self.neoSyncNowButton.isHidden = false
+            self.neoGasClaimingStateLabel?.text = self.estimatedString
+            self.neoSyncNowButton?.isHidden = Int(value) == 0
             self.claimableGasAmountLabel.text = value
         }
     }
@@ -209,6 +222,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
         DispatchQueue.main.async {
             self.claimableGasAmountLabel?.text = value
             self.neoClaimNowButton?.isHidden = false
+            self.neoGasClaimingStateLabel?.text = self.confirmedString
             self.neoClaimLoadingContainer.isHidden = true
         }
     }
@@ -218,6 +232,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
         self.delegate?.setIsClaimingNeo(true)
         DispatchQueue.main.async {
             self.neoSyncNowButton.isHidden = true
+            self.neoClaimLoadingContainer.isHidden = false
             self.startLoadingNeoClaims()
         }
 
@@ -364,7 +379,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
 
     @objc func ontSyncNowTapped(_ sender: Any) {
-        self.sendOneOntBackToAddress()
+        OzoneAlert.confirmDialog(message: AccountStrings.ontologySyncFee, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.okPositiveConfirmString, didCancel: {return}) {
+            self.sendOneOntBackToAddress()
+        }
     }
 
     @objc func ontClaimNowTapped(_ sender: Any) {
@@ -378,6 +395,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
             self.neoClaimSuccessContainer.isHidden = false
             self.neoClaimSuccessAnimation.play()
             self.neoGasClaimingStateLabel?.theme_textColor = O3Theme.positiveGainColorPicker
+            self.neoGasClaimingStateLabel?.text = self.claimSucceededString
             self.startCountdownBackToNeoEstimated()
         }
     }
@@ -388,6 +406,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
             self.ontClaimingSuccessContainer.isHidden = false
             self.ontClaimSuccessAnimation.play()
             self.ontClaimingStateTitle?.theme_textColor = O3Theme.positiveGainColorPicker
+            self.ontClaimingStateTitle.text = self.claimSucceededString
             self.startCountdownBackToOntEstimated()
         }
     }
@@ -462,5 +481,4 @@ class ClaimableGASTableViewCell: UITableViewCell {
         }
         timer.fire()
     }
-
 }
