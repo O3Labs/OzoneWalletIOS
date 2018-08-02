@@ -676,7 +676,7 @@
 "WALLET_Claim_Transaction" = "Claim";
 
 /* A title for a button Update Now */
-"WALLET_Claim_Update_Now_Action" = "Update now";
+"WALLET_Claim_Update_Now_Action" = "Sync Now";
 
 /* Title of Contacts tab in wallet screen */
 "WALLET_Contacts" = "CONTACTS";
