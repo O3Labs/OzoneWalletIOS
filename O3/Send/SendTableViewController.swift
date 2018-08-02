@@ -448,7 +448,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
 extension SendTableViewController: AssetSelectorDelegate {
     func assetSelected(selected: TransferableAsset, gasBalance: Double) {
         DispatchQueue.main.async {
-            if selected.symbol == "ONT" || selected.symbol == "ONG" {
+            if selected.id.contains("0000000") {
                 self.showNetworkFeeLabel()
             } else {
                 self.networkFeeLabel.isHidden = true
