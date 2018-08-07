@@ -311,13 +311,14 @@ public class Account {
     }
 
     public func sendAssetTransaction(network: Network, seedURL: String, asset: AssetId, amount: Double,
-                                     toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(String?, Error?) -> Void) {
+                                     toAddress: String, attributes: [TransactionAttritbute]? = nil, fee: Double = 0.0,
+                                     completion: @escaping(String?, Error?) -> Void) {
         O3APIClient(network: network).getUTXO(for: self.address) { result in
             switch result {
             case .failure(let error):
                 completion(nil, error)
             case .success(let assets):
-                let payload = self.generateSendTransactionPayload(asset: asset, amount: amount, toAddress: toAddress, assets: assets, attributes: attributes)
+                let payload = self.generateSendTransactionPayload(asset: asset, amount: amount, toAddress: toAddress, assets: assets, attributes: attributes, fee: fee)
                 let txid = self.unsignedPayloadToTransactionId(payload.0)
                 NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
                     switch result {
@@ -441,7 +442,8 @@ public class Account {
         return [UInt8(script.count)] + script
     }
 
-    public func sendNep5Token(seedURL: String, tokenContractHash: String, amount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(Bool?, Error?) -> Void) {
+    public func sendNep5Token(seedURL: String, tokenContractHash: String, amount: Double, toAddress: String,
+                              attributes: [TransactionAttritbute]? = nil, fee: Double = 0.0, completion: @escaping(Bool?, Error?) -> Void) {
 
         var customAttributes: [TransactionAttritbute] = []
         customAttributes.append(TransactionAttritbute(script: self.address.hashFromAddress()))
@@ -453,7 +455,7 @@ public class Account {
         let scriptBytes = self.buildNEP5TransferScript(scriptHash: tokenContractHash,
                                                        fromAddress: self.address, toAddress: toAddress, amount: amount)
         var payload = self.generateInvokeTransactionPayload(assets: nil, script: scriptBytes.fullHexString,
-                                                            contractAddress: tokenContractHash, attributes: customAttributes )
+                                                            contractAddress: tokenContractHash, attributes: customAttributes, fee: fee )
         payload += tokenContractHash.dataWithHexString().bytes
         print(payload.fullHexString)
         NeoClient(seed: seedURL).sendRawTransaction(with: payload) { (result) in
