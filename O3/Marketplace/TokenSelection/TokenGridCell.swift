@@ -13,21 +13,20 @@ import Kingfisher
 class TokenGridCell: UICollectionViewCell {
     @IBOutlet weak var tokenSymbolLabel: UILabel!
     @IBOutlet weak var tokenImageView: UIImageView!
-    @IBOutlet weak var tokenNameLabel: UILabel!
     @IBOutlet weak var inWalletImageView: UIImageView!
 
     override func awakeFromNib() {
+        tokenSymbolLabel.theme_textColor = O3Theme.lightTextColorPicker
         super.awakeFromNib()
     }
 
-    var data: NEP5Token? {
+    var data: Asset? {
         didSet {
-            guard let token = data else {
+            guard let asset = data else {
                 return
             }
-            tokenSymbolLabel.text = token.symbol.uppercased()
-            tokenNameLabel.text = token.name
-            tokenImageView.kf.setImage(with: URL(string: token.logoURL))
+            tokenSymbolLabel.text = asset.symbol.uppercased()
+            tokenImageView.kf.setImage(with: URL(string: asset.logoURL))
         }
     }
 }

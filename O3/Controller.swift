@@ -10,7 +10,36 @@ import UIKit
 import DeckTransition
 
 class Controller: NSObject {
-
+    
+    func openSwitcheoDapp() {
+        let url = URL(string: "https://beta.switcheo.exchange/?ref=o3")
+        openDappBrowser(url: url!, modal: true)
+    }
+    
+    func openDappBrowser(url: URL, modal: Bool) {
+        
+        guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {
+            return
+        }
+        
+        let nav = UIStoryboard(name: "Browser", bundle: nil).instantiateInitialViewController() as! UINavigationController
+        if let vc = nav.viewControllers.first as? DAppBrowserViewController {
+            vc.url = url
+            if modal == true {
+                tabbar.present(nav, animated: true, completion: nil)
+            } else {
+                if tabbar.selectedViewController == nil {
+                    return
+                }
+                if let selectedNav = tabbar.selectedViewController! as? UINavigationController {
+                    selectedNav.hidesBottomBarWhenPushed = true
+                    selectedNav.pushViewController(vc, animated: true)
+                }
+            }
+            
+        }
+    }
+    
     func openSend(to: String, selectedAsset: TransferableAsset, amount: String?) {
 
         guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {

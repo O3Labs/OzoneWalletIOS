@@ -145,8 +145,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         assetsTable.tableFooterView = UIView(frame: .zero)
 
         //control the size of the graph area here
-        self.assetsTable.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height * 0.5)
+        self.assetsTable.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height * 0.4)
         setupGraphView()
+        
         super.viewDidLoad()
     }
 
@@ -195,6 +196,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            
+            guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "notification-cell") as? PortfolioNotificationTableViewCell else {
+                fatalError("Undefined Table Cell Behavior")
+            }
+            cell.selectionStyle = .none
+            cell.delegate = self
+            return cell
+        }
         guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "portfolioAssetCell") as? PortfolioAssetCell else {
             fatalError("Undefined Table Cell Behavior")
         }
@@ -226,20 +236,50 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             dest.selectedAsset = self.selectedAsset
         }
     }
-
+ 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedAsset = homeviewModel.getTransferableAssets()[indexPath.row].symbol
+        tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == 0 {
+            return
+        }
+        
+        let asset = homeviewModel.getTransferableAssets()[indexPath.row]
+        var chain = "neo"
+        if asset.assetType == TransferableAsset.AssetType.ontologyAsset {
+            chain = "ont"
+        }
+        let url = URL(string: String(format: "https://public.o3.network/%@/assets/%@", chain, asset.symbol, Authenticated.account!.address))
         DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "segueToAssetDetail", sender: nil)
+             Controller().openDappBrowser(url: url!, modal: true)
         }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        //news
+        //assets
+        return 2
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return AppState.dismissPortfolioNotification() == true ? 0 : 1
+        }
         return self.displayedAssets.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 160.0
+        }
+        return 60.0
+    }
+    
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 {
+            return true
+        }
+        
+        return true
     }
 
     @IBAction func tappedIntervalButton(_ sender: UIButton) {
@@ -276,6 +316,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func setLocalizedStrings() {
+        self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.navigationBar.topItem?.title = PortfolioStrings.portfolio
         fiveMinButton.setTitle(PortfolioStrings.sixHourInterval, for: UIControlState())
         fifteenMinButton.setTitle(PortfolioStrings.oneDayInterval, for: UIControlState())
@@ -391,5 +432,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: index + 1, section: 0), at: .right, animated: true)
             self.homeviewModel?.setPortfolioType(self.indexToPortfolioType(index + 1))
         }
+    }
+}
+
+extension HomeViewController: PortfolioNotificationTableViewCellDelegate{
+    
+    func didDismiss() {
+        AppState.setDismissPortfolioNotification(dismiss: true)
+        assetsTable.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
     }
 }
