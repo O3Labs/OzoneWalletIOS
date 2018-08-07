@@ -118,28 +118,22 @@ public class Account {
      *
      * NEED TO DOUBLE CHECK THE BYTE COUNT HERE
      */
-    public func getInputsNecessaryToSendAsset(asset: AssetId, amount: Double, assets: Assets?) -> (totalAmount: Decimal?, payload: Data?, error: Error?) {
-
+    public func getInputsNecessaryToSendNeo(amount: Double, assets: Assets?) ->
+        (totalAmount: Decimal?, inputCount: UInt8?, payload: Data?, error: Error?) {
         //asset less sending
         if assets == nil {
             var inputData = [UInt8]()
             inputData.append(0)
-            return (0, Data(bytes: inputData), nil)
+            return (0, 0, Data(bytes: inputData), nil)
         }
 
         var sortedUnspents = [UTXO]()
         var neededForTransaction = [UTXO]()
-        if asset == .neoAssetId {
-            sortedUnspents = assets!.getSortedNEOUTXOs()
-            if sortedUnspents.reduce(0, {$0 + $1.value}) < Decimal(amount) {
-                return (nil, nil, NSError())
-            }
-        } else {
-            sortedUnspents = assets!.getSortedGASUTXOs()
-            if sortedUnspents.reduce(0, {$0 + $1.value}) < Decimal(amount) {
-                return (nil, nil, NSError())
-            }
+        sortedUnspents = assets!.getSortedNEOUTXOs()
+        if sortedUnspents.reduce(0, {$0 + $1.value}) < Decimal(amount) {
+            return (nil, nil, nil, NSError())
         }
+
         var runningAmount: Decimal = 0.0
         var index = 0
         var count: UInt8 = 0
@@ -151,21 +145,52 @@ public class Account {
             count += 1
         }
         var inputData = [UInt8]()
-        inputData.append(count)
         for x in 0..<neededForTransaction.count {
             let data = neededForTransaction[x].txid.dataWithHexString()
             let reversedBytes = data.bytes.reversed()
             inputData += reversedBytes + toByteArray(UInt16(neededForTransaction[x].index))
         }
 
-        return (runningAmount, Data(bytes: inputData), nil)
+        return (runningAmount, count, Data(bytes: inputData), nil)
     }
 
-    func packRawTransactionBytes(payloadPrefix: [UInt8], asset: AssetId, with inputData: Data, runningAmount: Decimal,
-                                 toSendAmount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil) -> Data {
-        let inputDataBytes = inputData.bytes
-        let needsTwoOutputTransactions = runningAmount != Decimal(toSendAmount)
+    public func getInputsNecessaryToSendGas(amount: Double, assets: Assets?, fee: Double = 0.0) ->
+        (totalAmount: Decimal?, inputCount: UInt8?, payload: Data?, error: Error?) {
 
+        //asset less sending
+        if assets == nil {
+            let inputData = [UInt8]()
+            return (0, 0, Data(bytes: inputData), nil)
+        }
+
+        var sortedUnspents = [UTXO]()
+        var neededForTransaction = [UTXO]()
+        sortedUnspents = assets!.getSortedGASUTXOs()
+        if sortedUnspents.reduce(0, {$0 + $1.value}) < Decimal(amount) {
+            return (nil, nil, nil, NSError())
+        }
+
+        var runningAmount: Decimal = 0.0
+        var index = 0
+        var count: UInt8 = 0
+        //Assume we always have enough balance to do this, prevent the check for bal
+        while runningAmount < Decimal(amount) + Decimal(fee) {
+            neededForTransaction.append(sortedUnspents[index])
+            runningAmount += sortedUnspents[index].value
+            index += 1
+            count += 1
+        }
+        var inputData = [UInt8]()
+        for x in 0..<neededForTransaction.count {
+            let data = neededForTransaction[x].txid.dataWithHexString()
+            let reversedBytes = data.bytes.reversed()
+            inputData += reversedBytes + toByteArray(UInt16(neededForTransaction[x].index))
+        }
+
+        return (runningAmount, count, Data(bytes: inputData), nil)
+    }
+
+    func getAttributesPayload(attributes: [TransactionAttritbute]?) -> [UInt8] {
         var numberOfAttributes: UInt8 = 0x00
         var attributesPayload: [UInt8] = []
         if attributes != nil {
@@ -174,20 +199,25 @@ public class Account {
                 numberOfAttributes += 1
             }
         }
+        return  [numberOfAttributes] + attributesPayload
+    }
 
-        var payload: [UInt8] = payloadPrefix +  [numberOfAttributes]
+    func getOuputDataPayload(asset: AssetId, with inputData: Data, runningAmount: Decimal,
+                             toSendAmount: Double, toAddress: String, fee: Double = 0.0) -> (payload: Data, outputCount: UInt8) {
+        let needsTwoOutputTransactions =
+            runningAmount != (Decimal(toSendAmount) + Decimal(fee)) ||
+            fee > 0.0
 
-        payload += attributesPayload + inputDataBytes
-
-        //if it's the asset less sending
-        if runningAmount == Decimal(0) {
-            payload += [0x00]
-            return Data(bytes: payload)
+        var outputCount: UInt8
+        var payload: [UInt8] = []
+        if runningAmount == Decimal(0) && fee == 0.0 {
+            return (Data(bytes: payload), 0)
         }
 
         if needsTwoOutputTransactions {
             //Transaction To Reciever
-            payload += [0x02] + asset.rawValue.dataWithHexString().bytes.reversed()
+            outputCount = 2
+            payload += asset.rawValue.dataWithHexString().bytes.reversed()
             let amountToSend = toSendAmount * pow(10, 8)
             let amountToSendRounded = round(amountToSend)
             let amountToSendInMemory = UInt64(amountToSendRounded)
@@ -206,7 +236,8 @@ public class Account {
             payload += hashedSignature.bytes
 
         } else {
-            payload += [0x01] + asset.rawValue.dataWithHexString().bytes.reversed()
+            outputCount = 1
+            payload += asset.rawValue.dataWithHexString().bytes.reversed()
             let amountToSend = toSendAmount * pow(10, 8)
             let amountToSendRounded = round(amountToSend)
             let amountToSendInMemory = UInt64(amountToSendRounded)
@@ -214,7 +245,7 @@ public class Account {
             payload += toByteArray(amountToSendInMemory)
             payload += toAddress.hashFromAddress().dataWithHexString()
         }
-        return Data(bytes: payload)
+        return (Data(bytes: payload), outputCount)
     }
 
     func concatenatePayloadData(txData: Data, signatureData: Data) -> Data {
@@ -227,17 +258,48 @@ public class Account {
         return Data(bytes: payload)
     }
 
-    func generateSendTransactionPayload(asset: AssetId, amount: Double, toAddress: String, assets: Assets, attributes: [TransactionAttritbute]? = nil) -> (Data, Data) {
+    func generateSendTransactionPayload(asset: AssetId, amount: Double, toAddress: String, assets: Assets, attributes: [TransactionAttritbute]? = nil, fee: Double = 0.0) -> (Data, Data) {
         var error: NSError?
-        let inputData = getInputsNecessaryToSendAsset(asset: asset, amount: amount, assets: assets)
-        let payloadPrefix: [UInt8] = [0x80, 0x00]
-        let rawTransaction = packRawTransactionBytes(payloadPrefix: payloadPrefix,
-                                                     asset: asset, with: inputData.payload!, runningAmount: inputData.totalAmount!,
-                                                     toSendAmount: amount, toAddress: toAddress, attributes: attributes)
 
-        let signatureData = NeoutilsSign(rawTransaction, privateKey.fullHexString, &error)
-        let finalPayload = concatenatePayloadData(txData: rawTransaction, signatureData: signatureData!)
-        return (rawTransaction, finalPayload)
+        var mainInputData: (totalAmount: Decimal?, inputCount: UInt8?, payload: Data?, error: Error?)
+        var optionalFeeInputData: (totalAmount: Decimal?, inputCount: UInt8?, payload: Data?, error: Error?)? = nil
+        if asset == AssetId.gasAssetId {
+            mainInputData = getInputsNecessaryToSendGas(amount: amount, assets: assets, fee: fee)
+        } else {
+            mainInputData = getInputsNecessaryToSendNeo(amount: amount, assets: assets)
+            if fee > 0.0 {
+                optionalFeeInputData = getInputsNecessaryToSendGas(amount: amount, assets: assets, fee: fee)
+            }
+        }
+        var mainOutputData = getOuputDataPayload(asset: asset, with: mainInputData.payload!,
+                                                 runningAmount: mainInputData.totalAmount!,
+                                                 toSendAmount: amount, toAddress: toAddress, fee: fee)
+
+        var optionalFeeOutputData: (payload: Data, outputCount: UInt8)? = nil
+        if optionalFeeInputData != nil {
+            optionalFeeOutputData = getOuputDataPayload(asset: AssetId.gasAssetId, with: (optionalFeeInputData?.payload!)!,
+                                                            runningAmount: (optionalFeeInputData?.totalAmount!)!,
+                                                            toSendAmount: amount, toAddress: toAddress, fee: fee)
+        }
+
+        let sendPayloadPrefix: [UInt8] = [0x80, 0x00]
+        let attributesPayload = getAttributesPayload(attributes: attributes)
+
+        let totalInputCount = (mainInputData.inputCount!) + (optionalFeeInputData?.inputCount ?? 0)
+        let finalInputPayload = Data(bytes: (mainInputData.payload!).bytes + (optionalFeeInputData?.payload ?? Data()).bytes)
+
+        let totalOutputCount = (mainOutputData.outputCount) + (optionalFeeOutputData?.outputCount ?? 0)
+        let finalOutputPayload = Data(bytes: (mainOutputData.payload).bytes + (optionalFeeOutputData?.payload ?? Data()).bytes)
+
+        var rawTransaction = sendPayloadPrefix + attributesPayload
+        rawTransaction += [totalInputCount] + finalInputPayload.bytes +
+            [totalOutputCount] + finalOutputPayload.bytes
+
+        let rawTransactionData = Data(bytes: rawTransaction)
+
+        let signatureData = NeoutilsSign(rawTransactionData, privateKey.fullHexString, &error)
+        let finalPayload = concatenatePayloadData(txData: rawTransactionData, signatureData: signatureData!)
+        return (rawTransactionData, finalPayload)
 
     }
 
@@ -341,18 +403,29 @@ public class Account {
         }
     }
 
-    private func generateInvokeTransactionPayload(assets: Assets?, script: String, contractAddress: String, attributes: [TransactionAttritbute]?) -> Data {
+    private func generateInvokeTransactionPayload(assets: Assets?, script: String, contractAddress: String, attributes: [TransactionAttritbute]?, fee: Double = 0.0) -> Data {
         var error: NSError?
+        let amount = 0.00000001
 
-        let inputData = getInputsNecessaryToSendAsset(asset: AssetId.gasAssetId, amount: 0.00000001, assets: assets)
+        let mainInputData = getInputsNecessaryToSendGas(amount: amount, assets: assets, fee: fee)
+        let mainOutputData = getOuputDataPayload(asset: AssetId.gasAssetId, with: mainInputData.payload!,
+                            runningAmount: mainInputData.totalAmount!,
+                            toSendAmount: amount, toAddress: self.address, fee: fee)
 
         let payloadPrefix = [0xd1, 0x00] + script.dataWithHexString().bytes
-        let rawTransaction = packRawTransactionBytes(payloadPrefix: payloadPrefix,
-                                                     asset: AssetId.gasAssetId, with: inputData.payload!,
-                                                     runningAmount: inputData.totalAmount!,
-                                                     toSendAmount: 0.00000001, toAddress: self.address, attributes: attributes)
-        let signatureData = NeoutilsSign(rawTransaction, privateKey.fullHexString, &error)
-        let finalPayload = concatenatePayloadData(txData: rawTransaction, signatureData: signatureData!)
+
+        let attributesPayload = getAttributesPayload(attributes: attributes)
+
+        var rawTransaction = payloadPrefix + attributesPayload
+
+        rawTransaction += [mainInputData.inputCount!] + mainInputData.payload!.bytes +
+            [mainOutputData.outputCount] + mainOutputData.payload.bytes
+
+        print(rawTransaction.fullHexString)
+        let rawTransactionData = Data(bytes: rawTransaction)
+
+        let signatureData = NeoutilsSign(rawTransactionData, privateKey.fullHexString, &error)
+        let finalPayload = concatenatePayloadData(txData: rawTransactionData, signatureData: signatureData!)
         return finalPayload
     }
 
