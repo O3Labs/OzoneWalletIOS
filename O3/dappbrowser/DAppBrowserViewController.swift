@@ -72,7 +72,7 @@ class DAppBrowserViewController: UIViewController {
     }
     @objc func didTapLeft(_ sender: Any) {
         if self.loggedIn == true {
-            let message = String(format: "You are connected to %@\nDisconnect and close the dapp browser?", self.currentURL!.host!)
+            let message = String(format: "You are connected to %@\nDisconnect and close O3 dapp browser?", self.currentURL!.host!)
             OzoneAlert.confirmDialog(message: message, cancelTitle: "Stay", confirmTitle: "Close", didCancel: {
                 
             }) {
