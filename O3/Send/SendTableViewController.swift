@@ -169,7 +169,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                     if self.checkboxPriority.isSelected {
                         fee = 0.0011
                     }
-                    Authenticated.account?.sendNep5Token(seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, amount: amount, toAddress: toAddress, fee: fee, completion: { (completed, _) in
+                    Authenticated.account?.sendNep5Token(network: AppState.network, seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, amount: amount, toAddress: toAddress, fee: fee, completion: { (completed, _) in
 
                         O3HUD.stop {
                             self.transactionCompleted = completed ?? false
@@ -218,6 +218,8 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                                                        customAttributes: [
                                                         "Asset Name": assetName,
                                                         "Amount": amount])
+                            } else {
+                                self.transactionCompleted = false
                             }
                             self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                         }
