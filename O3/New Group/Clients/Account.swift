@@ -356,19 +356,20 @@ public class Account {
         return finalPayload
     }
 
-    private func buildNEP5TransferScript(scriptHash: String, fromAddress: String,
+    private func buildNEP5TransferScript(scriptHash: String, decimals: Int, fromAddress: String,
                                          toAddress: String, amount: Double) -> [UInt8] {
-        let amountToSendInMemory = Int(amount * 100000000)
+        
+        let amountToSend = Int(amount * pow(10, Double(decimals)))
         let fromAddressHash = fromAddress.hashFromAddress()
         let toAddressHash = toAddress.hashFromAddress()
         let scriptBuilder = ScriptBuilder()
         scriptBuilder.pushContractInvoke(scriptHash: scriptHash, operation: "transfer",
-                                         args: [amountToSendInMemory, toAddressHash, fromAddressHash])
+                                         args: [amountToSend, toAddressHash, fromAddressHash])
         let script = scriptBuilder.rawBytes
         return [UInt8(script.count)] + script
     }
 
-    public func sendNep5Token(seedURL: String, tokenContractHash: String, amount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(Bool?, Error?) -> Void) {
+    public func sendNep5Token(seedURL: String, tokenContractHash: String, decimals: Int, amount: Double, toAddress: String, attributes: [TransactionAttritbute]? = nil, completion: @escaping(Bool?, Error?) -> Void) {
 
         var customAttributes: [TransactionAttritbute] = []
         customAttributes.append(TransactionAttritbute(script: self.address.hashFromAddress()))
@@ -377,8 +378,7 @@ public class Account {
         customAttributes.append(TransactionAttritbute(descriptionHex: tokenContractHash))
 
         //send nep5 token without using utxo
-        let scriptBytes = self.buildNEP5TransferScript(scriptHash: tokenContractHash,
-                                                       fromAddress: self.address, toAddress: toAddress, amount: amount)
+        let scriptBytes = self.buildNEP5TransferScript(scriptHash: tokenContractHash, decimals: decimals, fromAddress: self.address, toAddress: toAddress, amount: amount)
         var payload = self.generateInvokeTransactionPayload(assets: nil, script: scriptBytes.fullHexString,
                                                             contractAddress: tokenContractHash, attributes: customAttributes )
         payload += tokenContractHash.dataWithHexString().bytes
