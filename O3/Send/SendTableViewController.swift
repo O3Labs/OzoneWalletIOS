@@ -150,7 +150,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         }
     }
 
-    func sendNEP5Token(tokenHash: String, assetName: String, amount: Double, toAddress: String) {
+    func sendNEP5Token(tokenHash: String, decimals: Int, assetName: String, amount: Double, toAddress: String) {
 
         DispatchQueue.main.async {
             OzoneAlert.confirmDialog(message: String(format: SendStrings.sendConfirmationPrompt, amount, assetName, toAddress),
@@ -291,7 +291,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             }
             self.sendNativeAsset(assetId: AssetId(rawValue: assetId)!, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
         } else if self.selectedAsset?.assetType == .nep5Token {
-            self.sendNEP5Token(tokenHash: assetId, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
+            self.sendNEP5Token(tokenHash: assetId, decimals: self.selectedAsset!.decimals, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
         } else if self.selectedAsset?.assetType == .ontologyAsset {
             self.sendOntology(assetSymbol: assetSymbol, amount: amount!.doubleValue, toAddress: toAddress)
 

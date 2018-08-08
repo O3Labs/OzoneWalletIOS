@@ -429,14 +429,15 @@ public class Account {
         return finalPayload
     }
 
-    private func buildNEP5TransferScript(scriptHash: String, fromAddress: String,
+    private func buildNEP5TransferScript(scriptHash: String, decimals: Int, fromAddress: String,
                                          toAddress: String, amount: Double) -> [UInt8] {
-        let amountToSendInMemory = Int(amount * 100000000)
+        
+        let amountToSend = Int(amount * pow(10, Double(decimals)))
         let fromAddressHash = fromAddress.hashFromAddress()
         let toAddressHash = toAddress.hashFromAddress()
         let scriptBuilder = ScriptBuilder()
         scriptBuilder.pushContractInvoke(scriptHash: scriptHash, operation: "transfer",
-                                         args: [amountToSendInMemory, toAddressHash, fromAddressHash])
+                                         args: [amountToSend, toAddressHash, fromAddressHash])
         let script = scriptBuilder.rawBytes
         return [UInt8(script.count)] + script
     }
