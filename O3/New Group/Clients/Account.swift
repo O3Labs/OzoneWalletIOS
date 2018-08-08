@@ -199,8 +199,7 @@ public class Account {
     func getOuputDataPayload(asset: AssetId, with inputData: Data, runningAmount: Decimal,
                              toSendAmount: Double, toAddress: String, fee: Double = 0.0) -> (payload: Data, outputCount: UInt8) {
         let needsTwoOutputTransactions =
-            runningAmount != (Decimal(toSendAmount) + Decimal(fee)) ||
-            fee > 0.0
+            runningAmount != (Decimal(toSendAmount) + Decimal(fee))
 
         var outputCount: UInt8
         var payload: [UInt8] = []
@@ -279,7 +278,7 @@ public class Account {
         if optionalFeeInputData != nil {
             optionalFeeOutputData = getOuputDataPayload(asset: AssetId.gasAssetId, with: (optionalFeeInputData?.payload!)!,
                                                             runningAmount: (optionalFeeInputData?.totalAmount!)!,
-                                                            toSendAmount: 0.00000001, toAddress: toAddress, fee: fee)
+                                                            toSendAmount: 0.00000001, toAddress: self.address, fee: fee)
         }
 
         let sendPayloadPrefix: [UInt8] = [0x80, 0x00]
