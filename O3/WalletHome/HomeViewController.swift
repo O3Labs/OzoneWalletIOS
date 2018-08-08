@@ -26,7 +26,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var graphViewContainer: UIView!
     @IBOutlet var activatedLineLeftConstraint: NSLayoutConstraint?
     @IBOutlet weak var activatedLine: UIView!
-
+    
     var group: DispatchGroup?
     var activatedLineCenterXAnchor: NSLayoutConstraint?
     var graphView: ScrollableGraphView!
@@ -39,7 +39,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var homeviewModel: HomeViewModel!
     var selectedPrice: PriceData?
     var displayedAssets = [TransferableAsset]()
-
+    
     func addThemedElements() {
         applyNavBarTheme()
         graphLoadingIndicator.theme_activityIndicatorViewStyle = O3Theme.activityIndicatorColorPicker
@@ -52,7 +52,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             button?.theme_setTitleColor(O3Theme.primaryColorPicker, forState: UIControlState())
         }
     }
-
+    
     func loadWatchAddresses() -> [WatchAddress] {
         do {
             let watchAddresses: [WatchAddress] = try
@@ -62,11 +62,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             return []
         }
     }
-
+    
     @objc func getBalance() {
         homeviewModel.reloadBalances()
     }
-
+    
     @objc func updateGraphAppearance(_ sender: Any) {
         DispatchQueue.main.async {
             self.graphView.removeFromSuperview()
@@ -75,32 +75,32 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.getBalance()
         }
     }
-
+    
     func setupGraphView() {
         graphView = ScrollableGraphView.ozoneTheme(frame: graphViewContainer.bounds, dataSource: self)
         graphViewContainer.embed(graphView)
-
+        
         panView = GraphPanView(frame: graphViewContainer.bounds)
         panView.delegate = self
         graphViewContainer.embed(panView)
     }
-
+    
     func panDataIndexUpdated(index: Int, timeLabel: UILabel) {
         DispatchQueue.main.async {
             self.selectedPrice = self.portfolio?.data.reversed()[index]
             self.walletHeaderCollectionView.reloadData()
-
+            
             let posixString = self.portfolio?.data.reversed()[index].time ?? ""
             timeLabel.text = posixString.intervaledDateString(self.homeviewModel.selectedInterval)
             timeLabel.sizeToFit()
         }
     }
-
+    
     func panEnded() {
         selectedPrice = self.portfolio?.data.first
         DispatchQueue.main.async { self.walletHeaderCollectionView.reloadData() }
     }
-
+    
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("ChangedNetwork"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("ChangedReferenceCurrency"), object: nil)
@@ -108,7 +108,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NotificationCenter.default.addObserver(self, selector: #selector(self.removeObservers), name: Notification.Name("loggedOut"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateGraphAppearance(_:)), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
-
+    
     @objc func removeObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.removeObservers), name: Notification.Name("loggedOut"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name("ChangedNetwork"), object: nil)
@@ -116,11 +116,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NotificationCenter.default.removeObserver(self, name: Notification.Name("ChangedReferenceCurrency"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
-
+    
     deinit {
         removeObservers()
     }
-
+    
     override func viewDidLoad() {
         setLocalizedStrings()
         ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
@@ -129,7 +129,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         activatedLineCenterXAnchor = activatedLine.centerXAnchor.constraint(equalTo: fifteenMinButton.centerXAnchor, constant: 0)
         activatedLineCenterXAnchor?.isActive = true
         homeviewModel = HomeViewModel(delegate: self)
-
+        
         if UserDefaults.standard.string(forKey: "subscribedAddress") != Authenticated.account?.address {
             Channel.shared().unsubscribe(fromTopic: "*") {
                 Channel.shared().subscribe(toTopic: (Authenticated.account?.address)!)
@@ -137,20 +137,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 UserDefaults.standard.synchronize()
             }
         }
-
+        
         walletHeaderCollectionView.delegate = self
         walletHeaderCollectionView.dataSource = self
         assetsTable.delegate = self
         assetsTable.dataSource = self
         assetsTable.tableFooterView = UIView(frame: .zero)
-
+        
         //control the size of the graph area here
         self.assetsTable.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height * 0.4)
         setupGraphView()
         
         super.viewDidLoad()
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !firstTimeViewLoad {
@@ -158,25 +158,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         firstTimeViewLoad = false
     }
-
+    
     func showLoadingIndicator() {
         DispatchQueue.main.async {
             self.graphLoadingIndicator.layer.zPosition = 1
             self.graphLoadingIndicator.startAnimating()
         }
     }
-
+    
     func hideLoadingIndicator() {
         DispatchQueue.main.async {
             self.graphLoadingIndicator.stopAnimating()
         }
     }
-
+    
     func updateWithBalanceData(_ assets: [TransferableAsset]) {
         self.displayedAssets = assets
         DispatchQueue.main.async { self.assetsTable.reloadData() }
     }
-
+    
     func updateWithPortfolioData(_ portfolio: PortfolioValue) {
         DispatchQueue.main.async {
             self.portfolio = portfolio
@@ -185,7 +185,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.assetsTable.reloadData()
             self.graphView.reload()
         }
-
+        
         //A hack otherwise graph wont appear
         if self.firstTimeGraphLoad {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
@@ -194,7 +194,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             
@@ -218,7 +218,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                                                     firstPrice: PriceData(average: 0, averageBTC: 0, time: "24h"))
                 return cell
         }
-
+        
         cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
                                             amount: Double(truncating: asset.value as NSNumber),
                                             referenceCurrency: (homeviewModel?.referenceCurrency)!,
@@ -227,7 +227,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.selectionStyle = .none
         return cell
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueToAssetDetail" {
             guard let dest = segue.destination as? AssetDetailViewController else {
@@ -236,7 +236,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             dest.selectedAsset = self.selectedAsset
         }
     }
- 
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
@@ -249,17 +249,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             chain = "ont"
         }
         let url = URL(string: String(format: "https://public.o3.network/%@/assets/%@", chain, asset.symbol, Authenticated.account!.address))
+//        let url = URL(string: String(format: "http://localhost:8080/public/%@/assets/%@?address=%@", chain, asset.symbol, Authenticated.account!.address))
         DispatchQueue.main.async {
-             Controller().openDappBrowser(url: url!, modal: true)
+            Controller().openDappBrowser(url: url!, modal: true)
         }
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         //news
         //assets
         return 2
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return AppState.dismissPortfolioNotification() == true ? 0 : 1
@@ -281,7 +282,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         return true
     }
-
+    
     @IBAction func tappedIntervalButton(_ sender: UIButton) {
         DispatchQueue.main.async {
             self.view.needsUpdateConstraints()
@@ -295,7 +296,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             })
         }
     }
-
+    
     // MARK: - Graph delegate
     func value(forPlot plot: Plot, atIndex pointIndex: Int) -> Double {
         if pointIndex > portfolio!.data.count {
@@ -303,18 +304,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         return homeviewModel?.referenceCurrency == .btc ? portfolio!.data.reversed()[pointIndex].averageBTC : portfolio!.data.reversed()[pointIndex].average
     }
-
+    
     func label(atIndex pointIndex: Int) -> String {
         return ""//String(format:"%@",portfolio!.data[pointIndex].time)
     }
-
+    
     func numberOfPoints() -> Int {
         if portfolio == nil {
             return 0
         }
         return portfolio!.data.count
     }
-
+    
     func setLocalizedStrings() {
         self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.navigationBar.topItem?.title = PortfolioStrings.portfolio
@@ -331,7 +332,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "walletHeaderCollectionCell", for: indexPath) as? WalletHeaderCollectionCell else {
             fatalError("Undefined collection view behavior")
@@ -347,7 +348,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             portfolioType = .readOnlyAndWritable
         default: fatalError("Undefined wallet header cell")
         }
-
+        
         var data = WalletHeaderCollectionCell.Data (
             portfolioType: portfolioType,
             index: indexPath.row,
@@ -356,7 +357,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             referenceCurrency: (homeviewModel?.referenceCurrency)!,
             selectedInterval: (homeviewModel?.selectedInterval)!
         )
-
+        
         guard let latestPrice = selectedPrice,
             let previousPrice = portfolio?.data.last else {
                 cell.data = data
@@ -365,33 +366,33 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         data.latestPrice = latestPrice
         data.previousPrice = previousPrice
         cell.data = data
-
+        
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         let screenSize = UIScreen.main.bounds
         return CGSize(width: screenSize.width, height: 75)
     }
-
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == assetsTable {
             return
         }
-
+        
         var visibleRect = CGRect()
         visibleRect.origin = walletHeaderCollectionView.contentOffset
         visibleRect.size = walletHeaderCollectionView.bounds.size
-
+        
         let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
         let visibleIndexPath: IndexPath? = walletHeaderCollectionView.indexPathForItem(at: visiblePoint)
         if visibleIndexPath != nil {
             self.homeviewModel?.setPortfolioType(self.indexToPortfolioType(visibleIndexPath!.row))
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch (homeviewModel?.referenceCurrency)! {
         case .btc:
@@ -399,14 +400,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         default:
             homeviewModel?.setReferenceCurrency(.btc)
         }
-
+        
         DispatchQueue.main.async {
             collectionView.reloadData()
             self.assetsTable.reloadData()
             self.graphView.reload()
         }
     }
-
+    
     func indexToPortfolioType(_ index: Int) -> PortfolioType {
         switch index {
         case 0:
@@ -419,14 +420,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             fatalError("Invalid Portfolio Index")
         }
     }
-
+    
     func didTapLeft(index: Int, portfolioType: PortfolioType) {
         DispatchQueue.main.async {
             self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: index - 1, section: 0), at: .left, animated: true)
             self.homeviewModel?.setPortfolioType(self.indexToPortfolioType(index - 1))
         }
     }
-
+    
     func didTapRight(index: Int, portfolioType: PortfolioType) {
         DispatchQueue.main.async {
             self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: index + 1, section: 0), at: .right, animated: true)
@@ -438,7 +439,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 extension HomeViewController: PortfolioNotificationTableViewCellDelegate{
     
     func didDismiss() {
-        AppState.setDismissPortfolioNotification(dismiss: true)
-        assetsTable.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        DispatchQueue.main.async {
+            AppState.setDismissPortfolioNotification(dismiss: true)
+            self.assetsTable.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        }
     }
 }

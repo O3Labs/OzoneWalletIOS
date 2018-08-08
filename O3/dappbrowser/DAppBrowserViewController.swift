@@ -32,7 +32,13 @@ class DAppBrowserViewController: UIViewController {
     var sessionID: String?
     var currentURL: URL?
     var url: URL?
-    
+    var showMoreButton: Bool? {
+        didSet{
+            if showMoreButton == true {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ellipsis-v"), style: .plain, target: self, action: #selector(didTapRight(_:)))
+            }
+        }
+    }
     override func loadView() {
         super.loadView()
         
@@ -63,8 +69,7 @@ class DAppBrowserViewController: UIViewController {
         self.webView!.load(req)
         self.webView?.navigationDelegate = self
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ellipsis-v"), style: .plain, target: self, action: #selector(didTapRight(_:)))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(didTapLeft(_:)))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(didTapLeft(_:)))
     }
     
     override func didReceiveMemoryWarning() {
@@ -86,8 +91,8 @@ class DAppBrowserViewController: UIViewController {
     
     @objc func didTapRight(_ sender: Any) {
 
-        let message = String(format: "%@", webView!.title!)
-        var dialogTitle: String? = nil
+        let message = String(format: "%@", (webView!.url?.absoluteString)!)
+        var dialogTitle: String? = webView?.title!
         
         if self.loggedIn == true {
             dialogTitle = String(format: "You are connected to %@", self.currentURL!.host!)
@@ -331,7 +336,45 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
 extension DAppBrowserViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        self.title = webView.title
-        
+        if let url = webView.url,
+            let host = url.host, host.hasPrefix("beta.switcheo.exchange") {
+            let button = UIButton(type: .custom)
+            button.setImage(#imageLiteral(resourceName: "ic_verified_badge"), for: .normal)
+            button.setTitle(host.firstUppercased, for: .normal)
+            button.theme_setTitleColor(O3Theme.textFieldTextColorPicker, forState: .normal)
+            button.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 0)
+            button.titleEdgeInsets = UIEdgeInsetsMake(0, 8, 0, 0)
+            button.titleLabel?.font = UIFont(name: "Avenir-Medium", size: 16)
+            button.frame.size.width = 200
+            self.navigationItem.titleView = button
+            
+        } else {
+            self.title = webView.title
+        }
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if navigationAction.navigationType == .linkActivated  {
+            if let url = navigationAction.request.url,
+                let host = url.host, host.hasPrefix("o3.network"),
+                UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+                print(url)
+                print("Redirected to browser. No need to open it locally")
+                decisionHandler(.cancel)
+            } else if let url = navigationAction.request.url,
+                let host = url.host, host.hasPrefix("beta.switcheo.exchange") {
+                //open dapp browser
+                DispatchQueue.main.async {
+                    Controller().openSwitcheoDapp()
+                }
+                decisionHandler(.cancel)
+            } else {
+                print("Open it locally")
+                decisionHandler(.allow)
+            }
+        } else {
+             decisionHandler(.allow)
+        }
     }
 }

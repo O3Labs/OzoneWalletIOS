@@ -13,25 +13,27 @@ class Controller: NSObject {
     
     func openSwitcheoDapp() {
         let url = URL(string: "https://beta.switcheo.exchange/?ref=o3")
-        openDappBrowser(url: url!, modal: true)
+        openDappBrowser(url: url!, modal: true, moreButton: true)
     }
     
-    func openDappBrowser(url: URL, modal: Bool) {
+    func openDappBrowser(url: URL, modal: Bool, moreButton:Bool = false) {
         
-        guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {
+        let top = UIApplication.topViewController()
+        if  top == nil {
             return
         }
         
         let nav = UIStoryboard(name: "Browser", bundle: nil).instantiateInitialViewController() as! UINavigationController
         if let vc = nav.viewControllers.first as? DAppBrowserViewController {
             vc.url = url
+            vc.showMoreButton = moreButton
             if modal == true {
-                tabbar.present(nav, animated: true, completion: nil)
+                top!.present(nav, animated: true, completion: nil)
             } else {
-                if tabbar.selectedViewController == nil {
+                if top == nil {
                     return
                 }
-                if let selectedNav = tabbar.selectedViewController! as? UINavigationController {
+                if let selectedNav = top as? UINavigationController {
                     selectedNav.hidesBottomBarWhenPushed = true
                     selectedNav.pushViewController(vc, animated: true)
                 }

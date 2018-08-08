@@ -43,7 +43,6 @@ class AppState: NSObject {
     }
     
     static func dismissPortfolioNotification() -> Bool {
-        return false
         if UserDefaults.standard.value(forKey: "dismissedPortfolioNotification") == nil {
             return false
         }
