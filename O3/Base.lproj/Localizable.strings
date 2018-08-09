@@ -384,6 +384,9 @@
 /* Error to display when the user tries to send an invalid amount */
 "SEND_Invalid_Amount_Error" = "Invalid Amount Entered";
 
+/* A string that shows how many transactions are currently ahead of you in the mempool */
+"SEND_mempool_height" = "%@ transactions ahead of you"; /* NEW */
+
 /* Error To display when the user is trying to send without enough balance */
 "SEND_Not_Enough_Balance_Error" = "You don't have enough %@. Your balance is %@";
 
@@ -697,7 +700,7 @@
 "WALLET_O3_Wallet" = "O3 Wallet";
 
 /* A label to show that ontology requires a network fee in order to sync */
-"WALLET_Ontology_sync_requires_gas" = "Syncing Ontology requires a network fee of 0.01 ONG"; /* NEW */
+"WALLET_Ontology_sync_requires_gas" = "Syncing Ontology requires a network fee of 0.01 ONG";
 
 /* A title for the request action in the wallet */
 "WALLET_Request" = "request";

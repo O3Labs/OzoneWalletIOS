@@ -38,6 +38,10 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     @IBOutlet weak var selectedAssetBalance: UILabel!
     @IBOutlet weak var networkFeeLabel: UILabel!
 
+    @IBOutlet weak var mempoolHeightLabel: UILabel!
+    @IBOutlet weak var checkboxPriority: UIButton!
+    @IBOutlet weak var priorityLabel: UILabel!
+
     var gasBalance: Double = 0.0
     var transactionCompleted: Bool!
     var selectedAsset: TransferableAsset?
@@ -68,6 +72,20 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         }
     }
 
+    func getMempool() {
+        NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight { result in
+            switch(result) {
+            case .failure(let error):
+                return
+            case .success(let count):
+                DispatchQueue.main.async {
+                    self.mempoolHeightLabel.isHidden = false
+                    self.mempoolHeightLabel.text = String(format: SendStrings.mempoolHeight, count.description)
+                }
+            }
+        }
+    }
+
     override func viewDidLoad() {
         addThemedElements()
         applyNavBarTheme()
@@ -81,6 +99,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                 AppState.bestSeedNodeURL = bestNode
             }
         }
+        getMempool()
 
         tableView.tableFooterView = UIView(frame: .zero)
         self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
@@ -146,8 +165,11 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                     if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                         AppState.bestSeedNodeURL = bestNode
                     }
-
-                    Authenticated.account?.sendNep5Token(seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash,decimals: decimals,  amount: amount, toAddress: toAddress, completion: { (completed, _) in
+                    var fee = 0.0
+                    if self.checkboxPriority.isSelected {
+                        fee = 0.0011
+                    }
+                    Authenticated.account?.sendNep5Token(network: AppState.network, seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, amount: amount, toAddress: toAddress, fee: fee, completion: { (completed, _) in
 
                         O3HUD.stop {
                             self.transactionCompleted = completed ?? false
@@ -183,8 +205,12 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                     var customAttributes: [TransactionAttritbute] = []
                     let remark = String(format: "O3XSEND")
                     customAttributes.append(TransactionAttritbute(remark: remark))
+                    var fee = 0.0
+                    if self.checkboxPriority.isSelected {
+                        fee = 0.0011
+                    }
 
-                    Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes) { txid, _ in
+                    Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes, fee: fee) { txid, _ in
                         O3HUD.stop {
                             if txid != nil {
                                 self.transactionCompleted = true
@@ -192,6 +218,8 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                                                        customAttributes: [
                                                         "Asset Name": assetName,
                                                         "Amount": amount])
+                            } else {
+                                self.transactionCompleted = false
                             }
                             self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                         }
@@ -410,6 +438,10 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         performSegue(withIdentifier: "segueToAddressSelect", sender: nil)
     }
 
+    @IBAction func priorityTapped(_ sender: Any) {
+        checkboxPriority!.isSelected = !checkboxPriority!.isSelected
+    }
+
     @IBAction func tappedCloseAddressSeletor(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
@@ -450,8 +482,14 @@ extension SendTableViewController: AssetSelectorDelegate {
         DispatchQueue.main.async {
             if selected.id.contains("0000000") {
                 self.showNetworkFeeLabel()
+                self.mempoolHeightLabel.isHidden = true
+                self.checkboxPriority.isHidden = true
+                self.priorityLabel.isHidden = true
             } else {
                 self.networkFeeLabel.isHidden = true
+                self.checkboxPriority.isHidden = false
+                self.priorityLabel.isHidden = false
+                self.mempoolHeightLabel.isHidden = false
             }
             self.gasBalance = gasBalance
             self.selectedAsset = selected

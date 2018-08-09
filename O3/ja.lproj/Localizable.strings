@@ -384,6 +384,9 @@
 /* Error to display when the user tries to send an invalid amount */
 "SEND_Invalid_Amount_Error" = "無効な金額が入力されています";
 
+/* A string that shows how many transactions are currently ahead of you in the mempool */
+"SEND_mempool_height" = "%@ transactions ahead of you"; /* NEW */
+
 /* Error To display when the user is trying to send without enough balance */
 "SEND_Not_Enough_Balance_Error" = "十分な%@がありません。あなたの残高は%@です。";
 
@@ -691,13 +694,13 @@
 "WALLET_My_Address_Explanation" = "このアドレスを用いて取引所やウォレットからNEOやGASやONTやONG、NEP5トークンを受け取ることができます。";
 
 /* Title of the My Address Page */
-"WALLET_My_Address_Title" = "マイアドレス";   
+"WALLET_My_Address_Title" = "マイアドレス";
 
 /* String in transaction history indicating O3 Wallet */
 "WALLET_O3_Wallet" = "O3ウォレット";
 
 /* A label to show that ontology requires a network fee in order to sync */
-"WALLET_Ontology_sync_requires_gas" = "Ontologyチェーンのシンクロには0.01 ONGの手数料がかかります。   "; /* NEW */
+"WALLET_Ontology_sync_requires_gas" = "Ontologyチェーンのシンクロには0.01 ONGの手数料がかかります。   ";
 
 /* A title for the request action in the wallet */
 "WALLET_Request" = "リクエスト";

@@ -78,6 +78,7 @@ public class NeoClient {
         case getConnectionCount = "getconnectioncount"
         case sendTransaction = "sendrawtransaction"
         case invokeContract = "invokescript"
+        case getMemPool = "getrawmempool"
     }
 
     public init(seed: String) {
@@ -146,6 +147,22 @@ public class NeoClient {
                     return
                 }
                 let result = NeoClientResult.success(success)
+                completion(result)
+            }
+        }
+    }
+
+    public func getMempoolHeight(completion: @escaping(NeoClientResult<Int>) -> Void) {
+        sendJSONRPCRequest(.getMemPool, params: []) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                guard let mempool = response["result"] as? [String] else {
+                    completion(.failure(.invalidData))
+                    return
+                }
+                let result = NeoClientResult.success(mempool.count)
                 completion(result)
             }
         }

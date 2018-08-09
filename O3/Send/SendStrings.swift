@@ -19,6 +19,8 @@ struct SendStrings {
 
     static let sendConfirmationPrompt = NSLocalizedString("SEND_Confirmation_Prompt", comment: "A confirmation dialog that asks the user to confirm the asset, amount, and recipient of their transaction")
 
+    static let mempoolHeight = NSLocalizedString("SEND_mempool_height", comment: "A string that shows how many transactions are currently ahead of you in the mempool")
+
     static let authenticateToSendPrompt = NSLocalizedString("SEND_Authenticate_To_Send",
                                                      comment: "A prompt asking for user authentication before performing the send action")
     static let toLabel = NSLocalizedString("SEND_To_Label", comment: "Label title for the send to field on the send screen")
