@@ -10,6 +10,7 @@ import UIKit
 import WebKit
 import Neoutils
 import KeychainAccess
+import Lottie
 
 extension Bundle {
     var releaseVersionNumber: String? {
@@ -70,6 +71,11 @@ class DAppBrowserViewController: UIViewController {
         self.webView?.navigationDelegate = self
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(didTapLeft(_:)))
+        
+        let loadingView = LOTAnimationView(name: "loader_portfolio")
+        loadingView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        loadingView.play()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: loadingView)
     }
     
     override func didReceiveMemoryWarning() {
@@ -351,6 +357,7 @@ extension DAppBrowserViewController: WKNavigationDelegate {
         } else {
             self.title = webView.title
         }
+        self.navigationItem.rightBarButtonItem = nil
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -377,4 +384,5 @@ extension DAppBrowserViewController: WKNavigationDelegate {
              decisionHandler(.allow)
         }
     }
+
 }
