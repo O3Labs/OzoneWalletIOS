@@ -12,11 +12,11 @@ import Crashlytics
 import SwiftTheme
 
 class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
-    let numberOfTokensPerRow: CGFloat = 2
-    let gridSpacing: CGFloat = 8
-    var supportedTokens = [NEP5Token]()
-    var filteredTokens = [NEP5Token]()
-    var selectedAsset = ""
+    let numberOfTokensPerRow: CGFloat = 3
+    let gridSpacing: CGFloat = 0
+    var supportedAssets = [Asset]()
+    var filteredTokens = [Asset]()
+    var selectedAsset: Asset?
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -29,14 +29,14 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
 
-    func loadTokens() {
-        O3Client().getTokens { result in
+    func loadAssets() {
+        O3Client().getAssetsForMarketPlace() { result in
             switch result {
             case .failure:
                 return
-            case .success(let tokens):
-                self.supportedTokens = tokens
-                self.filteredTokens = self.supportedTokens
+            case .success(let assets):
+                self.supportedAssets = assets
+                self.filteredTokens = self.supportedAssets
                 DispatchQueue.main.async { self.collectionView?.reloadData() }
             }
         }
@@ -52,9 +52,38 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         searchBar.change(textFont: UIFont(name: "Avenir-Book", size: CGFloat(14)))
         searchBar.delegate = self
         self.hideKeyboardWhenTappedAround()
-        loadTokens()
+        loadAssets()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.hidesBottomBarWhenPushed = false
     }
 
+    @IBAction func didTapButtonInHeader(_ sender: Any) {
+        Controller().openSwitcheoDapp()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if O3Cache.neo().value <= 0 && O3Cache.gas().value <= 0 {
+            return CGSize.zero
+        }
+        return CGSize(width: UIScreen.main.bounds.size.width, height: 150.0)
+    }
+     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath) as? UICollectionReusableView else {
+            fatalError("Could not find proper header")
+        }
+        
+        if kind == UICollectionElementKindSectionHeader {
+           
+            return header
+        }
+        
+        return UICollectionReusableView()
+    }
+
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filteredTokens.count
     }
@@ -82,21 +111,14 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedAsset = filteredTokens[indexPath.row].symbol
-        DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "segueToAssetDetail", sender: nil)
-        }
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let dest = segue.destination as? AssetDetailViewController else {
-            fatalError("Unknown segue type attempted")
-        }
-        dest.selectedAsset = selectedAsset
+        self.hidesBottomBarWhenPushed = true
+        selectedAsset = filteredTokens[indexPath.row]
+        let url = String(format:"%@?address=%@", selectedAsset!.url, Authenticated.account!.address)
+        Controller().openDappBrowser(url: URL(string: url)!,modal: true)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filteredTokens = searchText.isEmpty ? supportedTokens : supportedTokens.filter { (item: NEP5Token) -> Bool in
+        filteredTokens = searchText.isEmpty ? supportedAssets : supportedAssets.filter { (item: Asset) -> Bool in
             return item.name.lowercased().hasPrefix(searchText.lowercased()) ||
                 item.symbol.lowercased().hasPrefix(searchText.lowercased())
         }

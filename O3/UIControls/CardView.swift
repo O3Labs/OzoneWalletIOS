@@ -30,9 +30,9 @@ class CardView: UIView {
 
             shadowLayer.shadowColor = UIColor.black.cgColor
             shadowLayer.shadowPath = shadowLayer.path
-            shadowLayer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+            shadowLayer.shadowOffset = CGSize(width: 0.0, height: 1.0)
             shadowLayer.shadowOpacity = 0.2
-            shadowLayer.shadowRadius = 4
+            shadowLayer.shadowRadius = 2
 
             layer.insertSublayer(shadowLayer, at: 0)
         }

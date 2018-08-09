@@ -41,4 +41,16 @@ class AppState: NSObject {
         UserDefaults.standard.setValue(claimingState.rawValue, forKey: address + "_claimingState")
         UserDefaults.standard.synchronize()
     }
+    
+    static func dismissPortfolioNotification() -> Bool {
+        if UserDefaults.standard.value(forKey: "dismissedPortfolioNotification1.8.0") == nil {
+            return false
+        }
+        return UserDefaults.standard.bool(forKey: "dismissedPortfolioNotification1.8.0")
+    }
+    
+    static func setDismissPortfolioNotification(dismiss: Bool) {
+        UserDefaults.standard.setValue(dismiss, forKey: "dismissedPortfolioNotification1.8.0")
+        UserDefaults.standard.synchronize()
+    }
 }

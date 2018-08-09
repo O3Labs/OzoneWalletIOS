@@ -293,14 +293,34 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
 
     }
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == sections.unclaimedGAS.rawValue {
+        if indexPath.section == sections.unclaimedGAS.rawValue
+            || indexPath.section == sections.toolbar.rawValue
+            || indexPath.section == sections.inbox.rawValue {
             return false
         }
-        return false
+        return true
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == sections.unclaimedGAS.rawValue
+            || indexPath.section == sections.toolbar.rawValue
+            || indexPath.section == sections.inbox.rawValue {
+            return
+        }
+        
+        var blockchain = "neo"
+        var symbol = "neo"
+        if indexPath.section == sections.neoAssets.rawValue {
+            symbol = indexPath.row == 0 ? "neo" : "gas"
+        }else if indexPath.section == sections.nep5tokens.rawValue {
+            symbol = tokenAssets[indexPath.row].symbol
+        } else if indexPath.section == sections.ontologyAssets.rawValue {
+            blockchain = "ont"
+            symbol = ontologyAssets[indexPath.row].symbol
+        }
+        let urlString = String(format:"https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.account!.address)
+        Controller().openDappBrowser(url: URL(string: urlString)!, modal: true)
     }
 
     func setLocalizedStrings() {

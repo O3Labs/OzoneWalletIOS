@@ -16,6 +16,7 @@ class PortfolioAssetCell: UITableViewCell {
     @IBOutlet weak var assetFiatPriceLabel: UILabel!
     @IBOutlet weak var assetFiatAmountLabel: UILabel!
     @IBOutlet weak var assetPercentChangeLabel: UILabel!
+    @IBOutlet weak var assetIcon: UIImageView!
 
     struct Data {
         var assetName: String
@@ -66,6 +67,9 @@ class PortfolioAssetCell: UITableViewCell {
             assetPercentChangeLabel.text = String.percentChangeStringShort(latestPrice: latestPrice, previousPrice: firstPrice,
                                                                            referenceCurrency: referenceCurrency)
             assetPercentChangeLabel.theme_textColor = referencePrice >= referenceFirstPrice ? O3Theme.positiveGainColorPicker : O3Theme.negativeLossColorPicker
+            
+            let logoURL = String(format: "https://cdn.o3.network/img/neo/%@.png", assetName.uppercased())
+            assetIcon.kf.setImage(with: URL(string: logoURL))
         }
     }
 }

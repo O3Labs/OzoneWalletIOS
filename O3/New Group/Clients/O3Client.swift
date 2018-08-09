@@ -195,6 +195,43 @@ public class O3Client {
             }
         }
     }
+    
+    func getAssetsForMarketPlace(completion: @escaping(O3ClientResult<[Asset]>) -> Void) {
+        var endpoint = "https://api.o3.network/v1/marketplace"
+        #if TESTNET
+        endpoint = "https://api.o3.network/v1/marketplace?network=test"
+        #endif
+        #if PRIVATENET
+        endpoint = "https://api.o3.network/v1/marketplace?network=private"
+        #endif
+        
+        sendRequest(endpoint, method: .GET, data: nil, noBaseURL: true) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                let result = response["result"] as? JSONDictionary
+                let responseData = result!["data"] as? JSONDictionary
+                guard let data = try? JSONSerialization.data(withJSONObject: responseData!["assets"]!, options: .prettyPrinted),
+                    let assetList = try? decoder.decode([Asset].self, from: data) else {
+                        return
+                }
+                guard let nep5data = try? JSONSerialization.data(withJSONObject: responseData!["nep5"]!, options: .prettyPrinted),
+                    let nep5list = try? decoder.decode([Asset].self, from: nep5data) else {
+                        return
+                }
+                var combinedList: [Asset] = []
+                for item in assetList {
+                    combinedList.append(item)
+                }
+                for item in nep5list {
+                    combinedList.append(item)
+                }
+                completion(.success(combinedList))
+            }
+        }
+    }
 
     func getTokens(completion: @escaping(O3ClientResult<[NEP5Token]>) -> Void) {
         var endpoint = "https://platform.o3.network/api/v1/neo/nep5"

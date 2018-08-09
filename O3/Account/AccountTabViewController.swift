@@ -67,8 +67,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     }
 
     @objc func openDAppBrowser(_ sender: Any) {
-        let vc = UIStoryboard(name: "Browser", bundle: nil).instantiateInitialViewController()
-        self.present(vc!, animated: true, completion: nil)
+        Controller().openSwitcheoDapp()
     }
 
     override func viewWillAppear(_ animated: Bool) {
