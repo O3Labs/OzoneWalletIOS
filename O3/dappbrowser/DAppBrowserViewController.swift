@@ -337,7 +337,7 @@ extension DAppBrowserViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if let url = webView.url,
-            let host = url.host, host.hasPrefix("beta.switcheo.exchange") {
+            let host = url.host, host.hasPrefix("switcheo.exchange") {
             let button = UIButton(type: .custom)
             button.setImage(#imageLiteral(resourceName: "ic_verified_badge"), for: .normal)
             button.setTitle(host.firstUppercased, for: .normal)
@@ -363,7 +363,7 @@ extension DAppBrowserViewController: WKNavigationDelegate {
                 print("Redirected to browser. No need to open it locally")
                 decisionHandler(.cancel)
             } else if let url = navigationAction.request.url,
-                let host = url.host, host.hasPrefix("beta.switcheo.exchange") {
+                let host = url.host, host.hasPrefix("switcheo.exchange") {
                 //open dapp browser
                 DispatchQueue.main.async {
                     Controller().openSwitcheoDapp()

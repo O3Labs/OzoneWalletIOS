@@ -140,8 +140,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         walletHeaderCollectionView.delegate = self
         walletHeaderCollectionView.dataSource = self
-        assetsTable.delegate = self
-        assetsTable.dataSource = self
+        //avoid table rendering by setting the delegate & datasource to nil
+        assetsTable.delegate = nil
+        assetsTable.dataSource = nil
         assetsTable.tableFooterView = UIView(frame: .zero)
         
         //control the size of the graph area here
@@ -149,6 +150,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupGraphView()
         
         super.viewDidLoad()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -174,7 +176,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func updateWithBalanceData(_ assets: [TransferableAsset]) {
         self.displayedAssets = assets
-        DispatchQueue.main.async { self.assetsTable.reloadData() }
+        DispatchQueue.main.async {
+            self.assetsTable.delegate = self
+            self.assetsTable.dataSource = self
+            self.assetsTable.reloadData()
+        }
     }
     
     func updateWithPortfolioData(_ portfolio: PortfolioValue) {
@@ -249,7 +255,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             chain = "ont"
         }
         let url = URL(string: String(format: "https://public.o3.network/%@/assets/%@", chain, asset.symbol, Authenticated.account!.address))
-//        let url = URL(string: String(format: "http://localhost:8080/public/%@/assets/%@?address=%@", chain, asset.symbol, Authenticated.account!.address))
         DispatchQueue.main.async {
             Controller().openDappBrowser(url: url!, modal: true)
         }
@@ -263,6 +268,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
+            //check balance to show the banner
+            if O3Cache.neo().value <= 0 && O3Cache.gas().value <= 0 {
+                return 0
+            }
             return AppState.dismissPortfolioNotification() == true ? 0 : 1
         }
         return self.displayedAssets.count

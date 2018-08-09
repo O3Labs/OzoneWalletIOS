@@ -12,7 +12,7 @@ import DeckTransition
 class Controller: NSObject {
     
     func openSwitcheoDapp() {
-        let url = URL(string: "https://beta.switcheo.exchange/?ref=o3")
+        let url = URL(string: "https://switcheo.exchange/?ref=o3")
         openDappBrowser(url: url!, modal: true, moreButton: true)
     }
     
