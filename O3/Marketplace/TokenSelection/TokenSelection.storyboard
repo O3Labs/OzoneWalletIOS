@@ -45,8 +45,8 @@
                                                                 <constraint firstAttribute="width" constant="45" id="xG9-uo-Rgw"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ONT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEe-s9-evG">
-                                                            <rect key="frame" x="16" y="80.5" width="31" height="19.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ONT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEe-s9-evG">
+                                                            <rect key="frame" x="8" y="80.5" width="113" height="19.5"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -54,10 +54,11 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="dEe-s9-evG" secondAttribute="bottom" constant="16" id="0mb-aQ-nKh"/>
-                                                        <constraint firstItem="dEe-s9-evG" firstAttribute="leading" secondItem="Hdt-37-YIM" secondAttribute="leading" constant="16" id="1tq-Q1-rTN"/>
+                                                        <constraint firstItem="dEe-s9-evG" firstAttribute="leading" secondItem="Hdt-37-YIM" secondAttribute="leading" constant="8" id="1tq-Q1-rTN"/>
                                                         <constraint firstItem="CEV-Wf-EFn" firstAttribute="centerY" secondItem="Hdt-37-YIM" secondAttribute="centerY" constant="-8" id="2zm-f6-eBF"/>
+                                                        <constraint firstAttribute="trailing" secondItem="dEe-s9-evG" secondAttribute="trailing" constant="8" id="V4Q-BG-vjc"/>
                                                         <constraint firstItem="CEV-Wf-EFn" firstAttribute="centerX" secondItem="Hdt-37-YIM" secondAttribute="centerX" id="s8f-Pk-dXN"/>
+                                                        <constraint firstItem="dEe-s9-evG" firstAttribute="top" secondItem="CEV-Wf-EFn" secondAttribute="bottom" constant="8" id="xET-A7-cRa"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -79,19 +80,19 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can now trade your favorite tokens straight from your O3 wallet with Switcheo Decentralized Exchange!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lVQ-3i-Wz8">
-                                            <rect key="frame" x="16" y="8" width="288" height="57.5"/>
+                                            <rect key="frame" x="8" y="8" width="304" height="57.5"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                             <color key="textColor" name="grey"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It's fast, simple &amp; safe. Try it out!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAd-80-ieg">
-                                            <rect key="frame" x="16" y="73" width="288" height="19.5"/>
+                                            <rect key="frame" x="8" y="73" width="304" height="19.5"/>
                                             <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="14"/>
                                             <color key="textColor" name="lightThemeOrange"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E0V-5j-WgC">
-                                            <rect key="frame" x="16" y="108.5" width="288" height="44"/>
+                                            <rect key="frame" x="8" y="102.5" width="304" height="44"/>
                                             <color key="backgroundColor" name="lightThemeGreen"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="5BF-HK-IT7"/>
@@ -111,14 +112,14 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="E0V-5j-WgC" firstAttribute="top" secondItem="QAd-80-ieg" secondAttribute="bottom" constant="16" id="1H7-aX-moC"/>
+                                        <constraint firstItem="E0V-5j-WgC" firstAttribute="top" secondItem="QAd-80-ieg" secondAttribute="bottom" constant="10" id="1H7-aX-moC"/>
                                         <constraint firstItem="QAd-80-ieg" firstAttribute="trailing" secondItem="lVQ-3i-Wz8" secondAttribute="trailing" id="5Mn-Pj-JXn"/>
-                                        <constraint firstItem="E0V-5j-WgC" firstAttribute="leading" secondItem="jFq-8C-HQB" secondAttribute="leading" constant="16" id="Kdk-4h-S8s"/>
+                                        <constraint firstItem="E0V-5j-WgC" firstAttribute="leading" secondItem="jFq-8C-HQB" secondAttribute="leading" constant="8" id="Kdk-4h-S8s"/>
                                         <constraint firstItem="lVQ-3i-Wz8" firstAttribute="top" secondItem="jFq-8C-HQB" secondAttribute="top" constant="8" id="L0Z-y7-W3p"/>
-                                        <constraint firstItem="lVQ-3i-Wz8" firstAttribute="leading" secondItem="jFq-8C-HQB" secondAttribute="leading" constant="16" id="XJK-oG-0kV"/>
+                                        <constraint firstItem="lVQ-3i-Wz8" firstAttribute="leading" secondItem="jFq-8C-HQB" secondAttribute="leading" constant="8" id="XJK-oG-0kV"/>
                                         <constraint firstItem="QAd-80-ieg" firstAttribute="leading" secondItem="lVQ-3i-Wz8" secondAttribute="leading" id="aUo-1H-giw"/>
-                                        <constraint firstAttribute="trailing" secondItem="E0V-5j-WgC" secondAttribute="trailing" constant="16" id="fpx-NJ-G2b"/>
-                                        <constraint firstAttribute="trailing" secondItem="lVQ-3i-Wz8" secondAttribute="trailing" constant="16" id="kAg-3v-I8R"/>
+                                        <constraint firstAttribute="trailing" secondItem="E0V-5j-WgC" secondAttribute="trailing" constant="8" id="fpx-NJ-G2b"/>
+                                        <constraint firstAttribute="trailing" secondItem="lVQ-3i-Wz8" secondAttribute="trailing" constant="8" id="kAg-3v-I8R"/>
                                         <constraint firstItem="QAd-80-ieg" firstAttribute="top" secondItem="lVQ-3i-Wz8" secondAttribute="bottom" constant="8" id="may-p1-lwg"/>
                                     </constraints>
                                 </collectionReusableView>

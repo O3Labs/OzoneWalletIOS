@@ -15,20 +15,20 @@ protocol PortfolioNotificationTableViewCellDelegate {
 class PortfolioNotificationTableViewCell: UITableViewCell {
 
     @IBOutlet weak var cardView: CardView?
-    
+
     override func awakeFromNib() {
         contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
         super.awakeFromNib()
     }
-    
+
     var delegate: PortfolioNotificationTableViewCellDelegate?
-    
+
     @IBAction func didTapAction(_ sender: Any) {
         Controller().openSwitcheoDapp()
     }
-    
+
     @IBAction func didTapDismiss(_ sender: Any) {
         self.delegate?.didDismiss()
     }
-    
+
 }

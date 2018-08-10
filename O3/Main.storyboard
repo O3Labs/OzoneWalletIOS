@@ -24,7 +24,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="jYl-dS-zJf">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="227"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="250"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9Rm-30-S8j">
@@ -124,10 +124,10 @@
                                             </cells>
                                         </collectionView>
                                         <view clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4aB-pR-7EX">
-                                            <rect key="frame" x="0.0" y="85" width="375" height="97"/>
+                                            <rect key="frame" x="0.0" y="85" width="375" height="120"/>
                                             <subviews>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ebK-hs-vfc">
-                                                    <rect key="frame" x="177" y="38" width="20" height="20"/>
+                                                    <rect key="frame" x="177" y="49.5" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -138,7 +138,7 @@
                                             </constraints>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="zy3-or-vYp">
-                                            <rect key="frame" x="0.0" y="182" width="375" height="45"/>
+                                            <rect key="frame" x="0.0" y="205" width="375" height="45"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KsM-vb-KhS">
                                                     <rect key="frame" x="0.0" y="0.0" width="62.5" height="45"/>
@@ -218,7 +218,7 @@
                                             </constraints>
                                         </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xPp-QI-GoT">
-                                            <rect key="frame" x="62.5" y="225" width="62.5" height="2"/>
+                                            <rect key="frame" x="62.5" y="248" width="62.5" height="2"/>
                                             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="Ble-TR-p4p"/>
@@ -244,7 +244,7 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="notification-cell" rowHeight="160" id="K4C-Pv-dGK" customClass="PortfolioNotificationTableViewCell" customModule="O3" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="255" width="375" height="160"/>
+                                        <rect key="frame" x="0.0" y="278" width="375" height="160"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="K4C-Pv-dGK" id="7z7-sE-Nv5">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="159.5"/>
@@ -346,7 +346,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="portfolioAssetCell" id="aXr-5Y-HYz" customClass="PortfolioAssetCell" customModule="O3" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="415" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="438" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aXr-5Y-HYz" id="S27-rP-lCY">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>

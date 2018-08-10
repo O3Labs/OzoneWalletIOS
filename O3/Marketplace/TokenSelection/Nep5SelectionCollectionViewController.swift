@@ -30,7 +30,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     }
 
     func loadAssets() {
-        O3Client().getAssetsForMarketPlace() { result in
+        O3Client().getAssetsForMarketPlace { result in
             switch result {
             case .failure:
                 return
@@ -54,7 +54,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         self.hideKeyboardWhenTappedAround()
         loadAssets()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.hidesBottomBarWhenPushed = false
@@ -63,7 +63,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     @IBAction func didTapButtonInHeader(_ sender: Any) {
         Controller().openSwitcheoDapp()
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if O3Cache.neo().value <= 0 && O3Cache.gas().value <= 0 {
             return CGSize.zero
@@ -74,16 +74,15 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath) as? UICollectionReusableView else {
             fatalError("Could not find proper header")
         }
-        
+
         if kind == UICollectionElementKindSectionHeader {
-           
+
             return header
         }
-        
+
         return UICollectionReusableView()
     }
 
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filteredTokens.count
     }
@@ -102,19 +101,19 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let frameWidth = (view.frame.width - 16 - (CGFloat(max(0, numberOfTokensPerRow - 1)) * gridSpacing))
+        let frameWidth = (view.frame.width - 8 - (CGFloat(max(0, numberOfTokensPerRow - 1)) * gridSpacing))
         return CGSize(width: frameWidth / numberOfTokensPerRow, height: frameWidth / numberOfTokensPerRow)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        return UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.hidesBottomBarWhenPushed = true
         selectedAsset = filteredTokens[indexPath.row]
-        let url = String(format:"%@?address=%@", selectedAsset!.url, Authenticated.account!.address)
-        Controller().openDappBrowser(url: URL(string: url)!,modal: true)
+        let url = String(format: "%@?address=%@", selectedAsset!.url, Authenticated.account!.address)
+        Controller().openDappBrowser(url: URL(string: url)!, modal: true)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

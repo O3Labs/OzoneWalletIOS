@@ -431,7 +431,7 @@ public class Account {
 
     private func buildNEP5TransferScript(scriptHash: String, decimals: Int, fromAddress: String,
                                          toAddress: String, amount: Double) -> [UInt8] {
-        
+
         let amountToSend = Int(amount * pow(10, Double(decimals)))
         let fromAddressHash = fromAddress.hashFromAddress()
         let toAddressHash = toAddress.hashFromAddress()
@@ -442,7 +442,7 @@ public class Account {
         return [UInt8(script.count)] + script
     }
 
-    public func sendNep5Token(network: Network, seedURL: String, tokenContractHash: String, amount: Double, toAddress: String,
+    public func sendNep5Token(network: Network, seedURL: String, tokenContractHash: String, decimals: Int, amount: Double, toAddress: String,
                               attributes: [TransactionAttritbute]? = nil, fee: Double = 0.0, completion: @escaping(Bool?, Error?) -> Void) {
 
         var customAttributes: [TransactionAttritbute] = []
@@ -452,7 +452,7 @@ public class Account {
         customAttributes.append(TransactionAttritbute(descriptionHex: tokenContractHash))
 
         //send nep5 token without using utxo
-        let scriptBytes = self.buildNEP5TransferScript(scriptHash: tokenContractHash,
+        let scriptBytes = self.buildNEP5TransferScript(scriptHash: tokenContractHash, decimals: decimals,
                                                        fromAddress: self.address, toAddress: toAddress, amount: amount)
 
         if fee == 0 {

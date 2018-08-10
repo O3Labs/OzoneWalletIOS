@@ -308,18 +308,18 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             || indexPath.section == sections.inbox.rawValue {
             return
         }
-        
+
         var blockchain = "neo"
         var symbol = "neo"
         if indexPath.section == sections.neoAssets.rawValue {
             symbol = indexPath.row == 0 ? "neo" : "gas"
-        }else if indexPath.section == sections.nep5tokens.rawValue {
+        } else if indexPath.section == sections.nep5tokens.rawValue {
             symbol = tokenAssets[indexPath.row].symbol
         } else if indexPath.section == sections.ontologyAssets.rawValue {
             blockchain = "ont"
             symbol = ontologyAssets[indexPath.row].symbol
         }
-        let urlString = String(format:"https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.account!.address)
+        let urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.account!.address)
         Controller().openDappBrowser(url: URL(string: urlString)!, modal: true)
     }
 

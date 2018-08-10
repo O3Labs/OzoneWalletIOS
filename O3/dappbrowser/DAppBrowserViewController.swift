@@ -22,19 +22,19 @@ extension Bundle {
 }
 
 class DAppBrowserViewController: UIViewController {
-    
+
     @IBOutlet var containerView: UIView?
     var webView: WKWebView?
     var callbackMethodName: String = "callback"
     let availableCommands = ["init", "requestToConnect", "getPlatform", "getAccounts", "getBalances", "isAppAvailable", "requestToSign", "getDeviceInfo", "verifySession"]
-    
+
     var loggedIn = false
     //create new session ID everytime user open this page
     var sessionID: String?
     var currentURL: URL?
     var url: URL?
     var showMoreButton: Bool? {
-        didSet{
+        didSet {
             if showMoreButton == true {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ellipsis-v"), style: .plain, target: self, action: #selector(didTapRight(_:)))
             }
@@ -42,7 +42,7 @@ class DAppBrowserViewController: UIViewController {
     }
     override func loadView() {
         super.loadView()
-        
+
         let contentController = WKUserContentController()
         //only on message handler
         contentController.add(self, name: "sendMessageHandler")
@@ -51,13 +51,13 @@ class DAppBrowserViewController: UIViewController {
         self.webView = WKWebView( frame: self.containerView!.bounds, configuration: config)
         self.view = self.webView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+
         self.title = ""
         self.hidesBottomBarWhenPushed = true
-        
+
         if Authenticated.account == nil {
             return
         }
@@ -65,19 +65,19 @@ class DAppBrowserViewController: UIViewController {
             self.dismiss(animated: false, completion: nil)
             return
         }
-        
+
         let req = URLRequest(url: url!)
         self.webView!.load(req)
         self.webView?.navigationDelegate = self
-        
+
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(didTapLeft(_:)))
-        
+
         let loadingView = LOTAnimationView(name: "loader_portfolio")
         loadingView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         loadingView.play()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: loadingView)
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -85,33 +85,32 @@ class DAppBrowserViewController: UIViewController {
         if self.loggedIn == true {
             let message = String(format: "You are connected to %@\nDisconnect and close O3 dapp browser?", self.currentURL!.host!)
             OzoneAlert.confirmDialog(message: message, cancelTitle: "Stay", confirmTitle: "Close", didCancel: {
-                
+
             }) {
                self.close()
             }
-            
+
             return
         }
         self.close()
     }
-    
+
     @objc func didTapRight(_ sender: Any) {
 
         let message = String(format: "%@", (webView!.url?.absoluteString)!)
         var dialogTitle: String? = webView?.title!
-        
+
         if self.loggedIn == true {
             dialogTitle = String(format: "You are connected to %@", self.currentURL!.host!)
         }
-        
+
         let alert = UIAlertController(title: dialogTitle, message: message, preferredStyle: .actionSheet)
-       
-        
+
         let share = UIAlertAction(title: AccountStrings.shareAction, style: .default) { _ in
             self.share()
         }
         alert.addAction(share)
-        
+
         //only show log out button when user logged in
         if  self.loggedIn == true {
             let logout = UIAlertAction(title: "Logout and return to O3", style: .default) { _ in
@@ -119,57 +118,57 @@ class DAppBrowserViewController: UIViewController {
             }
             alert.addAction(logout)
         }
-        
+
         let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
-            
+
         }
         alert.addAction(cancel)
-        
+
         alert.popoverPresentationController?.sourceView = sender as? UIView
         present(alert, animated: true, completion: nil)
     }
-    
+
     func share() {
         let shareURL = URL(string: "https://o3.network/")
         let activityViewController = UIActivityViewController(activityItems: [shareURL as Any], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
-        
+
         self.present(activityViewController, animated: true, completion: nil)
     }
-    
+
     @objc func close() {
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     @objc func logout() {
         //notify the connected app that user has loggedout
         self.loggedIn = false
         sessionRevoked()
         self.close()
     }
-    
+
     func sessionRevoked() {
         sessionID = nil
         self.callback(command: "revokedSession", data: [:], errorMessage: nil, withSession: true)
     }
-    
+
     func callback(command: String, data: [String: Any]?, errorMessage: String?, withSession: Bool) {
         var dic: [String: Any] = [
             "command": command
         ]
-        
+
         if data != nil {
             dic["data"] = data
         }
-        
+
         if errorMessage != nil {
             dic["error"] = ["message": errorMessage]
         }
-        
+
         if withSession == true {
             dic["sessionID"] = sessionID
         }
-        
+
         let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
         let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
         self.webView?.evaluateJavaScript("o3.callback(\(jsonString))") { _, error in
@@ -178,16 +177,16 @@ class DAppBrowserViewController: UIViewController {
             }
         }
     }
-    
+
 }
 
 extension DAppBrowserViewController: WKScriptMessageHandler {
-    
+
     func currentAccount() -> [String: Any] {
         return ["address": Authenticated.account!.address,
                 "publicKey": Authenticated.account!.publicKeyString]
     }
-    
+
     func requestToSign(unsignedRawTransaction: String) {
         if unsignedRawTransaction.count < 2 {
             self.callback(command: "requestToSign", data: nil, errorMessage: "invalid unsigned raw transaction", withSession: true)
@@ -210,7 +209,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             self.callback(command: "requestToSign", data: dic, errorMessage: nil, withSession: true)
         }
     }
-    
+
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if (message.name != "sendMessageHandler") {
             return
@@ -222,30 +221,30 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             self.callback(command: "", data: nil, errorMessage: "Invalid data", withSession: false)
             return
         }
-        
+
         let command = jsonData["command"]!
-        
+
         if !availableCommands.contains(command) {
             self.callback(command: command, data: nil, errorMessage: "unsupported command", withSession: false)
             return
         }
-        
+
         if command == "init" {
             self.callback(command: "init", data: [:], errorMessage: nil, withSession: false)
             return
         }
-        
+
         if command == "requestToConnect" {
             //this is a URL
             let dappURL =  jsonData["data"]!
-            guard let url = URL(string: dappURL) else{
+            guard let url = URL(string: dappURL) else {
                 return
             }
             self.currentURL = url
             let host = currentURL?.host!
             let message = String(format: "%@ want to connect with your O3 app. Allow?", host!)
             OzoneAlert.confirmDialog(message: message, cancelTitle: "Cancel", confirmTitle: "Allow", didCancel: {
-                
+
             }) {
                 //pop up pincode here
                 let keychain = Keychain(service: "network.o3.neo.wallet")
@@ -253,7 +252,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                     _ = try keychain
                         .authenticationPrompt(String(format: "Connect with %@?", host!))
                         .get("ozonePrivateKey")
-                    
+
                     DispatchQueue.main.async {
                         self.title = host?.firstUppercased
                         //generate session ID
@@ -267,7 +266,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             }
             return
         }
-        
+
         if command == "verifySession" {
             let session =  jsonData["data"]!
             //invalid session
@@ -278,12 +277,12 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             self.callback(command: "verifySession", data: self.currentAccount(), errorMessage: nil, withSession: true)
             return
         }
-        
+
         //below are the methods that need permission
         if  self.loggedIn == false {
             return
         }
-        
+
         if command == "getPlatform" {
             self.callback(command: "getPlatform", data: ["platform": "ios", "version": Bundle.main.releaseVersionNumber ?? ""], errorMessage: nil, withSession: true)
         } else if command == "getAccounts" {
@@ -304,7 +303,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             self.getBalances()
         }
     }
-    
+
     func getBalances() {
         O3APIClient(network: Network.main).getAccountState(address: Authenticated.account!.address) { result in
             DispatchQueue.main.async {
@@ -334,13 +333,13 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                 }
             }
         }
-        
+
     }
-    
+
 }
 
 extension DAppBrowserViewController: WKNavigationDelegate {
-    
+
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if let url = webView.url,
             let host = url.host, host.hasPrefix("switcheo.exchange") {
@@ -348,20 +347,20 @@ extension DAppBrowserViewController: WKNavigationDelegate {
             button.setImage(#imageLiteral(resourceName: "ic_verified_badge"), for: .normal)
             button.setTitle(host.firstUppercased, for: .normal)
             button.theme_setTitleColor(O3Theme.textFieldTextColorPicker, forState: .normal)
-            button.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 0)
-            button.titleEdgeInsets = UIEdgeInsetsMake(0, 8, 0, 0)
+            button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+            button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
             button.titleLabel?.font = UIFont(name: "Avenir-Medium", size: 16)
             button.frame.size.width = 200
             self.navigationItem.titleView = button
-            
+
         } else {
             self.title = webView.title
         }
         self.navigationItem.rightBarButtonItem = nil
     }
-    
+
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if navigationAction.navigationType == .linkActivated  {
+        if navigationAction.navigationType == .linkActivated {
             if let url = navigationAction.request.url,
                 let host = url.host, host.hasPrefix("o3.network"),
                 UIApplication.shared.canOpenURL(url) {

@@ -9,7 +9,7 @@
 import Foundation
 
 extension String {
-    
+
     var firstUppercased: String {
         guard let first = first else { return "" }
         return String(first).uppercased() + dropFirst()
@@ -18,7 +18,7 @@ extension String {
         guard let first = first else { return "" }
         return String(first).capitalized + dropFirst()
     }
-    
+
     func intervaledDateString(_ interval: PriceInterval) -> String {
         let dateFormatter = DateFormatter()
         let tempLocale = dateFormatter.locale // save locale temporarily

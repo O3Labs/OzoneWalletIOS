@@ -195,7 +195,7 @@ public class O3Client {
             }
         }
     }
-    
+
     func getAssetsForMarketPlace(completion: @escaping(O3ClientResult<[Asset]>) -> Void) {
         var endpoint = "https://api.o3.network/v1/marketplace"
         #if TESTNET
@@ -204,7 +204,7 @@ public class O3Client {
         #if PRIVATENET
         endpoint = "https://api.o3.network/v1/marketplace?network=private"
         #endif
-        
+
         sendRequest(endpoint, method: .GET, data: nil, noBaseURL: true) { result in
             switch result {
             case .failure(let error):

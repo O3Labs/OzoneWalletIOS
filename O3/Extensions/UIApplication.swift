@@ -11,7 +11,7 @@ import UIKit
 extension UIApplication {
     //swiftlint:disable force_cast
     static var appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
-   
+
     class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
             return topViewController(base: nav.visibleViewController)
@@ -26,7 +26,5 @@ extension UIApplication {
         }
         return base
     }
-    
+
 }
-
-

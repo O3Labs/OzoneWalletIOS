@@ -10,25 +10,25 @@ import UIKit
 import DeckTransition
 
 class Controller: NSObject {
-    
+
     func openSwitcheoDapp() {
         let url = URL(string: "http://analytics.o3.network/redirect/?url=https://switcheo.exchange/?ref=o3")
         openDappBrowser(url: url!, modal: true, moreButton: true)
     }
-    
-    func openDappBrowser(url: URL, modal: Bool, moreButton:Bool = false) {
-        
+
+    func openDappBrowser(url: URL, modal: Bool, moreButton: Bool = false) {
+
         let top = UIApplication.topViewController()
         if  top == nil {
             return
         }
-        
-        let nav = UIStoryboard(name: "Browser", bundle: nil).instantiateInitialViewController() as! UINavigationController
-        if let vc = nav.viewControllers.first as? DAppBrowserViewController {
+
+        let nav = UIStoryboard(name: "Browser", bundle: nil).instantiateInitialViewController() as? UINavigationController
+        if let vc = nav!.viewControllers.first as? DAppBrowserViewController {
             vc.url = url
             vc.showMoreButton = moreButton
             if modal == true {
-                top!.present(nav, animated: true, completion: nil)
+                top!.present(nav!, animated: true, completion: nil)
             } else {
                 if top == nil {
                     return
@@ -38,10 +38,10 @@ class Controller: NSObject {
                     selectedNav.pushViewController(vc, animated: true)
                 }
             }
-            
+
         }
     }
-    
+
     func openSend(to: String, selectedAsset: TransferableAsset, amount: String?) {
 
         guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {

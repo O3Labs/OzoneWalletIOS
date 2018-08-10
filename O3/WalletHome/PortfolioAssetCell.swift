@@ -67,7 +67,7 @@ class PortfolioAssetCell: UITableViewCell {
             assetPercentChangeLabel.text = String.percentChangeStringShort(latestPrice: latestPrice, previousPrice: firstPrice,
                                                                            referenceCurrency: referenceCurrency)
             assetPercentChangeLabel.theme_textColor = referencePrice >= referenceFirstPrice ? O3Theme.positiveGainColorPicker : O3Theme.negativeLossColorPicker
-            
+
             let logoURL = String(format: "https://cdn.o3.network/img/neo/%@.png", assetName.uppercased())
             assetIcon.kf.setImage(with: URL(string: logoURL))
         }

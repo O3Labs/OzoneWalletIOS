@@ -9,13 +9,13 @@
 import UIKit
 
 public struct Asset: Codable {
-    
+
     var name: String
     var symbol: String
     var logoURL: String
     var logoURLDark: String
     var url: String
-    
+
     enum CodingKeys: String, CodingKey {
         case name
         case symbol
