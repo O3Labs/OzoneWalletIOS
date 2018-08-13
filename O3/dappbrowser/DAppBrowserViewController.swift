@@ -188,6 +188,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
     }
 
     func requestToSign(unsignedRawTransaction: String) {
+        print(unsignedRawTransaction)
         if unsignedRawTransaction.count < 2 {
             self.callback(command: "requestToSign", data: nil, errorMessage: "invalid unsigned raw transaction", withSession: true)
             return
@@ -370,9 +371,9 @@ extension DAppBrowserViewController: WKNavigationDelegate {
                 decisionHandler(.cancel)
             } else if let url = navigationAction.request.url,
                 let host = url.host, host.hasPrefix("switcheo.exchange") {
-                //open dapp browser
                 DispatchQueue.main.async {
-                    Controller().openSwitcheoDapp()
+                    let redirectURL = URL(string: String(format:"https://analytics.o3.network/redirect/?url=%@", url.absoluteString))
+                    Controller().openDappBrowser(url: redirectURL!, modal: true)
                 }
                 decisionHandler(.cancel)
             } else {
