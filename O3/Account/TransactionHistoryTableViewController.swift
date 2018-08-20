@@ -101,7 +101,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return 96
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -110,8 +110,8 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         var transactionData: TransactionCell.TransactionData?
 
         transactionData = TransactionCell.TransactionData(type: TransactionCell.TransactionType.send,
-                                                        date: UInt64(transactionEntry.blockHeight),
-                                                        asset: transactionEntry.asset.name, toAddress: transactionEntry.to,
+                                                        date: UInt64(transactionEntry.time),
+                                                        asset: transactionEntry.asset, toAddress: transactionEntry.to,
                                                         fromAddress: transactionEntry.from,
                                                         amount: transactionEntry.amount, precision: transactionEntry.asset.decimal!)
 
@@ -126,9 +126,52 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
 
     }
 
+    func showActionSheet(tx: TransactionHistoryItem) {
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let viewDetail = UIAlertAction(title: "View detail", style: .default) { _ in
+            let selectedTransactionID  = tx.txid
+            self.performSegue(withIdentifier: "segueToWebview", sender: selectedTransactionID)
+        }
+        alert.addAction(viewDetail)
+        
+        let addressToCheck: String?
+        if tx.to == Authenticated.account!.address {
+            addressToCheck = tx.from
+        } else {
+           addressToCheck = tx.to
+        }
+        
+        let exists = getContacts().contains(where: {$0.address == addressToCheck})
+        
+        //only show this when the address is not in contacts
+        if !exists {
+            let saveAddress = UIAlertAction(title: "Add to contacts", style: .default) { _ in
+                //open add to contacts dialog
+                if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddressEntryTableViewController") as? AddressEntryTableViewController {
+                    vc.delegate = self
+                    self.present(vc, animated: true, completion: {
+                        vc.addressTextView.text = addressToCheck
+                        vc.nicknameField.becomeFirstResponder()
+                    })
+                }
+            }
+            alert.addAction(saveAddress)
+        } 
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        alert.addAction(cancel)
+        alert.popoverPresentationController?.sourceView = self.tableView
+        present(alert, animated: true, completion: nil)
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedTransactionID  = transactionHistory[indexPath.row].txid
-        self.performSegue(withIdentifier: "segueToWebview", sender: selectedTransactionID)
+        tableView.deselectRow(at: indexPath, animated: true)
+        //offer action sheet
+        let transaction = transactionHistory[indexPath.row]
+        showActionSheet(tx: transaction)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -170,5 +213,17 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
                 loadTransactionHistory(appendPage: true, pageNo: pageNo)
             }
         }
+    }
+}
+
+extension TransactionHistoryTableViewController: AddressAddDelegate {
+    func addressAdded(_ address: String, nickName: String) {
+        let context = UIApplication.appDelegate.persistentContainer.viewContext
+        let contact = Contact(context: context)
+        contact.address = address
+        contact.nickName = nickName
+        UIApplication.appDelegate.saveContext()
+        self.loadContacts()
+        self.tableView.reloadData()
     }
 }
