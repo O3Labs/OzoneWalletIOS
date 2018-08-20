@@ -29,7 +29,7 @@ class TransactionCell: UITableViewCell {
         var asset: String
         var toAddress: String
         var fromAddress: String
-        var amount: Double
+        var amount: String
         var precision: Int = 0
     }
 
@@ -65,20 +65,16 @@ class TransactionCell: UITableViewCell {
         didSet {
             if data?.toAddress ?? "" == Authenticated.account?.address ?? "" {
                 amountLabel.theme_textColor = O3Theme.positiveGainColorPicker
-                amountLabel.text = data?.amount.stringWithSign((data?.precision)!)
+
             } else {
                 amountLabel.theme_textColor = O3Theme.negativeLossColorPicker
-                if data?.amount ?? 0 > 0 {
-                    data!.amount = (data?.amount ?? 0) * -1
-                }
-                amountLabel.text = data?.amount.stringWithSign((data?.precision)!)
-
+                amountLabel.text = String(format:"-%@", (data?.amount)!)
             }
             assetLabel.text = data?.asset.uppercased()
             transactionTimeLabel?.text = String(format: AccountStrings.blockPrefix, String(data?.date ?? 0))
             toAddressLabel.text = String(format: AccountStrings.toPrefix, getAddressAlias(address: data?.toAddress ?? ""))
             fromAddressLabel.text = String(format: AccountStrings.fromPrefix, getAddressAlias(address: data?.fromAddress ?? ""))
-            amountLabel.text = data?.amount.stringWithSign((data?.precision)!)
+            amountLabel.text = data?.amount
             amountLabel.theme_textColor = (data?.toAddress ?? "" == Authenticated.account?.address ?? "" ) ? O3Theme.positiveGainColorPicker : O3Theme.negativeLossColorPicker
         }
     }

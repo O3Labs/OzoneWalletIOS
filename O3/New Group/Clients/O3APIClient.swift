@@ -248,4 +248,24 @@ class O3APIClient: NSObject {
             }
         }
     }
+    
+    
+    func getTxHistory(address: String, pageIndex: Int, completion: @escaping(O3APIClientResult<TransactionHistory>) -> Void) {
+        let url = String(format:"/v1/history/%@?p=%d", address, pageIndex)
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(TransactionHistory.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
 }

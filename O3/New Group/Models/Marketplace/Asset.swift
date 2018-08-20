@@ -10,18 +10,41 @@ import UIKit
 
 public struct Asset: Codable {
 
-    var name: String
-    var symbol: String
-    var logoURL: String
-    var logoURLDark: String
-    var url: String
+    let name: String
+    let symbol: String
+    let logoURL: String
+    let url: String?
+    let logoURLDark: String?
+    let logoSVG: String?
+    let webURL: String?
+    let tokenHash: String?
+    let decimal: Int? = 0
 
     enum CodingKeys: String, CodingKey {
-        case name
-        case symbol
-        case logoURL
-        case logoURLDark
-        case url
+        case name = "name"
+        case symbol = "symbol"
+        case decimal = "decimal"
+        case tokenHash = "tokenHash"
+        case logoURL = "logoURL"
+        case logoURLDark = "logoURLDark"
+        case logoSVG = "logoSVG"
+        case webURL = "webURL"
+        case url = "url" //this is a url to go to token detail screen
     }
+}
 
+class JSONNull: Codable {
+    public init() {}
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if !container.decodeNil() {
+            throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encodeNil()
+    }
 }

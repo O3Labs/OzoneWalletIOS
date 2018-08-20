@@ -10,8 +10,7 @@ import UIKit
 
 class TransactionHistoryTableViewController: UITableViewController, TransactionHistoryDelegate {
 
-    var transactionHistory = [NeoScanTransactionEntry]()
-    var supportedTokens = [NEP5Token]()
+    var transactionHistory = [TransactionHistoryItem]()
 
     //paging (neoscan starts at page 1)
     var isDataLoading = false
@@ -45,14 +44,13 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             case .failure:
                 return
             case .success(let tokens):
-                self.supportedTokens = tokens
                 self.loadTransactionHistory(appendPage: false, pageNo: 1)
             }
         }
     }
 
     func loadTransactionHistory(appendPage: Bool, pageNo: Int) {
-        NeoScan(network: AppState.network).getTransactionHistory(address: Authenticated.account?.address ?? "", page: pageNo) { result in
+        O3APIClient(network: AppState.network).getTxHistory(address: Authenticated.account!.address, pageIndex: pageNo) { result in
             switch result {
             case .failure:
                 DispatchQueue.main.async {
@@ -60,14 +58,14 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
                 }
                 return
             case .success(let txHistory):
-                if txHistory.total_pages == pageNo {
+                if txHistory.totalPage == pageNo {
                     self.endReached = true
                 }
-
+                
                 if appendPage {
-                    self.transactionHistory += txHistory.entries
+                    self.transactionHistory += txHistory.list
                 } else {
-                    self.transactionHistory = txHistory.entries
+                    self.transactionHistory = txHistory.list
                 }
                 DispatchQueue.main.async {
                     self.tableView.refreshControl?.endRefreshing()
@@ -110,24 +108,12 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
 
         let transactionEntry = transactionHistory[indexPath.row]
         var transactionData: TransactionCell.TransactionData?
-        var assetName = "Token"
-        var assetDecimals = 8
-        if let i = supportedTokens.index(where: {transactionEntry.asset.contains($0.tokenHash)}) {
-            assetName = supportedTokens[i].symbol.uppercased()
-            assetDecimals = supportedTokens[i].decimal ?? 8
-        } else if AssetId.gasAssetId.rawValue.contains(transactionEntry.asset) {
-            assetName = "GAS"
-            assetDecimals = 8
-        } else if AssetId.neoAssetId.rawValue.contains(transactionEntry.asset) {
-            assetName = "NEO"
-            assetDecimals = 0
-        }
 
         transactionData = TransactionCell.TransactionData(type: TransactionCell.TransactionType.send,
-                                                        date: UInt64(transactionEntry.block_height),
-                                                        asset: assetName, toAddress: transactionEntry.address_to,
-                                                        fromAddress: transactionEntry.address_from,
-                                                        amount: transactionEntry.amount, precision: assetDecimals)
+                                                        date: UInt64(transactionEntry.blockHeight),
+                                                        asset: transactionEntry.asset.name, toAddress: transactionEntry.to,
+                                                        fromAddress: transactionEntry.from,
+                                                        amount: transactionEntry.amount, precision: transactionEntry.asset.decimal!)
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "transactionCell") as? TransactionCell else {
             fatalError("Undefined table view behavior")
