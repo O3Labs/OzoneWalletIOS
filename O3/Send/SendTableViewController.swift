@@ -17,7 +17,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     // swiftlint:disable weak_delegate
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
     // swiftlint:enable weak_delegate
-
+    
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var amountField: UITextField!
     @IBOutlet weak var toAddressField: UITextField!
@@ -28,26 +28,26 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     @IBOutlet weak var pasteButton: UIButton!
     @IBOutlet weak var scanButton: UIButton!
     @IBOutlet weak var addressButton: UIButton!
-
+    
     @IBOutlet weak var verifiedAddressDisplayNameLabel: UILabel!
     @IBOutlet weak var verifiedAddressBadge: UIImageView!
-
+    
     @IBOutlet weak var recipientCell: UITableViewCell!
     @IBOutlet weak var sendAmountCell: UITableViewCell!
     @IBOutlet weak var selectedAssetIcon: UIImageView!
     @IBOutlet weak var selectedAssetBalance: UILabel!
     @IBOutlet weak var networkFeeLabel: UILabel!
-
+    
     @IBOutlet weak var mempoolHeightLabel: UILabel!
     @IBOutlet weak var checkboxPriority: UIButton!
     @IBOutlet weak var priorityLabel: UILabel!
-
+    
     var gasBalance: Double = 0.0
     var transactionCompleted: Bool!
     var selectedAsset: TransferableAsset?
     var preselectedAddress = ""
     var incomingQRData: String?
-
+    
     func addThemedElements() {
         let themedTitleLabels = [toLabel, assetLabel, amountLabel]
         for label in themedTitleLabels {
@@ -71,7 +71,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             field?.theme_textColor = O3Theme.textFieldTextColorPicker
         }
     }
-
+    
     func getMempool() {
         NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight { result in
             switch(result) {
@@ -85,14 +85,14 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             }
         }
     }
-
+    
     override func viewDidLoad() {
         addThemedElements()
         applyNavBarTheme()
         setLocalizedStrings()
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
-
+        
         //select best node
         DispatchQueue.global().async {
             if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
@@ -100,7 +100,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             }
         }
         getMempool()
-
+        
         tableView.tableFooterView = UIView(frame: .zero)
         self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
         self.enableSendButton()
@@ -108,22 +108,22 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         if incomingQRData != nil {
             qrScanned(data: incomingQRData!)
         }
-
+        
         //default to NEO
         self.selectedAsset = O3Cache.neo()
         self.assetSelected(selected: O3Cache.neo(), gasBalance: O3Cache.gas().value)
     }
-
+    
     @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 2 {
             amountField.becomeFirstResponder()
         }
     }
-
+    
     func sendOntology(assetSymbol: String, amount: Double, toAddress: String) {
         let wif = Authenticated.account?.wif
         var error: NSError?
@@ -149,93 +149,102 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             }
         }
     }
-
+    
     func sendNEP5Token(tokenHash: String, decimals: Int, assetName: String, amount: Double, toAddress: String) {
-
+        
         DispatchQueue.main.async {
             OzoneAlert.confirmDialog(message: String(format: SendStrings.sendConfirmationPrompt, amount, assetName, toAddress),
                                      cancelTitle: OzoneAlert.cancelNegativeConfirmString,
                                      confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
-            let keychain = Keychain(service: "network.o3.neo.wallet")
-                do {
-                    _ = try keychain
-                        .authenticationPrompt(SendStrings.authenticateToSendPrompt)
-                        .get("ozonePrivateKey")
-                    O3HUD.start()
-                    if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
-                        AppState.bestSeedNodeURL = bestNode
-                    }
-                    var fee = 0.0
-                    if self.checkboxPriority.isSelected {
-                        fee = 0.0011
-                    }
-                    Authenticated.account?.sendNep5Token(network: AppState.network, seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, decimals: self.selectedAsset!.decimals, amount: amount, toAddress: toAddress, fee: fee, completion: { (completed, _) in
-
-                        O3HUD.stop {
-                            self.transactionCompleted = completed ?? false
-                            Answers.logCustomEvent(withName: "Token Asset Sent",
-                                                   customAttributes: [
-                                                    "Asset Name": assetName,
-                                                    "Amount": amount])
-                            self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
-                        }
-
-                    })
-
-                } catch _ {
-                }
+                                        let keychain = Keychain(service: "network.o3.neo.wallet")
+                                        do {
+                                            _ = try keychain
+                                                .authenticationPrompt(SendStrings.authenticateToSendPrompt)
+                                                .get("ozonePrivateKey")
+                                            O3HUD.start()
+                                            if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
+                                                AppState.bestSeedNodeURL = bestNode
+                                            }
+                                            var fee = 0.0
+                                            if self.checkboxPriority.isSelected {
+                                                fee = 0.0011
+                                            }
+                                            Authenticated.account?.sendNep5Token(network: AppState.network, seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, decimals: self.selectedAsset!.decimals, amount: amount, toAddress: toAddress, fee: fee, completion: { (completed, _ , txID) in
+                                                
+                                                O3HUD.stop {
+                                                    self.transactionCompleted = completed ?? false
+                                                    Answers.logCustomEvent(withName: "Token Asset Sent",
+                                                                           customAttributes: [
+                                                                            "Asset Name": assetName,
+                                                                            "Amount": amount])
+                                                    self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
+                                                    if self.transactionCompleted == true {
+                                                        self.savePendingTransaction(blockchain: "neo", txID: txID!, from: (Authenticated.account?.address)!, to: toAddress, asset: self.selectedAsset!, amount: String(format:"%f", amount))
+                                                    }
+                                                }
+                                                
+                                            })
+                                            
+                                        } catch _ {
+                                        }
             }
         }
     }
-
+    
     func sendNativeAsset(assetId: AssetId, assetName: String, amount: Double, toAddress: String) {
         DispatchQueue.main.async {
             OzoneAlert.confirmDialog(message: String(format: SendStrings.sendConfirmationPrompt, amount, assetName, toAddress),
                                      cancelTitle: OzoneAlert.cancelNegativeConfirmString,
                                      confirmTitle: OzoneAlert.okPositiveConfirmString, didCancel: {}) {
-            let keychain = Keychain(service: "network.o3.neo.wallet")
-                do {
-                    _ = try keychain
-                        .authenticationPrompt(SendStrings.authenticateToSendPrompt)
-                        .get("ozonePrivateKey")
-                    O3HUD.start()
-                    if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
-                        AppState.bestSeedNodeURL = bestNode
-                    }
-                    var customAttributes: [TransactionAttritbute] = []
-                    let remark = String(format: "O3XSEND")
-                    customAttributes.append(TransactionAttritbute(remark: remark))
-                    var fee = 0.0
-                    if self.checkboxPriority.isSelected {
-                        fee = 0.0011
-                    }
-
-                    Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes, fee: fee) { txid, _ in
-                        O3HUD.stop {
-                            if txid != nil {
-                                self.transactionCompleted = true
-                                Answers.logCustomEvent(withName: "Native Asset Sent",
-                                                       customAttributes: [
-                                                        "Asset Name": assetName,
-                                                        "Amount": amount])
-                            } else {
-                                self.transactionCompleted = false
-                            }
-                            self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
-                        }
-                    }
-                } catch _ {
-                }
+                                        let keychain = Keychain(service: "network.o3.neo.wallet")
+                                        do {
+                                            _ = try keychain
+                                                .authenticationPrompt(SendStrings.authenticateToSendPrompt)
+                                                .get("ozonePrivateKey")
+                                            O3HUD.start()
+                                            if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
+                                                AppState.bestSeedNodeURL = bestNode
+                                            }
+                                            var customAttributes: [TransactionAttritbute] = []
+                                            let remark = String(format: "O3XSEND")
+                                            customAttributes.append(TransactionAttritbute(remark: remark))
+                                            var fee = 0.0
+                                            if self.checkboxPriority.isSelected {
+                                                fee = 0.0011
+                                            }
+                                            
+                                            Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes, fee: fee) { txid, _ in
+                                                O3HUD.stop {
+                                                    if txid != nil {
+                                                        self.transactionCompleted = true
+                                                        Answers.logCustomEvent(withName: "Native Asset Sent",
+                                                                               customAttributes: [
+                                                                                "Asset Name": assetName,
+                                                                                "Amount": amount])
+                                                    } else {
+                                                        self.transactionCompleted = false
+                                                    }
+                                                    
+                                                    //save to pending tx if it's completed
+                                                    if self.transactionCompleted == true {
+                                                        self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.account?.address)!, to: toAddress, asset: self.selectedAsset!, amount: String(format:"%f", amount))
+                                                    }
+                                                    
+                                                    self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
+                                                }
+                                            }
+                                        } catch _ {
+                                        }
             }
         }
     }
-
+    
     @IBAction func sendButtonTapped() {
-
+        
         if self.selectedAsset == nil {
             return
         }
-
+        
         var assetId: String! = self.selectedAsset!.id
         let assetName: String! = self.selectedAsset!.name
         let assetSymbol: String! = self.selectedAsset!.symbol
@@ -243,16 +252,16 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         amountFormatter.minimumFractionDigits = 0
         amountFormatter.maximumFractionDigits = self.selectedAsset!.decimals
         amountFormatter.numberStyle = .decimal
-
+        
         let amount = amountFormatter.number(from: (self.amountField.text?.trim())!)
-
+        
         if amount == nil {
             OzoneAlert.alertDialog(message: SendStrings.invalidAmountError, dismissTitle: OzoneAlert.okPositiveConfirmString, didDismiss: {
                 self.amountField.becomeFirstResponder()
             })
             return
         }
-
+        
         //validate amount
         if amount!.doubleValue > self.selectedAsset!.value {
             let balanceDecimal = self.selectedAsset!.value
@@ -261,7 +270,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             formatter.maximumFractionDigits = self.selectedAsset!.decimals
             formatter.numberStyle = .decimal
             let balanceString = formatter.string(for: balanceDecimal)
-
+            
             let message = String(format: SendStrings.notEnoughBalanceError, assetName, balanceString!)
             OzoneAlert.alertDialog(message: message, dismissTitle: OzoneAlert.okPositiveConfirmString, didDismiss: {
                 self.amountField.becomeFirstResponder()
@@ -269,12 +278,12 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             return
         } else if selectedAsset?.name.lowercased() == "gas" && self.selectedAsset!.value - amount!.doubleValue <= 0.00000001 {
             OzoneAlert.alertDialog(message: SendStrings.roundingGasError, dismissTitle: OzoneAlert.okPositiveConfirmString, didDismiss: {
-                    self.amountField.becomeFirstResponder()
+                self.amountField.becomeFirstResponder()
             })
             return
         }
         let toAddress = toAddressField.text?.trim() ?? ""
-
+        
         //validate address first
         if NEOValidator.validateNEOAddress(toAddress) == false {
             DispatchQueue.main.async {
@@ -284,7 +293,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                 return
             }
         }
-
+        
         if self.selectedAsset?.assetType == .neoAsset {
             if assetId.hasPrefix("0x") {
                 assetId = String(assetId.dropFirst(2))
@@ -294,26 +303,25 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             self.sendNEP5Token(tokenHash: assetId, decimals: self.selectedAsset!.decimals, assetName: assetName, amount: amount!.doubleValue, toAddress: toAddress)
         } else if self.selectedAsset?.assetType == .ontologyAsset {
             self.sendOntology(assetSymbol: assetSymbol, amount: amount!.doubleValue, toAddress: toAddress)
-
         }
     }
-
+    
     @IBAction func pasteTapped(_ sender: Any) {
         toAddressField.text = UIPasteboard.general.string
         enableSendButton()
     }
-
+    
     @IBAction func scanTapped(_ sender: Any) {
         self.performSegue(withIdentifier: "segueToQR", sender: nil)
     }
-
+    
     func selectedAddress(_ address: String) {
         toAddressField.text = address
         enableSendButton()
     }
-
+    
     func qrScanned(data: String) {
-
+        
         if data.range(of: "neo:") == nil {
             toAddressField.text = data
         } else {
@@ -321,12 +329,12 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             let address = nep9Data?.to()
             let asset = nep9Data?.asset()
             let amount = nep9Data?.amount()
-
+            
             toAddressField.text = address
-
+            
             if asset != "" {
                 var selected: TransferableAsset?
-
+                
                 if asset?.lowercased() == "neo" || asset == AssetId.neoAssetId.rawValue {
                     selected = O3Cache.neo()
                 } else if asset?.lowercased() == "gas" || asset == AssetId.gasAssetId.rawValue {
@@ -340,26 +348,26 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                         selected = tokenAssets[assetIndex!]
                     }
                 }
-
+                
                 if selected != nil {
                     self.selectedAsset = selected
                     self.selectedAssetLabel.text = selected!.symbol
                 }
             }
-
+            
             if amount != nil {
                 self.amountField.text = String(format: "%f", amount!)
             }
         }
-
+        
         enableSendButton()
     }
-
+    
     @IBAction func selectAssetTapped(_ sender: Any) {
         guard let nav = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "AssetSelectorNavigationController") as? UINavigationController else {
             return
         }
-
+        
         guard let modal = nav.viewControllers.first as? AssetSelectorTableViewController else {
             return
         }
@@ -369,7 +377,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         nav.transitioningDelegate = self.halfModalTransitioningDelegate
         self.present(nav, animated: true, completion: nil)
     }
-
+    
     func showVerifiedAddress(verifiedAddress: VerifiedAddress?) {
         if verifiedAddress == nil {
             verifiedAddressDisplayNameLabel.text = ""
@@ -379,7 +387,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         verifiedAddressDisplayNameLabel.text = verifiedAddress!.displayName
         verifiedAddressBadge.isHidden = false
     }
-
+    
     @IBAction func enableSendButton() {
         self.showVerifiedAddress(verifiedAddress: nil)
         if toAddressField.text?.isEmpty == true {
@@ -406,10 +414,10 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                 }
             }
         }
-
+        
         sendButton.isEnabled = validAddress == true && amountField.text?.isEmpty == false && selectedAsset != nil
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueToAddressSelect" {
             self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: segue.destination)
@@ -433,19 +441,19 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             dest.transactionSucceeded = transactionCompleted
         }
     }
-
+    
     @IBAction func addressTapped(_ sender: Any) {
         performSegue(withIdentifier: "segueToAddressSelect", sender: nil)
     }
-
+    
     @IBAction func priorityTapped(_ sender: Any) {
         checkboxPriority!.isSelected = !checkboxPriority!.isSelected
     }
-
+    
     @IBAction func tappedCloseAddressSeletor(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-
+    
     func showNetworkFeeLabel() {
         ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
         OntologyClient().getGasPrice { result in
@@ -462,7 +470,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             }
         }
     }
-
+    
     func setLocalizedStrings() {
         toLabel.text = SendStrings.toLabel
         assetLabel.text = SendStrings.assetLabel
@@ -500,4 +508,22 @@ extension SendTableViewController: AssetSelectorDelegate {
             self.enableSendButton()
         }
     }
+}
+
+extension SendTableViewController {
+    
+    func savePendingTransaction(blockchain: String,txID: String, from: String, to: String, asset: TransferableAsset, amount: String) {
+        let context = UIApplication.appDelegate.accountPersistentContainer.viewContext
+        let pending = PendingTransaction(context: context)
+        pending.blockchain = blockchain
+        pending.txID = txID
+        pending.from = from
+        pending.to = to
+        pending.amount = amount
+        pending.timestamp = Int64(Date().timeIntervalSince1970)
+        pending.asset = asset.symbol
+        UIApplication.appDelegate.saveAccountContext()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "pendingTransactionAdded"), object: nil)
+    }
+    
 }

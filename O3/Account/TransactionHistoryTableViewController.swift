@@ -7,21 +7,24 @@
 //
 
 import UIKit
+import CoreData
 
 class TransactionHistoryTableViewController: UITableViewController, TransactionHistoryDelegate {
-
+    
     var transactionHistory = [TransactionHistoryItem]()
-
+    
     //paging (neoscan starts at page 1)
     var isDataLoading = false
     var pageNo = 1
     var limit = 15
     var offset = 0 // (pageNO * limit) - 15
     var endReached = false
-
+    
     var contacts = [Contact]()
     var watchAddresses = [WatchAddress]()
-
+    var pendingTransactions = [PendingTransaction]()
+    var allAssets = [Asset]()
+    
     func loadContacts() {
         do {
             contacts = try UIApplication.appDelegate.persistentContainer.viewContext.fetch(Contact.fetchRequest())
@@ -29,7 +32,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             return
         }
     }
-
+    
     func loadWatchAddresses() {
         do {
             watchAddresses = try UIApplication.appDelegate.persistentContainer.viewContext.fetch(WatchAddress.fetchRequest())
@@ -37,7 +40,32 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             return
         }
     }
-
+    
+    func loadPendingTransaction() {
+        do {
+            let fetch: NSFetchRequest<PendingTransaction> = PendingTransaction.fetchRequest()
+            let sort = NSSortDescriptor(key: #keyPath(PendingTransaction.timestamp), ascending: false)
+            fetch.sortDescriptors = [sort]
+            pendingTransactions = try UIApplication.appDelegate.accountPersistentContainer.viewContext.fetch(fetch)
+        } catch {
+            return
+        }
+    }
+    
+    func loadAssetsForPendingTransaction() {
+        O3Client().getAssetsForMarketPlace { result in
+            switch result {
+            case .failure:
+                return
+            case .success(let assets):
+                DispatchQueue.main.async {
+                    self.allAssets = assets
+                    self.loadPendingTransaction()
+                }
+            }
+        }
+    }
+    
     func initialLoad() {
         O3Client().getTokens { result in
             switch result {
@@ -48,7 +76,20 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             }
         }
     }
-
+    
+    func checkPending() {
+        //cross check with the tx history
+        for pending in self.pendingTransactions {
+            let foundIndex = self.transactionHistory.index{ return $0.txid == pending.txID! }
+            if foundIndex != nil {
+                UIApplication.appDelegate.accountPersistentContainer.viewContext.delete(pending)
+                try? UIApplication.appDelegate.accountPersistentContainer.viewContext.save()
+            }
+        }
+        self.loadPendingTransaction()
+    }
+    
+    
     func loadTransactionHistory(appendPage: Bool, pageNo: Int) {
         O3APIClient(network: AppState.network).getTxHistory(address: Authenticated.account!.address, pageIndex: pageNo) { result in
             switch result {
@@ -67,6 +108,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
                 } else {
                     self.transactionHistory = txHistory.list
                 }
+                self.checkPending()
                 DispatchQueue.main.async {
                     self.tableView.refreshControl?.endRefreshing()
                     self.tableView.reloadData()
@@ -74,18 +116,26 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             }
         }
     }
-
+    
+    @objc func pendingTransactionAdded() {
+        self.loadPendingTransaction()
+        self.tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadWatchAddresses()
         loadContacts()
+        loadAssetsForPendingTransaction()
+        NotificationCenter.default.addObserver(self, selector: #selector(pendingTransactionAdded), name: Notification.Name(rawValue: "pendingTransactionAdded"), object: nil)
+        
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
         self.initialLoad()
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadData), for: .valueChanged)
     }
-
+    
     @objc func reloadData() {
         isDataLoading = false
         pageNo = 1
@@ -94,38 +144,83 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         endReached = false
         self.loadTransactionHistory(appendPage: false, pageNo: 1)
     }
-
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
-
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        //pending tx
+        if indexPath.section == 0 {
+            return 96
+        }
         return 96
     }
-
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "sectionHeader")
+            if let label = cell?.viewWithTag(1) as? UILabel {
+                label.text = "Pending Transactions"
+            }
+            return cell?.contentView
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "sectionHeader")
+        if let label = cell?.viewWithTag(1) as? UILabel {
+            label.text = "History"
+        }
+        return cell?.contentView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return  pendingTransactions.count == 0 ? 0 : 44
+        }
+        return  pendingTransactions.count == 0 ? 0 : 44
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
+        //pending trasaction
+        if indexPath.section == 0 {
+            let pending = pendingTransactions[indexPath.row]
+        
+            let index = self.allAssets.index { return $0.symbol.uppercased() == pending.asset!.uppercased() }
+            let asset = self.allAssets[index!]
+            let pendingData = TransactionCell.PendingTransactionData(txID: pending.txID!, time: UInt64(pending.timestamp),
+                                                                 asset: asset, toAddress: pending.to!,
+                                                                 fromAddress: pending.from!,
+                                                                 amount: pending.amount!)
+            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "transactionCell") as? TransactionCell else {
+                fatalError("Undefined table view behavior")
+            }
+            cell.selectionStyle = .none
+            cell.delegate = self
+            cell.pending = pendingData
+            return cell
+        }
+        
         let transactionEntry = transactionHistory[indexPath.row]
         var transactionData: TransactionCell.TransactionData?
-
-        transactionData = TransactionCell.TransactionData(type: TransactionCell.TransactionType.send,
-                                                        date: UInt64(transactionEntry.time),
-                                                        asset: transactionEntry.asset, toAddress: transactionEntry.to,
-                                                        fromAddress: transactionEntry.from,
-                                                        amount: transactionEntry.amount, precision: transactionEntry.asset.decimal!)
-
+        
+        transactionData = TransactionCell.TransactionData(date: UInt64(transactionEntry.time),
+                                                          asset: transactionEntry.asset, toAddress: transactionEntry.to,
+                                                          fromAddress: transactionEntry.from,
+                                                          amount: transactionEntry.amount, precision: transactionEntry.asset.decimal!)
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "transactionCell") as? TransactionCell else {
             fatalError("Undefined table view behavior")
         }
         cell.selectionStyle = .none
         cell.delegate = self
         cell.data = transactionData
-
+        
         return cell
-
+        
     }
-
+    
     func showActionSheet(tx: TransactionHistoryItem) {
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -139,7 +234,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         if tx.to == Authenticated.account!.address {
             addressToCheck = tx.from
         } else {
-           addressToCheck = tx.to
+            addressToCheck = tx.to
         }
         
         let exists = getContacts().contains(where: {$0.address == addressToCheck})
@@ -173,11 +268,14 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         let transaction = transactionHistory[indexPath.row]
         showActionSheet(tx: transaction)
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return pendingTransactions.count
+        }
         return transactionHistory.count
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueToWebview" {
             guard let dest = segue.destination as? TransactionWebViewController else {
@@ -188,20 +286,20 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             }
         }
     }
-
+    
     func getContacts() -> [Contact] {
         return contacts
     }
-
+    
     func getWatchAddresses() -> [WatchAddress] {
         return watchAddresses
     }
-
+    
     //Pagination
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         isDataLoading = false
     }
-
+    
     //Pagination
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if (tableView.contentOffset.y + tableView.frame.size.height) >= tableView.contentSize.height {
