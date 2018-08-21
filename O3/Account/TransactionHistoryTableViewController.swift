@@ -225,8 +225,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let viewDetail = UIAlertAction(title: "View detail", style: .default) { _ in
-            let selectedTransactionID  = tx.txid
-            self.performSegue(withIdentifier: "segueToWebview", sender: selectedTransactionID)
+            self.performSegue(withIdentifier: "segueToWebview", sender: tx)
         }
         alert.addAction(viewDetail)
         
@@ -237,7 +236,11 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             addressToCheck = tx.to
         }
         
-        let exists = getContacts().contains(where: {$0.address == addressToCheck})
+        var exists = getContacts().contains(where: {$0.address == addressToCheck})
+        //if sending it to this account we don't offer add to contacts option
+        if tx.to == Authenticated.account!.address {
+            exists = true
+        }
         
         //only show this when the address is not in contacts
         if !exists {
@@ -264,6 +267,11 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        //we don't offer any option on pending transaction
+        if indexPath.section == 0{
+            return
+        }
         //offer action sheet
         let transaction = transactionHistory[indexPath.row]
         showActionSheet(tx: transaction)
@@ -281,8 +289,8 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             guard let dest = segue.destination as? TransactionWebViewController else {
                 fatalError("Undefined Segue behavior")
             }
-            if  let selectedTransactionID = sender as? String {
-                dest.transactionID = selectedTransactionID
+            if  let tx = sender as? TransactionHistoryItem {
+                dest.transaction = tx
             }
         }
     }

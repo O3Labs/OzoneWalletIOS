@@ -139,6 +139,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                 let txid = NeoutilsOntologyTransfer(endpoint, gasPrice, 20000, wif, assetSymbol, toAddress, amount, &error)
                 DispatchQueue.main.async {
                     if txid != "" {
+                        self.savePendingTransaction(blockchain: "ontology", txID: txid!, from: (Authenticated.account?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
                         self.transactionCompleted = true
                         self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                     } else {
@@ -179,7 +180,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                                                                             "Amount": amount])
                                                     self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                                                     if self.transactionCompleted == true {
-                                                        self.savePendingTransaction(blockchain: "neo", txID: txID!, from: (Authenticated.account?.address)!, to: toAddress, asset: self.selectedAsset!, amount: String(format:"%f", amount))
+                                                        self.savePendingTransaction(blockchain: "neo", txID: txID!, from: (Authenticated.account?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
                                                     }
                                                 }
                                                 
@@ -227,7 +228,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
                                                     
                                                     //save to pending tx if it's completed
                                                     if self.transactionCompleted == true {
-                                                        self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.account?.address)!, to: toAddress, asset: self.selectedAsset!, amount: String(format:"%f", amount))
+                                                        self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.account?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
                                                     }
                                                     
                                                     self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)

@@ -11,8 +11,9 @@ import UIKit
 import WebKit
 
 class TransactionWebViewController: UIViewController, WKUIDelegate {
-    var transactionID: String!
+    
     var webView: WKWebView!
+    var transaction: TransactionHistoryItem!
 
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
@@ -24,12 +25,20 @@ class TransactionWebViewController: UIViewController, WKUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         var urlString = ""
-        if UserDefaultsManager.network == .test {
-            urlString = "https://neoscan-testnet.io/transaction/"
-        } else {
-            urlString = "https://neoscan.io/transaction/"
+        if transaction.blockchain == "neo" {
+            if AppState.network == .test {
+                urlString = "https://neoscan-testnet.io/transaction/" + transaction.txid
+            } else {
+                urlString = "https://neoscan.io/transaction/" + transaction.txid
+            }
+        } else if transaction.blockchain == "ontology" {
+            if AppState.network == .test {
+                 urlString = "https://explorer.ont.io/transaction/" + transaction.txid + "/testnet"
+            } else {
+                urlString = "https://explorer.ont.io/transaction/" + transaction.txid
+            }
         }
-        urlString += transactionID
+
         let myURL = URL(string: urlString)
         let myRequest = URLRequest(url: myURL!)
         self.webView.load(myRequest)
