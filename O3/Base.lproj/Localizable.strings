@@ -634,7 +634,7 @@
 "TOKENSELECTION_Under_Construction" = "TOKENSELECTION_Under_Construction";
 
 /* A title for the account screen */
-"WALLET_Account" = "Account";
+"WALLET_Account" = "My wallet";
 
 /* Title of assets tab in wallet screen */
 "WALLET_Assets" = "ASSETS";

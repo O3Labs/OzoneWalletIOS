@@ -403,7 +403,7 @@ public class Account {
         }
     }
 
-    private func generateInvokeTransactionPayload(assets: Assets? = nil, script: String, contractAddress: String, attributes: [TransactionAttritbute]?, fee: Double = 0.0) -> Data {
+    private func generateInvokeTransactionPayload(assets: Assets? = nil, script: String, contractAddress: String, attributes: [TransactionAttritbute]?, fee: Double = 0.0) -> (String, Data) {
         var error: NSError?
         let amount = 0.00000001
 
@@ -426,7 +426,9 @@ public class Account {
 
         let signatureData = NeoutilsSign(rawTransactionData, privateKey.fullHexString, &error)
         let finalPayload = concatenatePayloadData(txData: rawTransactionData, signatureData: signatureData!)
-        return finalPayload
+        //hash unsigned tx to get txid
+        let txid = self.unsignedPayloadToTransactionId(rawTransactionData)
+        return (txid, finalPayload)
     }
 
     private func buildNEP5TransferScript(scriptHash: String, decimals: Int, fromAddress: String,
@@ -443,7 +445,7 @@ public class Account {
     }
 
     public func sendNep5Token(network: Network, seedURL: String, tokenContractHash: String, decimals: Int, amount: Double, toAddress: String,
-                              attributes: [TransactionAttritbute]? = nil, fee: Double = 0.0, completion: @escaping(Bool?, Error?) -> Void) {
+                              attributes: [TransactionAttritbute]? = nil, fee: Double = 0.0, completion: @escaping(Bool?, Error?, String?) -> Void) {
 
         var customAttributes: [TransactionAttritbute] = []
         customAttributes.append(TransactionAttritbute(script: self.address.hashFromAddress()))
@@ -458,32 +460,38 @@ public class Account {
         if fee == 0 {
             var payload = self.generateInvokeTransactionPayload(script: scriptBytes.fullHexString,
                                                                 contractAddress: tokenContractHash, attributes: customAttributes, fee: fee)
-            payload += tokenContractHash.dataWithHexString().bytes
-            print(payload.fullHexString)
-            NeoClient(seed: seedURL).sendRawTransaction(with: payload) { (result) in
+            payload.1 += tokenContractHash.dataWithHexString().bytes
+            #if DEBUG
+            print(payload.1.fullHexString)
+            #endif
+            let txID = payload.0
+            NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
                 switch result {
                 case .failure(let error):
-                    completion(nil, error)
+                    completion(nil, error, txID)
                 case .success(let response):
-                    completion(response, nil)
+                    completion(response, nil, txID)
                 }
             }
         } else {
             O3APIClient(network: network).getUTXO(for: self.address) { result in
                 switch result {
                 case .failure(let error):
-                    completion(nil, error)
+                    completion(nil, error, nil)
                 case .success(let assets):
                     var payload = self.generateInvokeTransactionPayload(assets: assets, script: scriptBytes.fullHexString,
                                                                     contractAddress: tokenContractHash, attributes: customAttributes, fee: fee)
-                    payload += tokenContractHash.dataWithHexString().bytes
-                    print(payload.fullHexString)
-                    NeoClient(seed: seedURL).sendRawTransaction(with: payload) { (result) in
+                    payload.1 += tokenContractHash.dataWithHexString().bytes
+                    let txID = payload.0
+                    #if DEBUG
+                    print(payload.1.fullHexString)
+                    #endif
+                    NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
                         switch result {
                         case .failure(let error):
-                            completion(nil, error)
+                            completion(nil, error, txID)
                         case .success(let response):
-                            completion(response, nil)
+                            completion(response, nil, txID)
                         }
                     }
                 }

@@ -112,7 +112,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.hidesBottomBarWhenPushed = true
         selectedAsset = filteredTokens[indexPath.row]
-        let url = String(format: "%@?address=%@", selectedAsset!.url, Authenticated.account!.address)
+        let url = String(format: "%@?address=%@", selectedAsset!.url!, Authenticated.account!.address)
         Controller().openDappBrowser(url: URL(string: url)!, modal: true)
     }
 

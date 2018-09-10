@@ -60,7 +60,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         setLocalizedStrings()
         addObservers()
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
-        self.tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.tableView.theme_backgroundColor = O3Theme.backgroundLightgrey
         applyNavBarTheme()
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
@@ -110,6 +110,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         loadClaimableGAS()
         loadClaimableOng()
         loadInbox()
+        loadTradingAccountBalances()
         DispatchQueue.main.async {
             self.tableView.refreshControl?.endRefreshing()
             self.tableView.reloadData()
@@ -212,9 +213,9 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == sections.unclaimedGAS.rawValue {
-            return 192.0
+            return 172.0
         } else if indexPath.section == sections.toolbar.rawValue {
-            return 44.0
+            return 96.0
         }
         if indexPath.section == sections.inbox.rawValue {
             return 190.0
@@ -343,11 +344,70 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         return true
     }
     
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == sections.neoAssets.rawValue {
+            return 44.0
+        }
+        if section == sections.tradingSection.rawValue {
+            if tradingAccount?.switcheo.confirmed.count == 0 {
+                return 0
+            }
+            return 96.0
+        }
+        return 0
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == sections.neoAssets.rawValue {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "o3-account-header")
+            return cell?.contentView
+        }
+        if section == sections.tradingSection.rawValue {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "trading-account-header")
+            return cell?.contentView
+        }
+        
+        return nil
+    }
+    
+    func showActionSheetAssetInTradingAccount(asset: TradableAsset) {
+        
+        let alert = UIAlertController(title: asset.name, message: nil, preferredStyle: .actionSheet)
+        
+        let buyButton = UIAlertAction(title: "Buy", style: .default) { _ in
+            
+        }
+        alert.addAction(buyButton)
+        
+        let sellButton = UIAlertAction(title: "Sell", style: .default) { _ in
+            
+        }
+        alert.addAction(sellButton)
+        
+        let withdrawButton = UIAlertAction(title: "Withdraw", style: .default) { _ in
+        }
+        alert.addAction(withdrawButton)
+
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        alert.addAction(cancel)
+        alert.popoverPresentationController?.sourceView = self.tableView
+        present(alert, animated: true, completion: nil)
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == sections.unclaimedGAS.rawValue
             || indexPath.section == sections.toolbar.rawValue
             || indexPath.section == sections.inbox.rawValue {
+            return
+        }
+        
+        //offer the option to buy more/sell and withdraw
+        if  indexPath.section == sections.tradingSection.rawValue {
+            let asset = self.tradingAccount?.switcheo.confirmed[indexPath.row]
+            showActionSheetAssetInTradingAccount(asset: asset!)
             return
         }
         

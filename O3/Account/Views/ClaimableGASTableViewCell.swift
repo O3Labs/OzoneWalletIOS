@@ -67,7 +67,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
 
         claimContainerTitleLabel.theme_textColor = O3Theme.titleColorPicker
         confirmedClaimableGASContainer?.theme_backgroundColor = O3Theme.backgroundColorPicker
-        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        contentView.theme_backgroundColor = O3Theme.backgroundLightgrey
     }
 
     override func layoutSubviews() {

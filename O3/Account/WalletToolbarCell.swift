@@ -23,7 +23,7 @@ class WalletToolBarCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        contentView.theme_backgroundColor = O3Theme.backgroundLightgrey
     }
 
     @IBAction func sendTapped() {
