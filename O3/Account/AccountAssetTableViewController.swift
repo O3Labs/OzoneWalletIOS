@@ -22,38 +22,39 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         case neoAssets
         case ontologyAssets
         case nep5tokens
+        case tradingSection
     }
-
+    
     var sendModal: SendTableViewController?
-
+    
     var claims: Claimable?
     var isClaimingNeo: Bool = false
     var isClaimingOnt: Bool = false
-    /// var refreshClaimableGasTimer = Timer()
-
+    
     var tokenAssets = O3Cache.tokenAssets()
     var neoBalance: Int = Int(O3Cache.neo().value)
     var gasBalance: Double = O3Cache.gas().value
     var ontologyAssets: [TransferableAsset] = O3Cache.ontologyAssets()
     var mostRecentClaimAmount = 0.0
     var qrController: QRScannerController?
-
+    var tradingAccount: TradingAccount?
+    
     var addressInbox: Inbox?
-
+    
     @objc func reloadCells() {
         DispatchQueue.main.async { self.tableView.reloadData() }
     }
-
+    
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAllData), name: NSNotification.Name(rawValue: "tokenSelectorDismissed"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadCells), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
-
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "tokenSelectiorDismissed"), object: nil)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
@@ -63,16 +64,17 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         applyNavBarTheme()
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
-
+        
         self.loadInbox()
+        self.loadTradingAccountBalances()
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadClaimableGAS()
         loadClaimableOng()
     }
-
+    
     func loadInbox() {
         O3APIClient(network: AppState.network).getInbox(address: Authenticated.account!.address) { result in
             switch result {
@@ -87,7 +89,22 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             }
         }
     }
-
+    
+    func loadTradingAccountBalances() {
+        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.account!.address) { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+                return
+            case .success(let tradingAccount):
+                DispatchQueue.main.async {
+                    self.tradingAccount = tradingAccount
+                    self.tableView.reloadSections([sections.tradingSection.rawValue], with: .automatic)
+                }
+            }
+        }
+    }
+    
     @objc func reloadAllData() {
         loadAccountState()
         loadClaimableGAS()
@@ -98,20 +115,20 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             self.tableView.reloadData()
         }
     }
-
+    
     func setIsClaimingNeo(_ isClaiming: Bool) {
         self.isClaimingNeo = isClaiming
     }
-
+    
     func setIsClaimingOnt(_ isClaiming: Bool) {
         self.isClaimingOnt = isClaiming
     }
-
+    
     @objc func loadClaimableGAS() {
         if Authenticated.account == nil {
             return
         }
-
+        
         if self.isClaimingNeo == true {
             return
         }
@@ -121,12 +138,12 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         }
         cell.loadClaimableGASNeo()
     }
-
+    
     @objc func loadClaimableOng() {
         if Authenticated.account == nil {
             return
         }
-
+        
         if self.isClaimingNeo == true {
             return
         }
@@ -136,7 +153,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         }
         cell.loadClaimableOng()
     }
-
+    
     func updateCacheAndLocalBalance(accountState: AccountState) {
         for asset in accountState.assets {
             if asset.id.contains(AssetId.neoAssetId.rawValue) {
@@ -146,7 +163,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             }
         }
         ontologyAssets = accountState.ontology
-
+        
         tokenAssets = []
         for token in accountState.nep5Tokens {
             tokenAssets.append(token)
@@ -156,7 +173,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         O3Cache.setTokenAssetsForSession(tokens: tokenAssets)
         O3Cache.setOntologyAssetsForSession(tokens: ontologyAssets)
     }
-
+    
     func loadAccountState() {
         O3APIClient(network: AppState.network).getAccountState(address: Authenticated.account?.address ?? "") { result in
             DispatchQueue.main.async {
@@ -170,12 +187,12 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             }
         }
     }
-
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 6
+        return 7
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == sections.unclaimedGAS.rawValue {
             return 1
@@ -187,10 +204,12 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             return 2
         } else if section == sections.ontologyAssets.rawValue {
             return ontologyAssets.count
+        } else if section == sections.tradingSection.rawValue {
+            return tradingAccount?.switcheo.confirmed.count ?? 0
         }
         return tokenAssets.count
     }
-
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == sections.unclaimedGAS.rawValue {
             return 192.0
@@ -200,11 +219,11 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         if indexPath.section == sections.inbox.rawValue {
             return 190.0
         }
-
+        
         // All the asset cell has the same height
         return 66.0
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == sections.unclaimedGAS.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-claimable-gas") as? ClaimableGASTableViewCell else {
@@ -215,7 +234,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             cell.delegate = self
             return cell
         }
-
+        
         if indexPath.section == sections.toolbar.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "walletToolbarCell") as? WalletToolBarCell else {
                 let cell =  UITableViewCell()
@@ -235,31 +254,31 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             cell.inboxItem = item
             return cell
         }
-
+        
         if indexPath.section == sections.neoAssets.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nativeasset") as? NativeAssetTableViewCell else {
                 let cell =  UITableViewCell()
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
-
+            
             if indexPath.row == 0 {
                 cell.titleLabel.text = "NEO"
                 cell.amountLabel.text = neoBalance.description
                 let imageURL = "https://cdn.o3.network/img/neo/NEO.png"
                 cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             }
-
+            
             if indexPath.row == 1 {
                 cell.titleLabel.text = "GAS"
                 cell.amountLabel.text = gasBalance.string(8, removeTrailing: true)
                 let imageURL = "https://cdn.o3.network/img/neo/GAS.png"
                 cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             }
-
+            
             return cell
         }
-
+        
         if indexPath.section == sections.nep5tokens.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
                 let cell =  UITableViewCell()
@@ -275,7 +294,30 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
             return cell
         }
-
+        
+        if indexPath.section == sections.tradingSection.rawValue {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
+                let cell =  UITableViewCell()
+                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                return cell
+            }
+            let list = self.tradingAccount?.switcheo.confirmed
+            let token = list![indexPath.row]
+            
+            //trading account returns value in string
+            let valueDecimal = Decimal(string: token.value)
+            let dividedBalance = (valueDecimal! / pow(10, token.decimals))
+            let value = Double(truncating: (dividedBalance as NSNumber?)!)
+            
+            cell.amountLabel.text = value.string(token.decimals, removeTrailing: true)
+            cell.titleLabel.text = token.symbol
+            cell.subtitleLabel.text = token.name
+            let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", token.symbol.uppercased())
+            cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
+            return cell
+        }
+        
+        
         //ontology asset using the same nep5 token cell
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
             let cell =  UITableViewCell()
@@ -290,7 +332,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", token.symbol.uppercased())
         cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
         return cell
-
+        
     }
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         if indexPath.section == sections.unclaimedGAS.rawValue
@@ -300,7 +342,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         }
         return true
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == sections.unclaimedGAS.rawValue
@@ -308,7 +350,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             || indexPath.section == sections.inbox.rawValue {
             return
         }
-
+        
         var blockchain = "neo"
         var symbol = "neo"
         if indexPath.section == sections.neoAssets.rawValue {
@@ -322,21 +364,21 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         let urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.account!.address)
         Controller().openDappBrowser(url: URL(string: urlString)!, modal: true)
     }
-
+    
     func setLocalizedStrings() {
         self.navigationController?.navigationBar.topItem?.title = AccountStrings.accountTitle
     }
-
+    
     @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-
+    
     func sendTapped(qrData: String? = nil) {
         DispatchQueue.main.async {
             self.qrController?.dismiss(animated: false, completion: nil)
             self.qrController = nil
             guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {
-                    fatalError("Presenting improper modal controller")
+                fatalError("Presenting improper modal controller")
             }
             sendModal.incomingQRData = qrData
             let nav = WalletHomeNavigationController(rootViewController: sendModal)
@@ -349,37 +391,37 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             self.present(nav, animated: true, completion: nil)
         }
     }
-
+    
     func requestTapped() {
         let modal = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "MyAddressNavigationController")
-
+        
         let transitionDelegate = DeckTransitioningDelegate()
         modal.transitioningDelegate = transitionDelegate
         modal.modalPresentationStyle = .custom
         present(modal, animated: true, completion: nil)
     }
-
+    
     func scanTapped() {
         DispatchQueue.main.async {
             self.performSegue(withIdentifier: "segueToQR", sender: nil)
         }
     }
-
+    
     func postToChannel(channel: String) {
-
+        
         let headers = ["content-type": "application/json"]
         let parameters = ["address": Authenticated.account!.address,
                           "device": "iOS" ] as [String: Any]
-
+        
         let postData = try? JSONSerialization.data(withJSONObject: parameters, options: [])
-
+        
         let request = NSMutableURLRequest(url: NSURL(string: "https://platform.o3.network/api/v1/channel/" + channel)! as URL,
                                           cachePolicy: .useProtocolCachePolicy,
                                           timeoutInterval: 10.0)
         request.httpMethod = "POST"
         request.allHTTPHeaderFields = headers
         request.httpBody = postData
-
+        
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (_, response, error) -> Void in
             if error != nil {
@@ -388,11 +430,11 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
                 _ = response as? HTTPURLResponse
             }
         })
-
+        
         dataTask.resume()
-
+        
     }
-
+    
     func qrScanned(data: String) {
         //if there is more type of string we have to check it here
         if data.hasPrefix("o3://channel") {
@@ -405,7 +447,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             self.sendTapped(qrData: data)
         }
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? QRScannerController {
             dest.delegate = self
