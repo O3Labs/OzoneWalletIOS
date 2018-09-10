@@ -385,6 +385,19 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         alert.addAction(sellButton)
         
         let withdrawButton = UIAlertAction(title: "Withdraw", style: .default) { _ in
+            
+           let request = RequestTransaction(blockchain: "neo", assetID: asset.symbol, amount: 1, contractHash: "a195c1549e7da61b8da315765a790ac7e7633b82")
+            
+            let switcheoAccount  = SwitcheoAccount(wif: Authenticated.account!.wif)
+            switcheoAccount?.switcheo = Switcheo(net: Switcheo.Net.Main)
+            switcheoAccount!.withdrawal(requestTransaction: request!, completion: {result in
+                switch result {
+                    case .failure(let error):
+                    print(error.localizedDescription)
+                    case .success(let response):
+                    print(response as Any)
+                }
+            })
         }
         alert.addAction(withdrawButton)
 

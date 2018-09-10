@@ -12,7 +12,7 @@ import Security
 
 public class SwitcheoAccount: Account {
     
-    private var switcheo: Switcheo!
+     var switcheo: Switcheo!
     
     private func addAuthenticationData(data: Switcheo.JSONDictionary, completion: @escaping (Switcheo.JSONDictionary) -> Void){
         self.switcheo.exchangeTimestamp { (result) in
@@ -168,7 +168,7 @@ public class SwitcheoAccount: Account {
         }
     }
     
-    public func exececuteCancellation(createdResponse:Switcheo.JSONDictionary,
+    public func executeCancellation(createdResponse:Switcheo.JSONDictionary,
                                       completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
         
         let transaction = createdResponse["transaction"] as! Switcheo.JSONDictionary
@@ -176,5 +176,85 @@ public class SwitcheoAccount: Account {
         let data = ["signature":self.signTxn(transaction)] as Switcheo.JSONDictionary
         self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "cancellations/"+id+"/broadcast", method: .POST, data: data, completion: completion)
     }
+    
+    public func deposit(requestTransaction: RequestTransaction,
+                        completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
+        self.createDeposit(requestTransaction: requestTransaction, completion: { (result) in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                self.exececuteDeposit(createdResponse: response, completion: { (r) in
+                    switch r {
+                    case .failure(let e):
+                        completion(.failure(e))
+                    case .success(let rsp):
+                        let w = Switcheo.SWTHResult.success(rsp)
+                        completion(w)
+                    }
+                })
+            }
+        })
+    }
+    
+    public func withdrawal(requestTransaction: RequestTransaction,
+                           completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
+        self.createWithdrawal(requestTransaction: requestTransaction, completion: { (result) in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                self.exececuteWithdrawal(createdResponse: response, completion: { (r) in
+                    switch r {
+                    case .failure(let e):
+                        completion(.failure(e))
+                    case .success(let rsp):
+                        let w = Switcheo.SWTHResult.success(rsp)
+                        completion(w)
+                    }
+                })
+            }
+        })
+    }
+    
+    public func order(requestOrder: RequestOrder, completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
+        self.createOrder(requestOrder: requestOrder) { (result) in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                self.executeOrder(createdResponse: response, completion: { (r) in
+                    switch r {
+                    case .failure(let e):
+                        completion(.failure(e))
+                    case .success(let rsp):
+                        let w = Switcheo.SWTHResult.success(rsp)
+                        completion(w)
+                    }
+                })
+            }
+        }
+    }
+    
+    public func cancellation(orderID: String,
+                             completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
+        self.createCancellation(orderID: orderID) { (result) in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                self.executeCancellation(createdResponse: response, completion: { (r) in
+                    switch r {
+                    case .failure(let e):
+                        completion(.failure(e))
+                    case .success(let rsp):
+                        let w = Switcheo.SWTHResult.success(rsp)
+                        completion(w)
+                    }
+                })
+            }
+        }
+    }
+
     
 }
