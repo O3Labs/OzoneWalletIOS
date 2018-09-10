@@ -1,0 +1,11 @@
+framework module SwitcheoSwift {
+  umbrella header "SwitcheoSwift.h"
+
+  export *
+  module * { export * }
+}
+
+module SwitcheoSwift.Swift {
+    header "SwitcheoSwift-Swift.h"
+    requires objc
+}

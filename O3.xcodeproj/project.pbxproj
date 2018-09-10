@@ -132,6 +132,23 @@
 		6E40F64421182E0E00B2B633 /* Browser.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E40F64321182E0E00B2B633 /* Browser.xcassets */; };
 		6E40F64621192E7100B2B633 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40F64521192E7100B2B633 /* Asset.swift */; };
 		6E40F6482119771300B2B633 /* PortfolioNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40F6472119771300B2B633 /* PortfolioNotificationTableViewCell.swift */; };
+		6E43769421460CB90091367A /* Switcheo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43767921460CB90091367A /* Switcheo.swift */; };
+		6E43769521460CB90091367A /* Deposit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43767B21460CB90091367A /* Deposit.swift */; };
+		6E43769721460CB90091367A /* Float64+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43767E21460CB90091367A /* Float64+Util.swift */; };
+		6E43769821460CB90091367A /* String+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43767F21460CB90091367A /* String+Util.swift */; };
+		6E43769A21460CB90091367A /* Dictionary+Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768121460CB90091367A /* Dictionary+Sort.swift */; };
+		6E43769B21460CB90091367A /* Dictionary+SWTHEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768221460CB90091367A /* Dictionary+SWTHEncoding.swift */; };
+		6E43769C21460CB90091367A /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768521460CB90091367A /* Offer.swift */; };
+		6E43769D21460CB90091367A /* Trade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768621460CB90091367A /* Trade.swift */; };
+		6E43769E21460CB90091367A /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768721460CB90091367A /* Order.swift */; };
+		6E43769F21460CB90091367A /* Candlestick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768821460CB90091367A /* Candlestick.swift */; };
+		6E4376A021460CB90091367A /* Last24hour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768921460CB90091367A /* Last24hour.swift */; };
+		6E4376A121460CB90091367A /* RequestCandlesticks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768B21460CB90091367A /* RequestCandlesticks.swift */; };
+		6E4376A221460CB90091367A /* RequestOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768C21460CB90091367A /* RequestOrder.swift */; };
+		6E4376A321460CB90091367A /* RequestOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768D21460CB90091367A /* RequestOffer.swift */; };
+		6E4376A421460CB90091367A /* RequestTrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768E21460CB90091367A /* RequestTrade.swift */; };
+		6E4376A521460CB90091367A /* RequestTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768F21460CB90091367A /* RequestTransaction.swift */; };
+		6E4376A621460CB90091367A /* Account+Switcheo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43769021460CB90091367A /* Account+Switcheo.swift */; };
 		6E4E6F7F20146086001A5844 /* AccountTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F7E20146086001A5844 /* AccountTabViewController.swift */; };
 		6E4E6F812014611E001A5844 /* AccountAssetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F802014611E001A5844 /* AccountAssetTableViewController.swift */; };
 		6E4E6F84201462D7001A5844 /* NEP5Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F83201462D7001A5844 /* NEP5Token.swift */; };
@@ -384,6 +401,23 @@
 		6E40F64321182E0E00B2B633 /* Browser.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Browser.xcassets; sourceTree = "<group>"; };
 		6E40F64521192E7100B2B633 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		6E40F6472119771300B2B633 /* PortfolioNotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioNotificationTableViewCell.swift; sourceTree = "<group>"; };
+		6E43767921460CB90091367A /* Switcheo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Switcheo.swift; sourceTree = "<group>"; };
+		6E43767B21460CB90091367A /* Deposit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deposit.swift; sourceTree = "<group>"; };
+		6E43767E21460CB90091367A /* Float64+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Float64+Util.swift"; sourceTree = "<group>"; };
+		6E43767F21460CB90091367A /* String+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Util.swift"; sourceTree = "<group>"; };
+		6E43768121460CB90091367A /* Dictionary+Sort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Sort.swift"; sourceTree = "<group>"; };
+		6E43768221460CB90091367A /* Dictionary+SWTHEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+SWTHEncoding.swift"; sourceTree = "<group>"; };
+		6E43768521460CB90091367A /* Offer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
+		6E43768621460CB90091367A /* Trade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trade.swift; sourceTree = "<group>"; };
+		6E43768721460CB90091367A /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		6E43768821460CB90091367A /* Candlestick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Candlestick.swift; sourceTree = "<group>"; };
+		6E43768921460CB90091367A /* Last24hour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Last24hour.swift; sourceTree = "<group>"; };
+		6E43768B21460CB90091367A /* RequestCandlesticks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestCandlesticks.swift; sourceTree = "<group>"; };
+		6E43768C21460CB90091367A /* RequestOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOrder.swift; sourceTree = "<group>"; };
+		6E43768D21460CB90091367A /* RequestOffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOffer.swift; sourceTree = "<group>"; };
+		6E43768E21460CB90091367A /* RequestTrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTrade.swift; sourceTree = "<group>"; };
+		6E43768F21460CB90091367A /* RequestTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTransaction.swift; sourceTree = "<group>"; };
+		6E43769021460CB90091367A /* Account+Switcheo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Account+Switcheo.swift"; sourceTree = "<group>"; };
 		6E4E6F7E20146086001A5844 /* AccountTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTabViewController.swift; sourceTree = "<group>"; };
 		6E4E6F802014611E001A5844 /* AccountAssetTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAssetTableViewController.swift; sourceTree = "<group>"; };
 		6E4E6F83201462D7001A5844 /* NEP5Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEP5Token.swift; sourceTree = "<group>"; };
@@ -747,6 +781,70 @@
 			path = TokenSelection;
 			sourceTree = "<group>";
 		};
+		6E43767621460CB90091367A /* SwitcheoSwift */ = {
+			isa = PBXGroup;
+			children = (
+				6E43767921460CB90091367A /* Switcheo.swift */,
+				6E43767A21460CB90091367A /* Models */,
+				6E43767C21460CB90091367A /* Extensions */,
+				6E43768321460CB90091367A /* Modle */,
+			);
+			path = SwitcheoSwift;
+			sourceTree = "<group>";
+		};
+		6E43767A21460CB90091367A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6E43767B21460CB90091367A /* Deposit.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6E43767C21460CB90091367A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6E43767E21460CB90091367A /* Float64+Util.swift */,
+				6E43767F21460CB90091367A /* String+Util.swift */,
+				6E43768121460CB90091367A /* Dictionary+Sort.swift */,
+				6E43768221460CB90091367A /* Dictionary+SWTHEncoding.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6E43768321460CB90091367A /* Modle */ = {
+			isa = PBXGroup;
+			children = (
+				6E43768421460CB90091367A /* Response */,
+				6E43768A21460CB90091367A /* Request */,
+				6E43769021460CB90091367A /* Account+Switcheo.swift */,
+			);
+			path = Modle;
+			sourceTree = "<group>";
+		};
+		6E43768421460CB90091367A /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				6E43768521460CB90091367A /* Offer.swift */,
+				6E43768621460CB90091367A /* Trade.swift */,
+				6E43768721460CB90091367A /* Order.swift */,
+				6E43768821460CB90091367A /* Candlestick.swift */,
+				6E43768921460CB90091367A /* Last24hour.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		6E43768A21460CB90091367A /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				6E43768B21460CB90091367A /* RequestCandlesticks.swift */,
+				6E43768C21460CB90091367A /* RequestOrder.swift */,
+				6E43768D21460CB90091367A /* RequestOffer.swift */,
+				6E43768E21460CB90091367A /* RequestTrade.swift */,
+				6E43768F21460CB90091367A /* RequestTransaction.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
 		6E4E6F8520146514001A5844 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -903,6 +1001,7 @@
 		7575ADC41F6006AC0077007B /* O3 */ = {
 			isa = PBXGroup;
 			children = (
+				6E43767621460CB90091367A /* SwitcheoSwift */,
 				6EEE3DE820D9E9680030A4AB /* dappbrowser */,
 				3527F8CB20C533F100C2FCB9 /* Marketplace */,
 				3557BA9920AA9C6C0034937C /* API */,
@@ -1258,10 +1357,13 @@
 				752006891F7F6F5D00D19B5F /* HalfModalInteractiveTransition.swift in Sources */,
 				35B426D820998B6300957211 /* UISearchBar.swift in Sources */,
 				35B399DF210EDE4500284BFA /* GasPrice.swift in Sources */,
+				6E43769E21460CB90091367A /* Order.swift in Sources */,
 				6E4E6F7F20146086001A5844 /* AccountTabViewController.swift in Sources */,
 				7520068A1F7F6F5D00D19B5F /* HalfModalTransitionAnimator.swift in Sources */,
 				351200BF207F1AA8003CA07D /* TokenSalesListTableViewController.swift in Sources */,
 				6E60CC6220CE3B5D0062F1CE /* ClaimableGASTableViewCell.swift in Sources */,
+				6E4376A021460CB90091367A /* Last24hour.swift in Sources */,
+				6E43769D21460CB90091367A /* Trade.swift in Sources */,
 				35B426C520982D7B00957211 /* Nep5SelectionCollectionViewController.swift in Sources */,
 				3557BAD420AA9D310034937C /* Array+Util.swift in Sources */,
 				3557BABD20AA9D0B0034937C /* Balance.swift in Sources */,
@@ -1280,9 +1382,11 @@
 				6E244EC32085AED4001B4B22 /* NoActionUITextField.swift in Sources */,
 				752006901F7FD0FF00D19B5F /* AddressSelectTableViewController.swift in Sources */,
 				35AF806520CA543F00E48457 /* WalletGeneratedViewController.swift in Sources */,
+				6E43769521460CB90091367A /* Deposit.swift in Sources */,
 				6E40F6482119771300B2B633 /* PortfolioNotificationTableViewCell.swift in Sources */,
 				351200C3207F3586003CA07D /* TokenSaleInfoRowTableViewCell.swift in Sources */,
 				752017481F73F30B00090C4F /* UIImage.swift in Sources */,
+				6E43769F21460CB90091367A /* Candlestick.swift in Sources */,
 				752017341F72980A00090C4F /* SendCompleteViewController.swift in Sources */,
 				353E79A420C7AE0500B9AB1F /* NEP2PasswordViewController.swift in Sources */,
 				756AC1941F7FD1B1003BF8F7 /* AddressSelectionCell.swift in Sources */,
@@ -1318,6 +1422,7 @@
 				6E40F64621192E7100B2B633 /* Asset.swift in Sources */,
 				6E73679B2084B3B900F4202B /* TokenSaleSuccessViewController.swift in Sources */,
 				6E60CC6A20CF73B00062F1CE /* URL.swift in Sources */,
+				6E4376A321460CB90091367A /* RequestOffer.swift in Sources */,
 				7520068C1F7F8AC400D19B5F /* PrivateKeyViewController.swift in Sources */,
 				35B426C1209825D800957211 /* TokenSelectionTabViewController.swift in Sources */,
 				6EEE3E0020E0DAC60030A4AB /* UILabel.swift in Sources */,
@@ -1326,6 +1431,7 @@
 				35B399D5210ECDB400284BFA /* OntologyClient.swift in Sources */,
 				35AD2B70209312600024A900 /* OnboardingStrings.swift in Sources */,
 				35DBABCA2098028D009BE767 /* PortfolioStrings.swift in Sources */,
+				6E4376A621460CB90091367A /* Account+Switcheo.swift in Sources */,
 				3557BAC820AA9D180034937C /* NeoScan.swift in Sources */,
 				7501E8431F79536300123EA8 /* SettingsMenuTableViewController.swift in Sources */,
 				351200C1207F2649003CA07D /* TokenSaleTableViewCell.swift in Sources */,
@@ -1343,18 +1449,22 @@
 				3522945B2111A693004A03A7 /* UnboundOng.swift in Sources */,
 				7513FAD71F6952B8003450ED /* TransactionCell.swift in Sources */,
 				35AD2B682092F7110024A900 /* TokenSaleStrings.swift in Sources */,
+				6E43769A21460CB90091367A /* Dictionary+Sort.swift in Sources */,
 				353E79A220C7A7E700B9AB1F /* BackupTableViewController.swift in Sources */,
+				6E4376A221460CB90091367A /* RequestOrder.swift in Sources */,
 				6E7F3D8F20B6805200835963 /* Data.swift in Sources */,
 				7546DB451F765295001DF5A2 /* AssetDetailViewController.swift in Sources */,
 				7501C0271F7BBFF400B4B2FF /* AddressEntryTableViewController.swift in Sources */,
 				353E79A020C7895000B9AB1F /* PrivateKeyCollectionViewCell.swift in Sources */,
 				353E11DD20C65CF800697359 /* MarketplaceStrings.swift in Sources */,
+				6E4376A121460CB90091367A /* RequestCandlesticks.swift in Sources */,
 				75D5BFC71F6D1D4600E64855 /* ShadowedButton.swift in Sources */,
 				751666B01F80C190009ACC07 /* TransactionWebViewController.swift in Sources */,
 				7550940D1F779EEE00127B4F /* WalletHeaderCollectionCell.swift in Sources */,
 				6E244EC92085D5CE001B4B22 /* NumberOnlyUITextField.swift in Sources */,
 				35AD2B6A209301A30024A900 /* AccountStrings.swift in Sources */,
 				35AD2B6E209310B60024A900 /* NewsStrings.swift in Sources */,
+				6E43769421460CB90091367A /* Switcheo.swift in Sources */,
 				6E4E6F9420146BEC001A5844 /* TransactionHistoryTableViewController.swift in Sources */,
 				358E95D9200358AA00A1878B /* NewsFeed.swift in Sources */,
 				3527F8CF20C539A500C2FCB9 /* MarketplaceController.swift in Sources */,
@@ -1376,9 +1486,12 @@
 				35B426D120984C4800957211 /* TokenGridCell.swift in Sources */,
 				75BEB2621F89FB2A00DC20E9 /* O3HUD.swift in Sources */,
 				6E7C92741F7A5FBA00F8D7AA /* UINavigationController.swift in Sources */,
+				6E43769821460CB90091367A /* String+Util.swift in Sources */,
 				75DA59031F7A6CEF0065FE0D /* WatchOnlyAddressTableViewCell.swift in Sources */,
+				6E43769B21460CB90091367A /* Dictionary+SWTHEncoding.swift in Sources */,
 				353E799E20C690A200B9AB1F /* TutorialCardCollectionViewCell.swift in Sources */,
 				752586B11F77DD9800ED5312 /* OzoneGraphView.swift in Sources */,
+				6E4376A521460CB90091367A /* RequestTransaction.swift in Sources */,
 				6E97C4B51F7FBAA300526FF0 /* AssetView.swift in Sources */,
 				35AF806920CA6C0100E48457 /* LoginV2TableViewController.swift in Sources */,
 				35E5F6102029412900D65BEA /* PortfolioAssetCell.swift in Sources */,
@@ -1386,6 +1499,7 @@
 				75DA59011F7A6C7D0065FE0D /* WatchOnlyAddressViewController.swift in Sources */,
 				35E5F6122029477400D65BEA /* HomeViewModel.swift in Sources */,
 				6E4E6F9A20147ABB001A5844 /* AccentButton.swift in Sources */,
+				6E43769721460CB90091367A /* Float64+Util.swift in Sources */,
 				6ED600201F765C9C006760E6 /* WalletHomeNavigationController.swift in Sources */,
 				750E17431F6FD560001F62FD /* GraphPanView.swift in Sources */,
 				6ED600161F763434006760E6 /* O3TextView.swift in Sources */,
@@ -1394,6 +1508,7 @@
 				6ED6001A1F763A15006760E6 /* O3CopyableLabel.swift in Sources */,
 				6E4E6F812014611E001A5844 /* AccountAssetTableViewController.swift in Sources */,
 				757FEB731F77F07B0099E26F /* String.swift in Sources */,
+				6E4376A421460CB90091367A /* RequestTrade.swift in Sources */,
 				6E61BBD11F729D3B00D2B30B /* Money.swift in Sources */,
 				353E79A620C7AE1700B9AB1F /* NEP2PasswordConfirmViewController.swift in Sources */,
 				3557BACB20AA9D260034937C /* WIF.swift in Sources */,
@@ -1401,6 +1516,7 @@
 				353F364D2003755B002B4FE1 /* NewsFeedCell.swift in Sources */,
 				75CEACE61F6678C0005974CE /* Color.swift in Sources */,
 				35E5F614202ADE4300D65BEA /* NativeAssetSelectorTableViewCell.swift in Sources */,
+				6E43769C21460CB90091367A /* Offer.swift in Sources */,
 				3552DE0F209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift in Sources */,
 				353F36522003842F002B4FE1 /* NewsItemViewController.swift in Sources */,
 				6E4E6F9820147868001A5844 /* ContactsTableViewController.swift in Sources */,

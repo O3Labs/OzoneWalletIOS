@@ -1,0 +1,61 @@
+//
+//  Float64+Util.swift
+//  SwitcheoSwift
+//
+//  Created by Rataphon Chitnorm on 8/21/18.
+//  Copyright © 2018 O3 Labs Inc. All rights reserved.
+//
+
+import Foundation
+let ASSET_DECIMALS = [
+    // NEO
+    "NEO": 8,
+    "GAS": 8,
+    "SWTH": 8,
+    "ACAT": 8,
+    "APH": 8,
+    "AVA": 8,
+    "COUP": 8,
+    "CPX": 8,
+    "DBC": 8,
+    "EFX": 8,
+    "LRN": 8,
+    "MCT": 8,
+    "NKN": 8,
+    "NRVE": 8,
+    "OBT": 8,
+    "ONT": 8,
+    "PKC": 8,
+    "QLC": 8,
+    "RHT": 0,
+    "RPX": 8,
+    "SDT": 8,
+    "SDS": 8,
+    "SOUL": 8,
+    "TKY": 8,
+    "TNC": 8,
+    "TOLL": 8,
+    "ZPT": 8,
+    "SWH": 8,
+    "MCTP": 8,
+    "NRVEP": 8,
+    "RHTC": 0,
+    // ETH
+    "ETH": 18,
+    "ONC": 18,
+]
+
+extension Float64 {
+    func toSWTHAmount() -> String {
+        let fullAmount = self * (pow(10,8))
+        let amountText = String(format: fullAmount == floor(fullAmount) ? "%.0f":  "%.1f", fullAmount)
+        return amountText
+    }
+    
+   func toFixed(asset: String) -> String {
+        let decimal = ASSET_DECIMALS[asset] ?? 8
+        let amountText = String(format: "%."+String(format:"%d",decimal)+"f", self)
+        return amountText
+    }
+}
+
