@@ -12,7 +12,6 @@
 
 import Foundation
 import Neoutils
-
 public struct RequestTransaction: Codable {
     public var blockchain, assetID: String
     public var amount: Float64
@@ -32,9 +31,9 @@ public struct RequestTransaction: Codable {
         self.contractHash = contractHash
     }
     
-    var dictionary: [String: Any] {
+    public func toDictionary(tokenDetail :TokenDetail) -> [String: Any] {
         var dict = (try? JSONSerialization.jsonObject(with: JSONEncoder().encode(self))) as? [String: Any] ?? [:]
-        dict["amount"] = self.amount.toSWTHAmount()
+        dict["amount"] = self.amount.toAssetAmount(self.assetID.uppercased(),tokenDetail: tokenDetail)
         return dict
     }
     

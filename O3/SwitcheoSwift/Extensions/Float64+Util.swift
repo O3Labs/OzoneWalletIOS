@@ -46,14 +46,14 @@ let ASSET_DECIMALS = [
 ]
 
 extension Float64 {
-    func toSWTHAmount() -> String {
-        let fullAmount = self * (pow(10,8))
+    func toAssetAmount(_ asset: String,tokenDetail: TokenDetail) -> String {
+        //        let decimal:Float64 = Float64(ASSET_DECIMALS[asset] ?? 8)
+        let fullAmount = self * (pow(10,tokenDetail.decimals))
         let amountText = String(format: fullAmount == floor(fullAmount) ? "%.0f":  "%.1f", fullAmount)
         return amountText
     }
     
-   func toFixed(asset: String) -> String {
-        let decimal = ASSET_DECIMALS[asset] ?? 8
+    func toFixed(_ decimal:Int) -> String {
         let amountText = String(format: "%."+String(format:"%d",decimal)+"f", self)
         return amountText
     }

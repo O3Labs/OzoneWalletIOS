@@ -10,9 +10,16 @@ import Foundation
 import Neoutils
 import Security
 
-public class SwitcheoAccount: Account {
+
+public class SwitcheoAccount{
     
-     var switcheo: Switcheo!
+    var switcheo: Switcheo!
+    var account: Account!
+    
+    init(network: Switcheo.Net, account: Account) {
+        self.switcheo = Switcheo(net: network)
+        self.account = account
+    }
     
     private func addAuthenticationData(data: Switcheo.JSONDictionary, completion: @escaping (Switcheo.JSONDictionary) -> Void){
         self.switcheo.exchangeTimestamp { (result) in
@@ -26,7 +33,7 @@ public class SwitcheoAccount: Account {
                 let serializedTransaction = authenticatedData.SWTHEncodingMessage(sort: true)
                 var error: NSError?
                 let signature = NeoutilsSign(serializedTransaction.hexadecimal()!,
-                                             self.privateKey.fullHexString,
+                                             self.account.privateKey.fullHexString,
                                              &error)?.fullHexString
                 
                 if error != nil {
@@ -35,7 +42,7 @@ public class SwitcheoAccount: Account {
                     return
                 }
                 
-                authenticatedData["address"] = NeoutilsReverseBytes(self.hashedSignature).fullHexString
+                authenticatedData["address"] = NeoutilsReverseBytes(self.account.hashedSignature).fullHexString
                 authenticatedData["signature"] = signature
                 completion(authenticatedData)
             }
@@ -45,14 +52,30 @@ public class SwitcheoAccount: Account {
     
     public func createDeposit(requestTransaction: RequestTransaction,
                               completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
-        self.addAuthenticationData(data: requestTransaction.dictionary) { (result) in
-            self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "deposits", method: .POST, data: result, completion: completion)
+        self.switcheo.exchangeTokens { (r) in
+            switch r {
+            case .failure(let error ):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                let responseData = try? JSONSerialization.data(withJSONObject: response[requestTransaction.assetID.uppercased()] as Any, options: .prettyPrinted)
+                let detail = try? decoder.decode(TokenDetail.self, from: responseData!)
+                if (detail == nil) {
+                    completion(.failure(self.switcheo.log("decode error")))
+                    return
+                }
+                self.addAuthenticationData(data: requestTransaction.toDictionary(tokenDetail: detail!)) { (result) in
+                    self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "deposits", method: .POST, data: result, completion: completion)
+                }
+            }
         }
+        
     }
     
     public func exececuteDeposit(createdResponse:Switcheo.JSONDictionary,
                                  completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
         let transaction = createdResponse["transaction"] as! Switcheo.JSONDictionary
+        //        print(transaction.toString())
         let id = createdResponse["id"] as! String
         let data = ["signature":self.signTxn(transaction)] as Switcheo.JSONDictionary
         self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "deposits/"+id+"/broadcast", method:.POST   , data: data, completion: completion)
@@ -60,8 +83,23 @@ public class SwitcheoAccount: Account {
     
     public func createWithdrawal(requestTransaction: RequestTransaction,
                                  completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
-        self.addAuthenticationData(data: requestTransaction.dictionary) { (result) in
-            self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "withdrawals", method: .POST, data: result, completion: completion)
+        self.switcheo.exchangeTokens { (r) in
+            switch r {
+            case .failure(let error ):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                let responseData = try? JSONSerialization.data(withJSONObject: response[requestTransaction.assetID.uppercased()] as Any, options: .prettyPrinted)
+                let detail = try? decoder.decode(TokenDetail.self, from: responseData!)
+                if (detail == nil) {
+                    completion(.failure(self.switcheo.log("decode error")))
+                    return
+                }
+                self.addAuthenticationData(data: requestTransaction.toDictionary(tokenDetail: detail!)) { (result) in
+                    self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "withdrawals", method: .POST, data: result, completion: completion)
+                    
+                }
+            }
         }
     }
     
@@ -70,8 +108,8 @@ public class SwitcheoAccount: Account {
         
         self.switcheo.exchangeTimestamp { (result) in
             switch result {
-            case .failure( _):
-                completion(.failure(.invalidData))
+            case .failure(let error):
+                completion(.failure(error))
                 return
             case .success(let response):
                 
@@ -81,11 +119,11 @@ public class SwitcheoAccount: Account {
                 let serializedTransaction = authenticatedData.SWTHEncodingMessage(sort: true)
                 var error: NSError?
                 let signature = NeoutilsSign(serializedTransaction.hexadecimal()!,
-                                             self.privateKey.fullHexString,
+                                             self.account.privateKey.fullHexString,
                                              &error)?.fullHexString
                 
                 if error != nil {
-                    completion(.failure(.invalidData))
+                    completion(.failure(self.switcheo.log(error.debugDescription)))
                     return
                 }
                 
@@ -96,7 +134,7 @@ public class SwitcheoAccount: Account {
     }
     
     public func orders(contractHash: String, completion: @escaping (Switcheo.SWTHResult<[Order]>) -> Void){
-        let data = ["address":NeoutilsReverseBytes(self.hashedSignature).fullHexString,"contract_hash":contractHash]
+        let data = ["address":NeoutilsReverseBytes(self.account.hashedSignature).fullHexString,"contract_hash":contractHash]
         self.switcheo.sendRequest(ofType:[Switcheo.JSONDictionary].self, "orders", method: .GET, data: data, completion: { (result) in
             switch result {
             case .failure(let error):
@@ -106,7 +144,7 @@ public class SwitcheoAccount: Account {
                 let responseData = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
                 let result = try? decoder.decode([Order].self, from: responseData!)
                 if (result == nil) {
-                    completion(.failure(.invalidData))
+                    completion(.failure(self.switcheo.log("decode error")))
                     return
                 }
                 let w = Switcheo.SWTHResult.success(result!)
@@ -116,9 +154,24 @@ public class SwitcheoAccount: Account {
     }
     
     public func createOrder(requestOrder: RequestOrder, completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
-        self.addAuthenticationData(data: requestOrder.dictionary) { (result) in
-            self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "orders", method: .POST, data: result, completion: completion)
-        }
+        self.switcheo.exchangeTokens { (r) in
+            switch r {
+            case .failure(let error ):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                let pairs = requestOrder.pair.components(separatedBy: "_")
+                let asset = pairs[0].uppercased()
+                let responseData = try? JSONSerialization.data(withJSONObject: response[asset] as Any, options: .prettyPrinted)
+                let detail = try? decoder.decode(TokenDetail.self, from: responseData!)
+                if (detail == nil) {
+                    completion(.failure(self.switcheo.log("decode error")))
+                    return
+                }
+                self.addAuthenticationData(data: requestOrder.toDictionary(asset: asset,tokenDetail: detail!)) { (result) in
+                    self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "orders", method: .POST, data: result, completion: completion)
+                }
+            }}
     }
     
     private func signTxn(_ txn: Switcheo.JSONDictionary) -> String{
@@ -126,7 +179,7 @@ public class SwitcheoAccount: Account {
         let decoded = String(data: jsonData, encoding: .utf8)!
         var error: NSError?
         let signature: String = (NeoutilsSign(NeoutilsSerializeTX(decoded),
-                                              self.privateKey.fullHexString,
+                                              self.account.privateKey.fullHexString,
                                               &error)?.fullHexString)!
         if error != nil {
             return ""
@@ -135,7 +188,7 @@ public class SwitcheoAccount: Account {
         return signature
     }
     
-    public func executeOrder(createdResponse:Switcheo.JSONDictionary,
+    public func exececuteOrder(createdResponse:Switcheo.JSONDictionary,
                                completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
         let id = createdResponse["id"] as! String
         let fills = createdResponse["fills"] as! [Switcheo.JSONDictionary]
@@ -154,7 +207,6 @@ public class SwitcheoAccount: Account {
             let txn = make["txn"] as! Switcheo.JSONDictionary
             authMakes[mid] = self.signTxn(txn)
         }
-        print("_______",id)
         
         let data = ["signatures":["fills": authFills, "makes": authMakes]] as Switcheo.JSONDictionary
         self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "orders/"+id+"/broadcast", method: .POST, data: data, completion: completion)
@@ -168,7 +220,7 @@ public class SwitcheoAccount: Account {
         }
     }
     
-    public func executeCancellation(createdResponse:Switcheo.JSONDictionary,
+    public func exececuteCancellation(createdResponse:Switcheo.JSONDictionary,
                                       completion: @escaping (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void){
         
         let transaction = createdResponse["transaction"] as! Switcheo.JSONDictionary
@@ -223,7 +275,7 @@ public class SwitcheoAccount: Account {
             case .failure(let error):
                 completion(.failure(error))
             case .success(let response):
-                self.executeOrder(createdResponse: response, completion: { (r) in
+                self.exececuteOrder(createdResponse: response, completion: { (r) in
                     switch r {
                     case .failure(let e):
                         completion(.failure(e))
@@ -243,7 +295,7 @@ public class SwitcheoAccount: Account {
             case .failure(let error):
                 completion(.failure(error))
             case .success(let response):
-                self.executeCancellation(createdResponse: response, completion: { (r) in
+                self.exececuteCancellation(createdResponse: response, completion: { (r) in
                     switch r {
                     case .failure(let e):
                         completion(.failure(e))
@@ -255,6 +307,5 @@ public class SwitcheoAccount: Account {
             }
         }
     }
-
     
 }

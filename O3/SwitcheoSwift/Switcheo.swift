@@ -30,9 +30,17 @@ public class Switcheo {
     
     public typealias JSONDictionary = [String:  Any]
     
+    public struct O3Error {
+        public var message: String
+    }
+    
     public enum SWTHResult<T> {
         case success(T)
-        case failure(SWTHError)
+        case failure(String)
+    }
+    
+    func log(_ errorMessage: String, functionName: String = #function) ->String {
+        return "\(functionName): \(errorMessage)"
     }
     
     public enum SWTHError: Error {
@@ -67,7 +75,7 @@ public class Switcheo {
         request.cachePolicy = .reloadIgnoringLocalCacheData
         if data.count > 0 {
             guard let body = try? JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.sortedKeys) else {
-                completion(.failure(.invalidBodyRequest))
+                completion(.failure(self.log("JSONSerialization Error")))
                 return
             }
             request.httpBody = body
@@ -75,29 +83,29 @@ public class Switcheo {
         
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, err) in
             if err != nil {
-                completion(.failure(.invalidRequest))
+                completion(.failure(self.log(err.debugDescription)))
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse,
                 (200...299).contains(httpResponse.statusCode) else  {
                     #if DEBUG
-                        print(response as Any)
-                        guard let errorUnwrapped = data,
-                            let jsonError = (try? JSONSerialization.jsonObject(with: errorUnwrapped, options: [])) as? JSONDictionary else {
-                                completion(.failure(.switcheoError))
-                                return
-                        }
-                        print(endpointURL,jsonError,"________ERROR_________")
+                    print(response as Any)
+                    guard let errorUnwrapped = data,
+                        let jsonError = (try? JSONSerialization.jsonObject(with: errorUnwrapped, options: [])) as? JSONDictionary else {
+                            completion(.failure(self.log("JSONSerialization Error")))
+                            return
+                    }
+                    print(endpointURL,jsonError,"________ERROR_________")
                     #endif
-                    completion(.failure(.switcheoError))
+                    completion(.failure(self.log(jsonError.toString())))
                     return
             }
             
             
             guard let dataUnwrapped = data,
                 let json = (try? JSONSerialization.jsonObject(with: dataUnwrapped, options: [])) as? T else {
-                    completion(.failure(.switcheoDataError))
+                    completion(.failure(self.log("JSONSerialization Error")))
                     return
             }
             
@@ -123,7 +131,7 @@ public class Switcheo {
                             let responseData = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
                             let result = try? decoder.decode([Candlestick].self, from: responseData!)
                             if (result == nil) {
-                                completion(.failure(.invalidData))
+                                completion(.failure(self.log("Invalid Data")))
                                 return
                             }
                             let w = SWTHResult.success(result!)
@@ -145,7 +153,7 @@ public class Switcheo {
                             let responseData = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
                             let result = try? decoder.decode([Last24hour].self, from: responseData!)
                             if (result == nil) {
-                                completion(.failure(.invalidData))
+                                completion(.failure(self.log("Invalid Data")))
                                 return
                             }
                             let w = SWTHResult.success(result!)
@@ -178,7 +186,7 @@ public class Switcheo {
                             let responseData = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
                             let result = try? decoder.decode([Offer].self, from: responseData!)
                             if (result == nil) {
-                                completion(.failure(.invalidData))
+                                completion(.failure(self.log("Invalid Data")))
                                 return
                             }
                             let w = SWTHResult.success(result!)
@@ -203,7 +211,7 @@ public class Switcheo {
                             let responseData = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
                             let result = try? decoder.decode([Trade].self, from: responseData!)
                             if (result == nil) {
-                                completion(.failure(.invalidData))
+                                completion(.failure(self.log("Invalid Data")))
                                 return
                             }
                             let w = SWTHResult.success(result!)
@@ -246,11 +254,32 @@ public class Switcheo {
     }
     
     public func exchangeTokens(completion: @escaping (SWTHResult<JSONDictionary>) -> Void){
-        sendRequest(ofType: JSONDictionary.self,
-                    "exchange/tokens",
-                    method: .GET,
-                    data: [:],
-                    completion: completion)
+        let cache = NSCache<NSString, AnyObject>()
+        if let cached = cache.object(forKey: "SWTH_SUPPORTED_TOKEN") {
+            // use the cached version
+            let response = cached as! JSONDictionary
+            let w = SWTHResult.success(response)
+            completion(w)
+            return
+        } else {
+            sendRequest(ofType: JSONDictionary.self,
+                        "exchange/tokens",
+                        method: .GET,
+                        data: [:],
+                        completion: { (result) in
+                            switch result {
+                            case .failure(let error):
+                                completion(.failure(error))
+                            case .success(let response):
+                                // create it from scratch then store in the cache
+                                cache.setObject(response as AnyObject, forKey: "SWTH_SUPPORTED_TOKEN")
+                                let w = SWTHResult.success(response)
+                                completion(w)
+                            }
+            })
+            
+        }
+        
     }
     
 }

@@ -29,7 +29,7 @@ class ShadowedButton: UIButton {
         self.theme_backgroundColor = isEnabled == true ? O3Theme.primaryColorPicker : O3Theme.disabledColorPicker
         if shadowLayer == nil {
             shadowLayer = CAShapeLayer()
-            shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 22).cgPath
+            shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: self.cornerRadius).cgPath
             shadowLayer.fillColor = isEnabled == true ? Theme.light.primaryColor.cgColor : UIColor.clear.cgColor
             shadowLayer.shadowColor = Theme.light.disabledColor.cgColor
             shadowLayer.shadowPath = shadowLayer.path

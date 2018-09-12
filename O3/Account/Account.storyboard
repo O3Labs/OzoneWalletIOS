@@ -41,7 +41,7 @@
                         <color key="separatorColor" name="lightGreyTransparent"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="Fuw-MK-zk1">
-                            <rect key="frame" x="0.0" y="758" width="414" height="80"/>
+                            <rect key="frame" x="0.0" y="802" width="414" height="80"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
@@ -498,20 +498,20 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="trading-account-header" rowHeight="96" id="nwq-Nu-GU6">
-                                <rect key="frame" x="0.0" y="340" width="414" height="96"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="trading-account-header" rowHeight="140" id="nwq-Nu-GU6">
+                                <rect key="frame" x="0.0" y="340" width="414" height="140"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nwq-Nu-GU6" id="0HC-0P-o5j">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="95.666666666666671"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="139.66666666666666"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ip9-q8-xGj">
-                                            <rect key="frame" x="0.0" y="8" width="414" height="88"/>
+                                            <rect key="frame" x="0.0" y="8" width="414" height="131.66666666666666"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="gt4-MK-aaY">
                                                     <rect key="frame" x="0.0" y="0.0" width="413.66666666666669" height="44"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QzQ-cy-546">
+                                                        <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QzQ-cy-546">
                                                             <rect key="frame" x="0.0" y="0.0" width="206.33333333333334" height="44"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                                                             <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -519,6 +519,9 @@
                                                             <state key="normal" title="Deposit" image="arrow-to-bottom">
                                                                 <color key="titleColor" name="lightThemePrimary"/>
                                                             </state>
+                                                            <connections>
+                                                                <action selector="didTapDeposit:" destination="sEU-p8-l0I" eventType="touchUpInside" id="yDy-xK-sHP"/>
+                                                            </connections>
                                                         </button>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wdU-cn-bb1">
                                                             <rect key="frame" x="207.33333333333331" y="0.0" width="206.33333333333331" height="44"/>
@@ -531,7 +534,7 @@
                                                                         <constraint firstAttribute="width" constant="1" id="sV4-id-X7M"/>
                                                                     </constraints>
                                                                 </view>
-                                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E7c-dc-fYK">
+                                                                <button opaque="NO" tag="9" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E7c-dc-fYK">
                                                                     <rect key="frame" x="0.0" y="0.0" width="206.33333333333334" height="44"/>
                                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                                                                     <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -539,6 +542,12 @@
                                                                     <state key="normal" title="Withdraw" image="arrow-from-bottom">
                                                                         <color key="titleColor" name="lightThemePrimary"/>
                                                                     </state>
+                                                                    <state key="disabled">
+                                                                        <color key="titleColor" name="grey"/>
+                                                                    </state>
+                                                                    <connections>
+                                                                        <action selector="didTapWithdraw:" destination="sEU-p8-l0I" eventType="touchUpInside" id="hY1-GL-qay"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -559,20 +568,32 @@
                                                 </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trading account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpI-vQ-XFV">
                                                     <rect key="frame" x="16" y="44" width="382" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="LNd-1N-E0D"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                                                    <color key="textColor" name="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You don't have any asset in your trading account. Make a deposit of token you wish to trade for faster trading!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vxt-nr-tbg">
+                                                    <rect key="frame" x="16" y="72" width="382" height="60"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                                     <color key="textColor" name="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
+                                                <constraint firstItem="vxt-nr-tbg" firstAttribute="leading" secondItem="kpI-vQ-XFV" secondAttribute="leading" id="01q-Sj-v4q"/>
                                                 <constraint firstItem="kpI-vQ-XFV" firstAttribute="leading" secondItem="Ip9-q8-xGj" secondAttribute="leading" constant="16" id="0b5-Eu-y98"/>
-                                                <constraint firstAttribute="bottom" secondItem="kpI-vQ-XFV" secondAttribute="bottom" id="2lL-4g-qNL"/>
                                                 <constraint firstItem="gt4-MK-aaY" firstAttribute="top" secondItem="Ip9-q8-xGj" secondAttribute="top" id="33e-C5-ADV"/>
+                                                <constraint firstItem="vxt-nr-tbg" firstAttribute="trailing" secondItem="kpI-vQ-XFV" secondAttribute="trailing" id="BN7-Vd-yhi"/>
                                                 <constraint firstItem="gt4-MK-aaY" firstAttribute="leading" secondItem="Ip9-q8-xGj" secondAttribute="leading" id="Kze-59-8b0"/>
                                                 <constraint firstAttribute="trailing" secondItem="kpI-vQ-XFV" secondAttribute="trailing" constant="16" id="NSs-GB-NCe"/>
                                                 <constraint firstAttribute="trailing" secondItem="gt4-MK-aaY" secondAttribute="trailing" id="bvg-Qj-pp9"/>
                                                 <constraint firstItem="kpI-vQ-XFV" firstAttribute="top" secondItem="gt4-MK-aaY" secondAttribute="bottom" id="klC-kt-f2M"/>
+                                                <constraint firstItem="vxt-nr-tbg" firstAttribute="top" secondItem="kpI-vQ-XFV" secondAttribute="bottom" constant="-16" id="rJS-s5-nrS"/>
+                                                <constraint firstAttribute="bottom" secondItem="vxt-nr-tbg" secondAttribute="bottom" id="uyM-pq-ZWe"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -586,7 +607,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell-inbox-item" rowHeight="190" id="Br4-SM-EUN" customClass="InboxItemTableViewCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="436" width="414" height="190"/>
+                                <rect key="frame" x="0.0" y="480" width="414" height="190"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Br4-SM-EUN" id="vZc-RE-Qb2">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="189.66666666666666"/>
@@ -706,7 +727,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell-nativeasset" rowHeight="66" id="PPM-vd-ml7" customClass="NativeAssetTableViewCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="626" width="414" height="66"/>
+                                <rect key="frame" x="0.0" y="670" width="414" height="66"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PPM-vd-ml7" id="etX-se-Ux6">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="65.666666666666671"/>
@@ -763,7 +784,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell-nep5token" rowHeight="66" id="IIb-YS-HV4" customClass="NEP5TokenTableViewCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="692" width="414" height="66"/>
+                                <rect key="frame" x="0.0" y="736" width="414" height="66"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IIb-YS-HV4" id="0Cn-S5-ICg">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="65.666666666666671"/>
@@ -1282,14 +1303,11 @@
         <namedColor name="grey">
             <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="grey">
+            <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="lightGreyTransparent">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="0.20000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="lightGreyTransparent">
-            <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="0.20000000300000001" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="lightGreyTransparent">
-            <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="0.20000000300000001" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="lightThemeOrange">
             <color red="0.96078431369999995" green="0.65098039220000004" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1297,17 +1315,8 @@
         <namedColor name="lightThemePrimary">
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="lightThemePrimary">
-            <color red="0.0" green="0.41176470590000003" blue="0.85098039219999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textColor">
-            <color red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="textColor">
             <color red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textColor">
-            <color red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textColor">
             <color red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

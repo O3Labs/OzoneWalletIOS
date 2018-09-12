@@ -20,5 +20,11 @@ extension Dictionary {
         let serializedTransaction = "010001f0" + concatenatedString + "0000"
         return serializedTransaction
     }
+    
+    func toString() -> String{
+        let jsonData = try? JSONSerialization.data(withJSONObject:self as Any, options: .prettyPrinted)
+        let jsonString = String(data: jsonData!, encoding: .utf8)
+        return jsonString!
+    }
 }
 

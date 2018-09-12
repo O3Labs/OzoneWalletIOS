@@ -125,7 +125,8 @@ extension TransferableAsset {
 
     var formattedBalanceString: String {
         let amountFormatter = NumberFormatter()
-        amountFormatter.minimumFractionDigits = self.decimals
+        amountFormatter.maximumFractionDigits = self.decimals
+        amountFormatter.minimumFractionDigits = 0
         amountFormatter.numberStyle = .decimal
         amountFormatter.locale = Locale.current
         amountFormatter.usesGroupingSeparator = true

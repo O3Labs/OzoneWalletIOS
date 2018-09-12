@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -39,10 +39,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NEO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mo5-iB-pgL">
-                    <rect key="frame" x="16" y="6" width="71" height="14"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="71" id="tll-0U-pRf"/>
-                    </constraints>
+                    <rect key="frame" x="16" y="6" width="112" height="14"/>
                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="10"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -112,6 +109,7 @@
                 <constraint firstItem="eiA-Ac-vOa" firstAttribute="leading" secondItem="ceh-2i-7pS" secondAttribute="trailing" constant="8" id="b3A-sO-LGJ"/>
                 <constraint firstItem="u1V-rJ-Fyh" firstAttribute="trailing" secondItem="eiA-Ac-vOa" secondAttribute="trailing" constant="16" id="dnX-HT-zZe"/>
                 <constraint firstItem="Mo5-iB-pgL" firstAttribute="leading" secondItem="u1V-rJ-Fyh" secondAttribute="leading" constant="16" id="etM-rI-Jna"/>
+                <constraint firstItem="oU2-iK-wZT" firstAttribute="leading" secondItem="Mo5-iB-pgL" secondAttribute="trailing" constant="8" id="pcT-n3-PEY"/>
                 <constraint firstItem="JrL-Hi-7Ug" firstAttribute="top" secondItem="u1V-rJ-Fyh" secondAttribute="top" id="qSu-mN-7oc"/>
                 <constraint firstItem="oU2-iK-wZT" firstAttribute="leading" secondItem="ceh-2i-7pS" secondAttribute="trailing" id="tVL-Gy-gx7"/>
                 <constraint firstItem="JrL-Hi-7Ug" firstAttribute="leading" secondItem="u1V-rJ-Fyh" secondAttribute="leading" id="v1J-xG-CA1"/>

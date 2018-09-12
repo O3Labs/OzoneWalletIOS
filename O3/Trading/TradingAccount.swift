@@ -45,6 +45,33 @@ struct TradableAsset: Codable {
     }
 }
 
+extension TradableAsset {
+    func amountInDouble() -> Double{
+        let valueDecimal = NSDecimalNumber(string: self.value)
+        let dividedBalance = (valueDecimal.doubleValue / pow(10, Double(self.decimals)))
+        let value = Double(truncating: (dividedBalance as NSNumber?)!)
+        return value
+    }
+    
+    func formattedAmountInString() -> String {
+        let amountFormatter = NumberFormatter()
+        amountFormatter.minimumFractionDigits = 0
+        amountFormatter.maximumFractionDigits = self.decimals
+        amountFormatter.numberStyle = .decimal
+        amountFormatter.locale = Locale.current
+        amountFormatter.usesGroupingSeparator = true
+        
+        return String(format: "%@", amountFormatter.string(from: NSNumber(value: self.amountInDouble()))!)
+    }
+}
+
+extension TransferableAsset {
+    func toTradableAsset() -> TradableAsset {
+        let valueDouble = round(NSDecimalNumber(decimal: Decimal(self.value * pow(10, Double(self.decimals)))).doubleValue)
+        return TradableAsset(id: self.id, name: self.name, symbol: self.symbol, decimals: self.decimals, value: String(format:"%0f",valueDouble))
+    }
+}
+
 struct Confirming: Codable {
     let symbol: String
     let eventType: String

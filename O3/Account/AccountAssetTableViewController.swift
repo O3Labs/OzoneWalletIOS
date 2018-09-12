@@ -38,7 +38,6 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
     var mostRecentClaimAmount = 0.0
     var qrController: QRScannerController?
     var tradingAccount: TradingAccount?
-    
     var addressInbox: Inbox?
     
     @objc func reloadCells() {
@@ -349,10 +348,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             return 44.0
         }
         if section == sections.tradingSection.rawValue {
-            if tradingAccount?.switcheo.confirmed.count == 0 {
-                return 0
-            }
-            return 96.0
+            return tradingAccount?.switcheo.confirmed.count ?? 1 > 0 ? 96.0 : 140.0
         }
         return 0
     }
@@ -364,6 +360,12 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         }
         if section == sections.tradingSection.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "trading-account-header")
+            if let emptyBalanceLabel = cell?.viewWithTag(1) as? UILabel {
+                emptyBalanceLabel.isHidden = tradingAccount?.switcheo.confirmed.count ?? 0 > 0
+            }
+            if let withdrawButton = cell?.viewWithTag(9) as? UIButton {
+                withdrawButton.isEnabled = tradingAccount != nil && tradingAccount!.switcheo.confirmed.count > 0
+            }
             return cell?.contentView
         }
         
@@ -385,22 +387,11 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         alert.addAction(sellButton)
         
         let withdrawButton = UIAlertAction(title: "Withdraw", style: .default) { _ in
-            
-           let request = RequestTransaction(blockchain: "neo", assetID: asset.symbol, amount: 1, contractHash: "a195c1549e7da61b8da315765a790ac7e7633b82")
-            
-            let switcheoAccount  = SwitcheoAccount(wif: Authenticated.account!.wif)
-            switcheoAccount?.switcheo = Switcheo(net: Switcheo.Net.Main)
-            switcheoAccount!.withdrawal(requestTransaction: request!, completion: {result in
-                switch result {
-                    case .failure(let error):
-                    print(error.localizedDescription)
-                    case .success(let response):
-                    print(response as Any)
-                }
-            })
+            self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Withdraw, asset: asset)
         }
+        
         alert.addAction(withdrawButton)
-
+        
         let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
             
         }
@@ -438,6 +429,7 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
         Controller().openDappBrowser(url: URL(string: urlString)!, modal: true)
     }
     
+    //MARK: -
     func setLocalizedStrings() {
         self.navigationController?.navigationBar.topItem?.title = AccountStrings.accountTitle
     }
@@ -527,4 +519,45 @@ class AccountAssetTableViewController: UITableViewController, WalletToolbarDeleg
             qrController = dest
         }
     }
+}
+
+extension AccountAssetTableViewController {
+    
+    func openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action, asset: TradableAsset?) {
+        let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "withdrawDepositNav") as! UINavigationController
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        
+        if let vc = nav.viewControllers.first as? WithdrawDepositTableViewController {
+            vc.selectedAction = action
+            if asset != nil {
+                vc.selectedAsset = asset
+            }
+            if action == WithdrawDepositTableViewController.Action.Withdraw {
+                vc.withdrawableAsset = self.tradingAccount?.switcheo.confirmed
+            }
+            vc.delegate = self
+        }
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    @IBAction func didTapDeposit(_ sender: Any) {
+        openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Deposit, asset: nil)
+    }
+    
+    @IBAction func didTapWithdraw(_ sender: Any) {
+        openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Withdraw, asset: nil)
+    }
+}
+
+extension AccountAssetTableViewController: WithdrawDepositTableViewControllerDelegate {
+    
+    func didFinishAction(action: WithdrawDepositTableViewController.Action) {
+        if action == WithdrawDepositTableViewController.Action.Deposit {
+            self.loadAccountState()
+        }
+        loadTradingAccountBalances()
+    }
+    
 }

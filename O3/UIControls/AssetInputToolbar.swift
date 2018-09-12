@@ -3,7 +3,7 @@
 //  O3
 //
 //  Created by Apisit Toompakdee on 4/17/18.
-//  Copyright © 2018 drei. All rights reserved.
+//  Copyright © 2018 O3 Labs Inc. All rights reserved.
 //
 
 import UIKit

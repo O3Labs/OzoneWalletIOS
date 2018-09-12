@@ -8,7 +8,6 @@
 // To parse the JSON, add this file to your project and do:
 //
 //   let order = try? newJSONDecoder().decode(Order.self, from: jsonData)
-
 import Foundation
 import Neoutils
 
@@ -41,11 +40,10 @@ public struct RequestOrder: Codable {
         self.otcAddress = otcAddress
     }
     
-    var dictionary: [String: Any] {
+    public func toDictionary(asset: String, tokenDetail: TokenDetail) -> [String: Any] {
         var dict = (try? JSONSerialization.jsonObject(with: JSONEncoder().encode(self))) as? [String: Any] ?? [:]
-        dict["want_amount"] = self.wantAmount.toSWTHAmount()
-        let pairs = self.pair.components(separatedBy: "_")
-        dict["price"] = self.price.toFixed(asset: pairs[0])
+        dict["want_amount"] = self.wantAmount.toAssetAmount(asset,tokenDetail: tokenDetail)
+        dict["price"] = self.price.toFixed(8)
         if self.otcAddress != "" && self.orderType == "otc" {
             dict["otc_address"] = NeoutilsNEOAddresstoScriptHashBigEndian(self.otcAddress)
         }else{
@@ -54,5 +52,4 @@ public struct RequestOrder: Codable {
         return dict
     }
 }
-
 
