@@ -154,7 +154,7 @@
 - (void)setHash:(NSString*)v;
 // skipped field NeonJSTransaction.Inputs with unsupported type: []struct{PrevIndex int "json:\"prevIndex\""; PrevHash string "json:\"prevHash\""}
 
-// skipped field NeonJSTransaction.Outputs with unsupported type: []struct{AssetID string "json:\"assetId\""; ScriptHash string "json:\"scriptHash\""; Value float64 "json:\"value\""}
+// skipped field NeonJSTransaction.Outputs with unsupported type: []struct{AssetID string "json:\"assetId\""; ScriptHash string "json:\"scriptHash\""; Value interface{} "json:\"value\""}
 
 - (NSString*)script;
 - (void)setScript:(NSString*)v;
