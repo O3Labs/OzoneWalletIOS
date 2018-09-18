@@ -24,6 +24,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.hideHairline()
         let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
         if captureDevice == nil {
             return

@@ -46,7 +46,18 @@ class WithdrawDepositTableViewController: UITableViewController {
     @IBOutlet var confirmButton: UIButton?
     var inputToolbar = AssetInputToolbar()
     
+    func setupTheme() {
+        self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        for label in [headerLabel, assetSymbolLabel] {
+            label?.theme_textColor = O3Theme.titleColorPicker
+        }
+        amountTextField.theme_textColor = O3Theme.titleColorPicker
+        amountTextField?.theme_keyboardAppearance = O3Theme.keyboardPicker
+    }
+    
     func setupView() {
+        setupTheme()
         if selectedAction == Action.Deposit {
             headerLabel.text = "Enter the amount of tokens you wish to deposit to your trading account for fast trading."
             footerLabel.text = "Deposits will take about 30 seconds to confirm."
@@ -56,7 +67,6 @@ class WithdrawDepositTableViewController: UITableViewController {
         }
         
         self.amountTextField.addTarget(self, action: #selector(amountTextChanged(_:)), for: .editingChanged)
-        
         
         //when deposit we need to figure out what Switcheo supported and only show those
         if selectedAction == Action.Deposit {
@@ -68,7 +78,6 @@ class WithdrawDepositTableViewController: UITableViewController {
             if O3Cache.gas().value > 0 {
                 depositableAssets?.append(O3Cache.gas().toTradableAsset())
             }
-            
             
             Switcheo(net: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test)?.exchangeTokens(completion: { result in
                 switch result {
@@ -177,8 +186,8 @@ class WithdrawDepositTableViewController: UITableViewController {
     func withdraw(amount: Double) {
         let blockchain = "neo"
         let assetID = selectedAsset!.symbol
-        let switcheoHash = "91b83e96f2a7c4fdf0c1688441ec61986c7cae26" //mainnet v2
-        let request = RequestTransaction(blockchain: blockchain, assetID: assetID, amount: amount, contractHash: switcheoHash)
+        let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
+        let request = RequestTransaction(blockchain: blockchain, assetID: assetID, amount: amount, contractHash: switcheoHash.rawValue)
         let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.account!)
         switcheoAccount.withdrawal(requestTransaction: request!, completion: {result in
             switch result {
@@ -207,8 +216,8 @@ class WithdrawDepositTableViewController: UITableViewController {
     func deposit(amount: Double) {
         let blockchain = "neo"
         let assetID = selectedAsset!.symbol
-        let switcheoHash = "91b83e96f2a7c4fdf0c1688441ec61986c7cae26" //mainnet v2
-        let request = RequestTransaction(blockchain: blockchain, assetID: assetID, amount: amount, contractHash: switcheoHash)
+        let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
+        let request = RequestTransaction(blockchain: blockchain, assetID: assetID, amount: amount, contractHash: switcheoHash.rawValue)
         let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.account!)
         switcheoAccount.deposit(requestTransaction: request!) { result in
             switch result {

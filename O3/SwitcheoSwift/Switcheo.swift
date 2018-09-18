@@ -17,6 +17,11 @@ public class Switcheo {
         case Main =  "https://api.switcheo.network"
     }
     
+    public enum V2: String {
+        case Main = "91b83e96f2a7c4fdf0c1688441ec61986c7cae26"
+        case Test = "a195c1549e7da61b8da315765a790ac7e7633b82"
+    }
+    
     var apiVersion = "/v2/"
     
     enum HTTPMethod: String {

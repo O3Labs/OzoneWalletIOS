@@ -63,6 +63,16 @@ extension TradableAsset {
         
         return String(format: "%@", amountFormatter.string(from: NSNumber(value: self.amountInDouble()))!)
     }
+    
+    func toTransferableAsset() -> TransferableAsset {
+        var assetType = TransferableAsset.AssetType.neoAsset
+        
+        if self.symbol.uppercased() != TransferableAsset.NEO().symbol.uppercased() || self.symbol.uppercased() != TransferableAsset.GAS().symbol.uppercased() {
+            assetType = TransferableAsset.AssetType.nep5Token
+        }
+        
+       return TransferableAsset(id: self.id, name: self.name, symbol: self.symbol, decimals: self.decimals, value: self.amountInDouble(), assetType: assetType)
+    }
 }
 
 extension TransferableAsset {

@@ -37,6 +37,7 @@ public class O3Client {
     enum O3Endpoints: String {
         case getPriceHistory = "/v1/price/"
         case getPortfolioValue = "/v1/historical"
+        case getAccountValue = "/v1/value"
         case getNewsFeed = "/v1/feed/"
         case getTokenSales = "https://platform.o3.network/api/v1/neo/tokensales"
     }
@@ -306,4 +307,35 @@ public class O3Client {
             }
         }
     }
+    
+    func getAccountValue(_ assets: [TransferableAsset], completion: @escaping (O3ClientResult<AccountValue>) -> Void) {
+        
+        var queryString = String(format: "?currency=%@", UserDefaultsManager.referenceFiatCurrency.rawValue)
+        for asset in assets {
+            queryString += String(format: "&%@=%@", asset.symbol, asset.value.description)
+        }
+        
+        let endpoint = O3Endpoints.getAccountValue.rawValue + queryString
+        print (endpoint)
+        sendRequest(endpoint, method: .GET, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let result = response["result"] as? JSONDictionary,
+                    let data = result["data"] as? JSONDictionary,
+                    let responseData = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted),
+                    let obj = try? decoder.decode(AccountValue.self, from: responseData) else {
+                        completion(.failure(.invalidData))
+                        return
+                }
+                
+                let clientResult = O3ClientResult.success(obj)
+                completion(clientResult)
+            }
+        }
+    }
+    
+    
 }

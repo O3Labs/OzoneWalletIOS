@@ -158,6 +158,11 @@
 		6E4E6F9420146BEC001A5844 /* TransactionHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F9320146BEC001A5844 /* TransactionHistoryTableViewController.swift */; };
 		6E4E6F9820147868001A5844 /* ContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F9720147868001A5844 /* ContactsTableViewController.swift */; };
 		6E4E6F9A20147ABB001A5844 /* AccentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F9920147ABB001A5844 /* AccentButton.swift */; };
+		6E5568EA214A319300BA805E /* TradingAccountToolbarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568E9214A319300BA805E /* TradingAccountToolbarTableViewCell.swift */; };
+		6E5568EC214A4FD700BA805E /* AccountHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568EB214A4FD700BA805E /* AccountHeaderTableViewCell.swift */; };
+		6E5568EE214B5F1E00BA805E /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568ED214B5F1E00BA805E /* UIButton.swift */; };
+		6E5568F0214B5FF300BA805E /* CenterImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568EF214B5FF300BA805E /* CenterImageButton.swift */; };
+		6E5568F2214BA3EF00BA805E /* AssetIconsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568F1214BA3EF00BA805E /* AssetIconsTableViewCell.swift */; };
 		6E60CC6020CE38630062F1CE /* AccountAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E60CC5F20CE38630062F1CE /* AccountAssets.xcassets */; };
 		6E60CC6220CE3B5D0062F1CE /* ClaimableGASTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60CC6120CE3B5D0062F1CE /* ClaimableGASTableViewCell.swift */; };
 		6E60CC6420CE43290062F1CE /* Loader_running.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E60CC6320CE43280062F1CE /* Loader_running.json */; };
@@ -188,6 +193,7 @@
 		6EA09E4E212B942900BBD04A /* Account.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6EA09E4C212B942900BBD04A /* Account.xcdatamodeld */; };
 		6EA7F9281F6E2F7F00E31B78 /* O3Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA7F9271F6E2F7F00E31B78 /* O3Client.swift */; };
 		6EA7F9291F6E32B600E31B78 /* PriceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA7F9261F6E2F4E00E31B78 /* PriceData.swift */; };
+		6EAFA7BF2150946E0084CD3B /* AccountSectionHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAFA7BE2150946E0084CD3B /* AccountSectionHeaderTableViewCell.swift */; };
 		6ECF0E251FAED3D800884F38 /* Reachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECF0E241FAED3D800884F38 /* Reachability.framework */; };
 		6ECF0E2B1FAED7BF00884F38 /* Reachability.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECF0E241FAED3D800884F38 /* Reachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6ED5D7EC2016BFC900AF3713 /* AssetSelectorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED5D7EB2016BFC900AF3713 /* AssetSelectorTableViewController.swift */; };
@@ -435,6 +441,11 @@
 		6E4E6F9320146BEC001A5844 /* TransactionHistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryTableViewController.swift; sourceTree = "<group>"; };
 		6E4E6F9720147868001A5844 /* ContactsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTableViewController.swift; sourceTree = "<group>"; };
 		6E4E6F9920147ABB001A5844 /* AccentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentButton.swift; sourceTree = "<group>"; };
+		6E5568E9214A319300BA805E /* TradingAccountToolbarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingAccountToolbarTableViewCell.swift; sourceTree = "<group>"; };
+		6E5568EB214A4FD700BA805E /* AccountHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		6E5568ED214B5F1E00BA805E /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		6E5568EF214B5FF300BA805E /* CenterImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterImageButton.swift; sourceTree = "<group>"; };
+		6E5568F1214BA3EF00BA805E /* AssetIconsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetIconsTableViewCell.swift; sourceTree = "<group>"; };
 		6E60CC5F20CE38630062F1CE /* AccountAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AccountAssets.xcassets; sourceTree = "<group>"; };
 		6E60CC6120CE3B5D0062F1CE /* ClaimableGASTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimableGASTableViewCell.swift; sourceTree = "<group>"; };
 		6E60CC6320CE43280062F1CE /* Loader_running.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Loader_running.json; sourceTree = "<group>"; };
@@ -463,6 +474,7 @@
 		6EA09E4D212B942900BBD04A /* Account.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Account.xcdatamodel; sourceTree = "<group>"; };
 		6EA7F9261F6E2F4E00E31B78 /* PriceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceData.swift; sourceTree = "<group>"; };
 		6EA7F9271F6E2F7F00E31B78 /* O3Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = O3Client.swift; sourceTree = "<group>"; };
+		6EAFA7BE2150946E0084CD3B /* AccountSectionHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSectionHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		6ECF0E241FAED3D800884F38 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reachability.framework; path = Carthage/Build/iOS/Reachability.framework; sourceTree = "<group>"; };
 		6ED5D7EB2016BFC900AF3713 /* AssetSelectorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectorTableViewController.swift; sourceTree = "<group>"; };
 		6ED600111F762189006760E6 /* O3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = O3.entitlements; sourceTree = "<group>"; };
@@ -868,6 +880,7 @@
 				6E84C88A2147505800127766 /* Trading.storyboard */,
 				6E84C88C2147564D00127766 /* WithdrawDepositTableViewController.swift */,
 				6E84C88E2147A53100127766 /* TradableAssetSelectorTableViewController.swift */,
+				6E5568E9214A319300BA805E /* TradingAccountToolbarTableViewCell.swift */,
 			);
 			path = Trading;
 			sourceTree = "<group>";
@@ -880,6 +893,9 @@
 				6E4E6F8A20146627001A5844 /* NEP5TokenTableViewCell.swift */,
 				6E60CC6120CE3B5D0062F1CE /* ClaimableGASTableViewCell.swift */,
 				6EEE3DF920E0AFD30030A4AB /* InboxItemTableViewCell.swift */,
+				6E5568EB214A4FD700BA805E /* AccountHeaderTableViewCell.swift */,
+				6E5568F1214BA3EF00BA805E /* AssetIconsTableViewCell.swift */,
+				6EAFA7BE2150946E0084CD3B /* AccountSectionHeaderTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1112,6 +1128,7 @@
 				35AF806220CA366A00E48457 /* UITextField.swift */,
 				6E60CC6920CF73B00062F1CE /* URL.swift */,
 				6EEE3DFF20E0DAC60030A4AB /* UILabel.swift */,
+				6E5568ED214B5F1E00BA805E /* UIButton.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1189,6 +1206,7 @@
 				6E244EC62085C15A001B4B22 /* AssetInputToolbar.swift */,
 				6E244EC82085D5CE001B4B22 /* NumberOnlyUITextField.swift */,
 				6E72436320D0F0A5007D1201 /* LocalizableUILabel.swift */,
+				6E5568EF214B5FF300BA805E /* CenterImageButton.swift */,
 			);
 			path = UIControls;
 			sourceTree = "<group>";
@@ -1395,11 +1413,13 @@
 				752006881F7F6F5D00D19B5F /* HalfModalTransitioningDelegate.swift in Sources */,
 				752006891F7F6F5D00D19B5F /* HalfModalInteractiveTransition.swift in Sources */,
 				35B426D820998B6300957211 /* UISearchBar.swift in Sources */,
+				6E5568F0214B5FF300BA805E /* CenterImageButton.swift in Sources */,
 				35B399DF210EDE4500284BFA /* GasPrice.swift in Sources */,
 				6E43769E21460CB90091367A /* Order.swift in Sources */,
 				6E4E6F7F20146086001A5844 /* AccountTabViewController.swift in Sources */,
 				7520068A1F7F6F5D00D19B5F /* HalfModalTransitionAnimator.swift in Sources */,
 				351200BF207F1AA8003CA07D /* TokenSalesListTableViewController.swift in Sources */,
+				6E5568EA214A319300BA805E /* TradingAccountToolbarTableViewCell.swift in Sources */,
 				6E60CC6220CE3B5D0062F1CE /* ClaimableGASTableViewCell.swift in Sources */,
 				6E9D2B642149015F00293FDA /* TokenDetail.swift in Sources */,
 				6E4376A021460CB90091367A /* Last24hour.swift in Sources */,
@@ -1438,6 +1458,7 @@
 				35061E47205F5CFE004E89EB /* FeaturedCollectionCell.swift in Sources */,
 				35061E49205F6306004E89EB /* FeatureFeed.swift in Sources */,
 				75CEACE81F66B683005974CE /* SendTableViewController.swift in Sources */,
+				6E5568EC214A4FD700BA805E /* AccountHeaderTableViewCell.swift in Sources */,
 				75E14E571F7D2AEC00BEAE22 /* UIApplication.swift in Sources */,
 				75179F021F7620E700F4C67F /* Double.swift in Sources */,
 				3557BAC120AA9D0B0034937C /* TransactionAttritbute.swift in Sources */,
@@ -1475,6 +1496,7 @@
 				35AD2B70209312600024A900 /* OnboardingStrings.swift in Sources */,
 				35DBABCA2098028D009BE767 /* PortfolioStrings.swift in Sources */,
 				6E4376A621460CB90091367A /* Account+Switcheo.swift in Sources */,
+				6E5568EE214B5F1E00BA805E /* UIButton.swift in Sources */,
 				6E84C88F2147A53100127766 /* TradableAssetSelectorTableViewController.swift in Sources */,
 				3557BAC820AA9D180034937C /* NeoScan.swift in Sources */,
 				7501E8431F79536300123EA8 /* SettingsMenuTableViewController.swift in Sources */,
@@ -1496,12 +1518,14 @@
 				6E43769A21460CB90091367A /* Dictionary+Sort.swift in Sources */,
 				353E79A220C7A7E700B9AB1F /* BackupTableViewController.swift in Sources */,
 				6E4376A221460CB90091367A /* RequestOrder.swift in Sources */,
+				6E5568F2214BA3EF00BA805E /* AssetIconsTableViewCell.swift in Sources */,
 				6E7F3D8F20B6805200835963 /* Data.swift in Sources */,
 				7546DB451F765295001DF5A2 /* AssetDetailViewController.swift in Sources */,
 				7501C0271F7BBFF400B4B2FF /* AddressEntryTableViewController.swift in Sources */,
 				353E79A020C7895000B9AB1F /* PrivateKeyCollectionViewCell.swift in Sources */,
 				353E11DD20C65CF800697359 /* MarketplaceStrings.swift in Sources */,
 				6E4376A121460CB90091367A /* RequestCandlesticks.swift in Sources */,
+				6EAFA7BF2150946E0084CD3B /* AccountSectionHeaderTableViewCell.swift in Sources */,
 				75D5BFC71F6D1D4600E64855 /* ShadowedButton.swift in Sources */,
 				751666B01F80C190009ACC07 /* TransactionWebViewController.swift in Sources */,
 				7550940D1F779EEE00127B4F /* WalletHeaderCollectionCell.swift in Sources */,

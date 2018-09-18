@@ -15,7 +15,7 @@ import SwiftTheme
 class AccountTabViewController: TabmanViewController, PageboyViewControllerDataSource {
 
     var viewControllers: [UIViewController] = []
-
+    
     func addThemeObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.changedTheme), name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
@@ -58,9 +58,9 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         })
         self.bar.location = .top
         self.bar.style = .buttonBar
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "qrCode-button"), style: .plain, target: self, action: #selector(myAddressTapped(_:)))
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
-
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
+        
         #if TESTNET
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openDAppBrowser(_:)))
         #endif
@@ -87,18 +87,90 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         return nil
     }
 
-    @objc func myAddressTapped(_ sender: Any) {
-        let modal = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "MyAddressNavigationController")
-
+    @objc func rightBarButtonTapped(_ sender: Any) {
+    
+        guard let modal = UIStoryboard(name: "QR", bundle: nil).instantiateInitialViewController() as? QRScannerController else {
+            fatalError("Presenting improper modal controller")
+        }
+        modal.delegate = self
+        let nav = WalletHomeNavigationController(rootViewController: modal)
+        nav.navigationBar.prefersLargeTitles = false
+        nav.setNavigationBarHidden(true, animated: false)
         let transitionDelegate = DeckTransitioningDelegate()
-        modal.transitioningDelegate = transitionDelegate
-        modal.modalPresentationStyle = .custom
-        present(modal, animated: true, completion: nil)
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        self.present(nav, animated: true, completion: nil)
     }
+    
+    func sendTapped(qrData: String? = nil) {
+        DispatchQueue.main.async {
+            guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {
+                fatalError("Presenting improper modal controller")
+            }
+            sendModal.incomingQRData = qrData
+            let nav = WalletHomeNavigationController(rootViewController: sendModal)
+            nav.navigationBar.prefersLargeTitles = true
+            nav.navigationItem.largeTitleDisplayMode = .automatic
+            sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
+            let transitionDelegate = DeckTransitioningDelegate()
+            nav.transitioningDelegate = transitionDelegate
+            nav.modalPresentationStyle = .custom
+            self.present(nav, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
 
     func setLocalizedStrings() {
         self.bar.items = [Item(title: "Accounts"), //TODO change this to localized string
                           Item(title: AccountStrings.transactions),
                           Item(title: AccountStrings.contacts)]
     }
+}
+
+extension AccountTabViewController: QRScanDelegate {
+    
+    func postToChannel(channel: String) {
+        let headers = ["content-type": "application/json"]
+        let parameters = ["address": Authenticated.account!.address,
+                          "device": "iOS" ] as [String: Any]
+        
+        let postData = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+        
+        let request = NSMutableURLRequest(url: NSURL(string: "https://platform.o3.network/api/v1/channel/" + channel)! as URL,
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
+        request.httpMethod = "POST"
+        request.allHTTPHeaderFields = headers
+        request.httpBody = postData
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (_, response, error) -> Void in
+            if error != nil {
+                return
+            } else {
+                _ = response as? HTTPURLResponse
+            }
+        })
+        
+        dataTask.resume()
+    }
+    
+    func qrScanned(data: String) {
+        //if there is more type of string we have to check it here
+        if data.hasPrefix("o3://channel") {
+            //post to utility communication channel
+            let channel = URL(string: data)?.lastPathComponent
+            postToChannel(channel: channel!)
+            return
+        }
+        DispatchQueue.main.async {
+            self.sendTapped(qrData: data)
+        }
+    }
+    
+    
 }

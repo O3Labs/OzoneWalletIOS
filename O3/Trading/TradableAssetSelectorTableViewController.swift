@@ -18,8 +18,14 @@ class TradableAssetSelectorTableViewController: UITableViewController {
     var assets: [TradableAsset]!
     var delegate: TradableAssetSelectorTableViewControllerDelegate?
     
+    func setupTheme() {
+        self.view.theme_backgroundColor = O3Theme.backgroundLightgrey
+        self.tableView.theme_backgroundColor = O3Theme.backgroundLightgrey
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupTheme()
         self.title = "Select asset"
     }
 

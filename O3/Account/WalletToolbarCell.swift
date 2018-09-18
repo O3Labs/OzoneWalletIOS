@@ -12,7 +12,6 @@ import UIKit
 protocol WalletToolbarDelegate: class {
     func sendTapped(qrData: String?)
     func requestTapped()
-    func scanTapped()
 }
 
 class WalletToolBarCell: UITableViewCell {
@@ -32,10 +31,6 @@ class WalletToolBarCell: UITableViewCell {
 
     @IBAction func requestTapped() {
         delegate?.requestTapped()
-    }
-
-    @IBAction func scanTapped() {
-        delegate?.scanTapped()
     }
 
     func setLocalizedStrings() {
