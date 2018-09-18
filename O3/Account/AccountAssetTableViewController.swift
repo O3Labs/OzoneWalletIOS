@@ -94,6 +94,12 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     private func loadAccountValue(account: accounts,  list: [TransferableAsset]) {
         
+        if list.count == 0 {
+            let fiat = Fiat(amount: 0.0)
+            self.accountValues[account] = fiat.formattedString()
+            return
+        }
+        
         O3Client.shared.getAccountValue(list) { result in
             switch result {
             case .failure:
@@ -631,12 +637,18 @@ extension AccountAssetTableViewController: WithdrawDepositTableViewControllerDel
 extension AccountAssetTableViewController {
     
     @IBAction func sectionHeaderRightButtonTapped(_ sender: UIButton) {
+       
+        if sender.tag == sections.tradingAccountHeader.rawValue && self.tradingAccount!.switcheo.confirmed.count == 0{
+            return
+        }
+            
         UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
             sender.transform = sender.isSelected ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat(-0.999*Double.pi))
         }) { completed in
             
         }
         sender.isSelected = !sender.isSelected
+        
         if sender.tag == sections.o3AccountHeader.rawValue {
             sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue] = !sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue]!
             self.tableView.reloadSections([sections.neoAssets.rawValue, sections.ontologyAssets.rawValue, sections.nep5tokens.rawValue], with: .none)
