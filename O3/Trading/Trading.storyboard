@@ -377,6 +377,13 @@
                                                         <constraint firstAttribute="width" constant="8" id="RSe-fm-qxJ"/>
                                                     </constraints>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Sa-8h-0XW">
+                                                    <rect key="frame" x="223" y="9" width="57" height="40"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <action selector="selectOfferAssetTapped:" destination="jSE-am-B3i" eventType="touchUpInside" id="Fna-Jd-QNt"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Pxs-vd-Y7E" firstAttribute="leading" secondItem="pLD-Cu-Muu" secondAttribute="trailing" constant="16" id="EpT-og-5bq"/>
@@ -448,8 +455,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CUSTOM PRICE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mqU-SB-KtS">
-                                                    <rect key="frame" x="16" y="10" width="88.5" height="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PRICE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mqU-SB-KtS">
+                                                    <rect key="frame" x="16" y="10" width="34" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="rni-Ic-x7q"/>
                                                     </constraints>
@@ -458,7 +465,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="o3d-ZP-Q46">
-                                                    <rect key="frame" x="112" y="15" width="10" height="10"/>
+                                                    <rect key="frame" x="57.5" y="15" width="10" height="10"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="10" id="BmQ-bc-d8S"/>
                                                         <constraint firstAttribute="width" constant="10" id="kOv-0R-0DG"/>
@@ -473,8 +480,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.00781953" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSy-Wv-AkI">
-                                                    <rect key="frame" x="288" y="30" width="70.5" height="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSy-Wv-AkI">
+                                                    <rect key="frame" x="358.5" y="30" width="0.0" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="5gl-of-48n"/>
                                                     </constraints>
@@ -482,7 +489,7 @@
                                                     <color key="textColor" name="grey"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3% above median" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47z-id-L39">
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3% above median" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47z-id-L39">
                                                     <rect key="frame" x="16" y="29.5" width="97" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="7Ny-Pg-dbk"/>
@@ -544,8 +551,8 @@
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                 </textField>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$118.0915" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jod-tz-D8X">
-                                                    <rect key="frame" x="301.5" y="30" width="57" height="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jod-tz-D8X">
+                                                    <rect key="frame" x="358.5" y="30" width="0.0" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="f8P-2b-7A9"/>
                                                     </constraints>
@@ -623,8 +630,10 @@
                         <outlet property="offerAmountTextField" destination="r46-yp-Soa" id="wCG-U3-mBD"/>
                         <outlet property="offerAssetLabel" destination="TYJ-DF-Ot6" id="GSk-Sk-HbF"/>
                         <outlet property="offerAssetSelector" destination="6vg-80-x2M" id="nwM-bP-lRR"/>
+                        <outlet property="offerTotalFiatPriceLabel" destination="jod-tz-D8X" id="0wI-Pk-Czh"/>
                         <outlet property="rightAssetImageView" destination="Jxk-8H-AQV" id="048-RH-ubt"/>
                         <outlet property="targetAssetLabel" destination="4Sh-1p-Ao9" id="7Ph-o7-jWl"/>
+                        <outlet property="targetFiatPriceLabel" destination="WSy-Wv-AkI" id="fH2-vP-Z6b"/>
                         <outlet property="targetPriceLabel" destination="0bk-m3-JI3" id="Ysb-bP-ete"/>
                         <outlet property="wantAmountTextField" destination="ASr-Py-2Vg" id="pTg-T1-TSj"/>
                         <outlet property="wantAssetLabel" destination="oDn-2I-5Nj" id="pAh-wn-s8s"/>

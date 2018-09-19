@@ -63,4 +63,17 @@ extension Money {
         }
         return ""
     }
+    
+    func formattedStringWithDecimal(decimals: Int) -> String {
+        let amountNumber = NSNumber(value: self.amount)
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: self.locale)
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = decimals
+        formatter.minimumFractionDigits = 0
+        if let formattedTipAmount = formatter.string(from: amountNumber as NSNumber) {
+            return formattedTipAmount
+        }
+        return ""
+    }
 }

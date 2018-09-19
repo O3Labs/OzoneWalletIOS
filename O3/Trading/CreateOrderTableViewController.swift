@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import PKHUD
 
 enum CreateOrderAction: Int {
     case Buy = 0
@@ -15,13 +15,16 @@ enum CreateOrderAction: Int {
 }
 
 protocol CreateOrderDelegate {
-    func onpairPriceChange(price: AssetPrice)
+    func beginLoading()
+    func endLoading()
     func onWantAssetChange(asset: TradableAsset, action: CreateOrderAction)
     func onOfferAssetChange(asset: TradableAsset, action: CreateOrderAction)
     func onActionChange(action: CreateOrderAction)
     
-    func onWantAmountChange(value: Double, pairPrice: AssetPrice)
-    func onOfferAmountChange(value: Double, pairPrice: AssetPrice)
+    func onWantAmountChange(value: Double, pairPrice: AssetPrice, totalInFiat: Fiat)
+    func onOfferAmountChange(value: Double, pairPrice: AssetPrice, totalInFiat: Fiat)
+    
+    func didReceivePrice(pairPrice: AssetPrice, fiatPrice: AssetPrice)
 }
 
 
@@ -32,14 +35,12 @@ extension TradableAsset {
 }
 class CreateOrderViewModel {
     
-    var delegate: CreateOrderDelegate!
+    var delegate: CreateOrderDelegate?
     var selectedAction: CreateOrderAction!
     
-    var pairPrice: AssetPrice! {
-        didSet {
-            self.delegate.onpairPriceChange(price: pairPrice)
-        }
-    }
+    var pairPrice: AssetPrice!
+    var fiatPairPrice: AssetPrice! // e.g. neo|gas/usd
+    
     var offerAsset: TradableAsset!
     var wantAsset: TradableAsset!
     
@@ -48,7 +49,8 @@ class CreateOrderViewModel {
             if wantAmount == nil {
                 return
             }
-            self.delegate.onWantAmountChange(value: wantAmount!, pairPrice: pairPrice)
+            let total = Fiat(amount: Float(wantAmount! * pairPrice.price * fiatPairPrice.price))
+            self.delegate?.onWantAmountChange(value: wantAmount!, pairPrice: pairPrice, totalInFiat: total)
         }
     }
     
@@ -57,7 +59,8 @@ class CreateOrderViewModel {
             if offerAmount == nil {
                 return
             }
-            self.delegate.onOfferAmountChange(value: offerAmount!, pairPrice: pairPrice)
+            let total = Fiat(amount: Float((offerAmount! / pairPrice.price) * pairPrice.price * fiatPairPrice.price))
+            self.delegate?.onOfferAmountChange(value: offerAmount!, pairPrice: pairPrice, totalInFiat: total)
         }
     }
     
@@ -67,22 +70,46 @@ class CreateOrderViewModel {
     }
     
     func setupView() {
-        self.delegate.onOfferAssetChange(asset: offerAsset, action: selectedAction)
-        self.delegate.onWantAssetChange(asset: wantAsset, action: selectedAction)
-        self.delegate.onActionChange(action: selectedAction)
+        self.delegate?.onOfferAssetChange(asset: offerAsset, action: selectedAction)
+        self.delegate?.onWantAssetChange(asset: wantAsset, action: selectedAction)
+        self.delegate?.onActionChange(action: selectedAction)
     }
     
-    func loadPrice() {
+    func loadPrice(completion: @escaping () -> Void) {
+        self.delegate?.beginLoading()
         let symbol = wantAsset.symbol
         let currency = offerAsset.symbol
         O3APIClient(network: AppState.network).loadPricing(symbol: symbol, currency: currency) { result in
             switch result {
             case .failure(_):
                 //TODO show error
+                self.delegate?.endLoading()
                 return
-            case .success(let response):
-                self.pairPrice = response
+            case .success(let pairResponse):
+                //we actually need to get NEO|GAS/USD pair and calculate from the pair price
+                //eg. 1 GAS = 5.07182905 USD. 1 SWTH = 0.00138625 GAS so 1 SWTH = 5.07182905 * 0.00138625 = 0.00703082 USD
+                O3APIClient(network: AppState.network).loadPricing(symbol: self.offerAsset.symbol, currency: UserDefaultsManager.referenceFiatCurrency.rawValue) { result in
+                    switch result {
+                    case .failure(_):
+                        //TODO show error
+                        self.delegate?.endLoading()
+                        return
+                    case .success(let fiatResponse):
+                        self.delegate?.endLoading()
+                        self.pairPrice = pairResponse
+                        self.fiatPairPrice = fiatResponse
+                        completion()
+                        self.delegate?.didReceivePrice(pairPrice: self.pairPrice, fiatPrice:  self.fiatPairPrice)
+                    }
+                }
             }
+        }
+    }
+    
+    func selectAnotherOfferAsset(asset: TradableAsset) {
+        self.loadPrice(){
+            self.offerAsset = asset
+            self.delegate?.onOfferAssetChange(asset: asset, action: self.selectedAction)
         }
     }
 }
@@ -92,13 +119,16 @@ class CreateOrderTableViewController: UITableViewController {
     var viewModel: CreateOrderViewModel!
     
     @IBOutlet var targetPriceLabel: UILabel!
+    @IBOutlet var targetFiatPriceLabel: UILabel!
     @IBOutlet var targetAssetLabel: UILabel!
     
     @IBOutlet var wantAssetLabel: UITextField!
     @IBOutlet var offerAssetLabel: UITextField!
     
-    @IBOutlet var offerAmountTextField: UITextField!
+    
     @IBOutlet var wantAmountTextField: UITextField!
+    @IBOutlet var offerAmountTextField: UITextField!
+    @IBOutlet var offerTotalFiatPriceLabel: UILabel!
     
     @IBOutlet var leftAssetImageView: UIImageView!
     @IBOutlet var rightAssetImageView: UIImageView!
@@ -155,7 +185,6 @@ class CreateOrderTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
-        viewModel.loadPrice()
         viewModel.setupView()
         
         setupNavbar()
@@ -166,20 +195,52 @@ class CreateOrderTableViewController: UITableViewController {
     @objc func dismiss(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    //MARK: -
+    @IBAction func selectOfferAssetTapped(_ sender: Any) {
+        //reset
+        viewModel.wantAmount = 0
+        viewModel.offerAmount = 0
+        if viewModel.offerAsset.symbol.uppercased() == TransferableAsset.NEO().toTradableAsset().symbol.uppercased() {
+            viewModel.selectAnotherOfferAsset(asset: TransferableAsset.GAS().toTradableAsset())
+        } else {
+            viewModel.selectAnotherOfferAsset(asset: TransferableAsset.NEO().toTradableAsset())
+        }
+    }
 }
 
-
 extension CreateOrderTableViewController: CreateOrderDelegate {
-    
-    func onWantAmountChange(value: Double, pairPrice: AssetPrice) {
+    func beginLoading() {
         DispatchQueue.main.async {
-            self.offerAmountTextField.text = Double(value * pairPrice.price).formattedStringWithoutSeparator(8, removeTrailing: true)
+            HUD.show(.progress)
         }
     }
     
-    func onOfferAmountChange(value: Double, pairPrice: AssetPrice) {
+    func endLoading() {
         DispatchQueue.main.async {
-            self.wantAmountTextField.text = Double(value / pairPrice.price).formattedStringWithoutSeparator(8, removeTrailing: true)
+            HUD.hide()
+        }
+    }
+    
+    func didReceivePrice(pairPrice: AssetPrice, fiatPrice: AssetPrice) {
+        DispatchQueue.main.async {
+            HUD.hide()
+            self.targetFiatPriceLabel.text = Fiat(amount: Float(fiatPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: 8)
+            self.targetPriceLabel.text = pairPrice.price.string(8, removeTrailing: true)
+        }
+    }
+    
+    func onWantAmountChange(value: Double, pairPrice: AssetPrice, totalInFiat: Fiat) {
+        DispatchQueue.main.async {
+            self.offerAmountTextField.text = value == 0 ? "" : Double(value * pairPrice.price).formattedStringWithoutSeparator(8, removeTrailing: true)
+            self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: 8)
+        }
+    }
+    
+    func onOfferAmountChange(value: Double, pairPrice: AssetPrice, totalInFiat: Fiat) {
+        DispatchQueue.main.async {
+            self.wantAmountTextField.text = value == 0 ? "" : Double(value / pairPrice.price).formattedStringWithoutSeparator(8, removeTrailing: true)
+            self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: 8)
         }
     }
     
@@ -190,12 +251,6 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
             } else {
                 self.wantAssetSelector.isHidden = false
             }
-        }
-    }
-    
-    func onpairPriceChange(price: AssetPrice) {
-        DispatchQueue.main.async {
-            self.targetPriceLabel.text = price.price.string(8, removeTrailing: true)
         }
     }
     
