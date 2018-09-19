@@ -16,6 +16,16 @@ extension Double {
         let stringWithTrailing = formatter.string(from: self as NSNumber) ?? "\(self)"
         return stringWithTrailing
     }
+    
+    func formattedStringWithoutSeparator(_ precision: Int, removeTrailing: Bool) -> String {
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0 //make this minimum to zero so it's properly remove the trailing zero
+        formatter.maximumFractionDigits = precision
+        formatter.usesGroupingSeparator = false
+        formatter.numberStyle = .decimal
+        let stringWithTrailing = formatter.string(from: NSNumber(value: self)) ?? "\(self)"
+        return stringWithTrailing
+    }
 
     func stringWithSign(_ precision: Int) -> String {
         let formatter = NumberFormatter()

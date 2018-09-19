@@ -17,6 +17,18 @@ struct TradingAccount: Codable {
     }
 }
 
+extension Array where Element == TradableAsset {
+    func defaultAcceptedAsset() -> TradableAsset? {
+        //find either NEO or GAS as a default one
+        for v in self {
+            if v.symbol.uppercased() == TransferableAsset.NEO().symbol.uppercased() || v.symbol.uppercased() == TransferableAsset.GAS().symbol.uppercased() {
+                return v
+            }
+        }
+        return nil
+    }
+}
+
 struct SwitcheoBalance: Codable {
     let confirming: [Confirming]
     let confirmed: [TradableAsset]

@@ -502,12 +502,12 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         let alert = UIAlertController(title: asset.name, message: nil, preferredStyle: .actionSheet)
         
         let buyButton = UIAlertAction(title: "Buy", style: .default) { _ in
-            
+            self.openCreateOrder(action: CreateOrderAction.Buy, asset: asset)
         }
         alert.addAction(buyButton)
         
         let sellButton = UIAlertAction(title: "Sell", style: .default) { _ in
-            
+            self.openCreateOrder(action: CreateOrderAction.Sell, asset: asset)
         }
         alert.addAction(sellButton)
         
@@ -596,6 +596,21 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
 
 extension AccountAssetTableViewController {
     
+    func openCreateOrder(action: CreateOrderAction, asset: TradableAsset) {
+        let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "CreateOrderTableViewControllerNav") as! UINavigationController
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
+            let v = CreateOrderViewModel()
+            v.selectedAction = action
+            v.wantAsset = asset
+            v.offerAsset = self.tradingAccount?.switcheo.confirmed.defaultAcceptedAsset()
+            vc.viewModel = v
+        }
+        self.present(nav, animated: true, completion: nil)
+    }
+    
     func openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action, asset: TradableAsset?) {
         let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "withdrawDepositNav") as! UINavigationController
         let transitionDelegate = DeckTransitioningDelegate()
@@ -637,7 +652,10 @@ extension AccountAssetTableViewController: WithdrawDepositTableViewControllerDel
 extension AccountAssetTableViewController {
     
     @IBAction func sectionHeaderRightButtonTapped(_ sender: UIButton) {
-       
+        if self.tradingAccount == nil {
+            return
+        }
+        
         if sender.tag == sections.tradingAccountHeader.rawValue && self.tradingAccount!.switcheo.confirmed.count == 0{
             return
         }

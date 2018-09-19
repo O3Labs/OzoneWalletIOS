@@ -268,6 +268,7 @@ class O3APIClient: NSObject {
             }
         }
     }
+    
     func tradingBalances(address: String, completion: @escaping(O3APIClientResult<TradingAccount>) -> Void) {
         let validAddress = NeoutilsValidateNEOAddress(address)
         if validAddress == false {
@@ -284,6 +285,25 @@ class O3APIClient: NSObject {
                 guard let dictionary = response["result"] as? JSONDictionary,
                     let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
                     let decoded = try? decoder.decode(TradingAccount.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
+    
+    func loadPricing(symbol: String, currency: String, completion: @escaping(O3APIClientResult<AssetPrice>) -> Void) {
+        let url = String(format: "/v1/pricing/%@/%@", symbol, currency)
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(AssetPrice.self, from: data) else {
                         return
                 }
                 let success = O3APIClientResult.success(decoded)
