@@ -409,7 +409,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             let token = list![indexPath.row]
             
             //trading account returns value in string
-            let valueDecimal = Decimal(string: token.value)
+            let valueDecimal = Decimal(string: token.value!)
             let dividedBalance = (valueDecimal! / pow(10, token.decimals))
             let value = Double(truncating: (dividedBalance as NSNumber?)!)
             
@@ -598,16 +598,15 @@ extension AccountAssetTableViewController {
     
     func openCreateOrder(action: CreateOrderAction, asset: TradableAsset) {
         let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "CreateOrderTableViewControllerNav") as! UINavigationController
-        let transitionDelegate = DeckTransitioningDelegate()
-        nav.transitioningDelegate = transitionDelegate
-        nav.modalPresentationStyle = .custom
+//        let transitionDelegate = DeckTransitioningDelegate()
+//        nav.transitioningDelegate = transitionDelegate
+//        nav.modalPresentationStyle = .custom
         if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
-            let v = CreateOrderViewModel()
-            v.selectedAction = action
-            v.wantAsset = asset
-            v.offerAsset = self.tradingAccount?.switcheo.confirmed.defaultAcceptedAsset()
-            vc.viewModel = v
-            vc.viewModel.loadPrice(){}
+            vc.viewModel = CreateOrderViewModel()
+            vc.viewModel.selectedAction = action
+            vc.viewModel.wantAsset = asset
+            vc.viewModel.offerAsset = self.tradingAccount?.switcheo.confirmed.defaultAcceptedAsset()
+            vc.viewModel.tradingAccount = self.tradingAccount
         }
         self.present(nav, animated: true, completion: nil)
     }

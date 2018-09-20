@@ -44,6 +44,8 @@ class O3APIClient: NSObject {
     init(network: Network) {
         self.network = network
     }
+    
+    static var shared: O3APIClient = O3APIClient(network: AppState.network)
 
     enum o3APIResource: String {
         case getBalances = "balances"
@@ -310,6 +312,39 @@ class O3APIClient: NSObject {
                 completion(success)
             }
         }
+    }
+    
+    let cache = NSCache<NSString, AnyObject>()
+    func loadSupportedTokenSwitcheo(completion: @escaping(O3APIClientResult<[TradableAsset]>) -> Void) {
+        let cacheKey: NSString = "SUPPORTED_TOKENS_SWITCHEO"
+        if let cached = cache.object(forKey: cacheKey) {
+            // use the cached version
+            let decoded = cached as! [TradableAsset]
+            let w = O3APIClientResult.success(decoded)
+            completion(w)
+            return
+        }
+        
+        let url = String(format: "/v1/trading/%@/tokens", "switcheo")
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode([TradableAsset].self, from: data) else {
+                        return
+                }
+                self.cache.setObject(decoded as AnyObject, forKey: cacheKey)
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+        
+        
+       
     }
 
 }

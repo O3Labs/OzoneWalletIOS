@@ -10,13 +10,14 @@ import UIKit
 
 
 protocol TradableAssetSelectorTableViewControllerDelegate {
-     func assetSelected(selected: TradableAsset)
+    func assetSelected(selected: TradableAsset, data: Any?)
 }
 
 class TradableAssetSelectorTableViewController: UITableViewController {
 
     var assets: [TradableAsset]!
     var delegate: TradableAssetSelectorTableViewControllerDelegate?
+    var data: Any?
     
     func setupTheme() {
         self.view.theme_backgroundColor = O3Theme.backgroundLightgrey
@@ -52,8 +53,6 @@ class TradableAssetSelectorTableViewController: UITableViewController {
         let token = assets[indexPath.row]
         cell.titleLabel.text = token.symbol
         cell.subtitleLabel.text = token.name
-        print(token.value)
-        print(token.amountInDouble().string(8, removeTrailing: true))
         cell.amountLabel.text = token.formattedAmountInString()
         let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", token.symbol.uppercased())
         cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
@@ -63,7 +62,7 @@ class TradableAssetSelectorTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        delegate?.assetSelected(selected: assets[indexPath.row])
+        delegate?.assetSelected(selected: assets[indexPath.row], data: self.data)
         self.dismiss(animated: true, completion: nil)
     }
 

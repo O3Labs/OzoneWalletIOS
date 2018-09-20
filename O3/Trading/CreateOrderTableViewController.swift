@@ -44,6 +44,8 @@ class CreateOrderViewModel {
     var offerAsset: TradableAsset!
     var wantAsset: TradableAsset!
     
+    var tradingAccount: TradingAccount?
+    
     var wantAmount: Double? {
         didSet {
             if wantAmount == nil {
@@ -98,20 +100,27 @@ class CreateOrderViewModel {
                         self.delegate?.endLoading()
                         self.pairPrice = pairResponse
                         self.fiatPairPrice = fiatResponse
-                        completion()
                         self.delegate?.didReceivePrice(pairPrice: self.pairPrice, fiatPrice:  self.fiatPairPrice)
+                        completion()
                     }
                 }
             }
         }
     }
     
-    func selectAnotherOfferAsset(asset: TradableAsset) {
+    func selectOfferAsset(asset: TradableAsset) {
+        self.offerAsset = asset
         self.loadPrice(){
-            self.offerAsset = asset
             self.delegate?.onOfferAssetChange(asset: asset, action: self.selectedAction)
         }
     }
+    func selectWantAsset(asset: TradableAsset) {
+        self.wantAsset = asset
+        self.loadPrice(){
+            self.delegate?.onWantAssetChange(asset: asset, action: self.selectedAction)
+        }
+    }
+    
 }
 
 class CreateOrderTableViewController: UITableViewController {
@@ -149,11 +158,11 @@ class CreateOrderTableViewController: UITableViewController {
         if viewModel.selectedAction == CreateOrderAction.Sell {
             wantAmountTextField.inputAccessoryView = inputToolbar.loadNib()
             wantAmountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
-            inputToolbar.asset = viewModel.wantAsset.toTransferableAsset()
+            
         } else {
             offerAmountTextField.inputAccessoryView = inputToolbar.loadNib()
             offerAmountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
-            inputToolbar.asset = viewModel.offerAsset.toTransferableAsset()
+            
         }
     }
     
@@ -184,7 +193,9 @@ class CreateOrderTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         viewModel.delegate = self
+        viewModel.loadPrice(){}
         viewModel.setupView()
         
         setupNavbar()
@@ -192,19 +203,65 @@ class CreateOrderTableViewController: UITableViewController {
         setupTextFieldDelegate()
     }
     
+    deinit {
+        viewModel.delegate = nil
+    }
+    
     @objc func dismiss(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
-    //MARK: -
+    var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
+    
+    func showAssetSelector(list: [TradableAsset], target: TradableAsset) {
+        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "TradableAssetSelectorTableViewControllerNav") as? UINavigationController else {
+            return
+        }
+        guard let modal = nav.viewControllers.first as? TradableAssetSelectorTableViewController else {
+            return
+        }
+        
+        modal.assets = list
+        modal.delegate = self
+        modal.data = target
+        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+        nav.modalPresentationStyle = .custom
+        nav.transitioningDelegate = self.halfModalTransitioningDelegate
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    
+    //MARK: - actions for assets
+    
     @IBAction func selectOfferAssetTapped(_ sender: Any) {
         //reset
         viewModel.wantAmount = 0
         viewModel.offerAmount = 0
-        if viewModel.offerAsset.symbol.uppercased() == TransferableAsset.NEO().toTradableAsset().symbol.uppercased() {
-            viewModel.selectAnotherOfferAsset(asset: TransferableAsset.GAS().toTradableAsset())
-        } else {
-            viewModel.selectAnotherOfferAsset(asset: TransferableAsset.NEO().toTradableAsset())
+        
+        if viewModel.selectedAction == CreateOrderAction.Sell {
+            // when sell and user tapped the right side, we then offer base pairs to sell WANT asset for
+            showAssetSelector(list: viewModel.tradingAccount!.switcheo.basePairs, target: viewModel.offerAsset)
+        } else if viewModel.selectedAction == CreateOrderAction.Buy {
+            //when buy and user tapped the right side, we then offer supported tokens on Switcheo to buy
+            viewModel.tradingAccount!.switcheo.loadSupportedTokens { list in
+                DispatchQueue.main.async {
+                    self.showAssetSelector(list: list, target: self.viewModel.wantAsset)
+                }
+            }
+        }
+    }
+
+    @IBAction func selectWantAssetTapped(_ sender: Any) {
+        //reset
+        viewModel.wantAmount = 0
+        viewModel.offerAmount = 0
+        
+        if viewModel.selectedAction == CreateOrderAction.Buy {
+            // when buy and user tapped the left side, we then offer base pairs to buy WANT asset with
+            showAssetSelector(list: viewModel.tradingAccount!.switcheo.basePairs, target: viewModel.offerAsset)
+        } else if viewModel.selectedAction == CreateOrderAction.Sell {
+            //when sell and user tapped the left side, we then offer available tokens in trading account to sell
+            showAssetSelector(list: viewModel.tradingAccount!.switcheo.confirmed, target: viewModel.wantAsset)
         }
     }
 }
@@ -246,11 +303,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
     
     func onActionChange(action: CreateOrderAction) {
         DispatchQueue.main.async {
-            if action == CreateOrderAction.Sell {
-                self.offerAssetSelector.isHidden = false
-            } else {
-                self.wantAssetSelector.isHidden = false
-            }
+            
         }
     }
     
@@ -258,10 +311,10 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
         DispatchQueue.main.async {
             if action == CreateOrderAction.Sell {
                 self.leftAssetImageView.kf.setImage(with: asset.imageURL)
+                self.inputToolbar.asset = asset.toTransferableAsset()
             } else {
                 self.rightAssetImageView.kf.setImage(with: asset.imageURL)
             }
-            
             self.wantAssetLabel.text = asset.symbol.uppercased()
         }
     }
@@ -272,8 +325,8 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                 self.rightAssetImageView.kf.setImage(with: asset.imageURL)
             } else {
                 self.leftAssetImageView.kf.setImage(with: asset.imageURL)
+                self.inputToolbar.asset = asset.toTransferableAsset()
             }
-            
             self.offerAssetLabel.text = asset.symbol.uppercased()
             self.targetAssetLabel.text = asset.symbol.uppercased()
         }
@@ -298,6 +351,27 @@ extension CreateOrderTableViewController: AssetInputToolbarDelegate{
         } else {
             viewModel.offerAmount = value
             offerAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
+        }
+    }
+}
+
+extension CreateOrderTableViewController: TradableAssetSelectorTableViewControllerDelegate {
+    func assetSelected(selected: TradableAsset, data: Any?) {
+        if viewModel.selectedAction == CreateOrderAction.Sell {
+            let target = data as! TradableAsset
+            if target.symbol == viewModel.offerAsset.symbol {
+                viewModel.selectOfferAsset(asset: selected)
+            } else {
+                viewModel.selectWantAsset(asset: selected)
+            }
+
+        } else if viewModel.selectedAction == CreateOrderAction.Buy {
+            let target = data as! TradableAsset
+            if target.symbol == viewModel.offerAsset.symbol {
+                viewModel.selectOfferAsset(asset: selected)
+            } else {
+                viewModel.selectWantAsset(asset: selected)
+            }
         }
     }
 }

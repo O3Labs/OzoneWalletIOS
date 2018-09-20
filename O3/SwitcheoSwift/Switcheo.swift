@@ -28,6 +28,7 @@ public class Switcheo {
         case GET
         case POST
     }
+    public static let shared = Switcheo(net: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test)
     
     public init?(net: Net) {
         self.baseURL = net.rawValue
@@ -258,9 +259,9 @@ public class Switcheo {
                     completion: completion)
     }
     
+    let tokenCache = NSCache<NSString, AnyObject>()
     public func exchangeTokens(completion: @escaping (SWTHResult<JSONDictionary>) -> Void){
-        let cache = NSCache<NSString, AnyObject>()
-        if let cached = cache.object(forKey: "SWTH_SUPPORTED_TOKEN") {
+        if let cached = tokenCache.object(forKey: "SWTH_SUPPORTED_TOKEN") {
             // use the cached version
             let response = cached as! JSONDictionary
             let w = SWTHResult.success(response)
@@ -277,7 +278,7 @@ public class Switcheo {
                                 completion(.failure(error))
                             case .success(let response):
                                 // create it from scratch then store in the cache
-                                cache.setObject(response as AnyObject, forKey: "SWTH_SUPPORTED_TOKEN")
+                                self.tokenCache.setObject(response as AnyObject, forKey: "SWTH_SUPPORTED_TOKEN")
                                 let w = SWTHResult.success(response)
                                 completion(w)
                             }

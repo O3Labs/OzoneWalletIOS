@@ -41,12 +41,45 @@ struct SwitcheoBalance: Codable {
     }
 }
 
+extension SwitcheoBalance {
+    
+    var basePairs: [TradableAsset]! {
+        var bases: [TradableAsset] = [
+            TradableAsset(id: "0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b", name: "NEO", symbol: "NEO", decimals: 8, value: "0"),
+            TradableAsset(id: "0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7", name: "GAS", symbol: "GAS", decimals: 8, value: "0"),
+            TradableAsset(id: "ab38352559b8b203bde5fddfa0b07d8b2525e132", name: "Switcheo", symbol: "SWTH", decimals: 8, value: "0"),
+        ]
+        
+        for i in bases.indices {
+            let found = self.confirmed.first { t -> Bool in
+                return bases[i].id == t.id
+            }
+            if found != nil {
+               bases[i].value = found!.value
+            }
+        }
+      
+        return bases
+    }
+
+    func loadSupportedTokens(completion: @escaping ([TradableAsset]) -> Void) {
+        O3APIClient.shared.loadSupportedTokenSwitcheo { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let response):
+                completion(response)
+            }
+        }
+    }
+}
+
 struct TradableAsset: Codable {
     let id: String
     let name: String
     let symbol: String
     let decimals: Int
-    let value: String
+    var value: String?
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -66,6 +99,10 @@ extension TradableAsset {
     }
     
     func formattedAmountInString() -> String {
+        if self.value == nil {
+            return ""
+        }
+        
         let amountFormatter = NumberFormatter()
         amountFormatter.minimumFractionDigits = 0
         amountFormatter.maximumFractionDigits = self.decimals

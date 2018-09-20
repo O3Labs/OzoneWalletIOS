@@ -78,8 +78,7 @@ class WithdrawDepositTableViewController: UITableViewController {
             if O3Cache.gas().value > 0 {
                 depositableAssets?.append(O3Cache.gas().toTradableAsset())
             }
-            
-            Switcheo(net: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test)?.exchangeTokens(completion: { result in
+            Switcheo.shared?.exchangeTokens(completion: { result in
                 switch result {
                 case .failure(let error):
                     print(error)
@@ -294,11 +293,10 @@ extension WithdrawDepositTableViewController: AssetInputToolbarDelegate {
         amountTextField.text = balanceString
         self.checkEnableButton()
     }
-    
 }
 
 extension WithdrawDepositTableViewController: TradableAssetSelectorTableViewControllerDelegate {
-    func assetSelected(selected: TradableAsset) {
+    func assetSelected(selected: TradableAsset, data: Any?) {
         selectedAsset = selected
         setupSelectedAsset(asset: selectedAsset!)
     }
