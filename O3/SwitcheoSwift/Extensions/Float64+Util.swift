@@ -49,8 +49,11 @@ extension Float64 {
     func toAssetAmount(_ asset: String,tokenDetail: TokenDetail) -> String {
         //        let decimal:Float64 = Float64(ASSET_DECIMALS[asset] ?? 8)
         let fullAmount = self * (pow(10,tokenDetail.decimals))
-        let amountText = String(format: fullAmount == floor(fullAmount) ? "%.0f":  "%.1f", fullAmount)
-        return amountText
+        let format = NumberFormatter()
+        format.maximumFractionDigits = 0
+        format.minimumFractionDigits = 0
+        let amountText = format.string(from: NSNumber(value: fullAmount))
+        return amountText!
     }
     
     func toFixed(_ decimal:Int) -> String {

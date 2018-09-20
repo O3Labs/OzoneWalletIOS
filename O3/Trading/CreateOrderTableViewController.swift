@@ -25,6 +25,14 @@ protocol CreateOrderDelegate {
     func onOfferAmountChange(value: Double, pairPrice: AssetPrice, totalInFiat: Fiat)
     
     func didReceivePrice(pairPrice: AssetPrice, fiatPrice: AssetPrice)
+    
+    func onStateChange(readyToSubmit: Bool)
+    
+    func onBeginSubmitOrder()
+    func onErrorSubmitOrder()
+    func onSuccessSubmitOrder()
+    
+    func didLoadOpenOrders(numberOfOpenOrder: Int)
 }
 
 
@@ -37,32 +45,51 @@ class CreateOrderViewModel {
     
     var delegate: CreateOrderDelegate?
     var selectedAction: CreateOrderAction!
-    
     var pairPrice: AssetPrice!
     var fiatPairPrice: AssetPrice! // e.g. neo|gas/usd
-    
     var offerAsset: TradableAsset!
     var wantAsset: TradableAsset!
-    
     var tradingAccount: TradingAccount?
     
-    var wantAmount: Double? {
+    var readyToSubmit: Bool {
+        if self.wantAmount == nil {
+            return false
+        }
+        if self.offerAmount == nil {
+            return false
+        }
+        return self.wantAmount! > 0 && self.offerAmount! > 0 //will have to check minimum order of switcheo here
+    }
+    
+    func setWantAmount(value: Double) {
+        wantAmount = value
+        offerAmount = Double(value * pairPrice.price)
+    }
+    
+    func setOfferAmount(value: Double) {
+        offerAmount = value
+        wantAmount = Double(value / pairPrice.price)
+    }
+    
+    var wantAmount: Double? = 0 {
         didSet {
             if wantAmount == nil {
                 return
             }
             let total = Fiat(amount: Float(wantAmount! * pairPrice.price * fiatPairPrice.price))
             self.delegate?.onWantAmountChange(value: wantAmount!, pairPrice: pairPrice, totalInFiat: total)
+            self.delegate?.onStateChange(readyToSubmit: self.readyToSubmit)
         }
     }
     
-    var offerAmount: Double? {
+    var offerAmount: Double? = 0 {
         didSet {
             if offerAmount == nil {
                 return
             }
             let total = Fiat(amount: Float((offerAmount! / pairPrice.price) * pairPrice.price * fiatPairPrice.price))
             self.delegate?.onOfferAmountChange(value: offerAmount!, pairPrice: pairPrice, totalInFiat: total)
+            self.delegate?.onStateChange(readyToSubmit: self.readyToSubmit)
         }
     }
     
@@ -121,6 +148,42 @@ class CreateOrderViewModel {
         }
     }
     
+    func loadOpenOrders() {
+        let openOrder = 0
+        self.delegate?.didLoadOpenOrders(numberOfOpenOrder: openOrder)
+    }
+    
+    func submitOrder() {
+        self.delegate?.onBeginSubmitOrder()
+        let blockchain = "neo"
+        
+        var pair = String(format:"%@_%@", wantAsset.symbol.uppercased(), offerAsset.symbol.uppercased())
+        //TODO fix this
+        //incase the want asset is NEO meaning selling NEO for something
+        if wantAsset.symbol.uppercased() == "NEO" {
+           pair = String(format:"%@_%@", offerAsset.symbol.uppercased(), wantAsset.symbol.uppercased())
+        }
+        
+        let side = selectedAction == CreateOrderAction.Buy ? "buy" : "sell"
+        let orderType = "limit"
+        let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.account!)
+        let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
+        
+        let want = wantAmount!// * pow(Double(10), Double(wantAsset.decimals))
+        let order = RequestOrder(pair: pair, blockchain: blockchain, side: side, price: Float64(pairPrice.price), wantAmount: Float64(want), useNativeTokens: false, orderType: orderType, contractHash: switcheoHash.rawValue, otcAddress: "")
+        
+        switcheoAccount.order(requestOrder: order!) { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+                self.delegate?.onErrorSubmitOrder()
+            case .success(let response):
+                print(response)
+                self.delegate?.onSuccessSubmitOrder()
+            }
+        }
+    }
+    
 }
 
 class CreateOrderTableViewController: UITableViewController {
@@ -145,10 +208,14 @@ class CreateOrderTableViewController: UITableViewController {
     @IBOutlet var offerAssetSelector: UIImageView!
     @IBOutlet var wantAssetSelector: UIImageView!
     
+    @IBOutlet var reviewAndSubmitSubmitButton: UIButton!
+    
     var inputToolbar = AssetInputToolbar()
     
     func setupNavbar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismiss(_: )))
+        navigationItem.rightBarButtonItem = BadgeBarButtonItem(image: #imageLiteral(resourceName: "receipt"), style: .plain, target: self, action: #selector(openOrderTapped(_:)))
+        
         //setup navbar title here
         self.title = viewModel.title
     }
@@ -178,7 +245,7 @@ class CreateOrderTableViewController: UITableViewController {
         }
         let formatter = NumberFormatter()
         let number = formatter.number(from: (sender.text?.trim())!)
-        viewModel.wantAmount = number?.doubleValue
+        viewModel.setWantAmount(value: (number?.doubleValue)!)
     }
     
     @objc func offerAmountTextFieldValueChanged(_ sender: UITextField) {
@@ -188,23 +255,30 @@ class CreateOrderTableViewController: UITableViewController {
         }
         let formatter = NumberFormatter()
         let number = formatter.number(from: (sender.text?.trim())!)
-        viewModel.offerAmount = number?.doubleValue
+        viewModel.setOfferAmount(value: (number?.doubleValue)!)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.delegate = self
-        viewModel.loadPrice(){}
-        viewModel.setupView()
-        
         setupNavbar()
         setupInputToolbar()
         setupTextFieldDelegate()
+        
+        viewModel.delegate = self
+        viewModel.loadPrice(){}
+        viewModel.loadOpenOrders()
+        viewModel.setupView()
+        
+       
     }
     
     deinit {
         viewModel.delegate = nil
+    }
+    
+    @objc func openOrderTapped(_ sender: Any) {
+        
     }
     
     @objc func dismiss(_ sender: Any) {
@@ -230,6 +304,18 @@ class CreateOrderTableViewController: UITableViewController {
         self.present(nav, animated: true, completion: nil)
     }
     
+    //MARK: - Review and submit
+    @IBAction func submitTapped(_ sender: Any) {
+        let title = "Confirm your order"
+        let action = viewModel.selectedAction == CreateOrderAction.Buy ? "buy" : "sell"
+        let message = String(format: "You are about to place a %@ order of %@ %@ at a price of %@ %@ per %@.", action, viewModel.wantAmount!.string(8, removeTrailing: true), viewModel.wantAsset.symbol.uppercased(), viewModel.pairPrice.price.string(8, removeTrailing: true), viewModel.offerAsset.symbol.uppercased(),viewModel.wantAsset.symbol.uppercased())
+        
+        OzoneAlert.confirmDialog(title, message: message, cancelTitle: "Cancel", confirmTitle: "Confirm", didCancel: {
+            
+        }) {
+            self.viewModel.submitOrder()
+        }
+    }
     
     //MARK: - actions for assets
     
@@ -267,6 +353,49 @@ class CreateOrderTableViewController: UITableViewController {
 }
 
 extension CreateOrderTableViewController: CreateOrderDelegate {
+    func didLoadOpenOrders(numberOfOpenOrder: Int) {
+        if let badgeButton = self.navigationItem.rightBarButtonItem! as? BadgeBarButtonItem {
+            self.navigationItem.rightBarButtonItem?.isEnabled = numberOfOpenOrder > 0
+            if numberOfOpenOrder > 0 {
+                badgeButton.badgeNumber = numberOfOpenOrder
+            }
+        }
+    }
+    
+    func onBeginSubmitOrder() {
+         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+            self.reviewAndSubmitSubmitButton.isEnabled = false
+            HUD.show(.progress)
+        }
+    }
+    
+    func onErrorSubmitOrder() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+            HUD.hide()
+            HUD.flash(HUDContentType.labeledError(title: "Unable to submit order", subtitle: "Please try again later."), delay: 3)
+        }
+    }
+    
+    func onSuccessSubmitOrder() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            HUD.hide()
+            //alert
+            let title = "Order created!"
+            let message = "You can check the progress of the order in order screen"
+            OzoneAlert.confirmDialog(title, message: message, cancelTitle: "Close", confirmTitle: "View my orders", didCancel: {
+                self.dismiss(animated: true, completion: nil)
+            }, didConfirm: {
+                //signal to load trading account balances
+                NotificationCenter.default.post(name: NSNotification.Name("didSubmitOrder"), object: nil)
+                self.dismiss(animated: true, completion: nil)
+            })
+        }
+    }
+    
+    func onStateChange(readyToSubmit: Bool) {
+        self.reviewAndSubmitSubmitButton.isEnabled = readyToSubmit
+    }
+    
     func beginLoading() {
         DispatchQueue.main.async {
             HUD.show(.progress)
@@ -336,20 +465,20 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
 extension CreateOrderTableViewController: AssetInputToolbarDelegate{
     func percentAmountTapped(value: Double) {
         if viewModel.selectedAction == CreateOrderAction.Sell {
-            viewModel.wantAmount = value
+            viewModel.setWantAmount(value: value)
             wantAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
         } else {
-            viewModel.offerAmount = value
+            viewModel.setOfferAmount(value: value)
             offerAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
         }
     }
     
     func maxAmountTapped(value: Double) {
         if viewModel.selectedAction == CreateOrderAction.Sell {
-            viewModel.wantAmount = value
+            viewModel.setWantAmount(value: value)
             wantAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
         } else {
-            viewModel.offerAmount = value
+            viewModel.setOfferAmount(value: value)
             offerAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
         }
     }

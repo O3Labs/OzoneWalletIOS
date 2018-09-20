@@ -131,6 +131,7 @@
 		6E2F26382151D7EA00A3DEB1 /* CreateOrderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2F26372151D7EA00A3DEB1 /* CreateOrderTableViewController.swift */; };
 		6E2F263A2151F11400A3DEB1 /* Trading.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E2F26392151F11400A3DEB1 /* Trading.xcassets */; };
 		6E2F263D2151FB8800A3DEB1 /* AssetPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2F263C2151FB8800A3DEB1 /* AssetPrice.swift */; };
+		6E2F263F215395A100A3DEB1 /* BadgeBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2F263E215395A100A3DEB1 /* BadgeBarButtonItem.swift */; };
 		6E3E381E1FA44C84004965F8 /* LoginToCurrentWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3E381D1FA44C84004965F8 /* LoginToCurrentWalletViewController.swift */; };
 		6E40F64421182E0E00B2B633 /* Browser.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E40F64321182E0E00B2B633 /* Browser.xcassets */; };
 		6E40F64621192E7100B2B633 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40F64521192E7100B2B633 /* Asset.swift */; };
@@ -416,6 +417,7 @@
 		6E2F26372151D7EA00A3DEB1 /* CreateOrderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrderTableViewController.swift; sourceTree = "<group>"; };
 		6E2F26392151F11400A3DEB1 /* Trading.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Trading.xcassets; sourceTree = "<group>"; };
 		6E2F263C2151FB8800A3DEB1 /* AssetPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPrice.swift; sourceTree = "<group>"; };
+		6E2F263E215395A100A3DEB1 /* BadgeBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeBarButtonItem.swift; sourceTree = "<group>"; };
 		6E3E381D1FA44C84004965F8 /* LoginToCurrentWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginToCurrentWalletViewController.swift; sourceTree = "<group>"; };
 		6E40F64321182E0E00B2B633 /* Browser.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Browser.xcassets; sourceTree = "<group>"; };
 		6E40F64521192E7100B2B633 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
@@ -1225,6 +1227,7 @@
 				6E244EC82085D5CE001B4B22 /* NumberOnlyUITextField.swift */,
 				6E72436320D0F0A5007D1201 /* LocalizableUILabel.swift */,
 				6E5568EF214B5FF300BA805E /* CenterImageButton.swift */,
+				6E2F263E215395A100A3DEB1 /* BadgeBarButtonItem.swift */,
 			);
 			path = UIControls;
 			sourceTree = "<group>";
@@ -1543,6 +1546,7 @@
 				6E7F3D8F20B6805200835963 /* Data.swift in Sources */,
 				7546DB451F765295001DF5A2 /* AssetDetailViewController.swift in Sources */,
 				7501C0271F7BBFF400B4B2FF /* AddressEntryTableViewController.swift in Sources */,
+				6E2F263F215395A100A3DEB1 /* BadgeBarButtonItem.swift in Sources */,
 				353E79A020C7895000B9AB1F /* PrivateKeyCollectionViewCell.swift in Sources */,
 				353E11DD20C65CF800697359 /* MarketplaceStrings.swift in Sources */,
 				6E4376A121460CB90091367A /* RequestCandlesticks.swift in Sources */,

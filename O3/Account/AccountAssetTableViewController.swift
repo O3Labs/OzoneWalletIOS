@@ -57,11 +57,13 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAllData), name: NSNotification.Name(rawValue: "tokenSelectorDismissed"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadCells), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.loadTradingAccountBalances), name: NSNotification.Name(rawValue: "didSubmitOrder"), object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "tokenSelectiorDismissed"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "didSubmitOrder"), object: nil)
     }
     
     override func viewDidLoad() {
@@ -77,7 +79,6 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         //first state of the section
         sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue] = false
         sectionHeaderCollapsedState[sections.tradingAccountHeader.rawValue] = false
-        
         
         //load everything from cache first
         self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neo(), O3Cache.gas()] + O3Cache.ontologyAssets() + O3Cache.tokenAssets())
@@ -114,11 +115,6 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                     //somehow calling reloadSections makes the uitableview flickering
                     //using reloadData instead ¯\_(ツ)_/¯
                     self.tableView.reloadData()
-//                    if account == accounts.o3Account {
-//
-//                    } else {
-//                        self.tableView.reloadSections([sections.tradingAccountSection.rawValue], with: .automatic)
-//                    }
                 }
             }
         }
@@ -139,7 +135,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
     }
     
-    func loadTradingAccountBalances() {
+   @objc func loadTradingAccountBalances() {
         O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.account!.address) { result in
             switch result {
             case .failure(let error):
@@ -598,9 +594,9 @@ extension AccountAssetTableViewController {
     
     func openCreateOrder(action: CreateOrderAction, asset: TradableAsset) {
         let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "CreateOrderTableViewControllerNav") as! UINavigationController
-//        let transitionDelegate = DeckTransitioningDelegate()
-//        nav.transitioningDelegate = transitionDelegate
-//        nav.modalPresentationStyle = .custom
+        //        let transitionDelegate = DeckTransitioningDelegate()
+        //        nav.transitioningDelegate = transitionDelegate
+        //        nav.modalPresentationStyle = .custom
         if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
             vc.viewModel = CreateOrderViewModel()
             vc.viewModel.selectedAction = action
@@ -659,7 +655,7 @@ extension AccountAssetTableViewController {
         if sender.tag == sections.tradingAccountHeader.rawValue && self.tradingAccount!.switcheo.confirmed.count == 0{
             return
         }
-            
+        
         UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
             sender.transform = sender.isSelected ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat(-0.999*Double.pi))
         }) { completed in

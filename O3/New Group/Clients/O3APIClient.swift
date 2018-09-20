@@ -342,9 +342,12 @@ class O3APIClient: NSObject {
                 completion(success)
             }
         }
+    }
+    
+    
+    func loadSwitcheoOrders(address: String, status: String, completion: @escaping(O3APIClientResult<[TradableAsset]>) -> Void) {
         
         
-       
     }
 
 }
