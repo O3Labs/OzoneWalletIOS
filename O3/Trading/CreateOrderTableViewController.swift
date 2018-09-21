@@ -8,6 +8,7 @@
 
 import UIKit
 import PKHUD
+import DeckTransition
 
 enum CreateOrderAction: Int {
     case Buy = 0
@@ -50,6 +51,7 @@ class CreateOrderViewModel {
     var offerAsset: TradableAsset!
     var wantAsset: TradableAsset!
     var tradingAccount: TradingAccount?
+    var openOrders: TradingOrders?
     
     var readyToSubmit: Bool {
         if self.wantAmount == nil {
@@ -117,7 +119,7 @@ class CreateOrderViewModel {
             case .success(let pairResponse):
                 //we actually need to get NEO|GAS/USD pair and calculate from the pair price
                 //eg. 1 GAS = 5.07182905 USD. 1 SWTH = 0.00138625 GAS so 1 SWTH = 5.07182905 * 0.00138625 = 0.00703082 USD
-                O3APIClient(network: AppState.network).loadPricing(symbol: self.offerAsset.symbol, currency: UserDefaultsManager.referenceFiatCurrency.rawValue) { result in
+                O3APIClient(network: AppState.network, useCache: true).loadPricing(symbol: self.offerAsset.symbol, currency: UserDefaultsManager.referenceFiatCurrency.rawValue) { result in
                     switch result {
                     case .failure(_):
                         //TODO show error
@@ -137,20 +139,32 @@ class CreateOrderViewModel {
     
     func selectOfferAsset(asset: TradableAsset) {
         self.offerAsset = asset
+        self.loadOpenOrders()
         self.loadPrice(){
             self.delegate?.onOfferAssetChange(asset: asset, action: self.selectedAction)
         }
     }
+    
     func selectWantAsset(asset: TradableAsset) {
         self.wantAsset = asset
+        self.loadOpenOrders()
         self.loadPrice(){
             self.delegate?.onWantAssetChange(asset: asset, action: self.selectedAction)
         }
     }
     
     func loadOpenOrders() {
-        let openOrder = 0
-        self.delegate?.didLoadOpenOrders(numberOfOpenOrder: openOrder)
+        let pair = String(format:"%@_%@", wantAsset.symbol.uppercased(), offerAsset.symbol.uppercased())
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open, pair: pair) { result in
+            switch result{
+            case .failure(let error):
+                print(error)
+                self.delegate?.didLoadOpenOrders(numberOfOpenOrder: 0)
+            case .success(let response):
+                self.openOrders = response
+                self.delegate?.didLoadOpenOrders(numberOfOpenOrder: response.switcheo.count)
+            }
+        }
     }
     
     func submitOrder() {
@@ -161,7 +175,7 @@ class CreateOrderViewModel {
         //TODO fix this
         //incase the want asset is NEO meaning selling NEO for something
         if wantAsset.symbol.uppercased() == "NEO" {
-           pair = String(format:"%@_%@", offerAsset.symbol.uppercased(), wantAsset.symbol.uppercased())
+            pair = String(format:"%@_%@", offerAsset.symbol.uppercased(), wantAsset.symbol.uppercased())
         }
         
         let side = selectedAction == CreateOrderAction.Buy ? "buy" : "sell"
@@ -169,7 +183,7 @@ class CreateOrderViewModel {
         let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.account!)
         let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
         
-        let want = wantAmount!// * pow(Double(10), Double(wantAsset.decimals))
+        let want = selectedAction == CreateOrderAction.Buy ? wantAmount! : offerAmount!
         let order = RequestOrder(pair: pair, blockchain: blockchain, side: side, price: Float64(pairPrice.price), wantAmount: Float64(want), useNativeTokens: false, orderType: orderType, contractHash: switcheoHash.rawValue, otcAddress: "")
         
         switcheoAccount.order(requestOrder: order!) { result in
@@ -225,11 +239,9 @@ class CreateOrderTableViewController: UITableViewController {
         if viewModel.selectedAction == CreateOrderAction.Sell {
             wantAmountTextField.inputAccessoryView = inputToolbar.loadNib()
             wantAmountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
-            
         } else {
             offerAmountTextField.inputAccessoryView = inputToolbar.loadNib()
             offerAmountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
-            
         }
     }
     
@@ -269,16 +281,38 @@ class CreateOrderTableViewController: UITableViewController {
         viewModel.loadPrice(){}
         viewModel.loadOpenOrders()
         viewModel.setupView()
-        
-       
     }
     
     deinit {
         viewModel.delegate = nil
     }
+    func viewOpenOrders() {
+//        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTableViewControllerNav") as? UINavigationController else {
+//            return
+//        }
+//        guard let vc = nav.viewControllers.first as? OrdersTableViewController else {
+//            return
+//        }
+//        vc.orders = viewModel.openOrders?.switcheo
+//        let transitionDelegate = DeckTransitioningDelegate()
+//        nav.transitioningDelegate = transitionDelegate
+//        nav.modalPresentationStyle = .custom
+//        self.present(nav, animated: true, completion: nil)
+//
+        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTabsViewControllerNav") as? UINavigationController else {
+            return
+        }
+        guard let vc = nav.viewControllers.first as? OrdersTabsViewController else {
+            return
+        }
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        self.present(nav, animated: true, completion: nil)
+    }
     
     @objc func openOrderTapped(_ sender: Any) {
-        
+       viewOpenOrders()
     }
     
     @objc func dismiss(_ sender: Any) {
@@ -336,7 +370,7 @@ class CreateOrderTableViewController: UITableViewController {
             }
         }
     }
-
+    
     @IBAction func selectWantAssetTapped(_ sender: Any) {
         //reset
         viewModel.wantAmount = 0
@@ -354,16 +388,16 @@ class CreateOrderTableViewController: UITableViewController {
 
 extension CreateOrderTableViewController: CreateOrderDelegate {
     func didLoadOpenOrders(numberOfOpenOrder: Int) {
-        if let badgeButton = self.navigationItem.rightBarButtonItem! as? BadgeBarButtonItem {
-            self.navigationItem.rightBarButtonItem?.isEnabled = numberOfOpenOrder > 0
-            if numberOfOpenOrder > 0 {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+            if let badgeButton = self.navigationItem.rightBarButtonItem! as? BadgeBarButtonItem {
+                self.navigationItem.rightBarButtonItem?.isEnabled = numberOfOpenOrder > 0
                 badgeButton.badgeNumber = numberOfOpenOrder
             }
         }
     }
     
     func onBeginSubmitOrder() {
-         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
             self.reviewAndSubmitSubmitButton.isEnabled = false
             HUD.show(.progress)
         }
@@ -383,10 +417,11 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
             let title = "Order created!"
             let message = "You can check the progress of the order in order screen"
             OzoneAlert.confirmDialog(title, message: message, cancelTitle: "Close", confirmTitle: "View my orders", didCancel: {
-                self.dismiss(animated: true, completion: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("didSubmitOrder"), object: nil)
+                self.dismiss(animated: true, completion: {})
             }, didConfirm: {
                 //signal to load trading account balances
-                NotificationCenter.default.post(name: NSNotification.Name("didSubmitOrder"), object: nil)
+                self.viewOpenOrders()
                 self.dismiss(animated: true, completion: nil)
             })
         }
@@ -493,7 +528,7 @@ extension CreateOrderTableViewController: TradableAssetSelectorTableViewControll
             } else {
                 viewModel.selectWantAsset(asset: selected)
             }
-
+            
         } else if viewModel.selectedAction == CreateOrderAction.Buy {
             let target = data as! TradableAsset
             if target.symbol == viewModel.offerAsset.symbol {

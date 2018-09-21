@@ -601,7 +601,7 @@ extension AccountAssetTableViewController {
             vc.viewModel = CreateOrderViewModel()
             vc.viewModel.selectedAction = action
             vc.viewModel.wantAsset = asset
-            vc.viewModel.offerAsset = self.tradingAccount?.switcheo.confirmed.defaultAcceptedAsset()
+            vc.viewModel.offerAsset = self.tradingAccount?.switcheo.basePairs.first
             vc.viewModel.tradingAccount = self.tradingAccount
         }
         self.present(nav, animated: true, completion: nil)

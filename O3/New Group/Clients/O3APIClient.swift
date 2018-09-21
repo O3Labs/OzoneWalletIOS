@@ -39,10 +39,13 @@ public enum O3APIClientResult<T> {
 class O3APIClient: NSObject {
 
     public var apiBaseEndpoint = "https://platform.o3.network/api"
+    public var apiWithCacheBaseEndpoint = "https://api.o3.network"
     public var network: Network = .main
 
-    init(network: Network) {
+    public var useCache: Bool = false
+    init(network: Network, useCache: Bool = false) {
         self.network = network
+        self.useCache = useCache
     }
     
     static var shared: O3APIClient = O3APIClient(network: AppState.network)
@@ -55,14 +58,24 @@ class O3APIClient: NSObject {
         case postTokenSaleLog = "tokensales"
     }
 
-    func sendRESTAPIRequest(_ resourceEndpoint: String, data: Data?, requestType: String = "GET", completion :@escaping (O3APIClientResult<JSONDictionary>) -> Void) {
+    func queryString(_ value: String, params: [String: String]) -> String? {
+        var components = URLComponents(string: value)
+        components?.queryItems = params.map { element in URLQueryItem(name: element.key, value: element.value) }
+        
+        return components?.url?.absoluteString
+    }
+    
+    func sendRESTAPIRequest(_ resourceEndpoint: String, data: Data?, requestType: String = "GET", params: [String: String] = [:], completion :@escaping (O3APIClientResult<JSONDictionary>) -> Void) {
 
-        var fullURL = apiBaseEndpoint + resourceEndpoint
+        var fullURL = useCache ? apiWithCacheBaseEndpoint + resourceEndpoint : apiBaseEndpoint + resourceEndpoint
+        var updatedParams = params
         if network == .test {
-            fullURL += "?network=test"
+            updatedParams["network"] = "test"
         } else if network == .privateNet {
-            fullURL += "?network=private"
+            updatedParams["network"] = "private"
         }
+        
+        fullURL =  self.queryString(fullURL, params: updatedParams)!
 
         let request = NSMutableURLRequest(url: URL(string: fullURL)!)
         request.httpMethod = requestType
@@ -344,10 +357,33 @@ class O3APIClient: NSObject {
         }
     }
     
-    
-    func loadSwitcheoOrders(address: String, status: String, completion: @escaping(O3APIClientResult<[TradableAsset]>) -> Void) {
+    func loadSwitcheoOrders(address: String, status: SwitcheoOrderStatus, pair: String? = nil, completion: @escaping(O3APIClientResult<TradingOrders>) -> Void) {
         
+        let url = String(format: "/v1/trading/%@/orders", address)
+        var params: [String: String] = [:]
+        if status.rawValue != "" {
+            params["status"] = status.rawValue
+        }
         
+        if pair != nil {
+            params["pair"] = pair!
+        }
+        
+        sendRESTAPIRequest(url, data: nil, params: params) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(TradingOrders.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
     }
 
 }
