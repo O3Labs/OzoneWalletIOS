@@ -10,7 +10,13 @@ import UIKit
 
 protocol PriceInputToolbarDelegate {
     func stepper(value: Double, percent: Double)
-    func defaultValueTapped(value: Double)
+    func originalPriceSelected(value: Double)
+}
+
+struct PriceInputToolbarViewModel {
+    var originalValue: Double?
+    var value: Double?
+    var step: Double! = 1
 }
 
 class PriceInputToolbar:  UIView {
@@ -33,7 +39,7 @@ class PriceInputToolbar:  UIView {
         super.init(frame: frame)
         self.setup()
     }
-
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -41,18 +47,43 @@ class PriceInputToolbar:  UIView {
     }
     
     //MARK: -
-    @IBOutlet var stepper: UIStepper!
+    @IBOutlet var currentMedianPriceButton: UIButton!
+    @IBOutlet var topPriceButton: UIButton!
     
+    private var originalPriceSet: Bool = false
     var step: Double? = 1 // default step for the stepper
     var currentPercent: Double! = 0 //..., -2, -1, 0, 1, 2, 3,...
-    var value: Double?
+    var value: Double? {
+        didSet {
+            if originalPriceSet == true {
+                return
+            }
+            originalPriceSet = true
+            currentMedianPriceButton.setTitle(value?.formattedStringWithoutSeparator(8, removeTrailing: true), for: .normal)
+        }
+    }
     var delegate: PriceInputToolbarDelegate?
     
+    
     //MARK: -
-    @IBAction func stepperTapped(_ sender: Any) {
-        let calculated = value! + (value! * stepper.value / 100)
-        currentPercent = stepper.value
-        delegate?.stepper(value: calculated, percent: stepper.value)
+    @IBAction func plusTapped(_ sender: Any) {
+        currentPercent = currentPercent + 1
+        let calculated = value! + (value! * currentPercent / 100)
+        delegate?.stepper(value: calculated, percent: currentPercent)
+    }
+    @IBAction func minusTapped(_ sender: Any) {
+        currentPercent = currentPercent - 1
+        let calculated = value! + (value! * currentPercent / 100)
+        delegate?.stepper(value: calculated, percent: currentPercent)
+    }
+    
+    @IBAction func currentPriceTapped(_ sender: Any) {
+        currentPercent = 0
+        delegate?.originalPriceSelected(value: value!)
+    }
+    
+    @IBAction func topPriceTapped(_ sender: Any) {
+        
     }
 }
 

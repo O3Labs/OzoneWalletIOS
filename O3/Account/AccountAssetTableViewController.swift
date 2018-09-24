@@ -58,12 +58,15 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAllData), name: NSNotification.Name(rawValue: "tokenSelectorDismissed"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadCells), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadTradingAccountBalances), name: NSNotification.Name(rawValue: "didSubmitOrder"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.viewOpenOrders), name: NSNotification.Name(rawValue: "viewTradingOrders"), object: nil)
+        
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "tokenSelectiorDismissed"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "didSubmitOrder"), object: nil)
+         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "viewTradingOrders"), object: nil)
     }
     
     override func viewDidLoad() {
@@ -591,6 +594,19 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
 }
 
 extension AccountAssetTableViewController {
+    
+    @objc func viewOpenOrders() {
+        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTabsViewControllerNav") as? UINavigationController else {
+            return
+        }
+        guard let vc = nav.viewControllers.first as? OrdersTabsViewController else {
+            return
+        }
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        self.present(nav, animated: true, completion: nil)
+    }
     
     func openCreateOrder(action: CreateOrderAction, asset: TradableAsset) {
         let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "CreateOrderTableViewControllerNav") as! UINavigationController

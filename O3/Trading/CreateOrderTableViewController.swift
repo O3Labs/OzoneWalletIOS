@@ -49,7 +49,13 @@ class CreateOrderViewModel {
     
     var delegate: CreateOrderDelegate?
     var selectedAction: CreateOrderAction!
-    var pairPrice: AssetPrice!
+    var pairPrice: AssetPrice! {
+        didSet {
+             self.delegate?.onStateChange(readyToSubmit: self.readyToSubmit)
+        }
+    }
+    
+    var firstFetchedPairPrice: AssetPrice!
     var fiatPairPrice: AssetPrice! // e.g. neo|gas/usd
     var offerAsset: TradableAsset!
     var wantAsset: TradableAsset!
@@ -138,6 +144,7 @@ class CreateOrderViewModel {
                     case .success(let fiatResponse):
                         self.delegate?.endLoading()
                         self.pairPrice = pairResponse
+                        self.firstFetchedPairPrice = pairResponse //keep the original
                         self.fiatPairPrice = fiatResponse
                         self.delegate?.onPriceReceived(pairPrice: self.pairPrice, fiatPrice: self.fiatPairPrice)
                         completion()
@@ -219,9 +226,24 @@ class CreateOrderViewModel {
         if self.wantAmount?.isNaN == false && self.wantAmount != nil && !self.wantAmount!.isLessThanOrEqualTo(0.0) {
             let newOfferAmount = (self.wantAmount! * price)
              self.offerAmount = newOfferAmount
-//            self.setOfferAmount(value: newOfferAmount)
         }
         self.delegate?.onPairPriceChanged(pairPrice: pairPrice)
+    }
+    
+    var priceChangeDescription: String {
+        if firstFetchedPairPrice.price.isEqual(to: pairPrice.price) {
+            
+            return String(format: "Updated %@", Date(timeIntervalSince1970: TimeInterval(pairPrice.lastUpdate)).timeAgo(numericDates: true))
+        }
+        let change = 100.0 -  floor((firstFetchedPairPrice.price * 100.0) / pairPrice.price)
+        return String(format: "%@%@ %@ median", change.string(2, removeTrailing: true), "%", change < 0 ? "below" : "above")
+    }
+    
+    var priceTitle: String {
+        if firstFetchedPairPrice.price.isEqual(to: pairPrice.price) {
+            return "PRICE".uppercased()
+        }
+        return "CUSTOM PRICE".uppercased()
     }
     
 }
@@ -231,12 +253,13 @@ class CreateOrderTableViewController: UITableViewController {
     var viewModel: CreateOrderViewModel!
     
     @IBOutlet var targetPriceTextField: UITextField!
+    @IBOutlet var targetPriceTitle: UILabel!
+    @IBOutlet var targetPriceSubtitle: UILabel!
     @IBOutlet var targetFiatPriceLabel: UILabel!
     @IBOutlet var targetAssetLabel: UILabel!
     
     @IBOutlet var wantAssetLabel: UITextField!
     @IBOutlet var offerAssetLabel: UITextField!
-    
     
     @IBOutlet var wantAmountTextField: UITextField!
     @IBOutlet var offerAmountTextField: UITextField!
@@ -363,6 +386,7 @@ class CreateOrderTableViewController: UITableViewController {
     deinit {
         viewModel.delegate = nil
     }
+    
     func viewOpenOrders() {
         //        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTableViewControllerNav") as? UINavigationController else {
         //            return
@@ -467,6 +491,11 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
     
     func onPairPriceChanged(pairPrice: AssetPrice) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.targetPriceTitle.text = self.viewModel.priceTitle
+                self.targetPriceSubtitle.text = self.viewModel.priceChangeDescription
+            })
+            
             if pairPrice.price == 0 {
                 self.offerAmountTextField.text = ""
                 self.offerTotalFiatPriceLabel.text = ""
@@ -505,20 +534,23 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
             HUD.hide()
             //alert
             let title = "Order created!"
-            let message = "You can check the progress of the order in order screen"
+            let message = "You can check the progress of the order in my orders screen"
             OzoneAlert.confirmDialog(title, message: message, cancelTitle: "Close", confirmTitle: "View my orders", didCancel: {
                 NotificationCenter.default.post(name: NSNotification.Name("didSubmitOrder"), object: nil)
                 self.dismiss(animated: true, completion: {})
             }, didConfirm: {
                 //signal to load trading account balances
-                self.viewOpenOrders()
-                self.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true, completion: {
+                    NotificationCenter.default.post(name: NSNotification.Name("viewTradingOrders"), object: nil)
+                })
             })
         }
     }
     
     func onStateChange(readyToSubmit: Bool) {
-        self.reviewAndSubmitSubmitButton.isEnabled = readyToSubmit
+        DispatchQueue.main.async {
+            self.reviewAndSubmitSubmitButton.isEnabled = readyToSubmit
+        }
     }
     
     func beginLoading() {
@@ -536,6 +568,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
     func onPriceReceived(pairPrice: AssetPrice, fiatPrice: AssetPrice) {
         DispatchQueue.main.async {
             HUD.hide()
+            self.targetPriceSubtitle.text = self.viewModel.priceChangeDescription
             //assign default value to the toolbar
             self.targetFiatPriceLabel.text = Fiat(amount: Float(fiatPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: 8)
             self.targetPriceTextField.text = pairPrice.price.string(8, removeTrailing: true)
@@ -646,9 +679,7 @@ extension CreateOrderTableViewController: PriceInputToolbarDelegate {
         self.viewModel.setPairPrice(price: value)
     }
     
-    func defaultValueTapped(value: Double) {
-        
+    func originalPriceSelected(value: Double) {
+        self.viewModel.setPairPrice(price: value)
     }
-    
-    
 }

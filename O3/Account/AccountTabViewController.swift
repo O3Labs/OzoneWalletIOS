@@ -123,6 +123,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         dismiss(animated: true, completion: nil)
     }
     
+    
 
     func setLocalizedStrings() {
         self.bar.items = [Item(title: "Accounts"), //TODO change this to localized string
