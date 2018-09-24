@@ -25,7 +25,7 @@ protocol CreateOrderDelegate {
     func onWantAmountChange(value: Double, pairPrice: AssetPrice, totalInFiat: Fiat)
     func onOfferAmountChange(value: Double, pairPrice: AssetPrice, totalInFiat: Fiat)
     
-    func didReceivePrice(pairPrice: AssetPrice, fiatPrice: AssetPrice)
+    func onPriceReceived(pairPrice: AssetPrice, fiatPrice: AssetPrice)
     
     func onStateChange(readyToSubmit: Bool)
     
@@ -34,6 +34,8 @@ protocol CreateOrderDelegate {
     func onSuccessSubmitOrder()
     
     func didLoadOpenOrders(numberOfOpenOrder: Int)
+    
+    func onPairPriceChanged(pairPrice: AssetPrice)
 }
 
 
@@ -42,6 +44,7 @@ extension TradableAsset {
         return URL(string: String(format: "https://cdn.o3.network/img/neo/%@.png", self.symbol.uppercased()))!
     }
 }
+
 class CreateOrderViewModel {
     
     var delegate: CreateOrderDelegate?
@@ -78,6 +81,9 @@ class CreateOrderViewModel {
             if wantAmount == nil {
                 return
             }
+            if wantAmount!.isNaN {
+                wantAmount = 0
+            }
             let total = Fiat(amount: Float(wantAmount! * pairPrice.price * fiatPairPrice.price))
             self.delegate?.onWantAmountChange(value: wantAmount!, pairPrice: pairPrice, totalInFiat: total)
             self.delegate?.onStateChange(readyToSubmit: self.readyToSubmit)
@@ -89,6 +95,10 @@ class CreateOrderViewModel {
             if offerAmount == nil {
                 return
             }
+            if offerAmount!.isNaN {
+                offerAmount = 0
+            }
+            
             let total = Fiat(amount: Float((offerAmount! / pairPrice.price) * pairPrice.price * fiatPairPrice.price))
             self.delegate?.onOfferAmountChange(value: offerAmount!, pairPrice: pairPrice, totalInFiat: total)
             self.delegate?.onStateChange(readyToSubmit: self.readyToSubmit)
@@ -129,7 +139,7 @@ class CreateOrderViewModel {
                         self.delegate?.endLoading()
                         self.pairPrice = pairResponse
                         self.fiatPairPrice = fiatResponse
-                        self.delegate?.didReceivePrice(pairPrice: self.pairPrice, fiatPrice:  self.fiatPairPrice)
+                        self.delegate?.onPriceReceived(pairPrice: self.pairPrice, fiatPrice: self.fiatPairPrice)
                         completion()
                     }
                 }
@@ -198,13 +208,29 @@ class CreateOrderViewModel {
         }
     }
     
+    func setPairPrice(price: Double) {
+        self.pairPrice.updatePrice(value: price)
+        
+        if self.pairPrice.price.isEqual(to: 0.0) {
+            self.offerAmount = 0
+            return
+        }
+        
+        if self.wantAmount?.isNaN == false && self.wantAmount != nil && !self.wantAmount!.isLessThanOrEqualTo(0.0) {
+            let newOfferAmount = (self.wantAmount! * price)
+             self.offerAmount = newOfferAmount
+//            self.setOfferAmount(value: newOfferAmount)
+        }
+        self.delegate?.onPairPriceChanged(pairPrice: pairPrice)
+    }
+    
 }
 
 class CreateOrderTableViewController: UITableViewController {
     
     var viewModel: CreateOrderViewModel!
     
-    @IBOutlet var targetPriceLabel: UILabel!
+    @IBOutlet var targetPriceTextField: UITextField!
     @IBOutlet var targetFiatPriceLabel: UILabel!
     @IBOutlet var targetAssetLabel: UILabel!
     
@@ -225,6 +251,7 @@ class CreateOrderTableViewController: UITableViewController {
     @IBOutlet var reviewAndSubmitSubmitButton: UIButton!
     
     var inputToolbar = AssetInputToolbar()
+    var priceInputToolbar = PriceInputToolbar()
     
     func setupNavbar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismiss(_: )))
@@ -245,9 +272,16 @@ class CreateOrderTableViewController: UITableViewController {
         }
     }
     
+    func setupPriceInputToolbar() {
+        priceInputToolbar.delegate = self
+        targetPriceTextField.inputView = priceInputToolbar.loadNib()
+    }
+    
     func setupTextFieldDelegate() {
         wantAmountTextField.addTarget(self, action: #selector(wantAmountTextFieldValueChanged(_:)), for: .editingChanged)
         offerAmountTextField.addTarget(self, action: #selector(offerAmountTextFieldValueChanged(_:)), for: .editingChanged)
+        targetPriceTextField.addTarget(self, action: #selector(priceBeginEditing(_:)), for: .editingDidBegin)
+        targetPriceTextField.addTarget(self, action: #selector(priceTextFieldValueChanged(_:)), for: .editingChanged)
     }
     
     @objc func wantAmountTextFieldValueChanged(_ sender: UITextField) {
@@ -255,8 +289,17 @@ class CreateOrderTableViewController: UITableViewController {
             viewModel.wantAmount = 0
             return
         }
+        if sender.text!.hasSuffix(".") || sender.text!.hasSuffix(",") {
+            return
+        }
         let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 8
+        formatter.numberStyle = .decimal
         let number = formatter.number(from: (sender.text?.trim())!)
+        if number == nil {
+            return
+        }
         viewModel.setWantAmount(value: (number?.doubleValue)!)
     }
     
@@ -265,9 +308,42 @@ class CreateOrderTableViewController: UITableViewController {
             viewModel.offerAmount = 0
             return
         }
+        if sender.text!.hasSuffix(".") || sender.text!.hasSuffix(",") {
+            return
+        }
         let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 8
+        formatter.numberStyle = .decimal
         let number = formatter.number(from: (sender.text?.trim())!)
+        if number == nil {
+            return
+        }
         viewModel.setOfferAmount(value: (number?.doubleValue)!)
+    }
+    
+    @objc func priceTextFieldValueChanged(_ sender: UITextField) {
+        if sender.text?.count == 0 {
+            self.viewModel.setPairPrice(price: 0)
+            return
+        }
+        if sender.text!.hasSuffix(".") || sender.text!.hasSuffix(",") {
+            return
+        }
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 8
+        formatter.numberStyle = .decimal
+        let number = formatter.number(from: (sender.text?.trim())!)
+        if number == nil {
+            return
+        }
+        self.viewModel.setPairPrice(price: number!.doubleValue)
+        priceInputToolbar.value = viewModel.pairPrice.price
+    }
+    
+    @objc func priceBeginEditing(_ sender: UITextField) {
+        priceInputToolbar.value = viewModel.pairPrice.price
     }
     
     override func viewDidLoad() {
@@ -275,6 +351,7 @@ class CreateOrderTableViewController: UITableViewController {
         
         setupNavbar()
         setupInputToolbar()
+        setupPriceInputToolbar()
         setupTextFieldDelegate()
         
         viewModel.delegate = self
@@ -287,18 +364,18 @@ class CreateOrderTableViewController: UITableViewController {
         viewModel.delegate = nil
     }
     func viewOpenOrders() {
-//        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTableViewControllerNav") as? UINavigationController else {
-//            return
-//        }
-//        guard let vc = nav.viewControllers.first as? OrdersTableViewController else {
-//            return
-//        }
-//        vc.orders = viewModel.openOrders?.switcheo
-//        let transitionDelegate = DeckTransitioningDelegate()
-//        nav.transitioningDelegate = transitionDelegate
-//        nav.modalPresentationStyle = .custom
-//        self.present(nav, animated: true, completion: nil)
-//
+        //        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTableViewControllerNav") as? UINavigationController else {
+        //            return
+        //        }
+        //        guard let vc = nav.viewControllers.first as? OrdersTableViewController else {
+        //            return
+        //        }
+        //        vc.orders = viewModel.openOrders?.switcheo
+        //        let transitionDelegate = DeckTransitioningDelegate()
+        //        nav.transitioningDelegate = transitionDelegate
+        //        nav.modalPresentationStyle = .custom
+        //        self.present(nav, animated: true, completion: nil)
+        //
         guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTabsViewControllerNav") as? UINavigationController else {
             return
         }
@@ -312,7 +389,7 @@ class CreateOrderTableViewController: UITableViewController {
     }
     
     @objc func openOrderTapped(_ sender: Any) {
-       viewOpenOrders()
+        viewOpenOrders()
     }
     
     @objc func dismiss(_ sender: Any) {
@@ -387,6 +464,19 @@ class CreateOrderTableViewController: UITableViewController {
 }
 
 extension CreateOrderTableViewController: CreateOrderDelegate {
+    
+    func onPairPriceChanged(pairPrice: AssetPrice) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+            if pairPrice.price == 0 {
+                self.offerAmountTextField.text = ""
+                self.offerTotalFiatPriceLabel.text = ""
+                return
+            }
+            self.targetFiatPriceLabel.text = Fiat(amount: Float(self.viewModel.fiatPairPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: 8)
+            self.targetPriceTextField.text = pairPrice.price.string(8, removeTrailing: true)
+        }
+    }
+    
     func didLoadOpenOrders(numberOfOpenOrder: Int) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
             if let badgeButton = self.navigationItem.rightBarButtonItem! as? BadgeBarButtonItem {
@@ -443,24 +533,35 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
         }
     }
     
-    func didReceivePrice(pairPrice: AssetPrice, fiatPrice: AssetPrice) {
+    func onPriceReceived(pairPrice: AssetPrice, fiatPrice: AssetPrice) {
         DispatchQueue.main.async {
             HUD.hide()
+            //assign default value to the toolbar
             self.targetFiatPriceLabel.text = Fiat(amount: Float(fiatPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: 8)
-            self.targetPriceLabel.text = pairPrice.price.string(8, removeTrailing: true)
+            self.targetPriceTextField.text = pairPrice.price.string(8, removeTrailing: true)
         }
     }
     
     func onWantAmountChange(value: Double, pairPrice: AssetPrice, totalInFiat: Fiat) {
         DispatchQueue.main.async {
-            self.offerAmountTextField.text = value == 0 ? "" : Double(value * pairPrice.price).formattedStringWithoutSeparator(8, removeTrailing: true)
+            if value.isNaN || value.isZero {
+                self.wantAmountTextField.text = ""
+                return
+            }
+            self.wantAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
+            
             self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: 8)
         }
     }
     
     func onOfferAmountChange(value: Double, pairPrice: AssetPrice, totalInFiat: Fiat) {
         DispatchQueue.main.async {
-            self.wantAmountTextField.text = value == 0 ? "" : Double(value / pairPrice.price).formattedStringWithoutSeparator(8, removeTrailing: true)
+            if value.isNaN || value.isZero {
+                self.offerAmountTextField.text = ""
+                return
+            }
+            self.offerAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
+            
             self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: 8)
         }
     }
@@ -538,4 +639,16 @@ extension CreateOrderTableViewController: TradableAssetSelectorTableViewControll
             }
         }
     }
+}
+
+extension CreateOrderTableViewController: PriceInputToolbarDelegate {
+    func stepper(value: Double, percent: Double) {
+        self.viewModel.setPairPrice(price: value)
+    }
+    
+    func defaultValueTapped(value: Double) {
+        
+    }
+    
+    
 }

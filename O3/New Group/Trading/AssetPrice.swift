@@ -11,7 +11,7 @@ import UIKit
 struct AssetPrice: Codable {
     let symbol: String
     let currency: String
-    let price: Double
+    var price: Double
     let lastUpdate: Int
     
     enum CodingKeys: String, CodingKey {
@@ -19,5 +19,12 @@ struct AssetPrice: Codable {
         case currency = "currency"
         case price = "price"
         case lastUpdate = "lastUpdate"
+    }
+}
+
+
+extension AssetPrice {
+    mutating func updatePrice(value: Double) {
+        self.price = value
     }
 }

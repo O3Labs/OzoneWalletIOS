@@ -465,26 +465,26 @@
                                                     <color key="textColor" name="grey"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0bk-m3-JI3">
-                                                    <rect key="frame" x="181.5" y="10" width="150" height="20"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dsm-4U-b7x" customClass="FixedDecimalTextField" customModule="O3" customModuleProvider="target">
+                                                    <rect key="frame" x="181" y="10" width="150" height="20"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="GjV-s4-bLp"/>
+                                                        <constraint firstAttribute="height" constant="20" id="Bmb-0q-IaQ"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
                                                     <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                                </textField>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="dsm-4U-b7x" firstAttribute="width" secondItem="TRH-Kl-gRc" secondAttribute="width" multiplier="0.4" id="4Nv-L5-yIm"/>
                                                 <constraint firstItem="mqU-SB-KtS" firstAttribute="top" secondItem="TRH-Kl-gRc" secondAttribute="top" constant="10" id="9lB-pU-X4r"/>
-                                                <constraint firstItem="4Sh-1p-Ao9" firstAttribute="leading" secondItem="0bk-m3-JI3" secondAttribute="trailing" constant="4" id="B7u-cc-sAf"/>
                                                 <constraint firstItem="o3d-ZP-Q46" firstAttribute="centerY" secondItem="mqU-SB-KtS" secondAttribute="centerY" id="E1B-gG-21w"/>
                                                 <constraint firstAttribute="trailing" secondItem="4Sh-1p-Ao9" secondAttribute="trailing" constant="16" id="Hjg-aZ-jrt"/>
+                                                <constraint firstItem="dsm-4U-b7x" firstAttribute="centerY" secondItem="4Sh-1p-Ao9" secondAttribute="centerY" id="K5i-CK-Iot"/>
                                                 <constraint firstAttribute="trailing" secondItem="WSy-Wv-AkI" secondAttribute="trailing" constant="16" id="LBS-dx-px7"/>
                                                 <constraint firstItem="47z-id-L39" firstAttribute="leading" secondItem="mqU-SB-KtS" secondAttribute="leading" id="MST-Fk-12s"/>
                                                 <constraint firstAttribute="bottom" secondItem="47z-id-L39" secondAttribute="bottom" constant="10" id="Ytf-Eh-39j"/>
-                                                <constraint firstItem="0bk-m3-JI3" firstAttribute="top" secondItem="4Sh-1p-Ao9" secondAttribute="top" id="fuK-sr-IVC"/>
-                                                <constraint firstItem="0bk-m3-JI3" firstAttribute="width" secondItem="TRH-Kl-gRc" secondAttribute="width" multiplier="0.4" id="hhM-g2-0a7"/>
+                                                <constraint firstItem="4Sh-1p-Ao9" firstAttribute="leading" secondItem="dsm-4U-b7x" secondAttribute="trailing" constant="4" id="bYP-hU-pCa"/>
                                                 <constraint firstItem="o3d-ZP-Q46" firstAttribute="leading" secondItem="mqU-SB-KtS" secondAttribute="trailing" constant="8" id="kFy-Mm-gEx"/>
                                                 <constraint firstItem="mqU-SB-KtS" firstAttribute="leading" secondItem="TRH-Kl-gRc" secondAttribute="leading" constant="16" id="oNd-lP-BLf"/>
                                                 <constraint firstItem="4Sh-1p-Ao9" firstAttribute="top" secondItem="TRH-Kl-gRc" secondAttribute="top" constant="10" id="uaN-aL-Yzf"/>
@@ -518,7 +518,7 @@
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                 </textField>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ASr-Py-2Vg" customClass="NoActionUITextField" customModule="O3" customModuleProvider="target">
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ASr-Py-2Vg" customClass="FixedDecimalTextField" customModule="O3" customModuleProvider="target">
                                                     <rect key="frame" x="177" y="19" width="150" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="xdl-XT-DJz"/>
@@ -526,6 +526,11 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="decimals">
+                                                            <integer key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -573,7 +578,7 @@
                                                     <color key="textColor" name="grey"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="r46-yp-Soa" customClass="NoActionUITextField" customModule="O3" customModuleProvider="target">
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="r46-yp-Soa" customClass="FixedDecimalTextField" customModule="O3" customModuleProvider="target">
                                                     <rect key="frame" x="177" y="10" width="150" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="U54-8Y-4N1"/>
@@ -581,6 +586,11 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="decimals">
+                                                            <integer key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -649,7 +659,7 @@
                         <outlet property="rightAssetImageView" destination="Jxk-8H-AQV" id="048-RH-ubt"/>
                         <outlet property="targetAssetLabel" destination="4Sh-1p-Ao9" id="7Ph-o7-jWl"/>
                         <outlet property="targetFiatPriceLabel" destination="WSy-Wv-AkI" id="fH2-vP-Z6b"/>
-                        <outlet property="targetPriceLabel" destination="0bk-m3-JI3" id="Ysb-bP-ete"/>
+                        <outlet property="targetPriceTextField" destination="dsm-4U-b7x" id="WDz-me-7Xq"/>
                         <outlet property="wantAmountTextField" destination="ASr-Py-2Vg" id="pTg-T1-TSj"/>
                         <outlet property="wantAssetLabel" destination="oDn-2I-5Nj" id="pAh-wn-s8s"/>
                         <outlet property="wantAssetSelector" destination="L1i-O9-G1I" id="P5L-y1-7Sh"/>
@@ -903,20 +913,11 @@
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="grey">
-            <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="grey">
-            <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="lightThemeGreen">
             <color red="0.49411764705882355" green="0.82745098039215681" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="lightThemeOrange">
             <color red="0.96078431372549022" green="0.65098039215686276" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="lightThemeOrange">
-            <color red="0.96078431369999995" green="0.65098039220000004" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="lightThemePrimary">
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -924,17 +925,8 @@
         <namedColor name="lightThemeRed">
             <color red="0.81568627449999997" green="0.0078431372550000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="lightThemeRed">
-            <color red="0.81568627450980391" green="0.0078431372549019607" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="lightThemeRed">
-            <color red="0.81568627449999997" green="0.0078431372550000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="textColor">
             <color red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textColor">
-            <color red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
