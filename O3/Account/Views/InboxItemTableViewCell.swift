@@ -24,6 +24,8 @@ class InboxItemTableViewCell: UITableViewCell {
     @IBOutlet var actionButton: UIButton!
 
     override func awakeFromNib() {
+        theme_backgroundColor = O3Theme.backgroundLightgrey
+        titleLabel.theme_textColor = O3Theme.titleColorPicker
         super.awakeFromNib()
     }
 

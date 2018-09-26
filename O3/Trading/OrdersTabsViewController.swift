@@ -20,7 +20,7 @@ class OrdersTabsViewController: TabmanViewController, PageboyViewControllerDataS
         let open = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTableViewController") as! OrdersTableViewController
         open.orderStatus = SwitcheoOrderStatus.open
         let completed = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTableViewController") as! OrdersTableViewController
-        completed.orderStatus = SwitcheoOrderStatus.completed
+        completed.orderStatus = SwitcheoOrderStatus.empty
         
         if showOnlyOpenOrdersForPair != nil {
             let pair = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTableViewController") as! OrdersTableViewController
@@ -33,7 +33,7 @@ class OrdersTabsViewController: TabmanViewController, PageboyViewControllerDataS
         self.dataSource = self
         
         self.bar.items = [Item(title: "Open"),
-            Item(title: "Completed")]
+            Item(title: "All")]
         
         self.bar.appearance = TabmanBar.Appearance({ (appearance) in
             appearance.state.selectedColor = UserDefaultsManager.theme.primaryColor

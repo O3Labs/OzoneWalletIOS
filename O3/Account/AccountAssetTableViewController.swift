@@ -19,12 +19,11 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     private enum sections: Int {
         case unclaimedGAS = 0
+        case toolbar
         case inbox
-        case o3AccountHeader
         case neoAssets
         case ontologyAssets
         case nep5tokens
-        case tradingAccountHeader
         case tradingAccountSection
     }
     
@@ -57,7 +56,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAllData), name: NSNotification.Name(rawValue: "tokenSelectorDismissed"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadCells), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.loadTradingAccountBalances), name: NSNotification.Name(rawValue: "didSubmitOrder"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.loadTradingAccountBalances), name: NSNotification.Name(rawValue: "needsReloadTradingBalances"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.viewOpenOrders), name: NSNotification.Name(rawValue: "viewTradingOrders"), object: nil)
         
     }
@@ -65,8 +64,8 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "tokenSelectiorDismissed"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "didSubmitOrder"), object: nil)
-         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "viewTradingOrders"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "needsReloadTradingBalances"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "viewTradingOrders"), object: nil)
     }
     
     override func viewDidLoad() {
@@ -75,13 +74,14 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         addObservers()
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.tableView.theme_backgroundColor = O3Theme.backgroundLightgrey
+        self.tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
         applyNavBarTheme()
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
         
         //first state of the section
-        sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue] = false
-        sectionHeaderCollapsedState[sections.tradingAccountHeader.rawValue] = false
+        sectionHeaderCollapsedState[sections.neoAssets.rawValue] = true
+        sectionHeaderCollapsedState[sections.tradingAccountSection.rawValue] = true
         
         //load everything from cache first
         self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neo(), O3Cache.gas()] + O3Cache.ontologyAssets() + O3Cache.tokenAssets())
@@ -138,7 +138,8 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
     }
     
-   @objc func loadTradingAccountBalances() {
+    var numberOfOpenOrders: Int = 0
+    @objc func loadTradingAccountBalances() {
         O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.account!.address) { result in
             switch result {
             case .failure(let error):
@@ -147,13 +148,20 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             case .success(let tradingAccount):
                 DispatchQueue.main.async {
                     self.tradingAccount = tradingAccount
-                    self.tableView.reloadSections([sections.tradingAccountHeader.rawValue, sections.tradingAccountSection.rawValue], with: .automatic)
+                    self.tableView.reloadSections([sections.tradingAccountSection.rawValue, sections.tradingAccountSection.rawValue], with: .automatic)
                     var list: [TransferableAsset] = []
                     for v in self.tradingAccount!.switcheo.confirmed{
                         list.append(v.toTransferableAsset())
                     }
                     self.loadAccountValue(account: accounts.tradingAccount, list: list)
                 }
+            }
+        }
+        
+        self.loadOpenOrders { value in
+            DispatchQueue.main.async {
+                self.numberOfOpenOrders = value
+                self.tableView.reloadSections([sections.tradingAccountSection.rawValue, sections.tradingAccountSection.rawValue], with: .automatic)
             }
         }
     }
@@ -247,26 +255,24 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 8
+        return 9
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == sections.unclaimedGAS.rawValue {
             return 1
+        } else if section == sections.toolbar.rawValue {
+            return 1
         } else if section == sections.inbox.rawValue {
             return addressInbox?.items.count ?? 0
-        } else if section == sections.o3AccountHeader.rawValue {
-            return 0 //no row on this section just the header
         }  else if section == sections.neoAssets.rawValue {
-            return sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue]  == true ? 1 : 2 //show icons list in this section
+            return sectionHeaderCollapsedState[sections.neoAssets.rawValue]  == true ? 0 : 2
         } else if section == sections.ontologyAssets.rawValue {
-            return sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue]  == true ? 0 : ontologyAssets.count
+            return sectionHeaderCollapsedState[sections.neoAssets.rawValue]  == true ? 0 : ontologyAssets.count
         } else if section == sections.nep5tokens.rawValue {
-            return sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue]  == true ? 0 : tokenAssets.count
-        } else if section == sections.tradingAccountHeader.rawValue {
-            return 0 //no row on this section just the header
+            return sectionHeaderCollapsedState[sections.neoAssets.rawValue]  == true ? 0 : tokenAssets.count
         } else if section == sections.tradingAccountSection.rawValue {
-            return sectionHeaderCollapsedState[sections.tradingAccountHeader.rawValue]  == true ? 1 : tradingAccount?.switcheo.confirmed.count ?? 0
+            return sectionHeaderCollapsedState[sections.tradingAccountSection.rawValue]  == true ? 0 : tradingAccount?.switcheo.confirmed.count ?? 0
         }
         
         return 0
@@ -275,32 +281,18 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == sections.unclaimedGAS.rawValue {
             return 172.0
-        }  else if indexPath.section == sections.inbox.rawValue {
+        } else if indexPath.section == sections.toolbar.rawValue {
+            return 60.0
+        } else if indexPath.section == sections.inbox.rawValue {
             return 190.0
         }
         
-        if indexPath.section == sections.o3AccountHeader.rawValue {
-            return 0.0
-        }
-        
-        if indexPath.section == sections.tradingAccountHeader.rawValue {
-            return 0.0
-        }
-        
         if indexPath.section == sections.neoAssets.rawValue {
-            if sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue]  == true {
-                return 44.0
-            } else {
-                return 66.0
-            }
+            return 66.0
         }
         
         if indexPath.section == sections.tradingAccountSection.rawValue {
-            if sectionHeaderCollapsedState[sections.tradingAccountHeader.rawValue]  == true  {
-                return 44.0
-            } else {
-                return 66.0
-            }
+            return 66.0
         }
         return 66.0
     }
@@ -313,7 +305,18 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
             cell.delegate = self
+            return cell
+        }
+        
+        if indexPath.section == sections.toolbar.rawValue {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-toolbar") as? MainToolbarTableViewCell else {
+                let cell =  UITableViewCell()
+                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                return cell
+            }
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
             return cell
         }
         
@@ -329,16 +332,6 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
         
         if indexPath.section == sections.neoAssets.rawValue {
-            // when user collapsed the section we show this row
-            if sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue] == true {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "asset-icons-cell") as? AssetIconsTableViewCell else {
-                    let cell =  UITableViewCell()
-                    cell.theme_backgroundColor = O3Theme.backgroundColorPicker
-                    return cell
-                }
-                cell.list = [O3Cache.neo(), O3Cache.gas()] + self.ontologyAssets + self.tokenAssets
-                return cell
-            }
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nativeasset") as? NativeAssetTableViewCell else {
                 let cell =  UITableViewCell()
@@ -381,24 +374,6 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         if indexPath.section == sections.tradingAccountSection.rawValue {
             
-            // when user collapsed the section we show this row
-            if sectionHeaderCollapsedState[sections.tradingAccountHeader.rawValue] == true {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "asset-icons-cell") as? AssetIconsTableViewCell else {
-                    let cell =  UITableViewCell()
-                    return cell
-                }
-                
-                if self.tradingAccount != nil {
-                    var list: [TransferableAsset] = []
-                    for v in self.tradingAccount!.switcheo.confirmed {
-                        list.append(v.toTransferableAsset())
-                    }
-                    cell.list = list
-                }
-                
-                return cell
-            }
-            
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
                 let cell =  UITableViewCell()
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -439,58 +414,60 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         if indexPath.section == sections.unclaimedGAS.rawValue
             || indexPath.section == sections.inbox.rawValue
-            || indexPath.section == sections.o3AccountHeader.rawValue
-            || indexPath.section == sections.tradingAccountHeader.rawValue {
+            || indexPath.section == sections.toolbar.rawValue {
             return false
         }
+        
         return true
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == sections.neoAssets.rawValue {
-            return 60.0
+        if section == sections.neoAssets.rawValue ||  section == sections.tradingAccountSection.rawValue{
+            return 108.0
         }
         if section == sections.ontologyAssets.rawValue || section == sections.nep5tokens.rawValue {
             return 0.0
-        }
-        if section == sections.o3AccountHeader.rawValue  || section == sections.tradingAccountHeader.rawValue {
-            return 44.0
-        }
-        if section == sections.tradingAccountSection.rawValue {
-            return 60.0
         }
         
         return 0.0
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == sections.o3AccountHeader.rawValue {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "sectionHeader") as! AccountSectionHeaderTableViewCell
-            cell.titleLabel?.text = "O3 Account"
-            cell.sectionIndex = section
-            return cell.contentView
-        }
-        
-        if section == sections.tradingAccountHeader.rawValue {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "sectionHeader") as! AccountSectionHeaderTableViewCell
-            cell.titleLabel?.text = "Trading Account"
-            cell.sectionIndex = section
-            return cell.contentView
-        }
         
         if section == sections.neoAssets.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "o3-account-header") as! AccountHeaderTableViewCell
+            if let topbarView = cell.viewWithTag(9) as? UIView {
+                topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
+            }
             cell.totalAmountLabel?.text = accountValues[accounts.o3Account]
+            cell.list = [O3Cache.neo(), O3Cache.gas()] + self.ontologyAssets + self.tokenAssets
+            cell.sectionIndex = section
+            cell.toggleStateButton?.tag = section
             return cell.contentView
         }
         
         if section == sections.tradingAccountSection.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "trading-account-header") as! AccountHeaderTableViewCell
             
-            if let withdrawButton = cell.viewWithTag(9) as? UIButton {
-                withdrawButton.isEnabled = tradingAccount != nil && tradingAccount!.switcheo.confirmed.count > 0
+            if let topbarView = cell.viewWithTag(9) as? UIView {
+                topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
             }
             cell.totalAmountLabel?.text = accountValues[accounts.tradingAccount]
+            cell.sectionIndex = section
+            cell.toggleStateButton?.tag = section
+            if self.numberOfOpenOrders == 0 {
+                cell.moreButton?.badgeValue = ""
+            } else {
+                cell.moreButton?.badgeValue = String(format:"%d", self.numberOfOpenOrders)
+            }
+            
+            if self.tradingAccount != nil {
+                var list: [TransferableAsset] = []
+                for v in self.tradingAccount!.switcheo.confirmed {
+                    list.append(v.toTransferableAsset())
+                }
+                cell.list = list
+            }
             return cell.contentView
         }
         return nil
@@ -505,10 +482,14 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
         alert.addAction(buyButton)
         
-        let sellButton = UIAlertAction(title: "Sell", style: .default) { _ in
-            self.openCreateOrder(action: CreateOrderAction.Sell, asset: asset)
+        //we can't actually sell NEO but rather use NEO to buy other asset
+        if asset.symbol != "NEO" {
+            let sellButton = UIAlertAction(title: "Sell", style: .default) { _ in
+                self.openCreateOrder(action: CreateOrderAction.Sell, asset: asset)
+            }
+            alert.addAction(sellButton)
         }
-        alert.addAction(sellButton)
+        
         
         let withdrawButton = UIAlertAction(title: "Withdraw", style: .default) { _ in
             self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Withdraw, asset: asset)
@@ -527,7 +508,8 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == sections.unclaimedGAS.rawValue
-            || indexPath.section == sections.inbox.rawValue {
+            || indexPath.section == sections.inbox.rawValue
+            || indexPath.section == sections.toolbar.rawValue {
             return
         }
         
@@ -574,6 +556,20 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         present(modal, animated: true, completion: nil)
     }
     
+    @IBAction func didTapScan(_ sender: Any) {
+        guard let modal = UIStoryboard(name: "QR", bundle: nil).instantiateInitialViewController() as? QRScannerController else {
+            fatalError("Presenting improper modal controller")
+        }
+        modal.delegate = self
+        let nav = WalletHomeNavigationController(rootViewController: modal)
+        nav.navigationBar.prefersLargeTitles = false
+        nav.setNavigationBarHidden(true, animated: false)
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        self.present(nav, animated: true, completion: nil)
+    }
+    
     func sendTapped(qrData: String? = nil) {
         DispatchQueue.main.async {
             guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {
@@ -610,14 +606,13 @@ extension AccountAssetTableViewController {
     
     func openCreateOrder(action: CreateOrderAction, asset: TradableAsset) {
         let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "CreateOrderTableViewControllerNav") as! UINavigationController
-        //        let transitionDelegate = DeckTransitioningDelegate()
-        //        nav.transitioningDelegate = transitionDelegate
-        //        nav.modalPresentationStyle = .custom
         if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
             vc.viewModel = CreateOrderViewModel()
             vc.viewModel.selectedAction = action
             vc.viewModel.wantAsset = asset
-            vc.viewModel.offerAsset = self.tradingAccount?.switcheo.basePairs.first
+            vc.viewModel.offerAsset = self.tradingAccount?.switcheo.basePairs.filter({ t -> Bool in
+                return t.symbol != asset.symbol
+            }).first
             vc.viewModel.tradingAccount = self.tradingAccount
         }
         self.present(nav, animated: true, completion: nil)
@@ -646,9 +641,38 @@ extension AccountAssetTableViewController {
         openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Deposit, asset: nil)
     }
     
-    @IBAction func didTapWithdraw(_ sender: Any) {
-        openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Withdraw, asset: nil)
+    @IBAction func didTapMoreTradingAccount(_ sender: Any) {
+        
+        let alert = UIAlertController(title: "Trading account", message: nil, preferredStyle: .actionSheet)
+        
+        let depositButton = UIAlertAction(title: "Deposit", style: .default) { _ in
+            self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Deposit, asset: nil)
+        }
+        alert.addAction(depositButton)
+        
+        let withdrawButton = UIAlertAction(title: "Withdraw", style: .default) { _ in
+            self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Withdraw, asset: nil)
+        }
+        alert.addAction(withdrawButton)
+        
+        var orderTitle = String(format: "Orders")
+        if self.numberOfOpenOrders > 0 {
+            orderTitle = String(format: "Orders (%d)", numberOfOpenOrders)
+        }
+        
+        let orders = UIAlertAction(title: orderTitle, style: .default) { _ in
+            self.viewOpenOrders()
+        }
+        alert.addAction(orders)
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        alert.addAction(cancel)
+        alert.popoverPresentationController?.sourceView = self.tableView
+        present(alert, animated: true, completion: nil)
     }
+    
 }
 
 extension AccountAssetTableViewController: WithdrawDepositTableViewControllerDelegate {
@@ -664,27 +688,76 @@ extension AccountAssetTableViewController: WithdrawDepositTableViewControllerDel
 extension AccountAssetTableViewController {
     
     @IBAction func sectionHeaderRightButtonTapped(_ sender: UIButton) {
-        if self.tradingAccount == nil {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
+                sender.transform = sender.isSelected ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat(-0.999*Double.pi))
+            }) { completed in
+                
+            }
+            sender.isSelected = !sender.isSelected
+            if sender.tag == sections.neoAssets.rawValue {
+                self.sectionHeaderCollapsedState[sections.neoAssets.rawValue] = !self.sectionHeaderCollapsedState[sections.neoAssets.rawValue]!
+                self.tableView.reloadData()
+            } else if sender.tag == sections.tradingAccountSection.rawValue {
+                self.sectionHeaderCollapsedState[sections.tradingAccountSection.rawValue] = !self.sectionHeaderCollapsedState[sections.tradingAccountSection.rawValue]!
+                self.tableView.reloadData()
+            }
+        }
+    }
+}
+
+extension AccountAssetTableViewController {
+    func loadOpenOrders(completion: @escaping(Int)->Void) {
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open) { result in
+            switch result{
+            case .failure(let error):
+                completion(0)
+            case .success(let response):
+                completion(response.switcheo.count)
+            }
+        }
+    }
+}
+
+
+extension AccountAssetTableViewController: QRScanDelegate {
+    
+    func postToChannel(channel: String) {
+        let headers = ["content-type": "application/json"]
+        let parameters = ["address": Authenticated.account!.address,
+                          "device": "iOS" ] as [String: Any]
+        
+        let postData = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+        
+        let request = NSMutableURLRequest(url: NSURL(string: "https://platform.o3.network/api/v1/channel/" + channel)! as URL,
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
+        request.httpMethod = "POST"
+        request.allHTTPHeaderFields = headers
+        request.httpBody = postData
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (_, response, error) -> Void in
+            if error != nil {
+                return
+            } else {
+                _ = response as? HTTPURLResponse
+            }
+        })
+        
+        dataTask.resume()
+    }
+    
+    func qrScanned(data: String) {
+        //if there is more type of string we have to check it here
+        if data.hasPrefix("o3://channel") {
+            //post to utility communication channel
+            let channel = URL(string: data)?.lastPathComponent
+            postToChannel(channel: channel!)
             return
         }
-        
-        if sender.tag == sections.tradingAccountHeader.rawValue && self.tradingAccount!.switcheo.confirmed.count == 0{
-            return
-        }
-        
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
-            sender.transform = sender.isSelected ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat(-0.999*Double.pi))
-        }) { completed in
-            
-        }
-        sender.isSelected = !sender.isSelected
-        
-        if sender.tag == sections.o3AccountHeader.rawValue {
-            sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue] = !sectionHeaderCollapsedState[sections.o3AccountHeader.rawValue]!
-            self.tableView.reloadSections([sections.neoAssets.rawValue, sections.ontologyAssets.rawValue, sections.nep5tokens.rawValue], with: .none)
-        } else if sender.tag == sections.tradingAccountHeader.rawValue {
-            sectionHeaderCollapsedState[sections.tradingAccountHeader.rawValue] = !sectionHeaderCollapsedState[sections.tradingAccountHeader.rawValue]!
-            self.tableView.reloadSections([sections.tradingAccountSection.rawValue], with: .none)
+        DispatchQueue.main.async {
+            self.sendTapped(qrData: data)
         }
     }
     

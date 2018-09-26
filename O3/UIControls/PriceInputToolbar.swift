@@ -11,12 +11,8 @@ import UIKit
 protocol PriceInputToolbarDelegate {
     func stepper(value: Double, percent: Double)
     func originalPriceSelected(value: Double)
-}
-
-struct PriceInputToolbarViewModel {
-    var originalValue: Double?
-    var value: Double?
-    var step: Double! = 1
+    func topPriceSelected(value: Double)
+    func doneTapped()
 }
 
 class PriceInputToolbar:  UIView {
@@ -52,7 +48,15 @@ class PriceInputToolbar:  UIView {
     
     private var originalPriceSet: Bool = false
     var step: Double? = 1 // default step for the stepper
+    
     var currentPercent: Double! = 0 //..., -2, -1, 0, 1, 2, 3,...
+    
+    var topOrderPrice: Double? {
+        didSet{
+            topPriceButton.setTitle(topOrderPrice?.formattedStringWithoutSeparator(8, removeTrailing: true), for: .normal)
+        }
+    }
+    
     var value: Double? {
         didSet {
             if originalPriceSet == true {
@@ -64,6 +68,9 @@ class PriceInputToolbar:  UIView {
     }
     var delegate: PriceInputToolbarDelegate?
     
+    deinit {
+        
+    }
     
     //MARK: -
     @IBAction func plusTapped(_ sender: Any) {
@@ -83,7 +90,12 @@ class PriceInputToolbar:  UIView {
     }
     
     @IBAction func topPriceTapped(_ sender: Any) {
-        
+        currentPercent = 0
+        delegate?.topPriceSelected(value: topOrderPrice!)
+    }
+    
+    @IBAction func doneTapped(_ sender: Any) {
+        delegate?.doneTapped()
     }
 }
 
@@ -96,7 +108,7 @@ private extension PriceInputToolbar {
         view.frame = bounds
         // Adding custom subview on top of our view
         addSubview(view)
-        
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
         view.translatesAutoresizingMaskIntoConstraints = false
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[childView]|",
                                                       options: [],

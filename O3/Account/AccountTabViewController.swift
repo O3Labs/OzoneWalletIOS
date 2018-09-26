@@ -123,8 +123,6 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         dismiss(animated: true, completion: nil)
     }
     
-    
-
     func setLocalizedStrings() {
         self.bar.items = [Item(title: "Accounts"), //TODO change this to localized string
                           Item(title: AccountStrings.transactions),
@@ -172,6 +170,5 @@ extension AccountTabViewController: QRScanDelegate {
             self.sendTapped(qrData: data)
         }
     }
-    
     
 }

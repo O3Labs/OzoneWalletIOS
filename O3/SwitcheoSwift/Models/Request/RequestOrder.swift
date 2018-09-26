@@ -49,6 +49,9 @@ public struct RequestOrder: Codable {
         }else{
             dict.removeValue(forKey: "otc_address")
         }
+        #if DEBUG
+        print(dict.debugDescription)
+        #endif
         return dict
     }
 }

@@ -116,6 +116,7 @@ struct Fill: Codable {
 enum FillStatus: String, Codable {
     case cancelled = "cancelled"
     case confirming = "confirming"
+    case pending = "pending"
     case success = "success"
 }
 
@@ -149,6 +150,7 @@ enum Side: String, Codable {
 }
 
 enum SwitcheoStatus: String, Codable {
+    case pending = "pending"
     case processed = "processed"
 }
 
@@ -156,4 +158,5 @@ enum SwitcheoOrderStatus: String, Codable {
     case open = "open"
     case cancelled = "cancelled"
     case completed = "completed"
+    case empty = ""
 }

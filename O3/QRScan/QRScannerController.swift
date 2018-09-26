@@ -77,8 +77,10 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             if let dataString = metadataObj.stringValue {
                 if noScanYet {
                     noScanYet = false
-                    delegate?.qrScanned(data: dataString)
-                    DispatchQueue.main.async { self.dismiss(animated: true) }
+                    DispatchQueue.main.async {
+                        self.delegate?.qrScanned(data: dataString)
+                        self.dismiss(animated: true)
+                    }
                 }
             }
         }

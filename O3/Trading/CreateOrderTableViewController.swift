@@ -36,8 +36,9 @@ protocol CreateOrderDelegate {
     func didLoadOpenOrders(numberOfOpenOrder: Int)
     
     func onPairPriceChanged(pairPrice: AssetPrice)
+    
+    func didLoadOffers(offers: [Offer])
 }
-
 
 extension TradableAsset {
     var imageURL: URL {
@@ -51,11 +52,13 @@ class CreateOrderViewModel {
     var selectedAction: CreateOrderAction!
     var pairPrice: AssetPrice! {
         didSet {
-             self.delegate?.onStateChange(readyToSubmit: self.readyToSubmit)
+            self.delegate?.onStateChange(readyToSubmit: self.readyToSubmit)
         }
     }
     
     var firstFetchedPairPrice: AssetPrice!
+    var topOrderPrice: Double!
+    
     var fiatPairPrice: AssetPrice! // e.g. neo|gas/usd
     var offerAsset: TradableAsset!
     var wantAsset: TradableAsset!
@@ -69,6 +72,20 @@ class CreateOrderViewModel {
         if self.offerAmount == nil {
             return false
         }
+        
+        if self.selectedAction == .Buy {
+            if offerAsset.amountInDouble().isLess(than: self.offerAmount!)  {
+                return false
+            }
+        }
+        
+        if self.selectedAction == .Sell {
+            if wantAsset.amountInDouble().isLess(than: self.wantAmount!)  {
+                return false
+            }
+        }
+        
+        
         return self.wantAmount! > 0 && self.offerAmount! > 0 //will have to check minimum order of switcheo here
     }
     
@@ -184,6 +201,25 @@ class CreateOrderViewModel {
         }
     }
     
+    func loadOffers() {
+        let pair = String(format:"%@_%@", wantAsset.symbol.uppercased(), offerAsset.symbol.uppercased())
+        let blockchain = "neo"
+        let sw = Switcheo(net: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test)
+        let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
+        let request = RequestOffer(blockchain: blockchain, pair: pair, contractHash: switcheoHash.rawValue)
+        sw?.offers(request: request!, completion: { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let response):
+                #if DEBUG
+                print(response)
+                #endif
+                self.delegate?.didLoadOffers(offers: response)
+            }
+        })
+    }
+    
     func submitOrder() {
         self.delegate?.onBeginSubmitOrder()
         let blockchain = "neo"
@@ -225,7 +261,7 @@ class CreateOrderViewModel {
         
         if self.wantAmount?.isNaN == false && self.wantAmount != nil && !self.wantAmount!.isLessThanOrEqualTo(0.0) {
             let newOfferAmount = (self.wantAmount! * price)
-             self.offerAmount = newOfferAmount
+            self.offerAmount = newOfferAmount
         }
         self.delegate?.onPairPriceChanged(pairPrice: pairPrice)
     }
@@ -235,7 +271,7 @@ class CreateOrderViewModel {
             
             return String(format: "Updated %@", Date(timeIntervalSince1970: TimeInterval(pairPrice.lastUpdate)).timeAgo(numericDates: true))
         }
-        let change = 100.0 -  floor((firstFetchedPairPrice.price * 100.0) / pairPrice.price)
+        let change = 100.0 - floor((firstFetchedPairPrice.price * 100.0) / pairPrice.price)
         return String(format: "%@%@ %@ median", change.string(2, removeTrailing: true), "%", change < 0 ? "below" : "above")
     }
     
@@ -271,10 +307,16 @@ class CreateOrderTableViewController: UITableViewController {
     @IBOutlet var offerAssetSelector: UIImageView!
     @IBOutlet var wantAssetSelector: UIImageView!
     
+    @IBOutlet var selectWantAssetButton: UIButton!
+    @IBOutlet var selectOfferAssetButton: UIButton!
     @IBOutlet var reviewAndSubmitSubmitButton: UIButton!
+    
+    @IBOutlet var labelList: [UILabel]?
+    @IBOutlet var textFieldList: [UITextField]?
     
     var inputToolbar = AssetInputToolbar()
     var priceInputToolbar = PriceInputToolbar()
+    var priceInputToggle = PriceInputToggleToolbar()
     
     func setupNavbar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismiss(_: )))
@@ -282,6 +324,21 @@ class CreateOrderTableViewController: UITableViewController {
         
         //setup navbar title here
         self.title = viewModel.title
+    }
+    
+    func setupTheme() {
+        self.view.theme_backgroundColor = O3Theme.backgroundLightgrey
+        self.tableView.theme_backgroundColor = O3Theme.backgroundLightgrey
+        self.tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
+        
+        for t in labelList! {
+            t.theme_textColor = O3Theme.titleColorPicker
+        }
+        
+        for t in textFieldList! {
+            t.theme_textColor = O3Theme.titleColorPicker
+            t.theme_keyboardAppearance = O3Theme.keyboardPicker
+        }
     }
     
     func setupInputToolbar() {
@@ -297,7 +354,9 @@ class CreateOrderTableViewController: UITableViewController {
     
     func setupPriceInputToolbar() {
         priceInputToolbar.delegate = self
+        priceInputToggle.delegate = self
         targetPriceTextField.inputView = priceInputToolbar.loadNib()
+        targetPriceTextField.inputAccessoryView = priceInputToggle.loadNib()
     }
     
     func setupTextFieldDelegate() {
@@ -363,6 +422,8 @@ class CreateOrderTableViewController: UITableViewController {
         }
         self.viewModel.setPairPrice(price: number!.doubleValue)
         priceInputToolbar.value = viewModel.pairPrice.price
+        self.targetPriceTitle.text = self.viewModel.priceTitle
+        self.targetPriceSubtitle.text = self.viewModel.priceChangeDescription
     }
     
     @objc func priceBeginEditing(_ sender: UITextField) {
@@ -372,6 +433,7 @@ class CreateOrderTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupTheme()
         setupNavbar()
         setupInputToolbar()
         setupPriceInputToolbar()
@@ -381,6 +443,12 @@ class CreateOrderTableViewController: UITableViewController {
         viewModel.loadPrice(){}
         viewModel.loadOpenOrders()
         viewModel.setupView()
+        viewModel.loadOffers()
+        
+        if viewModel.selectedAction == CreateOrderAction.Sell {
+            selectWantAssetButton.isEnabled = false
+            wantAssetSelector.isHidden = true
+        }
     }
     
     deinit {
@@ -388,22 +456,7 @@ class CreateOrderTableViewController: UITableViewController {
     }
     
     func viewOpenOrders() {
-        //        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTableViewControllerNav") as? UINavigationController else {
-        //            return
-        //        }
-        //        guard let vc = nav.viewControllers.first as? OrdersTableViewController else {
-        //            return
-        //        }
-        //        vc.orders = viewModel.openOrders?.switcheo
-        //        let transitionDelegate = DeckTransitioningDelegate()
-        //        nav.transitioningDelegate = transitionDelegate
-        //        nav.modalPresentationStyle = .custom
-        //        self.present(nav, animated: true, completion: nil)
-        //
         guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTabsViewControllerNav") as? UINavigationController else {
-            return
-        }
-        guard let vc = nav.viewControllers.first as? OrdersTabsViewController else {
             return
         }
         let transitionDelegate = DeckTransitioningDelegate()
@@ -433,6 +486,7 @@ class CreateOrderTableViewController: UITableViewController {
         modal.assets = list
         modal.delegate = self
         modal.data = target
+        modal.excludeSymbols = [self.viewModel.offerAsset.symbol.uppercased(), self.viewModel.wantAsset.symbol.uppercased()]
         self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
         nav.modalPresentationStyle = .custom
         nav.transitioningDelegate = self.halfModalTransitioningDelegate
@@ -456,10 +510,25 @@ class CreateOrderTableViewController: UITableViewController {
     
     @IBAction func selectOfferAssetTapped(_ sender: Any) {
         //reset
+        targetPriceTextField.resignFirstResponder()
         viewModel.wantAmount = 0
         viewModel.offerAmount = 0
         
         if viewModel.selectedAction == CreateOrderAction.Sell {
+            
+            //if wantAsset is one of the base pairs then we offers everything
+            
+            let oneOftheBasePairs = viewModel.tradingAccount!.switcheo.basePairs.contains { a -> Bool in
+                return a.symbol.uppercased() == viewModel.wantAsset.symbol.uppercased()
+            }
+            if oneOftheBasePairs == true {
+                viewModel.tradingAccount!.switcheo.loadSupportedTokens { list in
+                    DispatchQueue.main.async {
+                        self.showAssetSelector(list: list, target: self.viewModel.offerAsset)
+                    }
+                }
+                return
+            }
             // when sell and user tapped the right side, we then offer base pairs to sell WANT asset for
             showAssetSelector(list: viewModel.tradingAccount!.switcheo.basePairs, target: viewModel.offerAsset)
         } else if viewModel.selectedAction == CreateOrderAction.Buy {
@@ -474,6 +543,7 @@ class CreateOrderTableViewController: UITableViewController {
     
     @IBAction func selectWantAssetTapped(_ sender: Any) {
         //reset
+        targetPriceTextField.resignFirstResponder()
         viewModel.wantAmount = 0
         viewModel.offerAmount = 0
         
@@ -489,13 +559,46 @@ class CreateOrderTableViewController: UITableViewController {
 
 extension CreateOrderTableViewController: CreateOrderDelegate {
     
+    func didLoadOffers(offers: [Offer]) {
+        DispatchQueue.main.async {
+            //if want asset is NEO/GAS meaning it's a sell order
+            //want_amount / offer_amount = price per NEO/GAS
+            
+            //if want asset is SWTH meaning it's a buy order
+            // offer_amount / want_amount = price per NEO/GAS
+            if self.viewModel.selectedAction == CreateOrderAction.Buy {
+                let sellOrders = offers.filter { o -> Bool in
+                    return o.offerAsset.uppercased() == self.viewModel.wantAsset.symbol.uppercased()
+                }
+                if sellOrders.count == 0 {
+                    return
+                }
+                let top = sellOrders.first!
+                let price = Double(Double(top.wantAmount) / Double(top.offerAmount))
+                self.viewModel.topOrderPrice = price
+                self.priceInputToolbar.topOrderPrice = price
+            } else {
+                let buyOrders = offers.filter { o -> Bool in
+                    return o.offerAsset.uppercased() == self.viewModel.wantAsset.symbol.uppercased()
+                }
+                if buyOrders.count == 0 {
+                    return
+                }
+                let top = buyOrders.first!
+                let price = Double(Double(top.wantAmount) / Double(top.offerAmount))
+                self.viewModel.topOrderPrice = price
+                self.priceInputToolbar.topOrderPrice = price
+            }
+        }
+    }
+    
+    
     func onPairPriceChanged(pairPrice: AssetPrice) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
             UIView.animate(withDuration: 0.2, animations: {
                 self.targetPriceTitle.text = self.viewModel.priceTitle
                 self.targetPriceSubtitle.text = self.viewModel.priceChangeDescription
             })
-            
             if pairPrice.price == 0 {
                 self.offerAmountTextField.text = ""
                 self.offerTotalFiatPriceLabel.text = ""
@@ -536,10 +639,10 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
             let title = "Order created!"
             let message = "You can check the progress of the order in my orders screen"
             OzoneAlert.confirmDialog(title, message: message, cancelTitle: "Close", confirmTitle: "View my orders", didCancel: {
-                NotificationCenter.default.post(name: NSNotification.Name("didSubmitOrder"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("needsReloadTradingBalances"), object: nil)
                 self.dismiss(animated: true, completion: {})
             }, didConfirm: {
-                //signal to load trading account balances
+                NotificationCenter.default.post(name: NSNotification.Name("needsReloadTradingBalances"), object: nil)
                 self.dismiss(animated: true, completion: {
                     NotificationCenter.default.post(name: NSNotification.Name("viewTradingOrders"), object: nil)
                 })
@@ -607,6 +710,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
     
     func onWantAssetChange(asset: TradableAsset, action: CreateOrderAction) {
         DispatchQueue.main.async {
+            self.title = self.viewModel.title
             if action == CreateOrderAction.Sell {
                 self.leftAssetImageView.kf.setImage(with: asset.imageURL)
                 self.inputToolbar.asset = asset.toTransferableAsset()
@@ -675,11 +779,35 @@ extension CreateOrderTableViewController: TradableAssetSelectorTableViewControll
 }
 
 extension CreateOrderTableViewController: PriceInputToolbarDelegate {
+    func topPriceSelected(value: Double) {
+        self.viewModel.setPairPrice(price: value)
+    }
+    
     func stepper(value: Double, percent: Double) {
         self.viewModel.setPairPrice(price: value)
     }
     
     func originalPriceSelected(value: Double) {
         self.viewModel.setPairPrice(price: value)
+    }
+    func doneTapped() {
+        self.targetPriceTextField.resignFirstResponder()
+    }
+}
+extension CreateOrderTableViewController: PriceInputToggleToolbarDelegate {
+    func toggleInput(manually: Bool) {
+        DispatchQueue.main.async {
+            if manually == true {
+                self.targetPriceTextField.inputView = nil
+                self.targetPriceTextField.reloadInputViews()
+            } else {
+                self.priceInputToolbar = PriceInputToolbar()
+                self.priceInputToolbar.delegate = self
+                self.targetPriceTextField.inputView = self.priceInputToolbar.loadNib()
+                self.priceInputToolbar.value = self.viewModel.firstFetchedPairPrice.price
+                self.priceInputToolbar.topOrderPrice = self.viewModel.topOrderPrice
+                self.targetPriceTextField.reloadInputViews()
+            }
+        }
     }
 }

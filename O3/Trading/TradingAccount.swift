@@ -92,6 +92,9 @@ struct TradableAsset: Codable {
 
 extension TradableAsset {
     func amountInDouble() -> Double{
+        if self.value == nil || self.value?.count == 0 {
+            return 0.0
+        }
         let valueDecimal = NSDecimalNumber(string: self.value)
         let dividedBalance = (valueDecimal.doubleValue / pow(10, Double(self.decimals)))
         let value = Double(truncating: (dividedBalance as NSNumber?)!)

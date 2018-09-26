@@ -21,6 +21,15 @@ class OrdersTableViewController: UITableViewController {
                 print(error)
             case .success(let response):
                 DispatchQueue.main.async {
+                    
+                    if status == SwitcheoOrderStatus.empty { //this is actually all {
+                        //so when we show all, meaning any order that is filled even if it's cancelled
+                        self.orders = response.switcheo.filter({ o -> Bool in
+                            return o.fills.count > 0
+                        })
+                        self.tableView.reloadData()
+                        return
+                    }
                     self.orders = response.switcheo
                     self.tableView.reloadData()
                 }
@@ -28,8 +37,24 @@ class OrdersTableViewController: UITableViewController {
         }
     }
     
+    func setupTheme() {
+        self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
+        
+//        for t in labelList! {
+//            t.theme_textColor = O3Theme.titleColorPicker
+//        }
+//        
+//        for t in textFieldList! {
+//            t.theme_textColor = O3Theme.titleColorPicker
+//            t.theme_keyboardAppearance = O3Theme.keyboardPicker
+//        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTheme()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismiss(_: )))
         
         //if order status is set we then load the orders from a server
@@ -53,34 +78,43 @@ class OrdersTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140.0
+        let order = orders![indexPath.row]
+        return  order.orderStatus == .open ? 140.0 : 120.0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? OrderTableViewCell else {
+        let order = orders![indexPath.row]
+        let cellIdentifier = order.orderStatus == .open ? "cell-open" : "cell"
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? OrderTableViewCell else {
             return UITableViewCell()
         }
-        let order = orders![indexPath.row]
-        let orderItem: Fill?
+        
         let formatter = NumberFormatter()
-        var filled = order.fills.count > 0
+        
+        let filled = order.fills.count > 0
+        var wantAmount = formatter.number(from: order.wantAmount)?.doubleValue
+        var offerAmount = (formatter.number(from: order.offerAmount)?.doubleValue)!
+        let originalWantAmount = order.side == .sell ? (formatter.number(from: order.offerAmount)?.doubleValue)! : (formatter.number(from: order.wantAmount)?.doubleValue)!
+        var priceDouble = order.side == .sell ? Double(wantAmount! / offerAmount) : Double(offerAmount / wantAmount!)
         
         if filled {
-            orderItem = order.fills.first
-        } else {
-            orderItem = order.makes.first
+            
+            let sumPriceInFill = order.fills.reduce(0.0, {(result:Double, item:Fill) -> Double in
+                return result + (formatter.number(from: item.price)?.doubleValue)!
+            })
+            
+            wantAmount = order.fills.reduce(0.0, {(result:Double, item:Fill) -> Double in
+                return result + (formatter.number(from: item.wantAmount)?.doubleValue)!
+            })
+            
+            offerAmount = order.fills.reduce(0.0, {(result:Double, item:Fill) -> Double in
+                return result + (formatter.number(from: item.fillAmount!)?.doubleValue)!
+            })
+            
+            priceDouble = sumPriceInFill / Double(order.fills.count)
         }
         
-        let wantAmount = formatter.number(from: orderItem!.wantAmount)?.doubleValue
-        var offerAmount = Double(0)
-        if filled {
-            offerAmount = (formatter.number(from: orderItem!.fillAmount!)?.doubleValue)!
-        } else {
-            offerAmount = (formatter.number(from: orderItem!.offerAmount!)?.doubleValue)!
-        }
-        
-        let priceDouble = formatter.number(from: orderItem!.price)?.doubleValue
-        let v = OrderViewModel(orderID:order.id, orderStatus:order.orderStatus, wantAsset: order.wantAsset, offerAsset: order.offerAsset, price: priceDouble, wantAmount: wantAmount, offerAmount: offerAmount, action: OrderViewModel.Action(rawValue: order.side.rawValue), datetime: order.createdAt.toDate()!)
+        let v = OrderViewModel(orderID:order.id, orderStatus:order.orderStatus, wantAsset: order.wantAsset, offerAsset: order.offerAsset, price: priceDouble, wantAmount: wantAmount, offerAmount: offerAmount, action: OrderViewModel.Action(rawValue: order.side.rawValue), datetime: order.createdAt.toDate()!,originalWantAmount: originalWantAmount, filled: filled)
         cell.configure(viewModel: v)
         cell.delegate = self
         return cell
@@ -104,7 +138,10 @@ extension OrdersTableViewController: OrderViewModelDelegate {
                     case .failure(let e):
                         print(e)
                     case .success(let response):
+                        #if DEBUG
                         print(response)
+                        #endif
+                         NotificationCenter.default.post(name: NSNotification.Name("needsReloadTradingBalances"), object: nil)
                         let removeIndex = self.orders?.index(where: { order -> Bool in
                             return order.id == v.orderID
                         })
