@@ -38,7 +38,7 @@ class WithdrawDepositTableViewController: UITableViewController {
         }
     }
     
-    @IBOutlet var amountTextField: UITextField!
+    @IBOutlet var amountTextField: FixedDecimalTextField!
     @IBOutlet var assetIconImageView: UIImageView!
     @IBOutlet var assetSymbolLabel: UILabel!
     @IBOutlet var headerLabel: UILabel!
@@ -92,7 +92,9 @@ class WithdrawDepositTableViewController: UITableViewController {
             })
             
             //default to first one in the list
-            selectedAsset = depositableAssets?.first
+            if depositableAssets!.count > 0 {
+                selectedAsset = depositableAssets?.first
+            }
         }else if selectedAsset == nil && selectedAction == Action.Withdraw && withdrawableAsset != nil && (withdrawableAsset?.count)! > 0 {
             selectedAsset = withdrawableAsset?.first
         }
@@ -107,7 +109,9 @@ class WithdrawDepositTableViewController: UITableViewController {
     }
     
     func setupSelectedAsset(asset: TradableAsset) {
-        
+        //reset
+        amountTextField.text = ""
+        self.checkEnableButton()
         assetSymbolLabel.text = asset.symbol
         let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", asset.symbol.uppercased())
         assetIconImageView.kf.setImage(with: URL(string: imageURL))
@@ -119,6 +123,12 @@ class WithdrawDepositTableViewController: UITableViewController {
         inputToolbar.asset = TransferableAsset(id: asset.id, name: asset.name, symbol: asset.symbol, decimals: asset.decimals, value: asset.amountInDouble(), assetType: AccountState.TransferableAsset.AssetType.nep5Token)
         
         amountTextField.becomeFirstResponder()
+        
+        if asset.symbol.uppercased() == TransferableAsset.NEO().symbol.uppercased() {
+            amountTextField.decimals = 0
+        } else {
+            amountTextField.decimals = asset.decimals
+        }
     }
     
     @objc func amountTextChanged(_ sender: Any) {
@@ -129,7 +139,12 @@ class WithdrawDepositTableViewController: UITableViewController {
         super.viewDidLoad()
         navigationController?.hideHairline()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismiss(_: )))
+        
         setupView()
+        if selectedAsset == nil {
+            selectedAsset = TransferableAsset.NEO().toTradableAsset()
+            setupSelectedAsset(asset: selectedAsset!)
+        }
     }
     
     @objc func dismiss(_ sender: Any) {

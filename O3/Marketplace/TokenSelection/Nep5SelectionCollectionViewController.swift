@@ -44,19 +44,6 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         }
     }
     
-    func loadTradableAssets(completion: @escaping ([TradableAsset]) -> Void) {
-        O3APIClient.shared.loadSupportedTokenSwitcheo { result in
-            switch result {
-            case .failure(let error):
-                print(error)
-            case .success(let response):
-                completion(response)
-            }
-        }
-    }
-    
-    var tradableAsset: [TradableAsset]?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         addThemeObserver()
@@ -68,9 +55,6 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         searchBar.delegate = self
         self.hideKeyboardWhenTappedAround()
         loadAssets()
-        loadTradableAssets { list in
-            self.tradableAsset = list
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -88,6 +72,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         }
         return CGSize(width: UIScreen.main.bounds.size.width, height: 150.0)
     }
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath) as? UICollectionReusableView else {
             fatalError("Could not find proper header")
@@ -183,26 +168,14 @@ extension Nep5SelectionCollectionViewController {
     func openTokenDetail(asset: Asset) {
         
         let urlString = String(format: "%@?address=%@", asset.url!, Authenticated.account!.address)
-//        let top = UIApplication.topViewController()
-//        if  top == nil {
-//            return
-//        }
         
         let nav = UIStoryboard(name: "Browser", bundle: nil).instantiateInitialViewController() as? UINavigationController
         if let vc = nav!.viewControllers.first as? DAppBrowserViewController {
             vc.url = URL(string: urlString)
             vc.showMoreButton = false
-            let tradableAsset = self.tradableAsset?.first(where: { t -> Bool in
-                return t.symbol.uppercased() == asset.symbol.uppercased()
-            })
-            
-            if tradableAsset != nil {
-                vc.tradableAsset = tradableAsset!
-            }
-            
-           
-            nav!.transitioningDelegate = transitionDelegate
-            nav!.modalPresentationStyle = .custom
+            vc.selectedAssetSymbol = asset.symbol
+//            nav!.transitioningDelegate = transitionDelegate
+//            nav!.modalPresentationStyle = .custom
             present(nav!, animated: true, completion: nil)
         }
     }

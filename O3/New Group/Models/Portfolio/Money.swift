@@ -27,7 +27,7 @@ class Fiat: Money {
 
 extension Money {
     func formattedString() -> String {
-        if amount.isZero || amount.isNaN {
+        if amount.isNaN {
             return ""
         }
         //more than one billion

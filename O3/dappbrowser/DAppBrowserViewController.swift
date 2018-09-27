@@ -11,6 +11,7 @@ import WebKit
 import Neoutils
 import KeychainAccess
 import Lottie
+import DeckTransition
 
 extension Bundle {
     var releaseVersionNumber: String? {
@@ -25,6 +26,7 @@ class DAppBrowserViewController: UIViewController {
     
     @IBOutlet var containerView: UIView?
     @IBOutlet var toolbar: UIView?
+    @IBOutlet var openOrderButton: BadgeUIButton?
     
     var webView: WKWebView?
     var callbackMethodName: String = "callback"
@@ -35,7 +37,7 @@ class DAppBrowserViewController: UIViewController {
     var sessionID: String?
     var currentURL: URL?
     var url: URL?
-    var tradableAsset: TradableAsset?
+    var selectedAssetSymbol: String?
     
     var showMoreButton: Bool? {
         didSet {
@@ -44,9 +46,37 @@ class DAppBrowserViewController: UIViewController {
             }
         }
     }
-
-    var tradingAccount: TradingAccount?
-    @objc func loadTradingAccountBalances() {
+    
+    private  func loadTradableAssets(completion: @escaping ([TradableAsset]) -> Void) {
+        O3APIClient.shared.loadSupportedTokenSwitcheo { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let response):
+                completion(response)
+            }
+        }
+    }
+    
+    @objc private func loadOpenOrders() {
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open) { result in
+            switch result{
+            case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.openOrderButton?.isHidden =  response.switcheo.count == 0
+                    self.openOrderButton?.badgeValue = String(format: "%d",response.switcheo.count)
+                }
+            }
+        }
+    }
+    
+    private var tradableAsset: TradableAsset?
+    private var tradingAccount: TradingAccount?
+    @objc private func loadTradingAccountBalances() {
         O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.account!.address) { result in
             switch result {
             case .failure(let error):
@@ -58,6 +88,24 @@ class DAppBrowserViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @IBAction func viewOpenOrders(_ sender: Any) {
+        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTabsViewControllerNav") as? UINavigationController else {
+            return
+        }
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadOpenOrders), name: NSNotification.Name(rawValue: "needsReloadOpenOrders"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "needsReloadOpenOrders"), object: nil)
     }
     
     override func loadView() {
@@ -73,9 +121,23 @@ class DAppBrowserViewController: UIViewController {
         self.webView = WKWebView( frame: self.view.bounds, configuration: config)
         self.containerView?.addSubview(self.webView!)
         
-        if tradableAsset != nil {
-            self.toolbar?.isHidden = false
-            loadTradingAccountBalances()
+        if selectedAssetSymbol != nil {
+            addObservers()
+            loadTradableAssets { list in
+                let tradableAsset = list.first(where: { t -> Bool in
+                    return t.symbol.uppercased() == self.selectedAssetSymbol!.uppercased()
+                })
+                DispatchQueue.main.async {
+                    if tradableAsset != nil {
+                        self.tradableAsset = tradableAsset
+                        self.toolbar?.isHidden = false
+                        self.loadTradingAccountBalances()
+                        DispatchQueue.global(qos: .background).async {
+                            self.loadOpenOrders()
+                        }
+                    }
+                }
+            }
         }
     }
     

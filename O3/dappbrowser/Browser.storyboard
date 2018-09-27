@@ -44,12 +44,30 @@
                                             <action selector="tradeTapped:" destination="Zsz-Q1-EQd" eventType="touchUpInside" id="WYf-4X-yqn"/>
                                         </connections>
                                     </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EUP-qi-wEb" customClass="BadgeUIButton" customModule="O3" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="10" width="140" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="140" id="Tt3-o2-GeJ"/>
+                                            <constraint firstAttribute="height" constant="32" id="nko-md-N84"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                        <inset key="titleEdgeInsets" minX="24" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Open orders" image="receipt">
+                                            <color key="titleColor" name="lightThemePrimary"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="viewOpenOrders:" destination="Zsz-Q1-EQd" eventType="touchUpInside" id="oKF-yP-bVj"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="e0n-eW-Jfc" firstAttribute="centerY" secondItem="4qd-sa-YOv" secondAttribute="centerY" id="98V-6b-Em7"/>
+                                    <constraint firstItem="EUP-qi-wEb" firstAttribute="centerY" secondItem="4qd-sa-YOv" secondAttribute="centerY" id="Kg7-od-PyN"/>
                                     <constraint firstAttribute="height" constant="52" id="kXd-41-sQP"/>
                                     <constraint firstAttribute="trailing" secondItem="e0n-eW-Jfc" secondAttribute="trailing" constant="8" id="nBl-JY-jXk"/>
+                                    <constraint firstItem="EUP-qi-wEb" firstAttribute="leading" secondItem="4qd-sa-YOv" secondAttribute="leading" id="sQr-Gb-X8F"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -68,6 +86,7 @@
                     <navigationItem key="navigationItem" id="DD8-Px-70z"/>
                     <connections>
                         <outlet property="containerView" destination="Oge-23-l56" id="6T9-jG-nHE"/>
+                        <outlet property="openOrderButton" destination="EUP-qi-wEb" id="OVa-PW-N5j"/>
                         <outlet property="toolbar" destination="4qd-sa-YOv" id="HNp-Gk-7yk"/>
                     </connections>
                 </viewController>
@@ -95,6 +114,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="receipt" width="18" height="20"/>
+        <namedColor name="lightThemePrimary">
+            <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="lightThemePrimary">
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

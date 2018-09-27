@@ -95,7 +95,7 @@ public class Switcheo {
             
             guard let httpResponse = response as? HTTPURLResponse,
                 (200...299).contains(httpResponse.statusCode) else  {
-                    #if DEBUG
+//                    #if DEBUG
                     print(response as Any)
                     guard let errorUnwrapped = data,
                         let jsonError = (try? JSONSerialization.jsonObject(with: errorUnwrapped, options: [])) as? JSONDictionary else {
@@ -103,7 +103,7 @@ public class Switcheo {
                             return
                     }
                     print(endpointURL,jsonError,"________ERROR_________")
-                    #endif
+//                    #endif
                     completion(.failure(self.log(jsonError.toString())))
                     return
             }

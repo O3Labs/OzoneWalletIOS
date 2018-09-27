@@ -30,6 +30,7 @@ struct OrderViewModel {
     var datetime: Date!
     var originalWantAmount: Double!
     var filled: Bool! = false
+    var filledAmount: Double!
     
     func formattedDateTime() -> String {
         let dateFormatter = DateFormatter()
@@ -56,9 +57,11 @@ struct OrderViewModel {
         }
         
         if action == .Sell {
-            return (offerAmount / originalWantAmount)  * Double(100.0)
+            let amount = filledAmount > 0 ? filledAmount : offerAmount
+            return (amount! / originalWantAmount)  * Double(100.0)
         }
-        return (wantAmount / originalWantAmount)  * Double(100.0)
+        let amount = filledAmount > 0 ? filledAmount : offerAmount
+        return (amount! / originalWantAmount)  * Double(100.0)
     }
     
 }

@@ -81,7 +81,7 @@ class BadgeUIButton : UIButton {
         
         shapeLayer.insertSublayer(labelText, at: 0)
         
-        shapeLayer.frame = shapeLayer.frame.offsetBy(dx: self.frame.width * 0.5, dy: h*0.5)
+        shapeLayer.frame = shapeLayer.frame.offsetBy(dx: w / 2.0, dy: 0)
         
         self.layer.insertSublayer(shapeLayer, at: 999)
         self.layer.masksToBounds = false

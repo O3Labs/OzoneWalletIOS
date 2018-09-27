@@ -13,6 +13,7 @@ class AccountHeaderTableViewCell: UITableViewCell {
 
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var totalAmountLabel: UILabel?
+    @IBOutlet var subTitleLabel: UILabel?
     @IBOutlet var moreButton: BadgeUIButton?
     @IBOutlet var toggleStateButton: UIButton?
     var sectionIndex: Int? = 0
@@ -54,6 +55,10 @@ class AccountHeaderTableViewCell: UITableViewCell {
         titleLabel?.theme_textColor = O3Theme.titleColorPicker
         totalAmountLabel?.theme_textColor = O3Theme.titleColorPicker
         contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        
+        if let topbarView = viewWithTag(9) as? UIView {
+            topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
+        }
         super.awakeFromNib()
     }
 }

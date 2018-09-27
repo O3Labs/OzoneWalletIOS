@@ -173,17 +173,31 @@ class CreateOrderViewModel {
     
     func selectOfferAsset(asset: TradableAsset) {
         self.offerAsset = asset
-        self.loadOpenOrders()
-        self.loadPrice(){
-            self.delegate?.onOfferAssetChange(asset: asset, action: self.selectedAction)
+        DispatchQueue.global(qos: .background).async {
+            self.loadOpenOrders()
+        }
+        DispatchQueue.global(qos: .background).async {
+            self.loadOffers()
+        }
+        DispatchQueue.global(qos: .background).async {
+            self.loadPrice(){
+                self.delegate?.onOfferAssetChange(asset: asset, action: self.selectedAction)
+            }
         }
     }
     
     func selectWantAsset(asset: TradableAsset) {
         self.wantAsset = asset
-        self.loadOpenOrders()
-        self.loadPrice(){
-            self.delegate?.onWantAssetChange(asset: asset, action: self.selectedAction)
+        DispatchQueue.global(qos: .background).async {
+            self.loadOpenOrders()
+        }
+        DispatchQueue.global(qos: .background).async {
+            self.loadOffers()
+        }
+        DispatchQueue.global(qos: .background).async {
+            self.loadPrice(){
+                self.delegate?.onWantAssetChange(asset: asset, action: self.selectedAction)
+            }
         }
     }
     
@@ -271,7 +285,7 @@ class CreateOrderViewModel {
             
             return String(format: "Updated %@", Date(timeIntervalSince1970: TimeInterval(pairPrice.lastUpdate)).timeAgo(numericDates: true))
         }
-        let change = 100.0 - floor((firstFetchedPairPrice.price * 100.0) / pairPrice.price)
+        let change: Double = Double(100.0) - Double((firstFetchedPairPrice.price / pairPrice.price) * 100.0 )
         return String(format: "%@%@ %@ median", change.string(2, removeTrailing: true), "%", change < 0 ? "below" : "above")
     }
     
@@ -327,8 +341,8 @@ class CreateOrderTableViewController: UITableViewController {
     }
     
     func setupTheme() {
-        self.view.theme_backgroundColor = O3Theme.backgroundLightgrey
-        self.tableView.theme_backgroundColor = O3Theme.backgroundLightgrey
+        self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
         
         for t in labelList! {
@@ -430,6 +444,18 @@ class CreateOrderTableViewController: UITableViewController {
         priceInputToolbar.value = viewModel.pairPrice.price
     }
     
+    @objc private func loadOpenOrders() {
+        viewModel.loadOpenOrders()
+    }
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadOpenOrders), name: NSNotification.Name(rawValue: "needsReloadOpenOrders"), object: nil)
+    }
+    
+    deinit {
+        viewModel.delegate = nil
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "needsReloadOpenOrders"), object: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -440,19 +466,21 @@ class CreateOrderTableViewController: UITableViewController {
         setupTextFieldDelegate()
         
         viewModel.delegate = self
-        viewModel.loadPrice(){}
-        viewModel.loadOpenOrders()
         viewModel.setupView()
-        viewModel.loadOffers()
+        
+        DispatchQueue.global(qos: .background).async {
+            self.viewModel.loadPrice(){}
+            self.viewModel.loadOffers()
+        }
+        
+        DispatchQueue.global(qos: .background).async {
+            self.viewModel.loadOpenOrders()
+        }
         
         if viewModel.selectedAction == CreateOrderAction.Sell {
             selectWantAssetButton.isEnabled = false
             wantAssetSelector.isHidden = true
         }
-    }
-    
-    deinit {
-        viewModel.delegate = nil
     }
     
     func viewOpenOrders() {
@@ -605,7 +633,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                 return
             }
             self.targetFiatPriceLabel.text = Fiat(amount: Float(self.viewModel.fiatPairPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: 8)
-            self.targetPriceTextField.text = pairPrice.price.string(8, removeTrailing: true)
+            self.targetPriceTextField.text = pairPrice.price.formattedStringWithoutSeparator(8, removeTrailing: true)
         }
     }
     
@@ -674,7 +702,8 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
             self.targetPriceSubtitle.text = self.viewModel.priceChangeDescription
             //assign default value to the toolbar
             self.targetFiatPriceLabel.text = Fiat(amount: Float(fiatPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: 8)
-            self.targetPriceTextField.text = pairPrice.price.string(8, removeTrailing: true)
+            self.targetPriceTextField.text = pairPrice.price.formattedStringWithoutSeparator(8, removeTrailing: true)
+            self.priceInputToolbar.setNewValue(v: pairPrice.price)
         }
     }
     

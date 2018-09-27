@@ -101,6 +101,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         if list.count == 0 {
             let fiat = Fiat(amount: 0.0)
             self.accountValues[account] = fiat.formattedString()
+             self.tableView.reloadData()
             return
         }
         
@@ -447,6 +448,18 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
         
         if section == sections.tradingAccountSection.rawValue {
+            var list: [TransferableAsset] = []
+            if self.tradingAccount != nil {
+                for v in self.tradingAccount!.switcheo.confirmed {
+                    list.append(v.toTransferableAsset())
+                }
+            }
+            
+            if list.count == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "trading-account-header-empty") as! AccountHeaderTableViewCell
+                return cell
+            }
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: "trading-account-header") as! AccountHeaderTableViewCell
             
             if let topbarView = cell.viewWithTag(9) as? UIView {
@@ -462,11 +475,10 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             }
             
             if self.tradingAccount != nil {
-                var list: [TransferableAsset] = []
-                for v in self.tradingAccount!.switcheo.confirmed {
-                    list.append(v.toTransferableAsset())
-                }
+                cell.subTitleLabel?.isHidden = list.count > 0
                 cell.list = list
+            } else {
+                cell.subTitleLabel?.isHidden = false
             }
             return cell.contentView
         }
@@ -530,8 +542,9 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             blockchain = "ont"
             symbol = ontologyAssets[indexPath.row].symbol
         }
+        
         let urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.account!.address)
-        Controller().openDappBrowser(url: URL(string: urlString)!, modal: true)
+        Controller().openDappBrowser(url: URL(string: urlString)!, modal: true, assetSymbol: symbol )
     }
     
     //MARK: -

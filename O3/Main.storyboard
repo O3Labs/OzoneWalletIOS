@@ -47,7 +47,7 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY O3 WALLET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EaX-BB-Mbg">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY O3 WALLET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EaX-BB-Mbg" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                                                 <rect key="frame" x="40" y="4.5" width="295" height="15"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="15" id="wss-Id-fZC"/>

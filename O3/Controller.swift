@@ -16,7 +16,7 @@ class Controller: NSObject {
         openDappBrowser(url: url!, modal: true, moreButton: true)
     }
     let transitionDelegate = DeckTransitioningDelegate()
-    func openDappBrowser(url: URL, modal: Bool, moreButton: Bool = false, deck: Bool = false) {
+    func openDappBrowser(url: URL, modal: Bool, moreButton: Bool = false, deck: Bool = false, assetSymbol: String? = nil) {
 
         let top = UIApplication.topViewController()
         if  top == nil {
@@ -27,6 +27,7 @@ class Controller: NSObject {
         if let vc = nav!.viewControllers.first as? DAppBrowserViewController {
             vc.url = url
             vc.showMoreButton = moreButton
+            vc.selectedAssetSymbol = assetSymbol
             if deck == true {
                 nav!.transitioningDelegate = transitionDelegate
                 nav!.modalPresentationStyle = .custom

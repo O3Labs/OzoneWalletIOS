@@ -46,6 +46,7 @@ class PriceInputToolbar:  UIView {
     @IBOutlet var currentMedianPriceButton: UIButton!
     @IBOutlet var topPriceButton: UIButton!
     
+    private var originalPrice: Double?
     private var originalPriceSet: Bool = false
     var step: Double? = 1 // default step for the stepper
     
@@ -56,13 +57,17 @@ class PriceInputToolbar:  UIView {
             topPriceButton.setTitle(topOrderPrice?.formattedStringWithoutSeparator(8, removeTrailing: true), for: .normal)
         }
     }
-    
+    func setNewValue(v: Double) {
+        originalPriceSet = false
+        value = v
+    }
     var value: Double? {
         didSet {
             if originalPriceSet == true {
                 return
             }
             originalPriceSet = true
+            originalPrice = value
             currentMedianPriceButton.setTitle(value?.formattedStringWithoutSeparator(8, removeTrailing: true), for: .normal)
         }
     }
@@ -75,18 +80,20 @@ class PriceInputToolbar:  UIView {
     //MARK: -
     @IBAction func plusTapped(_ sender: Any) {
         currentPercent = currentPercent + 1
-        let calculated = value! + (value! * currentPercent / 100)
+        let precisedValue = value!.precised(8)
+        let calculated = precisedValue + (precisedValue * currentPercent / 100)
         delegate?.stepper(value: calculated, percent: currentPercent)
     }
     @IBAction func minusTapped(_ sender: Any) {
         currentPercent = currentPercent - 1
-        let calculated = value! + (value! * currentPercent / 100)
+        let precisedValue = value!.precised(8)
+        let calculated = precisedValue + (precisedValue * currentPercent / 100)
         delegate?.stepper(value: calculated, percent: currentPercent)
     }
     
     @IBAction func currentPriceTapped(_ sender: Any) {
         currentPercent = 0
-        delegate?.originalPriceSelected(value: value!)
+        delegate?.originalPriceSelected(value: originalPrice!)
     }
     
     @IBAction func topPriceTapped(_ sender: Any) {

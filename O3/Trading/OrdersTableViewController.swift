@@ -25,7 +25,7 @@ class OrdersTableViewController: UITableViewController {
                     if status == SwitcheoOrderStatus.empty { //this is actually all {
                         //so when we show all, meaning any order that is filled even if it's cancelled
                         self.orders = response.switcheo.filter({ o -> Bool in
-                            return o.fills.count > 0
+                            return o.fills.count > 0 || (o.makes.count > 0 && o.orderStatus == SwitcheoOrderStatus.completed)
                         })
                         self.tableView.reloadData()
                         return
@@ -37,19 +37,11 @@ class OrdersTableViewController: UITableViewController {
         }
     }
     
+  
     func setupTheme() {
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
-        
-//        for t in labelList! {
-//            t.theme_textColor = O3Theme.titleColorPicker
-//        }
-//        
-//        for t in textFieldList! {
-//            t.theme_textColor = O3Theme.titleColorPicker
-//            t.theme_keyboardAppearance = O3Theme.keyboardPicker
-//        }
     }
     
     override func viewDidLoad() {
@@ -90,14 +82,17 @@ class OrdersTableViewController: UITableViewController {
         }
         
         let formatter = NumberFormatter()
-        
         let filled = order.fills.count > 0
+        
         var wantAmount = formatter.number(from: order.wantAmount)?.doubleValue
         var offerAmount = (formatter.number(from: order.offerAmount)?.doubleValue)!
         let originalWantAmount = order.side == .sell ? (formatter.number(from: order.offerAmount)?.doubleValue)! : (formatter.number(from: order.wantAmount)?.doubleValue)!
+        
         var priceDouble = order.side == .sell ? Double(wantAmount! / offerAmount) : Double(offerAmount / wantAmount!)
         
-        if filled {
+        let filledAmount = order.totalFilledAmount()
+       
+        if filled && order.orderStatus != .open {
             
             let sumPriceInFill = order.fills.reduce(0.0, {(result:Double, item:Fill) -> Double in
                 return result + (formatter.number(from: item.price)?.doubleValue)!
@@ -114,7 +109,8 @@ class OrdersTableViewController: UITableViewController {
             priceDouble = sumPriceInFill / Double(order.fills.count)
         }
         
-        let v = OrderViewModel(orderID:order.id, orderStatus:order.orderStatus, wantAsset: order.wantAsset, offerAsset: order.offerAsset, price: priceDouble, wantAmount: wantAmount, offerAmount: offerAmount, action: OrderViewModel.Action(rawValue: order.side.rawValue), datetime: order.createdAt.toDate()!,originalWantAmount: originalWantAmount, filled: filled)
+        let v = OrderViewModel(orderID:order.id, orderStatus:order.orderStatus, wantAsset: order.wantAsset, offerAsset: order.offerAsset, price: priceDouble, wantAmount: wantAmount, offerAmount: offerAmount, action: OrderViewModel.Action(rawValue: order.side.rawValue), datetime: order.createdAt.toDate()!,originalWantAmount: originalWantAmount, filled: filled, filledAmount: filledAmount)
+        
         cell.configure(viewModel: v)
         cell.delegate = self
         return cell
@@ -141,6 +137,7 @@ extension OrdersTableViewController: OrderViewModelDelegate {
                         #if DEBUG
                         print(response)
                         #endif
+                        NotificationCenter.default.post(name: NSNotification.Name("needsReloadOpenOrders"), object: nil)
                          NotificationCenter.default.post(name: NSNotification.Name("needsReloadTradingBalances"), object: nil)
                         let removeIndex = self.orders?.index(where: { order -> Bool in
                             return order.id == v.orderID

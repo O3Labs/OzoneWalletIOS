@@ -13,11 +13,20 @@ class FixedDecimalTextField: NoActionUITextField, UITextFieldDelegate {
     @IBInspectable var decimals: Int = 8
 
     override func awakeFromNib() {
-        self.delegate = self
         super.awakeFromNib()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.delegate = self
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if decimals == 0 && (string == "." || string == "," ) {
+            return false
+        }
+        
         let existingTextHasDecimalSeperator = textField.text?.range(of: ".")
         let replacementTextHasDecimalSeperator = string.range(of: ".")
         
@@ -30,6 +39,13 @@ class FixedDecimalTextField: NoActionUITextField, UITextFieldDelegate {
         if string == "" { // If valid number or backspace ("")
             return true
         } else {
+            if (textField.text?.components(separatedBy: ".").count)! > 1 {
+                let decimalPart = textField.text?.components(separatedBy: ".")[1]
+                if (decimalPart?.count)! >= decimals {
+                    return false
+                }
+            }
+            
             if replacementTextIsOnlyNumbers != nil {
                 if existingTextHasDecimalSeperator != nil,
                     replacementTextHasDecimalSeperator != nil {

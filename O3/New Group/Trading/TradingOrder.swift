@@ -67,6 +67,31 @@ struct SwitcheoOrder: Codable {
 }
 
 
+extension SwitcheoOrder {
+    
+    func totalFilledAmount() -> Double {
+        let formatter = NumberFormatter()
+        var filledAmount = Double(0)
+        for m in self.makes {
+            for t in m.trades! {
+                filledAmount = filledAmount + formatter.number(from: t.filledAmount)!.doubleValue
+            }
+        }
+        
+        if self.side == .buy {
+            filledAmount = filledAmount + self.fills.reduce(0.0, {(result:Double, item:Fill) -> Double in
+                return result + (formatter.number(from: item.wantAmount)?.doubleValue)!
+            })
+        } else {
+            filledAmount = filledAmount + self.fills.reduce(0.0, {(result:Double, item:Fill) -> Double in
+                return result + (formatter.number(from: item.fillAmount!)?.doubleValue)!
+            })
+        }
+
+        return filledAmount
+    }
+}
+
 struct Fill: Codable {
     let createdAt: String
     let feeAmount: String?
