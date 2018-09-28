@@ -13,6 +13,7 @@ class MainToolbarTableViewCell: UITableViewCell {
     @IBOutlet var cardView: UIView?
     
     override func awakeFromNib() {
+        theme_backgroundColor = O3Theme.backgroundLightgrey
         contentView.theme_backgroundColor = O3Theme.backgroundLightgrey
         cardView?.theme_backgroundColor = O3Theme.backgroundColorPicker
         super.awakeFromNib()

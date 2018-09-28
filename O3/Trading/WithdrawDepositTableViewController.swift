@@ -285,12 +285,20 @@ extension WithdrawDepositTableViewController: AssetInputToolbarDelegate {
         if value == 0 {
             return
         }
+        var adjustedValue = value
+        //user can only withdraw a whole amount of NEO
+        if self.selectedAsset!.symbol.uppercased() == TransferableAsset.NEO().symbol.uppercased() {
+            if value.isLess(than: 1.0) {
+                return
+            }
+            adjustedValue = floor(value)
+        }
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = selectedAsset!.decimals
         formatter.numberStyle = .decimal
         formatter.usesGroupingSeparator = false
-        let balanceString = formatter.string(for: value)
+        let balanceString = formatter.string(for: adjustedValue)
         amountTextField.text = balanceString
         self.checkEnableButton()
     }
@@ -299,12 +307,21 @@ extension WithdrawDepositTableViewController: AssetInputToolbarDelegate {
         if value == 0 {
             return
         }
+        var adjustedValue = value
+        //user can only withdraw a whole amount of NEO
+        if self.selectedAsset!.symbol.uppercased() == TransferableAsset.NEO().symbol.uppercased() {
+            if value.isLess(than: 1.0) {
+                return
+            }
+            adjustedValue = floor(value)
+        }
+        
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = selectedAsset!.decimals
         formatter.numberStyle = .decimal
         formatter.usesGroupingSeparator = false
-        let balanceString = formatter.string(for: value)
+        let balanceString = formatter.string(for: adjustedValue)
         amountTextField.text = balanceString
         self.checkEnableButton()
     }

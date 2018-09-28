@@ -159,6 +159,7 @@
 		6E5568EE214B5F1E00BA805E /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568ED214B5F1E00BA805E /* UIButton.swift */; };
 		6E5568F0214B5FF300BA805E /* CenterImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568EF214B5FF300BA805E /* CenterImageButton.swift */; };
 		6E5568F2214BA3EF00BA805E /* AssetIconsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568F1214BA3EF00BA805E /* AssetIconsTableViewCell.swift */; };
+		6E5B1074215DF9F600D076C6 /* Tokens.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E5B1073215DF9F600D076C6 /* Tokens.xcassets */; };
 		6E60CC6020CE38630062F1CE /* AccountAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E60CC5F20CE38630062F1CE /* AccountAssets.xcassets */; };
 		6E60CC6220CE3B5D0062F1CE /* ClaimableGASTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60CC6120CE3B5D0062F1CE /* ClaimableGASTableViewCell.swift */; };
 		6E60CC6420CE43290062F1CE /* Loader_running.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E60CC6320CE43280062F1CE /* Loader_running.json */; };
@@ -458,6 +459,7 @@
 		6E5568ED214B5F1E00BA805E /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		6E5568EF214B5FF300BA805E /* CenterImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterImageButton.swift; sourceTree = "<group>"; };
 		6E5568F1214BA3EF00BA805E /* AssetIconsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetIconsTableViewCell.swift; sourceTree = "<group>"; };
+		6E5B1073215DF9F600D076C6 /* Tokens.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Tokens.xcassets; sourceTree = "<group>"; };
 		6E60CC5F20CE38630062F1CE /* AccountAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AccountAssets.xcassets; sourceTree = "<group>"; };
 		6E60CC6120CE3B5D0062F1CE /* ClaimableGASTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimableGASTableViewCell.swift; sourceTree = "<group>"; };
 		6E60CC6320CE43280062F1CE /* Loader_running.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Loader_running.json; sourceTree = "<group>"; };
@@ -1210,6 +1212,7 @@
 				6E4E6F9320146BEC001A5844 /* TransactionHistoryTableViewController.swift */,
 				6E4E6F9720147868001A5844 /* ContactsTableViewController.swift */,
 				6EA09E4C212B942900BBD04A /* Account.xcdatamodeld */,
+				6E5B1073215DF9F600D076C6 /* Tokens.xcassets */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -1378,6 +1381,7 @@
 				6E244ECB208714E8001B4B22 /* TokenSaleAsset.xcassets in Resources */,
 				35AD2B64209179010024A900 /* Base.lproj in Resources */,
 				6E60CC6020CE38630062F1CE /* AccountAssets.xcassets in Resources */,
+				6E5B1074215DF9F600D076C6 /* Tokens.xcassets in Resources */,
 				6E8B0A4F21587AD700E8A2E5 /* PriceInputToolbar.xib in Resources */,
 				6E64C0DE215B89C2002B1366 /* PriceInputToggleToolbar.xib in Resources */,
 				6E7367992084AB0800F4202B /* success-blue.json in Resources */,

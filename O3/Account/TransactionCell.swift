@@ -49,6 +49,7 @@ class TransactionCell: UITableViewCell {
         addressLabel.theme_textColor = O3Theme.lightTextColorPicker
         transactionTimeLabel?.theme_textColor = O3Theme.lightTextColorPicker
         contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        theme_backgroundColor = O3Theme.backgroundColorPicker
         super.awakeFromNib()
     }
     

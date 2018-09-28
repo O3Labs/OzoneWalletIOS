@@ -303,6 +303,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         if indexPath.section == sections.unclaimedGAS.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-claimable-gas") as? ClaimableGASTableViewCell else {
                 let cell =  UITableViewCell()
+                cell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
@@ -314,6 +315,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         if indexPath.section == sections.toolbar.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-toolbar") as? MainToolbarTableViewCell else {
                 let cell =  UITableViewCell()
+                cell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
@@ -441,7 +443,8 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                 topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
             }
             cell.totalAmountLabel?.text = accountValues[accounts.o3Account]
-            cell.list = [O3Cache.neo(), O3Cache.gas()] + self.ontologyAssets + self.tokenAssets
+            cell.assetCountTitleLabel?.isHidden = self.tokenAssets.count == 0
+            cell.assetCountTitleLabel?.text = String(format: "+%d more", self.tokenAssets.count)
             cell.sectionIndex = section
             cell.toggleStateButton?.tag = section
             return cell.contentView
@@ -462,7 +465,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "trading-account-header") as! AccountHeaderTableViewCell
             
-            if let topbarView = cell.viewWithTag(9) as? UIView {
+            if let topbarView = cell.viewWithTag(9) {
                 topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
             }
             cell.totalAmountLabel?.text = accountValues[accounts.tradingAccount]

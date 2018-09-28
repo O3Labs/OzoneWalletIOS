@@ -18,6 +18,7 @@ class NewsFeedCell: UITableViewCell {
         newsTitleLabel.theme_textColor = O3Theme.titleColorPicker
         newsDateLabel.theme_textColor = O3Theme.lightTextColorPicker
         contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        theme_backgroundColor = O3Theme.backgroundColorPicker
         super.awakeFromNib()
     }
 }
