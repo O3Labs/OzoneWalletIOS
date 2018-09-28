@@ -19,6 +19,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     var filteredTokens = [Asset]()
     var selectedAsset: Asset?
     let transitionDelegate = DeckTransitioningDelegate()
+    var tradableAssets: [TradableAsset]? = []
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -29,6 +30,20 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
+    }
+    
+    func loadTradableAssets() {
+        O3APIClient.shared.loadSupportedTokenSwitcheo { result in
+            switch result {
+            case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
+            case .success(let response):
+                self.tradableAssets = response
+                self.collectionView.reloadData()
+            }
+        }
     }
     
     func loadAssets() {
@@ -55,6 +70,9 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         searchBar.delegate = self
         self.hideKeyboardWhenTappedAround()
         loadAssets()
+        DispatchQueue.global(qos: .background).async {
+            self.loadTradableAssets()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -95,7 +113,13 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
             fatalError("Undefined cell grid behavior")
         }
         
-        cell.data = filteredTokens[indexPath.row]
+        let asset = filteredTokens[indexPath.row]
+        cell.data = asset
+        cell.tradableImageView.isHidden = true
+        let tradable = self.tradableAssets?.contains(where: { t -> Bool in
+            return t.symbol.uppercased() == asset.symbol.uppercased()
+        })
+        cell.tradableImageView.isHidden = !tradable!
         return cell
     }
     
