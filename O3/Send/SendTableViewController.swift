@@ -127,6 +127,21 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     }
     
     func sendOntology(assetSymbol: String, amount: Double, toAddress: String) {
+        let ong = O3Cache.ontologyAssets().first { t -> Bool in
+            return t.symbol.uppercased() == "ONG"
+        }
+        
+        if ong == nil {
+            return
+        }
+        
+        if ong!.value.isLess(than: 0.01) {
+            OzoneAlert.alertDialog(message: "Ontology network requires 0.01 ONG for transaction fees. You don't seem to have enough ONG in your wallet", dismissTitle: "OK") {
+                
+            }
+            return
+        }
+        
         let wif = Authenticated.account?.wif
         var error: NSError?
         let endpoint = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)

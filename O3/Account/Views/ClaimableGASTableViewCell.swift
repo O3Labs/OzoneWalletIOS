@@ -386,7 +386,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
 
     @objc func ontClaimNowTapped(_ sender: Any) {
-        self.claimConfirmedOng()
+        OzoneAlert.confirmDialog(message: "Claiming ONG requires the Ontology network fee of 0.01 ONG", cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.okPositiveConfirmString, didCancel: {return}) {
+            self.claimConfirmedOng()
+        }
     }
 
     func neoClaimedSuccess() {

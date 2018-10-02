@@ -480,9 +480,6 @@ class CreateOrderTableViewController: UITableViewController {
         if viewModel.selectedAction == CreateOrderAction.Sell {
             selectWantAssetButton.isEnabled = false
             wantAssetSelector.isHidden = true
-            wantAmountTextField.becomeFirstResponder()
-        } else {
-            offerAmountTextField.becomeFirstResponder()
         }
     }
     
@@ -707,6 +704,12 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
             self.targetFiatPriceLabel.text = Fiat(amount: Float(fiatPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: 8)
             self.targetPriceTextField.text = pairPrice.price.formattedStringWithoutSeparator(8, removeTrailing: true)
             self.priceInputToolbar.setNewValue(v: pairPrice.price)
+            
+            if self.viewModel.selectedAction == CreateOrderAction.Sell {
+                self.wantAmountTextField.becomeFirstResponder()
+            } else {
+                self.offerAmountTextField.becomeFirstResponder()
+            }
         }
     }
     

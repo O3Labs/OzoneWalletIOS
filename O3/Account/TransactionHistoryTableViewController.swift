@@ -164,12 +164,16 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             if let label = cell?.viewWithTag(1) as? UILabel {
                 label.text = "Pending Transactions"
             }
+            cell?.theme_backgroundColor = O3Theme.backgroundLightgrey
+            cell?.contentView.theme_backgroundColor = O3Theme.backgroundLightgrey
             return cell?.contentView
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "sectionHeader")
         if let label = cell?.viewWithTag(1) as? UILabel {
             label.text = "History"
         }
+        cell?.theme_backgroundColor = O3Theme.backgroundLightgrey
+        cell?.contentView.theme_backgroundColor = O3Theme.backgroundLightgrey
         return cell?.contentView
     }
     
