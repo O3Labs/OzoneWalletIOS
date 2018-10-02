@@ -18,10 +18,15 @@ class OrdersTableViewController: UITableViewController {
         O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: status) { result in
             switch result{
             case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    HUD.hide()
+                    #if DEBUG
+                    print(error)
+                    #endif
+                }
             case .success(let response):
                 DispatchQueue.main.async {
-                    
+                    HUD.hide()
                     if status == SwitcheoOrderStatus.empty { //this is actually all {
                         //so when we show all, meaning any order that is filled even if it's cancelled
                         self.orders = response.switcheo.filter({ o -> Bool in
@@ -43,14 +48,34 @@ class OrdersTableViewController: UITableViewController {
         self.tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
     }
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name("reloadOrders"), object: nil)
+    }
+    
+    func removeObserver() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("reloadOrders"), object: nil)
+    }
+    
+    deinit {
+        removeObserver()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTheme()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismiss(_: )))
-        
         //if order status is set we then load the orders from a server
         if orderStatus != nil {
+            loadOrders(status: orderStatus!)
+        }
+        addObservers()
+    }
+    
+    @objc func reloadData() {
+        if orderStatus != nil {
+            DispatchQueue.main.async {
+                HUD.show(.progress)
+            }
             loadOrders(status: orderStatus!)
         }
     }

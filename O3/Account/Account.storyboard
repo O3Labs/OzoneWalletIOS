@@ -645,6 +645,24 @@
                                                         <action selector="didTapMoreTradingAccount:" destination="sEU-p8-l0I" eventType="touchUpInside" id="jep-ly-NPh"/>
                                                     </connections>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Evb-3j-bMS">
+                                                    <rect key="frame" x="290" y="0.0" width="80" height="44"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="80" id="tFD-Wn-nQw"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
+                                                    <color key="tintColor" name="lightThemePrimary"/>
+                                                    <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                                                    <state key="normal" title="Deposit" image="arrow-to-bottom">
+                                                        <color key="titleColor" name="lightThemePrimary"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="didTapDeposit:" destination="sEU-p8-l0I" eventType="touchUpInside" id="DKL-xc-Ves"/>
+                                                        <action selector="didTapSend:" destination="sEU-p8-l0I" eventType="touchUpInside" id="p37-gl-DUA"/>
+                                                    </connections>
+                                                </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mVX-cK-A4p">
                                                     <rect key="frame" x="16" y="76" width="366" height="16"/>
                                                     <constraints>
@@ -672,6 +690,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="qyZ-S3-5zQ" secondAttribute="bottom" id="UMh-Qb-dcm"/>
                                                 <constraint firstAttribute="trailing" secondItem="UCV-uK-lho" secondAttribute="trailing" constant="16" id="XQS-CG-TZS"/>
                                                 <constraint firstAttribute="trailing" secondItem="qyZ-S3-5zQ" secondAttribute="trailing" id="Xes-HS-UoX"/>
+                                                <constraint firstItem="BZ7-9q-1dR" firstAttribute="leading" secondItem="Evb-3j-bMS" secondAttribute="trailing" id="cT9-KR-xAL"/>
                                                 <constraint firstItem="mVX-cK-A4p" firstAttribute="top" secondItem="UCV-uK-lho" secondAttribute="bottom" constant="8" id="clB-QL-wTU"/>
                                                 <constraint firstItem="qyZ-S3-5zQ" firstAttribute="leading" secondItem="bO6-gn-bKn" secondAttribute="leading" id="d7h-g7-QzS"/>
                                                 <constraint firstItem="UCV-uK-lho" firstAttribute="leading" secondItem="bO6-gn-bKn" secondAttribute="leading" constant="16" id="ic5-5t-3NB"/>
@@ -679,6 +698,8 @@
                                                 <constraint firstAttribute="trailing" secondItem="BZ7-9q-1dR" secondAttribute="trailing" id="mMz-AN-k53"/>
                                                 <constraint firstItem="BZ7-9q-1dR" firstAttribute="top" secondItem="bO6-gn-bKn" secondAttribute="top" id="v6s-We-iPR"/>
                                                 <constraint firstAttribute="trailing" secondItem="mVX-cK-A4p" secondAttribute="trailing" constant="32" id="wen-Vl-I6h"/>
+                                                <constraint firstItem="Evb-3j-bMS" firstAttribute="height" secondItem="BZ7-9q-1dR" secondAttribute="height" id="xh4-aK-0iJ"/>
+                                                <constraint firstItem="Evb-3j-bMS" firstAttribute="top" secondItem="BZ7-9q-1dR" secondAttribute="top" id="zJU-78-40l"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -1478,7 +1499,7 @@ Get started by depositing some tokens from your wallet!</string>
         <image name="ONT" width="480" height="480"/>
         <image name="angle-down-small" width="10" height="6"/>
         <image name="arrow-to-bottom" width="18" height="20"/>
-        <image name="ellipsis-v" width="4" height="15"/>
+        <image name="ellipsis-v" width="4" height="16"/>
         <image name="ic_Claim" width="14" height="14"/>
         <image name="ic_ONG" width="21" height="21"/>
         <image name="ic_scan" width="19" height="19"/>
@@ -1501,7 +1522,7 @@ Get started by depositing some tokens from your wallet!</string>
             <color red="0.96078431369999995" green="0.65098039220000004" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="lightThemePrimary">
-            <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.41176470590000003" blue="0.85098039219999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="superLightGrey">
             <color red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

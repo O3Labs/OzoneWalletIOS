@@ -53,6 +53,11 @@ class OrdersTabsViewController: TabmanViewController, PageboyViewControllerDataS
         navigationController?.hideHairline()
         self.title = "Orders"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismiss(_: )))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(reloadData))
+    }
+    
+    @objc func reloadData() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadOrders"), object: nil)
     }
     
     @objc func dismiss(_ sender: Any) {

@@ -157,12 +157,14 @@ class DAppBrowserViewController: UIViewController {
             self.dismiss(animated: false, completion: nil)
             return
         }
-        
-        let queryItems = [NSURLQueryItem(name: "theme", value: UserDefaultsManager.themeIndex == 0 ? "light" : "dark")]
-        let urlComps = NSURLComponents(url: url!, resolvingAgainstBaseURL: false)!
-        urlComps.queryItems = queryItems as [URLQueryItem]
-        
-        let req = URLRequest(url: urlComps.url!)
+        var req = URLRequest(url: url!)
+        if (url?.absoluteString.hasPrefix("http://public.o3.network")) == true {
+            let queryItems = [NSURLQueryItem(name: "theme", value: UserDefaultsManager.themeIndex == 0 ? "light" : "dark")]
+            let urlComps = NSURLComponents(url: url!, resolvingAgainstBaseURL: false)!
+            urlComps.queryItems = queryItems as [URLQueryItem]
+             req = URLRequest(url: urlComps.url!)
+        }
+       
         self.webView?.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.webView!.load(req)
         self.webView?.navigationDelegate = self

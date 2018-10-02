@@ -41,7 +41,9 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
                 #endif
             case .success(let response):
                 self.tradableAssets = response
-                self.collectionView.reloadData()
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
             }
         }
     }
