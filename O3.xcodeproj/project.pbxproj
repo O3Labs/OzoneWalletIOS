@@ -211,6 +211,12 @@
 		6EA09E4E212B942900BBD04A /* Account.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6EA09E4C212B942900BBD04A /* Account.xcdatamodeld */; };
 		6EA7F9281F6E2F7F00E31B78 /* O3Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA7F9271F6E2F7F00E31B78 /* O3Client.swift */; };
 		6EA7F9291F6E32B600E31B78 /* PriceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA7F9261F6E2F4E00E31B78 /* PriceData.swift */; };
+		6EC483812163347D002CBF76 /* DappListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC483802163347D002CBF76 /* DappListTableViewController.swift */; };
+		6EC48384216334F4002CBF76 /* Dapp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC48383216334F4002CBF76 /* Dapp.swift */; };
+		6EC4838621633564002CBF76 /* Dapp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EC4838521633564002CBF76 /* Dapp.storyboard */; };
+		6EC483882163372F002CBF76 /* DappTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC483872163372F002CBF76 /* DappTableViewCell.swift */; };
+		6EC4838A21633A3B002CBF76 /* DappString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4838921633A3B002CBF76 /* DappString.swift */; };
+		6EC4838C21634044002CBF76 /* ThemedUITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4838B21634044002CBF76 /* ThemedUITableView.swift */; };
 		6ECF0E251FAED3D800884F38 /* Reachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECF0E241FAED3D800884F38 /* Reachability.framework */; };
 		6ECF0E2B1FAED7BF00884F38 /* Reachability.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECF0E241FAED3D800884F38 /* Reachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6ED5D7EC2016BFC900AF3713 /* AssetSelectorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED5D7EB2016BFC900AF3713 /* AssetSelectorTableViewController.swift */; };
@@ -509,6 +515,12 @@
 		6EA09E4D212B942900BBD04A /* Account.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Account.xcdatamodel; sourceTree = "<group>"; };
 		6EA7F9261F6E2F4E00E31B78 /* PriceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceData.swift; sourceTree = "<group>"; };
 		6EA7F9271F6E2F7F00E31B78 /* O3Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = O3Client.swift; sourceTree = "<group>"; };
+		6EC483802163347D002CBF76 /* DappListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappListTableViewController.swift; sourceTree = "<group>"; };
+		6EC48383216334F4002CBF76 /* Dapp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dapp.swift; sourceTree = "<group>"; };
+		6EC4838521633564002CBF76 /* Dapp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dapp.storyboard; sourceTree = "<group>"; };
+		6EC483872163372F002CBF76 /* DappTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappTableViewCell.swift; sourceTree = "<group>"; };
+		6EC4838921633A3B002CBF76 /* DappString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappString.swift; sourceTree = "<group>"; };
+		6EC4838B21634044002CBF76 /* ThemedUITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedUITableView.swift; sourceTree = "<group>"; };
 		6ECF0E241FAED3D800884F38 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reachability.framework; path = Carthage/Build/iOS/Reachability.framework; sourceTree = "<group>"; };
 		6ED5D7EB2016BFC900AF3713 /* AssetSelectorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectorTableViewController.swift; sourceTree = "<group>"; };
 		6ED600111F762189006760E6 /* O3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = O3.entitlements; sourceTree = "<group>"; };
@@ -628,6 +640,7 @@
 		3527F8CB20C533F100C2FCB9 /* Marketplace */ = {
 			isa = PBXGroup;
 			children = (
+				6EC4837F21633393002CBF76 /* Dapp */,
 				6E68B6AE206CB75D008C25E8 /* TokenSale */,
 				35B426BD2098240B00957211 /* TokenSelection */,
 				3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */,
@@ -970,6 +983,26 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		6EC4837F21633393002CBF76 /* Dapp */ = {
+			isa = PBXGroup;
+			children = (
+				6EC48382216334EC002CBF76 /* Models */,
+				6EC483802163347D002CBF76 /* DappListTableViewController.swift */,
+				6EC4838521633564002CBF76 /* Dapp.storyboard */,
+				6EC483872163372F002CBF76 /* DappTableViewCell.swift */,
+				6EC4838921633A3B002CBF76 /* DappString.swift */,
+			);
+			path = Dapp;
+			sourceTree = "<group>";
+		};
+		6EC48382216334EC002CBF76 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6EC48383216334F4002CBF76 /* Dapp.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		6EEE3DE820D9E9680030A4AB /* dappbrowser */ = {
 			isa = PBXGroup;
 			children = (
@@ -1259,6 +1292,7 @@
 				6E64C0DB215B7B41002B1366 /* ThemedUILabel.swift */,
 				6E64C0DD215B89C2002B1366 /* PriceInputToggleToolbar.xib */,
 				6E64C0DF215B8A99002B1366 /* PriceInputToggleToolbar.swift */,
+				6EC4838B21634044002CBF76 /* ThemedUITableView.swift */,
 			);
 			path = UIControls;
 			sourceTree = "<group>";
@@ -1399,6 +1433,7 @@
 				353E79A920C7C6C000B9AB1F /* LearnMore.json in Resources */,
 				35AF806720CA5D8200E48457 /* wallet_generated.json in Resources */,
 				6E40F64421182E0E00B2B633 /* Browser.xcassets in Resources */,
+				6EC4838621633564002CBF76 /* Dapp.storyboard in Resources */,
 				75B6E5C21F6D4E8A00F53CA8 /* QR.storyboard in Resources */,
 				7520068E1F7FC56400D19B5F /* SendAssets.xcassets in Resources */,
 				35B426BC20980CC400957211 /* Main.storyboard in Resources */,
@@ -1471,6 +1506,7 @@
 				752006891F7F6F5D00D19B5F /* HalfModalInteractiveTransition.swift in Sources */,
 				35B426D820998B6300957211 /* UISearchBar.swift in Sources */,
 				6E5568F0214B5FF300BA805E /* CenterImageButton.swift in Sources */,
+				6EC483812163347D002CBF76 /* DappListTableViewController.swift in Sources */,
 				35B399DF210EDE4500284BFA /* GasPrice.swift in Sources */,
 				6E4E6F7F20146086001A5844 /* AccountTabViewController.swift in Sources */,
 				7520068A1F7F6F5D00D19B5F /* HalfModalTransitionAnimator.swift in Sources */,
@@ -1524,6 +1560,7 @@
 				75E14E541F7D27F900BEAE22 /* O3.xcdatamodeld in Sources */,
 				3557BAAE20AA9CB20034937C /* SHA256.swift in Sources */,
 				3537848D20807FD800648AF2 /* ContributionTableViewCell.swift in Sources */,
+				6EC4838C21634044002CBF76 /* ThemedUITableView.swift in Sources */,
 				75DA59091F7A815E0065FE0D /* OzoneAlert.swift in Sources */,
 				35AD2B74209320140024A900 /* TabbarStrings.swift in Sources */,
 				6EA7F9291F6E32B600E31B78 /* PriceData.swift in Sources */,
@@ -1560,6 +1597,7 @@
 				7501E8431F79536300123EA8 /* SettingsMenuTableViewController.swift in Sources */,
 				351200C1207F2649003CA07D /* TokenSaleTableViewCell.swift in Sources */,
 				35AF806B20CA6CF700E48457 /* NEP2DetectedViewController.swift in Sources */,
+				6EC483882163372F002CBF76 /* DappTableViewCell.swift in Sources */,
 				35AD2B72209317950024A900 /* SettingsStrings.swift in Sources */,
 				6E244EBF208583F1001B4B22 /* TokenSaleSubmitViewController.swift in Sources */,
 				35F8D66D20C6255F00C7EC56 /* WalletToolbarCell.swift in Sources */,
@@ -1569,6 +1607,7 @@
 				6E64C0CC2159CE19002B1366 /* Order.swift in Sources */,
 				75D5BFB61F6CF59C00E64855 /* LoginTableViewController.swift in Sources */,
 				6E64C0D32159CE19002B1366 /* RequestOrder.swift in Sources */,
+				6EC4838A21633A3B002CBF76 /* DappString.swift in Sources */,
 				35AF806320CA366A00E48457 /* UITextField.swift in Sources */,
 				6EA7F9281F6E2F7F00E31B78 /* O3Client.swift in Sources */,
 				6EEE3DFA20E0AFD30030A4AB /* InboxItemTableViewCell.swift in Sources */,
@@ -1625,6 +1664,7 @@
 				6E43769821460CB90091367A /* String+Util.swift in Sources */,
 				75DA59031F7A6CEF0065FE0D /* WatchOnlyAddressTableViewCell.swift in Sources */,
 				6E43769B21460CB90091367A /* Dictionary+SWTHEncoding.swift in Sources */,
+				6EC48384216334F4002CBF76 /* Dapp.swift in Sources */,
 				353E799E20C690A200B9AB1F /* TutorialCardCollectionViewCell.swift in Sources */,
 				752586B11F77DD9800ED5312 /* OzoneGraphView.swift in Sources */,
 				6E97C4B51F7FBAA300526FF0 /* AssetView.swift in Sources */,

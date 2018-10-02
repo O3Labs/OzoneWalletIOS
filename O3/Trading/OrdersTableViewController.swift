@@ -96,7 +96,7 @@ class OrdersTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let order = orders![indexPath.row]
-        return  order.orderStatus == .open ? 140.0 : 120.0
+        return  order.orderStatus == .open ? 140.0 : 88.0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -87,10 +87,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if O3Cache.neo().value <= 0 && O3Cache.gas().value <= 0 {
-            return CGSize.zero
-        }
-        return CGSize(width: UIScreen.main.bounds.size.width, height: 150.0)
+       return CGSize.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

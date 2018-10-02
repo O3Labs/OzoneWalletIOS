@@ -480,6 +480,9 @@ class CreateOrderTableViewController: UITableViewController {
         if viewModel.selectedAction == CreateOrderAction.Sell {
             selectWantAssetButton.isEnabled = false
             wantAssetSelector.isHidden = true
+            wantAmountTextField.becomeFirstResponder()
+        } else {
+            offerAmountTextField.becomeFirstResponder()
         }
     }
     
