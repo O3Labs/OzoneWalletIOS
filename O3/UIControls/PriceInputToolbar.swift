@@ -44,6 +44,7 @@ class PriceInputToolbar:  UIView {
     
     override func awakeFromNib() {
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        theme_backgroundColor = O3Theme.backgroundColorPicker
         super.awakeFromNib()
     }
     
