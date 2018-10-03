@@ -84,7 +84,9 @@ class O3APIClient: NSObject {
         request.httpBody = data
 
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, result, err) in
+            #if DEGUB
             print(result)
+            #endif
             if err != nil {
                 completion(.failure(.invalidRequest))
                 return
@@ -255,7 +257,7 @@ class O3APIClient: NSObject {
                 let decoder = JSONDecoder()
                 guard let dictionary = response["result"] as? JSONDictionary,
                     let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
-                    let decoded = try? decoder.decode(String.self, from: data) else {
+                    let _ = try? decoder.decode(String.self, from: data) else {
                         return
                 }
                 let success = O3APIClientResult.success(true)

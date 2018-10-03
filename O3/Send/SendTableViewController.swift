@@ -78,6 +78,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight { result in
             switch(result) {
             case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
                 return
             case .success(let count):
                 DispatchQueue.main.async {
@@ -148,6 +151,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         OntologyClient().getGasPrice { result in
             switch result {
             case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
                 DispatchQueue.main.async {
                     self.transactionCompleted = false
                     self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
@@ -421,6 +427,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         O3APIClient(network: AppState.network).checkVerifiedAddress(address: toAddressField.text!) { result in
             switch result {
             case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
                 DispatchQueue.main.async {
                     self.showVerifiedAddress(verifiedAddress: nil)
                 }
@@ -473,7 +482,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     }
     
     func showNetworkFeeLabel() {
-        ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
+        _ = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
         OntologyClient().getGasPrice { result in
             switch result {
             case (.failure):

@@ -91,9 +91,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath) as? UICollectionReusableView else {
-            fatalError("Could not find proper header")
-        }
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath) as UICollectionReusableView
         
         if kind == UICollectionElementKindSectionHeader {
             

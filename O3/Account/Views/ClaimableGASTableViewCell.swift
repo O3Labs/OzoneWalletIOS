@@ -327,6 +327,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
         OntologyClient().getGasPrice { result in
             switch result {
             case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
                 //throw some error here
                 DispatchQueue.main.async {
                     self.delegate?.setIsClaimingOnt(false)

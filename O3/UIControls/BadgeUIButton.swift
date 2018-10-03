@@ -56,7 +56,7 @@ class BadgeUIButton : UIButton {
         labelText.font = UIFont(name: "Avenir-Heavy", size: 12)
         labelText.alignmentMode = kCAAlignmentCenter
         labelText.foregroundColor = UIColor.white.cgColor
-        let labelString = self.badgeValue.uppercased() as String!
+        let labelString = self.badgeValue.uppercased() as String?
         let labelFont = UIFont(name: "Avenir-Heavy", size: 12)
         let attributes = [kCTFontAttributeName : labelFont]
         let w = CGFloat(18.0)
