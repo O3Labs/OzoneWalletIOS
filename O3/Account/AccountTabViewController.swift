@@ -124,7 +124,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     }
     
     func setLocalizedStrings() {
-        self.bar.items = [Item(title: "Accounts"), //TODO change this to localized string
+        self.bar.items = [Item(title: "Accounts".uppercased()), //TODO change this to localized string
                           Item(title: AccountStrings.transactions),
                           Item(title: AccountStrings.contacts)]
     }

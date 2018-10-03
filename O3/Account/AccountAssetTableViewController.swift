@@ -611,7 +611,7 @@ extension AccountAssetTableViewController {
         guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTabsViewControllerNav") as? UINavigationController else {
             return
         }
-        guard let vc = nav.viewControllers.first as? OrdersTabsViewController else {
+        guard (nav.viewControllers.first as? OrdersTabsViewController) != nil else {
             return
         }
         let transitionDelegate = DeckTransitioningDelegate()

@@ -90,7 +90,7 @@ class DAppBrowserViewController: UIViewController {
         }
     }
     
-    @IBAction func viewOpenOrders(_ sender: Any) {
+    @objc @IBAction func viewOpenOrders(_ sender: Any) {
         guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTabsViewControllerNav") as? UINavigationController else {
             return
         }
@@ -102,10 +102,14 @@ class DAppBrowserViewController: UIViewController {
     
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadOpenOrders), name: NSNotification.Name(rawValue: "needsReloadOpenOrders"), object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(viewOpenOrders(_:)), name: NSNotification.Name(rawValue: "viewTradingOrders"), object: nil)
+        
     }
+    
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "needsReloadOpenOrders"), object: nil)
+          NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "viewTradingOrders"), object: nil)
     }
     
     override func loadView() {
@@ -158,7 +162,7 @@ class DAppBrowserViewController: UIViewController {
             return
         }
         var req = URLRequest(url: url!)
-        if (url?.absoluteString.hasPrefix("http://public.o3.network")) == true {
+        if (url?.absoluteString.hasPrefix("https://public.o3.network")) == true {
             let queryItems = [NSURLQueryItem(name: "theme", value: UserDefaultsManager.themeIndex == 0 ? "light" : "dark")]
             let urlComps = NSURLComponents(url: url!, resolvingAgainstBaseURL: false)!
             urlComps.queryItems = queryItems as [URLQueryItem]
@@ -290,7 +294,10 @@ extension DAppBrowserViewController {
         if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
             vc.viewModel = CreateOrderViewModel()
             vc.viewModel.selectedAction = action
-            vc.viewModel.wantAsset = asset
+            let inTradingAccount = self.tradingAccount?.switcheo.confirmed.first(where: { t -> Bool in
+                return t.symbol.uppercased() == asset.symbol.uppercased()
+            })
+            vc.viewModel.wantAsset = inTradingAccount != nil ? inTradingAccount : asset
             vc.viewModel.offerAsset = self.tradingAccount?.switcheo.basePairs.filter({ t -> Bool in
                 return t.symbol != asset.symbol
             }).first
