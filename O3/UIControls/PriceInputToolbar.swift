@@ -42,6 +42,11 @@ class PriceInputToolbar:  UIView {
         self.setup()
     }
     
+    override func awakeFromNib() {
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        super.awakeFromNib()
+    }
+    
     //MARK: -
     @IBOutlet var currentMedianPriceButton: UIButton!
     @IBOutlet var topPriceButton: UIButton!

@@ -151,7 +151,6 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="DJX-OE-r6N" firstAttribute="top" secondItem="aVx-Yo-da4" secondAttribute="bottom" id="2Yb-Hj-IXf"/>
                 <constraint firstItem="DJX-OE-r6N" firstAttribute="leading" secondItem="aVx-Yo-da4" secondAttribute="leading" id="9V1-ue-O4G"/>
