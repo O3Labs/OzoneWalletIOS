@@ -770,6 +770,17 @@ Get started by depositing some tokens from your wallet!</string>
                                                         <action selector="didTapDeposit:" destination="sEU-p8-l0I" eventType="touchUpInside" id="qsV-il-bCy"/>
                                                     </connections>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdi-bM-6Ph" customClass="BadgeUIButton" customModule="O3" customModuleProvider="target">
+                                                    <rect key="frame" x="370" y="0.0" width="44" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="44" id="6EL-Yp-Efk"/>
+                                                        <constraint firstAttribute="height" constant="44" id="KBa-05-eNd"/>
+                                                    </constraints>
+                                                    <state key="normal" image="ellipsis-vertical"/>
+                                                    <connections>
+                                                        <action selector="didTapMoreTradingAccount:" destination="sEU-p8-l0I" eventType="touchUpInside" id="vqs-GO-LAZ"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="6Ra-Re-b5Q" secondAttribute="trailing" constant="16" id="9UC-B1-BHr"/>
@@ -778,10 +789,12 @@ Get started by depositing some tokens from your wallet!</string>
                                                 <constraint firstItem="gmV-mU-ayd" firstAttribute="leading" secondItem="2Jh-kP-Cye" secondAttribute="leading" id="KNO-kX-xjx"/>
                                                 <constraint firstItem="6Ra-Re-b5Q" firstAttribute="leading" secondItem="2Jh-kP-Cye" secondAttribute="leading" constant="16" id="Kfl-D2-wgh"/>
                                                 <constraint firstItem="gmV-mU-ayd" firstAttribute="top" secondItem="rQi-yi-v8C" secondAttribute="bottom" id="L5Q-g0-Ml7"/>
+                                                <constraint firstItem="vdi-bM-6Ph" firstAttribute="top" secondItem="2Jh-kP-Cye" secondAttribute="top" id="Phh-nZ-oju"/>
                                                 <constraint firstAttribute="trailing" secondItem="gmV-mU-ayd" secondAttribute="trailing" id="SIi-RW-R5s"/>
                                                 <constraint firstItem="rQi-yi-v8C" firstAttribute="leading" secondItem="2Jh-kP-Cye" secondAttribute="leading" constant="16" id="eUS-zl-hSt"/>
                                                 <constraint firstItem="rQi-yi-v8C" firstAttribute="top" secondItem="6Ra-Re-b5Q" secondAttribute="bottom" constant="-16" id="gWS-aQ-NaJ"/>
                                                 <constraint firstAttribute="bottom" secondItem="gmV-mU-ayd" secondAttribute="bottom" constant="4" id="gqb-un-eCS"/>
+                                                <constraint firstAttribute="trailing" secondItem="vdi-bM-6Ph" secondAttribute="trailing" id="xML-rx-rJE"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -797,6 +810,7 @@ Get started by depositing some tokens from your wallet!</string>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
+                                    <outlet property="moreButton" destination="vdi-bM-6Ph" id="Dne-JV-XMG"/>
                                     <outlet property="titleLabel" destination="6Ra-Re-b5Q" id="etJ-0V-cY2"/>
                                 </connections>
                             </tableViewCell>

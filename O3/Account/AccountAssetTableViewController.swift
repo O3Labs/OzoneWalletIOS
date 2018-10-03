@@ -149,7 +149,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             case .success(let tradingAccount):
                 DispatchQueue.main.async {
                     self.tradingAccount = tradingAccount
-                    self.tableView.reloadSections([sections.tradingAccountSection.rawValue, sections.tradingAccountSection.rawValue], with: .automatic)
+                    self.tableView.reloadSections([sections.tradingAccountSection.rawValue], with: .automatic)
                     var list: [TransferableAsset] = []
                     for v in self.tradingAccount!.switcheo.confirmed{
                         list.append(v.toTransferableAsset())
@@ -428,6 +428,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         if section == sections.neoAssets.rawValue ||  section == sections.tradingAccountSection.rawValue{
             return 108.0
         }
+        
         if section == sections.ontologyAssets.rawValue || section == sections.nep5tokens.rawValue {
             return 0.0
         }
@@ -439,7 +440,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         if section == sections.neoAssets.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "o3-account-header") as! AccountHeaderTableViewCell
-            if let topbarView = cell.viewWithTag(9) as? UIView {
+            if let topbarView = cell.viewWithTag(9) {
                 topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
             }
             cell.totalAmountLabel?.text = accountValues[accounts.o3Account]
@@ -460,6 +461,11 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             
             if list.count == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "trading-account-header-empty") as! AccountHeaderTableViewCell
+                if self.numberOfOpenOrders == 0 {
+                    cell.moreButton?.badgeValue = ""
+                } else {
+                    cell.moreButton?.badgeValue = String(format:"%d", self.numberOfOpenOrders)
+                }
                 return cell
             }
             
@@ -661,15 +667,18 @@ extension AccountAssetTableViewController {
         
         let alert = UIAlertController(title: "Trading account", message: nil, preferredStyle: .actionSheet)
         
-        let depositButton = UIAlertAction(title: "Deposit", style: .default) { _ in
-            self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Deposit, asset: nil)
+        if self.tradingAccount!.switcheo.confirmed.count > 0 {
+            let depositButton = UIAlertAction(title: "Deposit", style: .default) { _ in
+                self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Deposit, asset: nil)
+            }
+            alert.addAction(depositButton)
+            
+            let withdrawButton = UIAlertAction(title: "Withdraw", style: .default) { _ in
+                self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Withdraw, asset: nil)
+            }
+            alert.addAction(withdrawButton)
         }
-        alert.addAction(depositButton)
         
-        let withdrawButton = UIAlertAction(title: "Withdraw", style: .default) { _ in
-            self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Withdraw, asset: nil)
-        }
-        alert.addAction(withdrawButton)
         
         var orderTitle = String(format: "Orders")
         if self.numberOfOpenOrders > 0 {
