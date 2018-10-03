@@ -15,6 +15,9 @@ class OrdersTableViewController: UITableViewController {
     var orders: [SwitcheoOrder]?
     
     func loadOrders(status: SwitcheoOrderStatus) {
+        DispatchQueue.main.async {
+            HUD.show(.progress)
+        }
         O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: status) { result in
             switch result{
             case .failure(let error):
@@ -73,9 +76,6 @@ class OrdersTableViewController: UITableViewController {
     
     @objc func reloadData() {
         if orderStatus != nil {
-            DispatchQueue.main.async {
-                HUD.show(.progress)
-            }
             loadOrders(status: orderStatus!)
         }
     }

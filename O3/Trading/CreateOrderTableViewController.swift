@@ -129,8 +129,7 @@ class CreateOrderViewModel {
     }
     
     var title: String {
-        return String(format: "%@ %@", selectedAction == CreateOrderAction.Sell ? "SELL" : "BUY"
-            , wantAsset.symbol)
+        return String(format: "Trade %@ for %@", selectedAction == CreateOrderAction.Buy ? offerAsset.symbol : wantAsset.symbol, selectedAction == CreateOrderAction.Buy ? wantAsset.symbol : offerAsset.symbol)
     }
     
     func setupView() {
@@ -680,6 +679,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
     
     func onStateChange(readyToSubmit: Bool) {
         DispatchQueue.main.async {
+            self.title = self.viewModel.title
             self.reviewAndSubmitSubmitButton.isEnabled = readyToSubmit
         }
     }

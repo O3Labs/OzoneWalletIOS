@@ -45,7 +45,7 @@ class MarketplaceController: TabmanViewController, PageboyViewControllerDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         addThemeObserver()
-        self.bar.items = [Item(title: TokenSelectionStrings.NEP5), Item(title: "Apps")]
+        self.bar.items = [Item(title: TokenSelectionStrings.NEP5.uppercased()), Item(title: "Apps".uppercased())]
 
         self.navigationController?.navigationBar.topItem?.title = MarketplaceStrings.Marketplace
         let tokenSalesViewController = UIStoryboard(name: "TokenSale", bundle: nil).instantiateInitialViewController()!
@@ -58,7 +58,7 @@ class MarketplaceController: TabmanViewController, PageboyViewControllerDataSour
 
         if O3Cache.gas().value != 0 || O3Cache.neo().value != 0 {
             self.viewControllers.append(tokenSalesViewController)
-            self.bar.items?.append(Item(title: TokenSaleStrings.tokenSalesTitle))
+            self.bar.items?.append(Item(title: TokenSaleStrings.tokenSalesTitle.uppercased()))
         }
 
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
