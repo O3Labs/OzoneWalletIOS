@@ -31,7 +31,7 @@ protocol CreateOrderDelegate {
     
     func onBeginSubmitOrder()
     func onErrorSubmitOrder()
-    func onSuccessSubmitOrder()
+    func onSuccessSubmitOrder(filledPercent: Double)
     
     func didLoadOpenOrders(numberOfOpenOrder: Int)
     
@@ -258,8 +258,38 @@ class CreateOrderViewModel {
                 print(error)
                 self.delegate?.onErrorSubmitOrder()
             case .success(let response):
-                print(response)
-                self.delegate?.onSuccessSubmitOrder()
+                var filledPercent = Double(0.0)
+                let offerAmount = response["offer_amount"] as! String
+                let wantAmount = response["want_amount"] as! String
+                if let fills = response["fills"] as? Array<Switcheo.JSONDictionary> {
+                    let formatter = NumberFormatter()
+                    var filledAmount = Double(0)
+                    let side = response["side"] as! String
+                    if side == "buy" {
+                        filledAmount = fills.reduce(0.0, {(result: Double, item: Switcheo.JSONDictionary) -> Double in
+                            if let wantAmount = item["want_amount"] as? String {
+                                return result + (formatter.number(from: wantAmount)?.doubleValue)!
+                            }
+                            return result
+                        })
+                    } else {
+                        filledAmount = fills.reduce(0.0, {(result: Double, item: Switcheo.JSONDictionary) -> Double in
+                            if let fillAmount = item["fill_amount"] as? String {
+                                return result + (formatter.number(from: fillAmount)?.doubleValue)!
+                            }
+                            return result
+                        })
+                    }
+                    
+                   
+                    let originalWantAmount = side == "sell" ? (formatter.number(from: offerAmount)?.doubleValue)! : (formatter.number(from: wantAmount)?.doubleValue)!
+                    filledPercent = (filledAmount / originalWantAmount)  * Double(100.0)
+                    print(fills)
+                    print(filledAmount)
+                    print(filledPercent)
+                }
+                
+                self.delegate?.onSuccessSubmitOrder(filledPercent: filledPercent)
             }
         }
     }
@@ -606,13 +636,13 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                 self.priceInputToolbar.topOrderPrice = price
             } else {
                 let buyOrders = offers.filter { o -> Bool in
-                    return o.offerAsset.uppercased() == self.viewModel.wantAsset.symbol.uppercased()
+                    return o.wantAsset.uppercased() == self.viewModel.wantAsset.symbol.uppercased()
                 }
                 if buyOrders.count == 0 {
                     return
                 }
                 let top = buyOrders.first!
-                let price = Double(Double(top.wantAmount) / Double(top.offerAmount))
+                let price = Double(Double(top.offerAmount) / Double(top.wantAmount))
                 self.viewModel.topOrderPrice = price
                 self.priceInputToolbar.topOrderPrice = price
             }
@@ -659,12 +689,28 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
         }
     }
     
-    func onSuccessSubmitOrder() {
+    func onSuccessSubmitOrder(filledPercent: Double) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             HUD.hide()
             //alert
-            let title = "Order created!"
-            let message = "You can check the progress of the order in my orders screen"
+            var title = "Order created!"
+            var message = "You can check the progress of the order in the order screen."
+            if filledPercent > 0 {
+                let filledView = SAConfettiView(frame: self.view.bounds)
+                filledView.colors = [Theme.light.primaryColor, Theme.light.accentColor, Theme.light.positiveGainColor, Theme.light.negativeLossColor]
+                filledView.type = SAConfettiView.ConfettiType.image(UIImage(named: "confetti")!)
+                self.view.addSubview(filledView)
+                filledView.startConfetti()
+                
+                title = String(format: "Your order got filled! 🎉")
+                message = String(format: "%@%@ of your order instantly filled. Check the status of remaining order in an order screen.", filledPercent.string(2, removeTrailing: true), "%")
+            }
+            
+            if filledPercent.isEqual(to: 100.0) {
+                title = String(format: "Yeahhhhh 🎉")
+                message = String(format: "Your order has been instantly filled and deposited into your trading account!")
+            }
+            
             OzoneAlert.confirmDialog(title, message: message, cancelTitle: "Close", confirmTitle: "View my orders", didCancel: {
                 NotificationCenter.default.post(name: NSNotification.Name("needsReloadTradingBalances"), object: nil)
                 self.dismiss(animated: true, completion: {})

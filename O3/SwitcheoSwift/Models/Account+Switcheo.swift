@@ -202,14 +202,18 @@ public class SwitcheoAccount{
             authFills[fid] = self.signTxn(txn)
         }
         
+        //Parse json to
         for make in makes {
             let mid = make["id"] as! String
             let txn = make["txn"] as! Switcheo.JSONDictionary
             authMakes[mid] = self.signTxn(txn)
         }
-        
         let data = ["signatures":["fills": authFills, "makes": authMakes]] as Switcheo.JSONDictionary
-        self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "orders/"+id+"/broadcast", method: .POST, data: data, completion: completion)
+        
+        var result: (Switcheo.SWTHResult<Switcheo.JSONDictionary>) -> Void
+        result = completion
+        
+        self.switcheo.sendRequest(ofType:Switcheo.JSONDictionary.self, "orders/"+id+"/broadcast", method: .POST, data: data, completion: result)
     }
     
     public func createCancellation(orderID: String,
