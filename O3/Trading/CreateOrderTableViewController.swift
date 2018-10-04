@@ -628,6 +628,8 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                     return o.offerAsset.uppercased() == self.viewModel.wantAsset.symbol.uppercased()
                 }
                 if sellOrders.count == 0 {
+                    self.viewModel.topOrderPrice = 0
+                    self.priceInputToolbar.topOrderPrice = 0
                     return
                 }
                 let top = sellOrders.first!
@@ -639,6 +641,8 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                     return o.wantAsset.uppercased() == self.viewModel.wantAsset.symbol.uppercased()
                 }
                 if buyOrders.count == 0 {
+                    self.viewModel.topOrderPrice = 0
+                    self.priceInputToolbar.topOrderPrice = 0
                     return
                 }
                 let top = buyOrders.first!

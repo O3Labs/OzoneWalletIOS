@@ -51,6 +51,7 @@ class PriceInputToolbar:  UIView {
     //MARK: -
     @IBOutlet var currentMedianPriceButton: UIButton!
     @IBOutlet var topPriceButton: UIButton!
+    @IBOutlet var topPriceView: UIView!
     
     private var originalPrice: Double?
     private var originalPriceSet: Bool = false
@@ -61,12 +62,15 @@ class PriceInputToolbar:  UIView {
     var topOrderPrice: Double? {
         didSet{
             topPriceButton.setTitle(topOrderPrice?.formattedStringWithoutSeparator(8, removeTrailing: true), for: .normal)
+            topPriceView.isHidden = topOrderPrice!.isEqual(to: 0.0)
         }
     }
+    
     func setNewValue(v: Double) {
         originalPriceSet = false
         value = v
     }
+    
     var value: Double? {
         didSet {
             if originalPriceSet == true {
