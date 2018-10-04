@@ -11,6 +11,7 @@ import WebKit
 import Neoutils
 import KeychainAccess
 import Lottie
+import Amplitude
 
 extension Bundle {
     var releaseVersionNumber: String? {
@@ -187,6 +188,24 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                 "publicKey": Authenticated.account!.publicKeyString]
     }
 
+    func parseAndAnalyzeTransaction(unsignedHex: String) {
+        var unsignedHexVar = unsignedHex
+        if unsignedHexVar.hasSuffix("0000") {
+            unsignedHexVar.removeLast(4)
+            let jsonStart = unsignedHexVar.index(of: "7b")
+            let unsignedJson = unsignedHexVar.substring(from: jsonStart!)
+            let unsignedJsonData = unsignedJson.dataWithHexString()
+            do {
+                let dict = try JSONSerialization.jsonObject(with: unsignedJsonData, options: []) as? [String: Any]
+                Amplitude.instance().logEvent("Switcheo_Signed_JSON", withEventProperties: dict)
+            } catch {
+                return
+            }
+        } else {
+            Amplitude.instance().logEvent("Switcheo_Signed_Raw_TX")
+        }
+    }
+
     func requestToSign(unsignedRawTransaction: String) {
         print(unsignedRawTransaction)
         if unsignedRawTransaction.count < 2 {
@@ -207,6 +226,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                 return
             }
             let dic = ["signatureData": signed?.fullHexString ?? "", "account": self.currentAccount()] as [String: Any]
+            self.parseAndAnalyzeTransaction(unsignedHex: unsignedRawTransaction)
             self.callback(command: "requestToSign", data: dic, errorMessage: nil, withSession: true)
         }
     }
@@ -372,7 +392,7 @@ extension DAppBrowserViewController: WKNavigationDelegate {
             } else if let url = navigationAction.request.url,
                 let host = url.host, host.hasPrefix("switcheo.exchange") {
                 DispatchQueue.main.async {
-                    let redirectURL = URL(string: String(format:"https://analytics.o3.network/redirect/?url=%@", url.absoluteString))
+                    let redirectURL = URL(string: String(format: "https://analytics.o3.network/redirect/?url=%@", url.absoluteString))
                     Controller().openDappBrowser(url: redirectURL!, modal: true)
                 }
                 decisionHandler(.cancel)
