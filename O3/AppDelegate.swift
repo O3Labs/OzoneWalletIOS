@@ -87,7 +87,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        Amplitude.instance().initializeApiKey("accc6dc6c7dc3a9d85abd267bcca8ae9")
+        if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
+            ////If your plist contain root as Dictionary
+            if let dic = NSDictionary(contentsOfFile: path) as? [String: Any] {
+                let amp = dic["Amplitude"] as! [String: Any]
+                let apiKey = amp["APIKey"] as! String
+                #if !DEBUG
+                Amplitude.instance().initializeApiKey(apiKey)
+                #endif
+            }
+        }
+        
+        
         #if DEBUG
         print("DEBUG BUILD")
         #else

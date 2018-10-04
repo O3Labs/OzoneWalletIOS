@@ -261,10 +261,16 @@ class CreateOrderViewModel {
                 var filledPercent = Double(0.0)
                 let offerAmount = response["offer_amount"] as! String
                 let wantAmount = response["want_amount"] as! String
+                let orderID = response["id"] as! String
+                let createdAt = response["created_at"] as! String
+                let side = response["side"] as! String
+                let priceSelection = self.pairPrice.price.isEqual(to: self.firstFetchedPairPrice.price) ? "default" : "manual"
+                tradingEvent.shared.placedOrder(orderID: orderID, datetime: createdAt, side: side, pair: pair, baseCurrency: self.offerAsset.symbol, quantity: want, priceSelection: priceSelection)
+                
                 if let fills = response["fills"] as? Array<Switcheo.JSONDictionary> {
                     let formatter = NumberFormatter()
                     var filledAmount = Double(0)
-                    let side = response["side"] as! String
+                    
                     if side == "buy" {
                         filledAmount = fills.reduce(0.0, {(result: Double, item: Switcheo.JSONDictionary) -> Double in
                             if let wantAmount = item["want_amount"] as? String {
@@ -694,7 +700,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
     }
     
     func onSuccessSubmitOrder(filledPercent: Double) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
             HUD.hide()
             //alert
             var title = "Order created!"

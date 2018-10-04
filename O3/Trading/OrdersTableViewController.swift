@@ -162,6 +162,7 @@ extension OrdersTableViewController: OrderViewModelDelegate {
                         #if DEBUG
                         print(response)
                         #endif
+                        tradingEvent.shared.canceledOrder(orderID: v.orderID)
                         NotificationCenter.default.post(name: NSNotification.Name("needsReloadOpenOrders"), object: nil)
                          NotificationCenter.default.post(name: NSNotification.Name("needsReloadTradingBalances"), object: nil)
                         let removeIndex = self.orders?.index(where: { order -> Bool in

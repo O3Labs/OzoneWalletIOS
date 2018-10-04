@@ -312,6 +312,7 @@ extension DAppBrowserViewController {
         let alert = UIAlertController(title: asset.name, message: nil, preferredStyle: .actionSheet)
         
         let buyButton = UIAlertAction(title: "Buy", style: .default) { _ in
+            tradingEvent.shared.startBuy(asset: asset.symbol, source: TradingActionSource.tokenDetail)
             self.openCreateOrder(action: CreateOrderAction.Buy, asset: asset)
         }
         alert.addAction(buyButton)
@@ -319,6 +320,7 @@ extension DAppBrowserViewController {
         //we can't actually sell NEO but rather use NEO to buy other asset
         if asset.symbol != "NEO" {
             let sellButton = UIAlertAction(title: "Sell", style: .default) { _ in
+                tradingEvent.shared.startSell(asset: asset.symbol, source: TradingActionSource.tokenDetail)
                 self.openCreateOrder(action: CreateOrderAction.Sell, asset: asset)
             }
             alert.addAction(sellButton)

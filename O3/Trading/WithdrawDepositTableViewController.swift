@@ -216,7 +216,8 @@ class WithdrawDepositTableViewController: UITableViewController {
                     #if DEBUG
                     print(response)
                     #endif
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                        tradingEvent.shared.successfullyWithdraw(asset: self.selectedAsset!.symbol, amount: amount)
                         HUD.hide()
                         self.dismiss(animated: true, completion: {
                             self.delegate?.didFinishAction(action: Action.Withdraw)
@@ -245,7 +246,8 @@ class WithdrawDepositTableViewController: UITableViewController {
                     #if DEBUG
                     print(response)
                     #endif
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                        tradingEvent.shared.successfullyDeposit(asset: self.selectedAsset!.symbol, amount: amount)
                         HUD.hide()
                         self.dismiss(animated: true, completion: {
                             self.delegate?.didFinishAction(action: Action.Withdraw)

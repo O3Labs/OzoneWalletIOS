@@ -499,6 +499,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         let alert = UIAlertController(title: asset.name, message: nil, preferredStyle: .actionSheet)
         
         let buyButton = UIAlertAction(title: "Buy", style: .default) { _ in
+            tradingEvent.shared.startBuy(asset: asset.symbol, source: TradingActionSource.asset)
             self.openCreateOrder(action: CreateOrderAction.Buy, asset: asset)
         }
         alert.addAction(buyButton)
@@ -506,6 +507,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         //we can't actually sell NEO but rather use NEO to buy other asset
         if asset.symbol != "NEO" {
             let sellButton = UIAlertAction(title: "Sell", style: .default) { _ in
+                tradingEvent.shared.startSell(asset: asset.symbol, source: TradingActionSource.asset)
                 self.openCreateOrder(action: CreateOrderAction.Sell, asset: asset)
             }
             alert.addAction(sellButton)
@@ -513,6 +515,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         
         let withdrawButton = UIAlertAction(title: "Withdraw", style: .default) { _ in
+            tradingEvent.shared.startWithdraw(asset: asset.symbol, source: TradingActionSource.asset)
             self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Withdraw, asset: asset)
         }
         
@@ -552,6 +555,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             symbol = ontologyAssets[indexPath.row].symbol
         }
         
+        tradingEvent.shared.viewTokenDetail(asset: symbol, source: TradingActionSource.o3Account)
         let urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.account!.address)
         Controller().openDappBrowser(url: URL(string: urlString)!, modal: true, assetSymbol: symbol )
     }
@@ -669,11 +673,13 @@ extension AccountAssetTableViewController {
         
         if self.tradingAccount!.switcheo.confirmed.count > 0 {
             let depositButton = UIAlertAction(title: "Deposit", style: .default) { _ in
+                tradingEvent.shared.startDeposit(asset: "", source: TradingActionSource.tradingAccount)
                 self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Deposit, asset: nil)
             }
             alert.addAction(depositButton)
             
             let withdrawButton = UIAlertAction(title: "Withdraw", style: .default) { _ in
+                tradingEvent.shared.startWithdraw(asset: "", source: TradingActionSource.tradingAccount)
                 self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Withdraw, asset: nil)
             }
             alert.addAction(withdrawButton)
