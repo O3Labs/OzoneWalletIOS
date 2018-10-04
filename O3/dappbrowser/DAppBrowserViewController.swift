@@ -12,6 +12,7 @@ import Neoutils
 import KeychainAccess
 import Lottie
 import Amplitude
+import DeckTransition
 
 extension Bundle {
     var releaseVersionNumber: String? {
@@ -23,17 +24,22 @@ extension Bundle {
 }
 
 class DAppBrowserViewController: UIViewController {
-
+    
     @IBOutlet var containerView: UIView?
+    @IBOutlet var toolbar: UIView?
+    @IBOutlet var openOrderButton: BadgeUIButton?
+    
     var webView: WKWebView?
     var callbackMethodName: String = "callback"
     let availableCommands = ["init", "requestToConnect", "getPlatform", "getAccounts", "getBalances", "isAppAvailable", "requestToSign", "getDeviceInfo", "verifySession"]
-
+    
     var loggedIn = false
     //create new session ID everytime user open this page
     var sessionID: String?
     var currentURL: URL?
     var url: URL?
+    var selectedAssetSymbol: String?
+    
     var showMoreButton: Bool? {
         didSet {
             if showMoreButton == true {
@@ -41,44 +47,141 @@ class DAppBrowserViewController: UIViewController {
             }
         }
     }
+    
+    private  func loadTradableAssets(completion: @escaping ([TradableAsset]) -> Void) {
+        O3APIClient.shared.loadSupportedTokenSwitcheo { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let response):
+                completion(response)
+            }
+        }
+    }
+    
+    @objc private func loadOpenOrders() {
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open) { result in
+            switch result{
+            case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.openOrderButton?.isHidden =  response.switcheo.count == 0
+                    self.openOrderButton?.badgeValue = String(format: "%d",response.switcheo.count)
+                }
+            }
+        }
+    }
+    
+    private var tradableAsset: TradableAsset?
+    private var tradingAccount: TradingAccount?
+    @objc private func loadTradingAccountBalances() {
+        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.account!.address) { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+                return
+            case .success(let tradingAccount):
+                DispatchQueue.main.async {
+                    self.tradingAccount = tradingAccount
+                }
+            }
+        }
+    }
+    
+    @objc @IBAction func viewOpenOrders(_ sender: Any) {
+        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTabsViewControllerNav") as? UINavigationController else {
+            return
+        }
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadOpenOrders), name: NSNotification.Name(rawValue: "needsReloadOpenOrders"), object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(viewOpenOrders(_:)), name: NSNotification.Name(rawValue: "viewTradingOrders"), object: nil)
+        
+    }
+    
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "needsReloadOpenOrders"), object: nil)
+          NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "viewTradingOrders"), object: nil)
+    }
+    
     override func loadView() {
         super.loadView()
-
+        
+        self.toolbar?.isHidden = true
+        
         let contentController = WKUserContentController()
         //only on message handler
         contentController.add(self, name: "sendMessageHandler")
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
-        self.webView = WKWebView( frame: self.containerView!.bounds, configuration: config)
-        self.view = self.webView
+        self.webView = WKWebView( frame: self.view.bounds, configuration: config)
+        self.containerView?.addSubview(self.webView!)
+        
+        if selectedAssetSymbol != nil {
+            addObservers()
+            loadTradableAssets { list in
+                let tradableAsset = list.first(where: { t -> Bool in
+                    return t.symbol.uppercased() == self.selectedAssetSymbol!.uppercased()
+                })
+                DispatchQueue.main.async {
+                    if tradableAsset != nil {
+                        self.tradableAsset = tradableAsset
+                        self.toolbar?.isHidden = false
+                        self.loadTradingAccountBalances()
+                        DispatchQueue.global(qos: .background).async {
+                            self.loadOpenOrders()
+                        }
+                    }
+                }
+            }
+        }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        toolbar?.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.title = ""
         self.hidesBottomBarWhenPushed = true
-
+        self.navigationController?.hideHairline()
+        
         if Authenticated.account == nil {
             return
         }
+        
         if url == nil {
             self.dismiss(animated: false, completion: nil)
             return
         }
-
-        let req = URLRequest(url: url!)
+        var req = URLRequest(url: url!)
+        if (url?.absoluteString.hasPrefix("https://public.o3.network")) == true {
+            let queryItems = [NSURLQueryItem(name: "theme", value: UserDefaultsManager.themeIndex == 0 ? "light" : "dark")]
+            let urlComps = NSURLComponents(url: url!, resolvingAgainstBaseURL: false)!
+            urlComps.queryItems = queryItems as [URLQueryItem]
+             req = URLRequest(url: urlComps.url!)
+        }
+       
+        self.webView?.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.webView!.load(req)
         self.webView?.navigationDelegate = self
-
+        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(didTapLeft(_:)))
-
+        
         let loadingView = LOTAnimationView(name: "loader_portfolio")
         loadingView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         loadingView.play()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: loadingView)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -86,32 +189,32 @@ class DAppBrowserViewController: UIViewController {
         if self.loggedIn == true {
             let message = String(format: "You are connected to %@\nDisconnect and close O3 dapp browser?", self.currentURL!.host!)
             OzoneAlert.confirmDialog(message: message, cancelTitle: "Stay", confirmTitle: "Close", didCancel: {
-
+                
             }) {
-               self.close()
+                self.close()
             }
-
+            
             return
         }
         self.close()
     }
-
+    
     @objc func didTapRight(_ sender: Any) {
-
+        
         let message = String(format: "%@", (webView!.url?.absoluteString)!)
         var dialogTitle: String? = webView?.title!
-
+        
         if self.loggedIn == true {
             dialogTitle = String(format: "You are connected to %@", self.currentURL!.host!)
         }
-
+        
         let alert = UIAlertController(title: dialogTitle, message: message, preferredStyle: .actionSheet)
-
+        
         let share = UIAlertAction(title: AccountStrings.shareAction, style: .default) { _ in
             self.share()
         }
         alert.addAction(share)
-
+        
         //only show log out button when user logged in
         if  self.loggedIn == true {
             let logout = UIAlertAction(title: "Logout and return to O3", style: .default) { _ in
@@ -119,57 +222,57 @@ class DAppBrowserViewController: UIViewController {
             }
             alert.addAction(logout)
         }
-
+        
         let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
-
+            
         }
         alert.addAction(cancel)
-
+        
         alert.popoverPresentationController?.sourceView = sender as? UIView
         present(alert, animated: true, completion: nil)
     }
-
+    
     func share() {
         let shareURL = URL(string: "https://o3.network/")
         let activityViewController = UIActivityViewController(activityItems: [shareURL as Any], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
-
+        
         self.present(activityViewController, animated: true, completion: nil)
     }
-
+    
     @objc func close() {
         self.dismiss(animated: true, completion: nil)
     }
-
+    
     @objc func logout() {
         //notify the connected app that user has loggedout
         self.loggedIn = false
         sessionRevoked()
         self.close()
     }
-
+    
     func sessionRevoked() {
         sessionID = nil
         self.callback(command: "revokedSession", data: [:], errorMessage: nil, withSession: true)
     }
-
+    
     func callback(command: String, data: [String: Any]?, errorMessage: String?, withSession: Bool) {
         var dic: [String: Any] = [
             "command": command
         ]
-
+        
         if data != nil {
             dic["data"] = data
         }
-
+        
         if errorMessage != nil {
             dic["error"] = ["message": errorMessage]
         }
-
+        
         if withSession == true {
             dic["sessionID"] = sessionID
         }
-
+        
         let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
         let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
         self.webView?.evaluateJavaScript("o3.callback(\(jsonString))") { _, error in
@@ -178,11 +281,60 @@ class DAppBrowserViewController: UIViewController {
             }
         }
     }
+}
 
+//tradable asset
+extension DAppBrowserViewController {
+    
+    @IBAction func tradeTapped(_ sender: Any) {
+        showActionSheetAssetInTradingAccount(asset: self.tradableAsset!)
+    }
+    
+    func openCreateOrder(action: CreateOrderAction, asset: TradableAsset) {
+        let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "CreateOrderTableViewControllerNav") as! UINavigationController
+        if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
+            vc.viewModel = CreateOrderViewModel()
+            vc.viewModel.selectedAction = action
+            let inTradingAccount = self.tradingAccount?.switcheo.confirmed.first(where: { t -> Bool in
+                return t.symbol.uppercased() == asset.symbol.uppercased()
+            })
+            vc.viewModel.wantAsset = inTradingAccount != nil ? inTradingAccount : asset
+            vc.viewModel.offerAsset = self.tradingAccount?.switcheo.basePairs.filter({ t -> Bool in
+                return t.symbol != asset.symbol
+            }).first
+            vc.viewModel.tradingAccount = self.tradingAccount
+        }
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    func showActionSheetAssetInTradingAccount(asset: TradableAsset) {
+        
+        let alert = UIAlertController(title: asset.name, message: nil, preferredStyle: .actionSheet)
+        
+        let buyButton = UIAlertAction(title: "Buy", style: .default) { _ in
+            self.openCreateOrder(action: CreateOrderAction.Buy, asset: asset)
+        }
+        alert.addAction(buyButton)
+        
+        //we can't actually sell NEO but rather use NEO to buy other asset
+        if asset.symbol != "NEO" {
+            let sellButton = UIAlertAction(title: "Sell", style: .default) { _ in
+                self.openCreateOrder(action: CreateOrderAction.Sell, asset: asset)
+            }
+            alert.addAction(sellButton)
+        }
+        
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 extension DAppBrowserViewController: WKScriptMessageHandler {
-
+    
     func currentAccount() -> [String: Any] {
         return ["address": Authenticated.account!.address,
                 "publicKey": Authenticated.account!.publicKeyString]
@@ -230,7 +382,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             self.callback(command: "requestToSign", data: dic, errorMessage: nil, withSession: true)
         }
     }
-
+    
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if (message.name != "sendMessageHandler") {
             return
@@ -242,19 +394,19 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             self.callback(command: "", data: nil, errorMessage: "Invalid data", withSession: false)
             return
         }
-
+        
         let command = jsonData["command"]!
-
+        
         if !availableCommands.contains(command) {
             self.callback(command: command, data: nil, errorMessage: "unsupported command", withSession: false)
             return
         }
-
+        
         if command == "init" {
             self.callback(command: "init", data: [:], errorMessage: nil, withSession: false)
             return
         }
-
+        
         if command == "requestToConnect" {
             //this is a URL
             let dappURL =  jsonData["data"]!
@@ -265,7 +417,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             let host = currentURL?.host!
             let message = String(format: "%@ want to connect with your O3 app. Allow?", host!)
             OzoneAlert.confirmDialog(message: message, cancelTitle: "Cancel", confirmTitle: "Allow", didCancel: {
-
+                
             }) {
                 //pop up pincode here
                 let keychain = Keychain(service: "network.o3.neo.wallet")
@@ -273,7 +425,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                     _ = try keychain
                         .authenticationPrompt(String(format: "Connect with %@?", host!))
                         .get("ozonePrivateKey")
-
+                    
                     DispatchQueue.main.async {
                         self.title = host?.firstUppercased
                         //generate session ID
@@ -287,7 +439,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             }
             return
         }
-
+        
         if command == "verifySession" {
             let session =  jsonData["data"]!
             //invalid session
@@ -298,12 +450,12 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             self.callback(command: "verifySession", data: self.currentAccount(), errorMessage: nil, withSession: true)
             return
         }
-
+        
         //below are the methods that need permission
         if  self.loggedIn == false {
             return
         }
-
+        
         if command == "getPlatform" {
             self.callback(command: "getPlatform", data: ["platform": "ios", "version": Bundle.main.releaseVersionNumber ?? ""], errorMessage: nil, withSession: true)
         } else if command == "getAccounts" {
@@ -324,7 +476,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             self.getBalances()
         }
     }
-
+    
     func getBalances() {
         O3APIClient(network: Network.main).getAccountState(address: Authenticated.account!.address) { result in
             DispatchQueue.main.async {
@@ -354,13 +506,13 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                 }
             }
         }
-
+        
     }
-
+    
 }
 
 extension DAppBrowserViewController: WKNavigationDelegate {
-
+    
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if let url = webView.url,
             let host = url.host, host.hasPrefix("switcheo.exchange") {
@@ -373,13 +525,13 @@ extension DAppBrowserViewController: WKNavigationDelegate {
             button.titleLabel?.font = UIFont(name: "Avenir-Medium", size: 16)
             button.frame.size.width = 200
             self.navigationItem.titleView = button
-
+            
         } else {
             self.title = webView.title
         }
         self.navigationItem.rightBarButtonItem = nil
     }
-
+    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if navigationAction.navigationType == .linkActivated {
             if let url = navigationAction.request.url,
@@ -401,8 +553,8 @@ extension DAppBrowserViewController: WKNavigationDelegate {
                 decisionHandler(.allow)
             }
         } else {
-             decisionHandler(.allow)
+            decisionHandler(.allow)
         }
     }
-
+    
 }

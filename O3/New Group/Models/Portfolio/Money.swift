@@ -27,7 +27,9 @@ class Fiat: Money {
 
 extension Money {
     func formattedString() -> String {
-
+        if amount.isNaN {
+            return ""
+        }
         //more than one billion
         if self.amount > 1000000000 {
             var n = Double(self.amount)
@@ -52,12 +54,31 @@ extension Money {
     }
 
     func formattedSignedString() -> String {
+        if amount.isZero || amount.isNaN {
+            return ""
+        }
         let amountNumber = NSNumber(value: self.amount)
         let formatter = NumberFormatter()
         formatter.negativeFormat = "- #,##0.00"
         formatter.positiveFormat = "+ #,##0.00"
         formatter.minimumFractionDigits = 2
         formatter.numberStyle = .decimal
+        if let formattedTipAmount = formatter.string(from: amountNumber as NSNumber) {
+            return formattedTipAmount
+        }
+        return ""
+    }
+    
+    func formattedStringWithDecimal(decimals: Int) -> String {
+        if amount.isZero || amount.isNaN {
+            return ""
+        }
+        let amountNumber = NSNumber(value: amount)
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: self.locale)
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = decimals
+        formatter.minimumFractionDigits = 0
         if let formattedTipAmount = formatter.string(from: amountNumber as NSNumber) {
             return formattedTipAmount
         }

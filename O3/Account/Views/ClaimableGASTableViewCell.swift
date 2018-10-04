@@ -67,7 +67,8 @@ class ClaimableGASTableViewCell: UITableViewCell {
 
         claimContainerTitleLabel.theme_textColor = O3Theme.titleColorPicker
         confirmedClaimableGASContainer?.theme_backgroundColor = O3Theme.backgroundColorPicker
-        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        theme_backgroundColor = O3Theme.backgroundLightgrey
+        contentView.theme_backgroundColor = O3Theme.backgroundLightgrey
     }
 
     override func layoutSubviews() {
@@ -326,6 +327,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
         OntologyClient().getGasPrice { result in
             switch result {
             case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
                 //throw some error here
                 DispatchQueue.main.async {
                     self.delegate?.setIsClaimingOnt(false)
@@ -385,7 +389,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
 
     @objc func ontClaimNowTapped(_ sender: Any) {
-        self.claimConfirmedOng()
+        OzoneAlert.confirmDialog(message: "Claiming ONG requires the Ontology network fee of 0.01 ONG", cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.okPositiveConfirmString, didCancel: {return}) {
+            self.claimConfirmedOng()
+        }
     }
 
     func neoClaimedSuccess() {

@@ -256,7 +256,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         let url = URL(string: String(format: "https://public.o3.network/%@/assets/%@?address=%@", chain, asset.symbol, Authenticated.account!.address))
         DispatchQueue.main.async {
-            Controller().openDappBrowser(url: url!, modal: true)
+            Controller().openDappBrowser(url: url!, modal: true, assetSymbol: asset.symbol)
         }
     }
 

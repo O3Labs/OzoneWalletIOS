@@ -54,6 +54,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         let themedCells = [themeCell, privateKeyCell, watchOnlyCell, currencyCell, contactCell, logoutCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+            cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
         }
 
         for label in themedTitleLabels {

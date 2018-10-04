@@ -16,38 +16,43 @@ protocol TransactionHistoryDelegate: class {
 
 class TransactionCell: UITableViewCell {
     weak var delegate: TransactionHistoryDelegate?
-
-    enum TransactionType: String {
-        case send = "Sent"
-        case claim = "Claimed"
-        case recieved = "Recieved"
-
-    }
+    
     struct TransactionData {
-        var type: TransactionType
-        var date: UInt64 // Use block number for now
-        var asset: String
+        var date: UInt64
+        var asset: Asset
         var toAddress: String
         var fromAddress: String
-        var amount: Double
+        var amount: String
         var precision: Int = 0
     }
-
+    
+    
+    struct PendingTransactionData {
+        var txID: String
+        var time: UInt64
+        var asset: Asset
+        var toAddress: String
+        var fromAddress: String
+        var amount: String
+    }
+    
     @IBOutlet weak var transactionTimeLabel: UILabel?
     @IBOutlet weak var assetLabel: UILabel!
-    @IBOutlet weak var toAddressLabel: UILabel!
-    @IBOutlet weak var fromAddressLabel: UILabel!
+    @IBOutlet weak var assetImageView: UIImageView!
+    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
-
+    
     override func awakeFromNib() {
         assetLabel.theme_textColor = O3Theme.titleColorPicker
-        toAddressLabel.theme_textColor = O3Theme.primaryColorPicker
-        fromAddressLabel.theme_textColor = O3Theme.accentColorPicker
+        typeLabel.theme_textColor = O3Theme.lightTextColorPicker
+        addressLabel.theme_textColor = O3Theme.lightTextColorPicker
         transactionTimeLabel?.theme_textColor = O3Theme.lightTextColorPicker
         contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        theme_backgroundColor = O3Theme.backgroundColorPicker
         super.awakeFromNib()
     }
-
+    
     func getAddressAlias(address: String) -> String {
         if address == Authenticated.account?.address ?? "" {
             return AccountStrings.o3Wallet
@@ -60,26 +65,61 @@ class TransactionCell: UITableViewCell {
         }
         return address
     }
-
+    
     var data: TransactionData? {
         didSet {
-            if data?.toAddress ?? "" == Authenticated.account?.address ?? "" {
-                amountLabel.theme_textColor = O3Theme.positiveGainColorPicker
-                amountLabel.text = data?.amount.stringWithSign((data?.precision)!)
-            } else {
-                amountLabel.theme_textColor = O3Theme.negativeLossColorPicker
-                if data?.amount ?? 0 > 0 {
-                    data!.amount = (data?.amount ?? 0) * -1
-                }
-                amountLabel.text = data?.amount.stringWithSign((data?.precision)!)
-
+            if data == nil {
+                return
             }
-            assetLabel.text = data?.asset.uppercased()
-            transactionTimeLabel?.text = String(format: AccountStrings.blockPrefix, String(data?.date ?? 0))
-            toAddressLabel.text = String(format: AccountStrings.toPrefix, getAddressAlias(address: data?.toAddress ?? ""))
-            fromAddressLabel.text = String(format: AccountStrings.fromPrefix, getAddressAlias(address: data?.fromAddress ?? ""))
-            amountLabel.text = data?.amount.stringWithSign((data?.precision)!)
+            if data!.toAddress == Authenticated.account!.address{
+                amountLabel.theme_textColor = O3Theme.positiveGainColorPicker
+                typeLabel.text = "Received"
+                amountLabel.text = String(format:"+%@", (data?.amount)!)
+                addressLabel.text = String(format: "From: %@", getAddressAlias(address: (data?.fromAddress)!))
+            } else {
+                typeLabel.text = "Sent"
+                amountLabel.theme_textColor = O3Theme.negativeLossColorPicker
+                amountLabel.text = String(format:"-%@", (data?.amount)!)
+                addressLabel.text = String(format: "To: %@", getAddressAlias(address: (data?.toAddress)!))
+            }
+            
+            assetLabel.text = data?.asset.name
+            assetImageView.kf.setImage(with: URL(string: data!.asset.logoURL))
+            
+            let date = Date(timeIntervalSince1970: Double((data?.date)!))
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = NSLocale.current
+            dateFormatter.dateFormat = "yyyy.MM.dd @ HH:mm"
+            let strDate = dateFormatter.string(from: date)
+            
+            transactionTimeLabel?.text = strDate
+            
             amountLabel.theme_textColor = (data?.toAddress ?? "" == Authenticated.account?.address ?? "" ) ? O3Theme.positiveGainColorPicker : O3Theme.negativeLossColorPicker
+        }
+    }
+    
+    var pending: PendingTransactionData? {
+        didSet {
+            if pending == nil {
+                return
+            }
+            //pending will never be received
+            typeLabel.text = "Sending"
+            amountLabel.theme_textColor = O3Theme.negativeLossColorPicker
+            amountLabel.text = String(format:"-%@", (pending?.amount)!)
+            addressLabel.text = String(format: "To: %@", getAddressAlias(address: (pending?.toAddress)!))
+            
+            assetLabel.text = pending?.asset.name
+            assetImageView.kf.setImage(with: URL(string: pending!.asset.logoURL))
+            
+            let date = Date(timeIntervalSince1970: Double((pending?.time)!))
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = NSLocale.current
+            dateFormatter.dateFormat = "yyyy.MM.dd @ HH:mm"
+            let strDate = dateFormatter.string(from: date)
+            transactionTimeLabel?.text = strDate
+            
+            amountLabel.theme_textColor =  O3Theme.negativeLossColorPicker
         }
     }
 }

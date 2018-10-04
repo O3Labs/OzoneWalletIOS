@@ -32,7 +32,7 @@
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qft-K6-Wsi">
                                     <rect key="frame" x="16" y="38" width="343" height="49.5"/>
-                                    <string key="text">Share your email, and we'll send you info about the latest token sales. We vet all tokens that appear on O3, and this email is never shared with third parties. No 💩coins allowed!</string>
+                                    <string key="text">Share your email, and we'll send you info about the latest token sales. We vet all tokens that appear on O3, and this email is never shared with third parties.</string>
                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                     <color key="textColor" name="grey"/>
                                     <nil key="highlightedColor"/>

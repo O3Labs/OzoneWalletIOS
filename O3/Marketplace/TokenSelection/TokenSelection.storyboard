@@ -51,12 +51,21 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <imageView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="ic_trading_live" translatesAutoresizingMaskIntoConstraints="NO" id="1mb-mB-JpI">
+                                                            <rect key="frame" x="108" y="8" width="13" height="13"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="13" id="A4R-Xo-C2l"/>
+                                                                <constraint firstAttribute="height" constant="13" id="qOf-vj-iVj"/>
+                                                            </constraints>
+                                                        </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="dEe-s9-evG" firstAttribute="leading" secondItem="Hdt-37-YIM" secondAttribute="leading" constant="8" id="1tq-Q1-rTN"/>
                                                         <constraint firstItem="CEV-Wf-EFn" firstAttribute="centerY" secondItem="Hdt-37-YIM" secondAttribute="centerY" constant="-8" id="2zm-f6-eBF"/>
                                                         <constraint firstAttribute="trailing" secondItem="dEe-s9-evG" secondAttribute="trailing" constant="8" id="V4Q-BG-vjc"/>
+                                                        <constraint firstAttribute="trailing" secondItem="1mb-mB-JpI" secondAttribute="trailing" constant="8" id="e3i-X5-cbx"/>
+                                                        <constraint firstItem="1mb-mB-JpI" firstAttribute="top" secondItem="Hdt-37-YIM" secondAttribute="top" constant="8" id="itF-9v-fLK"/>
                                                         <constraint firstItem="CEV-Wf-EFn" firstAttribute="centerX" secondItem="Hdt-37-YIM" secondAttribute="centerX" id="s8f-Pk-dXN"/>
                                                         <constraint firstItem="dEe-s9-evG" firstAttribute="top" secondItem="CEV-Wf-EFn" secondAttribute="bottom" constant="8" id="xET-A7-cRa"/>
                                                     </constraints>
@@ -72,6 +81,7 @@
                                         <connections>
                                             <outlet property="tokenImageView" destination="CEV-Wf-EFn" id="fqg-NM-7A9"/>
                                             <outlet property="tokenSymbolLabel" destination="dEe-s9-evG" id="6aA-Wg-7bm"/>
+                                            <outlet property="tradableImageView" destination="1mb-mB-JpI" id="27G-l0-4yu"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -162,6 +172,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ic_trading_live" width="13" height="13"/>
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

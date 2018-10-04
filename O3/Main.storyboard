@@ -47,7 +47,7 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY O3 WALLET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EaX-BB-Mbg">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY O3 WALLET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EaX-BB-Mbg" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                                                 <rect key="frame" x="40" y="4.5" width="295" height="15"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="15" id="wss-Id-fZC"/>
@@ -379,7 +379,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M8c-Sw-rMF">
                                                     <rect key="frame" x="349.5" y="10" width="9.5" height="22"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
-                                                    <color key="textColor" red="0.4941176471" green="0.82745098039999998" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" name="grey"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5OD-EH-0zT">
@@ -444,7 +444,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bMh-de-bZf" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4064.8000000000002" y="-170.46476761619192"/>
+            <point key="canvasLocation" x="4164" y="-170"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="KgO-C9-pzk">
@@ -480,24 +480,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ugi-lA-ZNw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2688" y="117"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="nbY-Xc-Hc0">
-            <objects>
-                <viewController id="Szf-fr-gzU" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="3kc-x6-Gym">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="Xp1-iC-CLY"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" image="plus-noborder" id="e2F-Le-QfE">
-                        <inset key="imageInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-10"/>
-                    </tabBarItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="V5V-X4-yRc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2897" y="623"/>
         </scene>
         <!--Wallet Home Navigation Controller-->
         <scene sceneID="biH-0S-AIy">
@@ -705,7 +687,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wkl-N0-KN2" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4761" y="-170"/>
+            <point key="canvasLocation" x="5014" y="-170"/>
         </scene>
         <!--NewsFeed-->
         <scene sceneID="zoM-4C-BMM">
@@ -876,8 +858,8 @@
                                                         <constraint firstAttribute="width" constant="20" id="zXD-kl-Izl"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Currency: USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAd-JC-Q5E">
-                                                    <rect key="frame" x="46" y="0.0" width="287" height="44"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Currency: USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAd-JC-Q5E">
+                                                    <rect key="frame" x="48" y="0.0" width="287" height="44"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1038,7 +1020,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tyb-lI-4RW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2412" y="1325"/>
+            <point key="canvasLocation" x="2170" y="1518"/>
         </scene>
         <!--Currency Table View Controller-->
         <scene sceneID="gFO-y3-zHN">
@@ -1412,7 +1394,7 @@
         <!--Network Table View Controller-->
         <scene sceneID="uIM-YD-W3F">
             <objects>
-                <tableViewController id="Sx9-Bz-HOU" customClass="NetworkTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NetworkTableViewController" id="Sx9-Bz-HOU" customClass="NetworkTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="C6X-7a-Q1t">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1783,7 +1765,6 @@
         <image name="currency" width="20" height="20"/>
         <image name="ic_sadrobot" width="71" height="63"/>
         <image name="plus" width="24" height="24"/>
-        <image name="plus-noborder" width="25" height="25"/>
         <image name="shapeSetting" width="20" height="20"/>
         <image name="support" width="20" height="16"/>
         <image name="times" width="20" height="20"/>

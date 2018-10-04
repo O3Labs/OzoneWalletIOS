@@ -29,6 +29,7 @@ class PortfolioAssetCell: UITableViewCell {
     override func awakeFromNib() {
         let titleLabels = [assetTitleLabel, assetAmountLabel, assetFiatAmountLabel]
         contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        theme_backgroundColor = O3Theme.backgroundColorPicker
         for label in titleLabels {
             label?.theme_textColor = O3Theme.titleColorPicker
         }
@@ -67,6 +68,10 @@ class PortfolioAssetCell: UITableViewCell {
             assetPercentChangeLabel.text = String.percentChangeStringShort(latestPrice: latestPrice, previousPrice: firstPrice,
                                                                            referenceCurrency: referenceCurrency)
             assetPercentChangeLabel.theme_textColor = referencePrice >= referenceFirstPrice ? O3Theme.positiveGainColorPicker : O3Theme.negativeLossColorPicker
+            
+            if  assetPercentChangeLabel.text == "0.00%" {
+                assetPercentChangeLabel.theme_textColor = O3Theme.lightTextColorPicker
+            }
 
             let logoURL = String(format: "https://cdn.o3.network/img/neo/%@.png", assetName.uppercased())
             assetIcon.kf.setImage(with: URL(string: logoURL))

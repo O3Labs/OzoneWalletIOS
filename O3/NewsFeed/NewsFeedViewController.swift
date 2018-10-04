@@ -127,8 +127,8 @@ class NewsFeedViewController: UIViewController, UITableViewDelegate, UITableView
                                contentType: featureItem.category,
                                contentId: featureItem.title,
                                customAttributes: nil)
-
-        if let link = URL(string: featureItem.actionURL) {
+        let withAddressURLString = featureItem.actionURL.replacingOccurrences(of: "{address}", with: Authenticated.account!.address)
+        if let link = URL(string: withAddressURLString) {
             let webBrowserViewController = WebBrowserViewController()
             applyTheme(webViewController: webBrowserViewController)
             webBrowserViewController.loadURL(link)

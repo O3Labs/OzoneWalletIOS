@@ -24,6 +24,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.hideHairline()
         let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
         if captureDevice == nil {
             return
@@ -76,8 +77,10 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             if let dataString = metadataObj.stringValue {
                 if noScanYet {
                     noScanYet = false
-                    delegate?.qrScanned(data: dataString)
-                    DispatchQueue.main.async { self.dismiss(animated: true) }
+                    DispatchQueue.main.async {
+                        self.delegate?.qrScanned(data: dataString)
+                        self.dismiss(animated: true)
+                    }
                 }
             }
         }

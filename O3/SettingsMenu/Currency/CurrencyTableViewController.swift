@@ -59,6 +59,7 @@ class CurrencyTableViewController: UITableViewController {
         for cell in themedCells {
             cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+            cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
         }
     }
 

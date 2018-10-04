@@ -14,6 +14,7 @@ class TokenGridCell: UICollectionViewCell {
     @IBOutlet weak var tokenSymbolLabel: UILabel!
     @IBOutlet weak var tokenImageView: UIImageView!
     @IBOutlet weak var inWalletImageView: UIImageView!
+    @IBOutlet weak var tradableImageView: UIImageView!
 
     override func awakeFromNib() {
         tokenSymbolLabel.theme_textColor = O3Theme.lightTextColorPicker
