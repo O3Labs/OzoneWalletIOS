@@ -15,6 +15,7 @@ import Crashlytics
 import SwiftTheme
 import Neoutils
 import UserNotifications
+import Amplitude
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -86,6 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        Amplitude.instance().initializeApiKey("accc6dc6c7dc3a9d85abd267bcca8ae9")
         #if DEBUG
         print("DEBUG BUILD")
         #else

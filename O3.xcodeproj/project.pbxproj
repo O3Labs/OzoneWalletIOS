@@ -80,6 +80,8 @@
 		3557BAD420AA9D310034937C /* Array+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACE20AA9D300034937C /* Array+Util.swift */; };
 		3557BAD520AA9D310034937C /* NEP9.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACF20AA9D300034937C /* NEP9.swift */; };
 		3557BAD720AA9D310034937C /* Data+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAD120AA9D310034937C /* Data+Util.swift */; };
+		357D28C22122E16700DA67A0 /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 357D28C12122E16700DA67A0 /* Amplitude.framework */; };
+		357D28C32122E16700DA67A0 /* Amplitude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 357D28C12122E16700DA67A0 /* Amplitude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		358E95D9200358AA00A1878B /* NewsFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358E95D8200358AA00A1878B /* NewsFeed.swift */; };
 		35A6390F203517BB0054EA20 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A6390E203517BB0054EA20 /* CloudKit.framework */; };
 		35AD2B64209179010024A900 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 35AD2B61209179010024A900 /* Base.lproj */; };
@@ -305,6 +307,7 @@
 				35494574203C02B800332E53 /* Tabman.framework in Embed Frameworks */,
 				35494572203C01F500332E53 /* Pageboy.framework in Embed Frameworks */,
 				35494578203C03DC00332E53 /* AutoInsetter.framework in Embed Frameworks */,
+				357D28C32122E16700DA67A0 /* Amplitude.framework in Embed Frameworks */,
 				350100F5204541A6000F6648 /* SwiftTheme.framework in Embed Frameworks */,
 				6E97C4BA1F7FCB4000526FF0 /* DeckTransition.framework in Embed Frameworks */,
 				7537438C1F7F572500803A6C /* KeychainAccess.framework in Embed Frameworks */,
@@ -390,6 +393,7 @@
 		3557BACF20AA9D300034937C /* NEP9.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEP9.swift; sourceTree = "<group>"; };
 		3557BAD120AA9D310034937C /* Data+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Util.swift"; sourceTree = "<group>"; };
 		3557BADD20AAA0940034937C /* O3-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "O3-Bridging-Header.h"; sourceTree = "<group>"; };
+		357D28C12122E16700DA67A0 /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
 		358E95D8200358AA00A1878B /* NewsFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeed.swift; sourceTree = "<group>"; };
 		35A6390E203517BB0054EA20 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		35AD2B61209179010024A900 /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
@@ -620,6 +624,7 @@
 				751666B21F80C290009ACC07 /* WebKit.framework in Frameworks */,
 				6E6BD24B1FFC69330049098A /* PKHUD.framework in Frameworks */,
 				6EEE3DF620DBB70D0030A4AB /* neoutils.framework in Frameworks */,
+				357D28C22122E16700DA67A0 /* Amplitude.framework in Frameworks */,
 				3537848A2080713200648AF2 /* M13Checkbox.framework in Frameworks */,
 				6ECF0E251FAED3D800884F38 /* Reachability.framework in Frameworks */,
 				7537438B1F7F572500803A6C /* KeychainAccess.framework in Frameworks */,
@@ -1103,6 +1108,7 @@
 		7575ADB91F6006AB0077007B = {
 			isa = PBXGroup;
 			children = (
+				357D28C12122E16700DA67A0 /* Amplitude.framework */,
 				6E244EBC20858342001B4B22 /* Lottie.framework */,
 				353784892080713100648AF2 /* M13Checkbox.framework */,
 				6E0BECC82063B41200FA0A03 /* WebBrowser.framework */,
