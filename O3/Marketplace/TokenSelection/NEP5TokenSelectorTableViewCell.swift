@@ -21,7 +21,7 @@ class NEP5TokenSelectorTableViewCell: UITableViewCell {
         amountLabel.theme_textColor = O3Theme.titleColorPicker
         contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
         theme_backgroundColor = O3Theme.backgroundColorPicker
-        backgroundView = UIView()
+        backgroundView = UIView(frame: CGRect.zero)
         backgroundView?.theme_backgroundColor = O3Theme.backgroundColorPicker
         super.awakeFromNib()
     }

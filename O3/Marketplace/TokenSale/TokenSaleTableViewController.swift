@@ -268,7 +268,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         //ending soon section
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "tokenSaleInfoRowTableViewCell") as? TokenSaleInfoRowTableViewCell else {
-                return UITableViewCell()
+                return UITableViewCell(frame: CGRect.zero)
             }
 
             let infoRowData = TokenSaleInfoRowTableViewCell.InfoData(title: TokenSaleStrings.endsIn, subtitle: "")
@@ -279,7 +279,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         //contribution section
         if indexPath.section == 1 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "tokenSaleInfoRowTableViewCell") as? TokenSaleInfoRowTableViewCell else {
-                return UITableViewCell()
+                return UITableViewCell(frame: CGRect.zero)
             }
 
             let infoRow = saleInfo.info[indexPath.row]
@@ -290,7 +290,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         }
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "contributionTableViewCell") as? ContributionTableViewCell else {
-            return UITableViewCell()
+            return UITableViewCell(frame: CGRect.zero)
         }
 
         cell.delegate = self

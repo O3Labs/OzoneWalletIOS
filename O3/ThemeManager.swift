@@ -158,7 +158,7 @@ enum Theme: String {
     var seperatorColor: UIColor {
         switch self {
         case .light:
-            return UITableView().separatorColor!
+            return UITableView(frame: CGRect.zero).separatorColor!
         case .dark:
             return UIColor(named: "darkThemeSecondaryBackground")!
         }

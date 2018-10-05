@@ -21,7 +21,7 @@ class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDe
     @IBOutlet weak var wifTextView: O3TextView!
 
     lazy var inputToolbar: UIToolbar = {
-        var toolbar = UIToolbar()
+        var toolbar = UIToolbar(frame: CGRect.zero)
         toolbar.barStyle = .default
         toolbar.sizeToFit()
         let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)

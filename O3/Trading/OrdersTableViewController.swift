@@ -103,7 +103,7 @@ class OrdersTableViewController: UITableViewController {
         let order = orders![indexPath.row]
         let cellIdentifier = order.orderStatus == .open ? "cell-open" : "cell"
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? OrderTableViewCell else {
-            return UITableViewCell()
+            return UITableViewCell(frame: CGRect.zero)
         }
         
         let formatter = NumberFormatter()

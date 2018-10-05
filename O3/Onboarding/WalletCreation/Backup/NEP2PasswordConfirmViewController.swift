@@ -26,7 +26,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
     var previousPassword: String!
 
     lazy var inputToolbar: UIToolbar = {
-        var toolbar = UIToolbar()
+        var toolbar = UIToolbar(frame: CGRect.zero)
         toolbar.barStyle = .default
         toolbar.barTintColor = .white
         toolbar.sizeToFit()
@@ -53,7 +53,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
         passwordField.setLeftPaddingPoints(CGFloat(10.0))
         passwordField.setRightPaddingPoints(CGFloat(10.0))
         passwordField.becomeFirstResponder()
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
         setLocalizedStrings()
     }
 

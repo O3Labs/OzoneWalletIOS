@@ -98,7 +98,7 @@ class TokenSalesListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "tokenSaleTableViewCell") as? TokenSaleTableViewCell,
             let sale = tokenSales?.live[indexPath.row] else {
-                return UITableViewCell()
+                return UITableViewCell(frame: CGRect.zero)
         }
         let data = TokenSaleTableViewCell.TokenSaleData(imageURL: sale.squareLogoURL, name: sale.name, shortDescription: sale.shortDescription, time: sale.endTime)
         cell.tokenSaleData = data

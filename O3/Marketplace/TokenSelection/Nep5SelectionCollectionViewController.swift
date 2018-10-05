@@ -98,7 +98,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
             return header
         }
         
-        return UICollectionReusableView()
+        return UICollectionReusableView(frame: CGRect.zero)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

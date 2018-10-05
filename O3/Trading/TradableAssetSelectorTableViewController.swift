@@ -61,7 +61,7 @@ class TradableAssetSelectorTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-token") as? NEP5TokenSelectorTableViewCell else {
-            return UITableViewCell()
+            return UITableViewCell(frame: CGRect.zero)
         }
         
         let token = filteredAssets[indexPath.row]
@@ -75,8 +75,11 @@ class TradableAssetSelectorTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        delegate?.assetSelected(selected: filteredAssets[indexPath.row], data: self.data)
-        self.dismiss(animated: true, completion: nil)
+        DispatchQueue.main.async{
+            self.delegate?.assetSelected(selected: self.filteredAssets[indexPath.row], data: self.data)
+            self.dismiss(animated: true, completion: nil)
+        }
+        
     }
     
 }

@@ -27,7 +27,7 @@ public class BadgeBarButtonItem: UIBarButtonItem
     private func updateBadge()
     {
         if self.label == nil {
-            let label = UILabel()
+            let label = UILabel(frame: CGRect.zero)
             label.backgroundColor = .red
             label.alpha = 1.0
             label.layer.cornerRadius = 9

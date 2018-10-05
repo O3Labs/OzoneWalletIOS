@@ -104,7 +104,7 @@ public class Switcheo {
                     }
                     print(endpointURL,jsonError,"________ERROR_________")
 //                    #endif
-                    completion(.failure(self.log(jsonError.toString())))
+                    completion(.failure(jsonError["error"] as! String))
                     return
             }
             

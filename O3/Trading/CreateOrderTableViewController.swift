@@ -30,7 +30,7 @@ protocol CreateOrderDelegate {
     func onStateChange(readyToSubmit: Bool)
     
     func onBeginSubmitOrder()
-    func onErrorSubmitOrder()
+    func onErrorSubmitOrder(message: String)
     func onSuccessSubmitOrder(filledPercent: Double)
     
     func didLoadOpenOrders(numberOfOpenOrder: Int)
@@ -255,8 +255,7 @@ class CreateOrderViewModel {
         switcheoAccount.order(requestOrder: order!) { result in
             switch result {
             case .failure(let error):
-                print(error)
-                self.delegate?.onErrorSubmitOrder()
+                self.delegate?.onErrorSubmitOrder(message: error)
             case .success(let response):
                 var filledPercent = Double(0.0)
                 let offerAmount = response["offer_amount"] as! String
@@ -363,9 +362,9 @@ class CreateOrderTableViewController: UITableViewController {
     @IBOutlet var labelList: [UILabel]?
     @IBOutlet var textFieldList: [UITextField]?
     
-    var inputToolbar = AssetInputToolbar()
-    var priceInputToolbar = PriceInputToolbar()
-    var priceInputToggle = PriceInputToggleToolbar()
+    var inputToolbar = AssetInputToolbar(frame: CGRect.zero)
+    var priceInputToolbar = PriceInputToolbar(frame: CGRect.zero)
+    var priceInputToggle = PriceInputToggleToolbar(frame: CGRect.zero)
     
     func setupNavbar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismiss(_: )))
@@ -692,10 +691,10 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
         }
     }
     
-    func onErrorSubmitOrder() {
+    func onErrorSubmitOrder(message: String) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
             HUD.hide()
-            HUD.flash(HUDContentType.labeledError(title: "Unable to submit order", subtitle: "Please try again later."), delay: 3)
+            HUD.flash(HUDContentType.labeledError(title: "Unable to submit order", subtitle: message), delay: 3)
         }
     }
     
@@ -892,7 +891,7 @@ extension CreateOrderTableViewController: PriceInputToggleToolbarDelegate {
                 self.targetPriceTextField.inputView = nil
                 self.targetPriceTextField.reloadInputViews()
             } else {
-                self.priceInputToolbar = PriceInputToolbar()
+                self.priceInputToolbar = PriceInputToolbar(frame: CGRect.zero)
                 self.priceInputToolbar.delegate = self
                 self.targetPriceTextField.inputView = self.priceInputToolbar.loadNib()
                 self.priceInputToolbar.value = self.viewModel.firstFetchedPairPrice.price

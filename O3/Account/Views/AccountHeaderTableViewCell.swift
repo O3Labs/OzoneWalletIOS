@@ -45,7 +45,7 @@ class AccountHeaderTableViewCell: UITableViewCell {
                 self.horizontalStackView?.addArrangedSubview(imageView)
             }
         }
-        let spacerView = UIView()
+        let spacerView = UIView(frame: CGRect.zero)
         spacerView.setContentHuggingPriority(.defaultLow, for: .horizontal)
         spacerView.translatesAutoresizingMaskIntoConstraints = false
         spacerView.backgroundColor = UIColor.clear

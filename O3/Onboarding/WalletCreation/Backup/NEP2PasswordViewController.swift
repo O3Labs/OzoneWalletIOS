@@ -17,7 +17,7 @@ class NEP2PasswordViewController: UITableViewController {
     var wif = ""
 
     lazy var inputToolbar: UIToolbar = {
-        var toolbar = UIToolbar()
+        var toolbar = UIToolbar(frame: CGRect.zero)
         toolbar.barStyle = .default
         toolbar.barTintColor = .white
         toolbar.isTranslucent = true
@@ -49,7 +49,7 @@ class NEP2PasswordViewController: UITableViewController {
         passwordTextField.setLeftPaddingPoints(CGFloat(10.0))
         passwordTextField.setRightPaddingPoints(CGFloat(10.0))
         passwordTextField.becomeFirstResponder()
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
         setLocalizedStrings()
     }
 

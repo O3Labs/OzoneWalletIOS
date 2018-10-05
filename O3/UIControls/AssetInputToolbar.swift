@@ -100,7 +100,7 @@ extension UIView {
         let nibName = type(of: self).description().components(separatedBy: ".").last!
         let nib = UINib(nibName: nibName, bundle: bundle)
         guard let view = nib.instantiate(withOwner: self, options: nil).first as? UIView else {
-            return UIView()
+            return UIView(frame: CGRect.zero)
         }
         return view
     }

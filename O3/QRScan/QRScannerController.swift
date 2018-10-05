@@ -47,7 +47,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             self.view.layer.insertSublayer(videoPreviewLayer!, at: 0)
 
             captureSession!.startRunning()
-            qrCodeFrameView = UIView()
+            qrCodeFrameView = UIView(frame: CGRect.zero)
 
             if let qrCodeFrameView = qrCodeFrameView {
                 qrCodeFrameView.layer.borderColor = UIColor.green.cgColor

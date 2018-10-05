@@ -302,7 +302,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         if indexPath.section == sections.unclaimedGAS.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-claimable-gas") as? ClaimableGASTableViewCell else {
-                let cell =  UITableViewCell()
+                let cell = UITableViewCell(frame: CGRect.zero)
                 cell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
@@ -314,7 +314,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         if indexPath.section == sections.toolbar.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-toolbar") as? MainToolbarTableViewCell else {
-                let cell =  UITableViewCell()
+                let cell =  UITableViewCell(frame: CGRect.zero)
                 cell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
@@ -325,7 +325,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         if indexPath.section == sections.inbox.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-inbox-item") as? InboxItemTableViewCell else {
-                let cell =  UITableViewCell()
+                let cell =  UITableViewCell(frame: CGRect.zero)
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
@@ -337,7 +337,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         if indexPath.section == sections.neoAssets.rawValue {
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nativeasset") as? NativeAssetTableViewCell else {
-                let cell =  UITableViewCell()
+                let cell =  UITableViewCell(frame: CGRect.zero)
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
@@ -361,7 +361,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         if indexPath.section == sections.nep5tokens.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
-                let cell =  UITableViewCell()
+                let cell =  UITableViewCell(frame: CGRect.zero)
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
@@ -378,7 +378,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         if indexPath.section == sections.tradingAccountSection.rawValue {
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
-                let cell =  UITableViewCell()
+                let cell =  UITableViewCell(frame: CGRect.zero)
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
@@ -400,7 +400,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         //ontology asset using the same nep5 token cell
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
-            let cell =  UITableViewCell()
+            let cell =  UITableViewCell(frame: CGRect.zero)
             cell.theme_backgroundColor = O3Theme.backgroundColorPicker
             return cell
         }
@@ -742,6 +742,9 @@ extension AccountAssetTableViewController {
         O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open) { result in
             switch result{
             case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
                 completion(0)
             case .success(let response):
                 completion(response.switcheo.count)

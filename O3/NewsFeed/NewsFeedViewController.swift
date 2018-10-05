@@ -88,7 +88,7 @@ class NewsFeedViewController: UIViewController, UITableViewDelegate, UITableView
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let newsRowCell = tableView.dequeueReusableCell(withIdentifier: "newsFeedCell") as? NewsFeedCell else {
-            return UITableViewCell()
+            return UITableViewCell(frame: CGRect.zero)
         }
         let item = feedData?.items[indexPath.row]
         newsRowCell.newsRowImageView.kf.setImage(with: URL(string: item?.images[0].url ?? ""))

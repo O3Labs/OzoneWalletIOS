@@ -16,21 +16,6 @@ class BadgeUIButton : UIButton {
         }
     }
     
-    override init(frame :CGRect)  {
-        // Initialize the UIView
-        super.init(frame : frame)
-        
-        self.awakeFromNib()
-    }
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-        self.awakeFromNib()
-    }
-    
-    
     override func awakeFromNib()
     {
         self.drawBadgeLayer()
@@ -56,14 +41,14 @@ class BadgeUIButton : UIButton {
         labelText.font = UIFont(name: "Avenir-Heavy", size: 12)
         labelText.alignmentMode = kCAAlignmentCenter
         labelText.foregroundColor = UIColor.white.cgColor
-        let labelString = self.badgeValue.uppercased() as String?
-        let labelFont = UIFont(name: "Avenir-Heavy", size: 12)
-        let attributes = [kCTFontAttributeName : labelFont]
+//        let labelString = self.badgeValue.uppercased() as String?
+//        let labelFont = UIFont(name: "Avenir-Heavy", size: 12)
+//        let attributes = [kCTFontAttributeName : labelFont]
         let w = CGFloat(18.0)
         let h = CGFloat(18.0)  // fixed height
-        let labelWidth = min(w * 0.8, h)    // Starting point
-        let rect = labelString!.boundingRect(with: CGSize(width: labelWidth, height: h), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: attributes as [NSAttributedStringKey : Any], context: nil)
-        let textWidth = round(rect.width * UIScreen.main.scale)
+//        let labelWidth = min(w * 0.8, h)    // Starting point
+//        let rect = labelString!.boundingRect(with: CGSize(width: labelWidth, height: h), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: attributes as [NSAttributedStringKey : Any], context: nil)
+//        let textWidth = round(rect.width * UIScreen.main.scale)
         labelText.frame = CGRect(x: 0, y: 0.5, width: w, height: h)
         
         //! Initialize outline, set frame and color

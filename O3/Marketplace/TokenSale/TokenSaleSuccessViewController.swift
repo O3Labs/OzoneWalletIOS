@@ -119,7 +119,7 @@ extension TokenSaleSuccessViewController {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? TokenSaleTransactionInfoTableViewCell else {
-            return UITableViewCell()
+            return UITableViewCell(frame: CGRect.zero)
         }
         let item = tokenSaleTransactionItems[indexPath.row]
         cell.info = item

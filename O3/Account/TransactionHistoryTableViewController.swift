@@ -71,7 +71,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             switch result {
             case .failure:
                 return
-            case .success(let tokens):
+            case .success(let _):
                 self.loadTransactionHistory(appendPage: false, pageNo: 1)
             }
         }

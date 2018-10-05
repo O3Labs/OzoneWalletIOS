@@ -31,7 +31,7 @@ class O3TabBarController: UITabBarController {
         tabOverrideView.isUserInteractionEnabled = true
         tabOverrideView.backgroundColor = UIColor.clear
 
-        let button = UIButton(frame: tabOverrideView.frame)
+        let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(tappedSettingsTab), for: .touchUpInside)
         button.backgroundColor = UIColor.clear
         tabOverrideView.embed(button)

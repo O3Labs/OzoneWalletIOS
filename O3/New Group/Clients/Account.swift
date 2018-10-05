@@ -46,9 +46,10 @@ public class Account {
     }
 
     public init?() {
-        var pkeyData = Data(count: 32)
-        let result = pkeyData.withUnsafeMutableBytes {
-            SecRandomCopyBytes(kSecRandomDefault, pkeyData.count, $0)
+        let byteCount: Int = 32
+        var keyData = Data(count: byteCount)
+        let result = keyData.withUnsafeMutableBytes {
+            SecRandomCopyBytes(kSecRandomDefault, byteCount, $0)
         }
 
         if result != errSecSuccess {
@@ -56,10 +57,10 @@ public class Account {
         }
 
         var error: NSError?
-        guard let wallet = NeoutilsGenerateFromPrivateKey(pkeyData.fullHexString, &error) else { return nil }
+        guard let wallet = NeoutilsGenerateFromPrivateKey(keyData.fullHexString, &error) else { return nil }
         self.wif = wallet.wif()
         self.publicKey = wallet.publicKey()
-        self.privateKey = pkeyData
+        self.privateKey = keyData
         self.address = wallet.address()
         self.hashedSignature = wallet.hashedSignature()
     }

@@ -44,7 +44,7 @@ class WithdrawDepositTableViewController: UITableViewController {
     @IBOutlet var headerLabel: UILabel!
     @IBOutlet var footerLabel: UILabel!
     @IBOutlet var confirmButton: UIButton?
-    var inputToolbar = AssetInputToolbar()
+    var inputToolbar = AssetInputToolbar(frame: CGRect.zero)
     
     func setupTheme() {
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -206,10 +206,9 @@ class WithdrawDepositTableViewController: UITableViewController {
         switcheoAccount.withdrawal(requestTransaction: request!, completion: {result in
             switch result {
             case .failure(let error):
-                print(error)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                     HUD.hide()
-                    HUD.flash(HUDContentType.labeledError(title: "Cannot withdraw", subtitle: "Please try again later."), delay: 3)
+                    HUD.flash(HUDContentType.labeledError(title: "Unable to withdraw", subtitle: error), delay: 3)
                 }
             case .success(let response):
                 DispatchQueue.main.async {
@@ -236,10 +235,10 @@ class WithdrawDepositTableViewController: UITableViewController {
         let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.account!)
         switcheoAccount.deposit(requestTransaction: request!) { result in
             switch result {
-            case .failure(_):
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            case .failure(let error):
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                     HUD.hide()
-                    HUD.flash(HUDContentType.labeledError(title: "Cannot deposit", subtitle: "Please try again later."), delay: 3)
+                    HUD.flash(.labeledError(title: "Unable to deposit", subtitle: error), delay: 3)
                 }
             case .success(let response):
                 DispatchQueue.main.async {

@@ -8,17 +8,17 @@
 
 import UIKit
 
-class FixedDecimalTextField: NoActionUITextField, UITextFieldDelegate {
+class FixedDecimalTextField: UITextField, UITextFieldDelegate {
 
     @IBInspectable var decimals: Int = 8
 
     override func awakeFromNib() {
+           self.delegate = self
         super.awakeFromNib()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.delegate = self
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return false
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -29,14 +29,10 @@ class FixedDecimalTextField: NoActionUITextField, UITextFieldDelegate {
         
         let existingTextHasDecimalSeperator = textField.text?.range(of: ".")
         let replacementTextHasDecimalSeperator = string.range(of: ".")
-        
-        var validTextFieldInput = NSCharacterSet.decimalDigits // Create range with only decimal digits
-        validTextFieldInput.insert(".") // Add the decimal character (in case using Keyboard?)
-        
-        // Create test variable for replacement text against valid input range
+        var validTextFieldInput = NSCharacterSet.decimalDigits
+        validTextFieldInput.insert(".")        
         let replacementTextIsOnlyNumbers = string.rangeOfCharacter(from: validTextFieldInput)
-        
-        if string == "" { // If valid number or backspace ("")
+        if string == "" {
             return true
         } else {
             if (textField.text?.components(separatedBy: ".").count)! > 1 {
