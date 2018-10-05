@@ -12,7 +12,7 @@ import LocalAuthentication
 import SwiftTheme
 
 protocol LoginToCurrentWalletViewControllerDelegate {
-    func authorized(launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
+    func authorized(launchOptions: [UIApplication.LaunchOptionsKey: Any]?)
 }
 
 class LoginToCurrentWalletViewController: UIViewController {
@@ -21,7 +21,7 @@ class LoginToCurrentWalletViewController: UIViewController {
     @IBOutlet var mainImageView: UIImageView?
     @IBOutlet weak var cancelButton: UIButton!
 
-    var launchOptions: [UIApplicationLaunchOptionsKey: Any]?
+    var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     var delegate: LoginToCurrentWalletViewControllerDelegate?
     func login() {
         let keychain = Keychain(service: "network.o3.neo.wallet")
@@ -104,7 +104,7 @@ class LoginToCurrentWalletViewController: UIViewController {
     }
 
     func setLocalizedStrings() {
-        cancelButton.setTitle(SettingsStrings.logout, for: UIControlState())
+        cancelButton.setTitle(SettingsStrings.logout, for: UIControl.State())
         if #available(iOS 8.0, *) {
             var error: NSError?
             let hasTouchID = LAContext().canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error)

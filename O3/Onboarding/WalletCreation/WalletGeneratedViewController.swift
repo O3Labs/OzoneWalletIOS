@@ -25,11 +25,11 @@ class WalletGeneratedViewController: UIViewController {
         view.backgroundColor = UIColor.clear
         view.isOpaque = false
 
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let visualEffectView = UIVisualEffectView(effect: blurEffect)
         visualEffectView.frame = view.bounds
         view.addSubview(visualEffectView)
-        view.bringSubview(toFront: alertContainer)
+        view.bringSubviewToFront(alertContainer)
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(doneButtonTapped(_:))))
         animationContainer.embed(animationView)
@@ -44,7 +44,7 @@ class WalletGeneratedViewController: UIViewController {
     func setLocalizedStrings() {
         titleView.text = OnboardingStrings.walletGenerated
         subtitleLabel.text = OnboardingStrings.pleaseTakeAMoment
-        doneButton.setTitle(OnboardingStrings.gotIt, for: UIControlState())
+        doneButton.setTitle(OnboardingStrings.gotIt, for: UIControl.State())
     }
 
 }

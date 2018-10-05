@@ -42,7 +42,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
         tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
-        priorityInfoButton.theme_setTitleColor(O3Theme.lightTextColorPicker, forState: UIControlState())
+        priorityInfoButton.theme_setTitleColor(O3Theme.lightTextColorPicker, forState: UIControl.State())
     }
 
     func setAssetRateInfo() {
@@ -83,7 +83,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
             self.endingSoon =  true
             countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDownDate), userInfo: nil, repeats: true)
         }
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 30
 
         self.navigationItem.largeTitleDisplayMode = .never
@@ -154,7 +154,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 1 {
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
         if indexPath.section == 0 {
             return 35.0
@@ -378,7 +378,7 @@ class TokenSaleTableViewController: UITableViewController, ContributionCellDeleg
 
     func setLocalizedStrings() {
         priorityLabel?.text = TokenSaleStrings.priority
-        priorityInfoButton?.setTitle(TokenSaleStrings.whatIsPriority, for: UIControlState())
-        participateButton.setTitle(TokenSaleStrings.review, for: UIControlState())
+        priorityInfoButton?.setTitle(TokenSaleStrings.whatIsPriority, for: UIControl.State())
+        participateButton.setTitle(TokenSaleStrings.review, for: UIControl.State())
     }
 }

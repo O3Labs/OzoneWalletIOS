@@ -51,9 +51,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
         neoGasClaimingStateLabel?.text = AccountStrings.confirmedClaimableGasTitle
         ontClaimingStateTitle?.text = AccountStrings.confirmedClaimableGasTitle
         neoClaimNowButton?.setTitle(AccountStrings.claimNowButton, for: .normal)
-        neoSyncNowButton?.setTitle(AccountStrings.updateNowButton, for: UIControlState())
+        neoSyncNowButton?.setTitle(AccountStrings.updateNowButton, for: UIControl.State())
         ontClaimButton?.setTitle(AccountStrings.claimNowButton, for: .normal)
-        ontSyncButton?.setTitle(AccountStrings.updateNowButton, for: UIControlState())
+        ontSyncButton?.setTitle(AccountStrings.updateNowButton, for: UIControl.State())
         claimContainerTitleLabel.text = AccountStrings.claimNowButton
     }
 
@@ -62,8 +62,8 @@ class ClaimableGASTableViewCell: UITableViewCell {
         ontClaimingStateTitle?.theme_textColor = O3Theme.lightTextColorPicker
         claimableOntAmountLabel?.theme_textColor = O3Theme.titleColorPicker
         claimableGasAmountLabel?.theme_textColor = O3Theme.titleColorPicker
-        neoSyncNowButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControlState())
-        ontSyncButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControlState())
+        neoSyncNowButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
+        ontSyncButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
 
         claimContainerTitleLabel.theme_textColor = O3Theme.titleColorPicker
         confirmedClaimableGASContainer?.theme_backgroundColor = O3Theme.backgroundColorPicker

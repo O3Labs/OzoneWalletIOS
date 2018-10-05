@@ -129,7 +129,7 @@ extension TokenSaleSuccessViewController {
     func setLocalizedStrings() {
         statusLabel.text = TokenSaleStrings.successfulTransaction
         transactionLabel.text = TokenSaleStrings.transactionTitle
-    saveButton.setTitle(TokenSaleStrings.saveTitle, for: UIControlState())
-        closeButton.setTitle(TokenSaleStrings.closeTitle, for: UIControlState())
+    saveButton.setTitle(TokenSaleStrings.saveTitle, for: UIControl.State())
+        closeButton.setTitle(TokenSaleStrings.closeTitle, for: UIControl.State())
     }
 }

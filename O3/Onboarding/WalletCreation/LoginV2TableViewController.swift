@@ -182,6 +182,6 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
     func setLocalizedStrings() {
         title = OnboardingStrings.loginTitle
         pkeyLabel.text = OnboardingStrings.privateKeyTitle
-        loginButton.setTitle(OnboardingStrings.loginTitle, for: UIControlState())
+        loginButton.setTitle(OnboardingStrings.loginTitle, for: UIControl.State())
     }
 }

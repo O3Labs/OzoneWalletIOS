@@ -26,7 +26,7 @@ class PrivateKeyCollectionViewCell: UICollectionViewCell {
 
     var data: String? {
         didSet {
-            backupButton.setTitle(OnboardingStrings.backupAndContinue, for: UIControlState())
+            backupButton.setTitle(OnboardingStrings.backupAndContinue, for: UIControl.State())
 
             self.privateKeyImageView.image = UIImage(qrData: data!, width: self.privateKeyImageView.frame.width, height: self.privateKeyImageView.frame.height, qrLogoName: "ic_QRkey")
             let attributedString = NSMutableAttributedString(string: data!)
@@ -35,8 +35,8 @@ class PrivateKeyCollectionViewCell: UICollectionViewCell {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = .center
             paragraphStyle.lineSpacing = 4 // Whatever line spacing you want in points
-            attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
-            attributedString.addAttribute(NSAttributedStringKey.kern, value: NSNumber(value: 2.0), range: NSRange(location: 0, length: attributedString.length))
+            attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+            attributedString.addAttribute(NSAttributedString.Key.kern, value: NSNumber(value: 2.0), range: NSRange(location: 0, length: attributedString.length))
             self.privateKeyLabel.attributedText = attributedString
         }
     }

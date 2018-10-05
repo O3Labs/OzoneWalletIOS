@@ -39,7 +39,7 @@ class TokenSaleErrorViewController: UIViewController {
 
     func setLocalizedStrings() {
         errorDescriptionLabel.text = TokenSaleStrings.transactionErrorDescriptionTitle
-        closeButton.setTitle(TokenSaleStrings.closeTitle, for: UIControlState())
-        contactButton.setTitle(TokenSaleStrings.contact, for: UIControlState())
+        closeButton.setTitle(TokenSaleStrings.closeTitle, for: UIControl.State())
+        contactButton.setTitle(TokenSaleStrings.contact, for: UIControl.State())
     }
 }

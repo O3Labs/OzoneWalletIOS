@@ -147,7 +147,7 @@ class TokenSalesListTableViewController: UITableViewController {
         self.navigationItem.title = TokenSaleStrings.tokenSalesTitle
         getNotifiedTitleLabel.text = TokenSaleStrings.getNotifiedTitle
         getNotifiedDescriptionLabel.text = TokenSaleStrings.getNotifiedDescription
-        subscribeButton?.setTitle(TokenSaleStrings.subscribe, for: UIControlState())
+        subscribeButton?.setTitle(TokenSaleStrings.subscribe, for: UIControl.State())
 
     }
 }

@@ -34,8 +34,8 @@ class WalletToolBarCell: UITableViewCell {
     }
 
     func setLocalizedStrings() {
-        sendButton.setTitle(AccountStrings.send, for: UIControlState())
-        requestButton.setTitle(AccountStrings.request, for: UIControlState())
-        scanButton.setTitle(AccountStrings.scan, for: UIControlState())
+        sendButton.setTitle(AccountStrings.send, for: UIControl.State())
+        requestButton.setTitle(AccountStrings.request, for: UIControl.State())
+        scanButton.setTitle(AccountStrings.scan, for: UIControl.State())
     }
 }

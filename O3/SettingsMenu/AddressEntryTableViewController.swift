@@ -81,7 +81,7 @@ class AddressEntryTableViewController: UITableViewController, AVCaptureMetadataO
         let qrView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height * 0.5))
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height * 0.5)
         tableView.tableHeaderView?.embed(qrView)
-        tableView.tableHeaderView?.bringSubview(toFront: closeButton)
+        tableView.tableHeaderView?.bringSubviewToFront(closeButton)
         let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
         if captureDevice == nil {
             return
@@ -136,8 +136,8 @@ class AddressEntryTableViewController: UITableViewController, AVCaptureMetadataO
     func setLocalizedStrings() {
         addressLabel.text = SettingsStrings.addressLabel
         nicknameLabel.text = SettingsStrings.nicknameLabel
-        closeButton.setTitle(SettingsStrings.close, for: UIControlState())
-        proceedButton.setTitle(SettingsStrings.addButton, for: UIControlState())
+        closeButton.setTitle(SettingsStrings.close, for: UIControl.State())
+        proceedButton.setTitle(SettingsStrings.addButton, for: UIControl.State())
     }
 }
 

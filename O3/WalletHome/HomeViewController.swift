@@ -49,7 +49,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let themedTransparentButtons = [fiveMinButton, fifteenMinButton, thirtyMinButton, sixtyMinButton, oneDayButton, allButton]
         for button in themedTransparentButtons {
             button?.theme_backgroundColor = O3Theme.backgroundColorPicker
-            button?.theme_setTitleColor(O3Theme.primaryColorPicker, forState: UIControlState())
+            button?.theme_setTitleColor(O3Theme.primaryColorPicker, forState: UIControl.State())
         }
     }
 
@@ -328,12 +328,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func setLocalizedStrings() {
         self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.navigationBar.topItem?.title = PortfolioStrings.portfolio
-        fiveMinButton.setTitle(PortfolioStrings.sixHourInterval, for: UIControlState())
-        fifteenMinButton.setTitle(PortfolioStrings.oneDayInterval, for: UIControlState())
-        thirtyMinButton.setTitle(PortfolioStrings.oneWeekInterval, for: UIControlState())
-        sixtyMinButton.setTitle(PortfolioStrings.oneMonthInterval, for: UIControlState())
-        oneDayButton.setTitle(PortfolioStrings.threeMonthInterval, for: UIControlState())
-        allButton.setTitle(PortfolioStrings.allInterval, for: UIControlState())
+        fiveMinButton.setTitle(PortfolioStrings.sixHourInterval, for: UIControl.State())
+        fifteenMinButton.setTitle(PortfolioStrings.oneDayInterval, for: UIControl.State())
+        thirtyMinButton.setTitle(PortfolioStrings.oneWeekInterval, for: UIControl.State())
+        sixtyMinButton.setTitle(PortfolioStrings.oneMonthInterval, for: UIControl.State())
+        oneDayButton.setTitle(PortfolioStrings.threeMonthInterval, for: UIControl.State())
+        allButton.setTitle(PortfolioStrings.allInterval, for: UIControl.State())
     }
 }
 

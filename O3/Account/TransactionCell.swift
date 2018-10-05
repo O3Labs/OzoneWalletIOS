@@ -54,6 +54,9 @@ class TransactionCell: UITableViewCell {
     }
     
     func getAddressAlias(address: String) -> String {
+        if address == "AKJQMHma9MA8KK5M8iQg8ASeg3KZLsjwvB" {
+            return "Switcheo"
+        }
         if address == Authenticated.account?.address ?? "" {
             return AccountStrings.o3Wallet
         } else if let contactIndex = delegate?.getContacts().index(where: {$0.address == address}) {

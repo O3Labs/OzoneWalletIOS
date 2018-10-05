@@ -195,8 +195,8 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
     func setLocalizedStrings() {
-        loginButton.setTitle(OnboardingStrings.loginTitle, for: UIControlState())
+        loginButton.setTitle(OnboardingStrings.loginTitle, for: UIControl.State())
         orSeperatorLabel.text = OnboardingStrings.stylizedOr
-        createNewWalletButton.setTitle(OnboardingStrings.createNewWalletTitle, for: UIControlState())
+        createNewWalletButton.setTitle(OnboardingStrings.createNewWalletTitle, for: UIControl.State())
     }
 }

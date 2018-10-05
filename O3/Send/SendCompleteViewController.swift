@@ -18,7 +18,7 @@ class SendCompleteViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        closeButton.setTitle(SendStrings.close, for: UIControlState())
+        closeButton.setTitle(SendStrings.close, for: UIControl.State())
 
         if transactionSucceeded {
             completeImage.image = #imageLiteral(resourceName: "checked")

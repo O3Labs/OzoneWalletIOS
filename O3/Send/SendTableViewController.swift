@@ -67,7 +67,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         for field in themedTextFields {
             field!.attributedPlaceholder = NSAttributedString(
                 string: field!.placeholder ?? "",
-                attributes: [NSAttributedStringKey.foregroundColor: placeHolderColor])
+                attributes: [NSAttributedString.Key.foregroundColor: placeHolderColor])
             field?.theme_keyboardAppearance = O3Theme.keyboardPicker
             field?.theme_backgroundColor = O3Theme.clearTextFieldBackgroundColorPicker
             field?.theme_textColor = O3Theme.textFieldTextColorPicker
@@ -451,7 +451,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             segue.destination.modalPresentationStyle = .custom
             segue.destination.transitioningDelegate = self.halfModalTransitioningDelegate
             guard let dest = segue.destination as? UINavigationController,
-                let addressSelectVC = dest.childViewControllers[0] as? AddressSelectTableViewController else {
+                let addressSelectVC = dest.children[0] as? AddressSelectTableViewController else {
                     fatalError("Undefined Table view behavior")
             }
             addressSelectVC.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(tappedCloseAddressSeletor(_:)))
@@ -502,11 +502,11 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         toLabel.text = SendStrings.toLabel
         assetLabel.text = SendStrings.assetLabel
         amountLabel.text = SendStrings.amountLabel
-        pasteButton.setTitle(SendStrings.paste, for: UIControlState())
-        scanButton.setTitle(SendStrings.scan, for: UIControlState())
-        addressButton.setTitle(SendStrings.addressBook, for: UIControlState())
+        pasteButton.setTitle(SendStrings.paste, for: UIControl.State())
+        scanButton.setTitle(SendStrings.scan, for: UIControl.State())
+        addressButton.setTitle(SendStrings.addressBook, for: UIControl.State())
         selectedAssetLabel.text = SendStrings.selectedAssetLabel
-        sendButton.setTitle(SendStrings.send, for: UIControlState())
+        sendButton.setTitle(SendStrings.send, for: UIControl.State())
         self.title = SendStrings.send
         toAddressField.placeholder = SendStrings.toAddressPlaceholder
     }

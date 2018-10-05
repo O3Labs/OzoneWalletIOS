@@ -20,17 +20,17 @@ class O3HUD: UIViewController {
         SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
         if UserDefaultsManager.themeIndex == 0 {
-            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let visualEffectView = UIVisualEffectView(effect: blurEffect)
             visualEffectView.frame = view.bounds
             view.addSubview(visualEffectView)
-            view.bringSubview(toFront: indicator)
+            view.bringSubviewToFront(indicator)
         } else {
-            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
             let visualEffectView = UIVisualEffectView(effect: blurEffect)
             visualEffectView.frame = view.bounds
             view.addSubview(visualEffectView)
-            view.bringSubview(toFront: indicator)
+            view.bringSubviewToFront(indicator)
         }
         indicator.theme_activityIndicatorViewStyle = O3Theme.activityIndicatorColorPicker
         super.viewDidLoad()

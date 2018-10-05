@@ -209,7 +209,7 @@ extension ContactsTableViewController: NSFetchedResultsControllerDelegate {
     }
 
     func setLocalizedStrings() {
-        addAddressButton.setTitle(AccountStrings.addContact, for: UIControlState())
+        addAddressButton.setTitle(AccountStrings.addContact, for: UIControl.State())
         addAddressDescriptionLabel.text = AccountStrings.addContactDescription
 
     }

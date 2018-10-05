@@ -116,7 +116,7 @@ class LoginTableViewController: UITableViewController, QRScanDelegate {
         navigationItem.title = OnboardingStrings.loginTitle
         wifTextFieldInfoLabel.text = OnboardingStrings.loginInputInfo
         pkeyTitleLabel.text = OnboardingStrings.privateKeyTitle
-        loginButton.setTitle(OnboardingStrings.loginTitle, for: UIControlState())
+        loginButton.setTitle(OnboardingStrings.loginTitle, for: UIControl.State())
     }
 }
 

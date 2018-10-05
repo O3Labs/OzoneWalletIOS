@@ -9,7 +9,7 @@
 import UIKit
 extension UIImage {
     convenience init(qrData: String, width: CGFloat, height: CGFloat, qrLogoName: String = "qrLogo") {
-        let filterQR = CIFilter(name: "CIQRCodeGenerator", withInputParameters: ["inputMessage": qrData.data(using: .utf8) ?? Data(), "inputCorrectionLevel": "H"])
+        let filterQR = CIFilter(name: "CIQRCodeGenerator", parameters: ["inputMessage": qrData.data(using: .utf8) ?? Data(), "inputCorrectionLevel": "H"])
         guard let ciImageQR = filterQR?.outputImage else {
             self.init()
             return

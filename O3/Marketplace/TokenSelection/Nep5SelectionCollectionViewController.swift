@@ -91,9 +91,9 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath) as UICollectionReusableView
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header", for: indexPath) as UICollectionReusableView
         
-        if kind == UICollectionElementKindSectionHeader {
+        if kind == UICollectionView.elementKindSectionHeader {
             
             return header
         }
@@ -162,11 +162,11 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
         if UserDefaultsManager.themeIndex == 0 {
             background = UIImage(color: .white)!
             searchBar.setTextFieldColor(color: .white)
-            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: UIColor.black]
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
         } else {
             background = UIImage(color: Theme.dark.backgroundColor)!
             searchBar.setTextFieldColor(color: Theme.dark.backgroundColor)
-            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: UIColor.white]
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         }
         searchBar.setBackgroundImage(background, for: .any, barMetrics: UIBarMetrics.default)
     }
