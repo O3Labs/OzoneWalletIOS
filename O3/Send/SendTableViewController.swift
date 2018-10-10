@@ -110,6 +110,8 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
         self.enableSendButton()
         self.toAddressField.text = preselectedAddress.trim()
+        
+        toAddressField.addTarget(self, action: #selector(addressTextFieldChanged(_:)), for: .editingChanged)
         if incomingQRData != nil {
             qrScanned(data: incomingQRData!)
         }
@@ -117,6 +119,45 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         //default to NEO
         self.selectedAsset = O3Cache.neo()
         self.assetSelected(selected: O3Cache.neo(), gasBalance: O3Cache.gas().value)
+    }
+    
+    func showAddressbyDomain(address: String?) {
+        if address == nil {
+            verifiedAddressDisplayNameLabel.text = ""
+            verifiedAddressBadge.isHidden = true
+            return
+        }
+        verifiedAddressDisplayNameLabel.text = address!
+        verifiedAddressBadge.isHidden = false
+    }
+    
+    @objc func addressTextFieldChanged(_ sender: Any) {
+        //if it's ending in .neo then try to fetch the address by domain
+        //if length if 34 then try to validate neo address
+        
+        let text = toAddressField.text?.trim() ?? ""
+        if text.hasSuffix(".neo") {
+            O3APIClient(network: AppState.network).domainLookup(domain: text) { result in
+                switch result {
+                case .failure(let error):
+                    print(error)
+                case .success(let address):
+                    print(address)
+                    DispatchQueue.main.async {
+                        self.showAddressbyDomain(address: address)
+                    }
+                }
+            }
+        } else {
+            showAddressbyDomain(address: nil)
+        }
+        if text.count < 34 {
+            return
+        }
+        
+//        if NEOValidator.validateNEOAddress(text) == true {
+//
+//        }
     }
     
     @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {

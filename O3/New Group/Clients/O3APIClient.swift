@@ -406,5 +406,27 @@ class O3APIClient: NSObject {
             }
         }
     }
+    
+    func domainLookup(domain: String, completion: @escaping(O3APIClientResult<String>) -> Void) {
+        struct domainInfo: Codable {
+            let address, expiration: String
+        }
+        let url = String(format: "/v1/neo/nns/%@", domain)
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(domainInfo.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded.address)
+                completion(success)
+            }
+        }
+    }
 
 }
