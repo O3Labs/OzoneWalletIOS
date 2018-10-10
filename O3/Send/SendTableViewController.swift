@@ -47,6 +47,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     var selectedAsset: TransferableAsset?
     var preselectedAddress = ""
     var incomingQRData: String?
+    var sendingWithDomain = false
     
     func addThemedElements() {
         let themedTitleLabels = [toLabel, assetLabel, amountLabel]
@@ -128,23 +129,30 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             return
         }
         verifiedAddressDisplayNameLabel.text = address!
+        verifiedAddressBadge.image = UIImage(named: "nns")
         verifiedAddressBadge.isHidden = false
     }
     
     @objc func addressTextFieldChanged(_ sender: Any) {
         //if it's ending in .neo then try to fetch the address by domain
         //if length if 34 then try to validate neo address
-        
+        sendingWithDomain = false
         let text = toAddressField.text?.trim() ?? ""
         if text.hasSuffix(".neo") {
             O3APIClient(network: AppState.network).domainLookup(domain: text) { result in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    DispatchQueue.main.async {
+                        self.verifiedAddressDisplayNameLabel.text = SendStrings.invalidNNSName
+                        self.verifiedAddressDisplayNameLabel.isHidden = false
+                        self.verifiedAddressDisplayNameLabel.textColor = UIColor(named: "lightThemeRed")
+                    }
                 case .success(let address):
                     print(address)
                     DispatchQueue.main.async {
+                        self.sendingWithDomain = true
                         self.showAddressbyDomain(address: address)
+                        self.verifiedAddressDisplayNameLabel.textColor = UIColor(named: "lightThemeGreen")
                     }
                 }
             }
@@ -218,7 +226,11 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     func sendNEP5Token(tokenHash: String, decimals: Int, assetName: String, amount: Double, toAddress: String) {
         
         DispatchQueue.main.async {
-            OzoneAlert.confirmDialog(message: String(format: SendStrings.sendConfirmationPrompt, amount, assetName, toAddress),
+            var addressAndAlias = toAddress
+            if self.sendingWithDomain {
+                addressAndAlias = "\(self.toAddressField.text?.trim() ?? "") " + "(\(toAddress))"
+            }
+            OzoneAlert.confirmDialog(message: String(format: SendStrings.sendConfirmationPrompt, amount, assetName, addressAndAlias),
                                      cancelTitle: OzoneAlert.cancelNegativeConfirmString,
                                      confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
                                         let keychain = Keychain(service: "network.o3.neo.wallet")
@@ -347,7 +359,13 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             })
             return
         }
-        let toAddress = toAddressField.text?.trim() ?? ""
+        var toAddress = ""
+        if (sendingWithDomain) {
+            toAddress = verifiedAddressDisplayNameLabel.text?.trim() ?? ""
+        } else {
+            toAddress = toAddressField.text?.trim() ?? ""
+        }
+        
         
         //validate address first
         if NEOValidator.validateNEOAddress(toAddress) == false {
@@ -444,16 +462,26 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     }
     
     func showVerifiedAddress(verifiedAddress: VerifiedAddress?) {
+        if sendingWithDomain {
+            return
+        }
+        
         if verifiedAddress == nil {
             verifiedAddressDisplayNameLabel.text = ""
             verifiedAddressBadge.isHidden = true
             return
         }
         verifiedAddressDisplayNameLabel.text = verifiedAddress!.displayName
+        verifiedAddressBadge.image = UIImage(named: "shield-check")
         verifiedAddressBadge.isHidden = false
     }
     
     @IBAction func enableSendButton() {
+        if sendingWithDomain {
+            sendButton.isEnabled = true
+            return
+        }
+        
         self.showVerifiedAddress(verifiedAddress: nil)
         if toAddressField.text?.isEmpty == true {
             sendButton.isEnabled = false
