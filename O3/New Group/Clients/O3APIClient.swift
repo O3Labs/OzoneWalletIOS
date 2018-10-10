@@ -429,4 +429,26 @@ class O3APIClient: NSObject {
         }
     }
 
+    struct reverseDomainInfo: Codable {
+        let address, expiration, domain: String
+    }
+    
+    func reverseDomainLookup(address: String, completion: @escaping(O3APIClientResult<[reverseDomainInfo]>) -> Void) {
+        let url = String(format: "/v1/neo/nns/%@/domains", address)
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode([reverseDomainInfo].self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
 }

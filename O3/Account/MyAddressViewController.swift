@@ -14,6 +14,8 @@ class MyAddressViewController: UIViewController {
     @IBOutlet var addressLabel: UILabel!
     @IBOutlet var qrCodeContainerView: UIView!
     @IBOutlet weak var addressInfoLabel: UILabel!
+    @IBOutlet weak var nnsLabel: UILabel!
+    
 
     func configureView() {
         applyNavBarTheme()
@@ -79,6 +81,23 @@ class MyAddressViewController: UIViewController {
         configureView()
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
         self.view.addGestureRecognizer(tap)
+        
+        O3APIClient(network: AppState.network).reverseDomainLookup(address: (Authenticated.account?.address)!) { result in
+            switch result {
+            case .failure (let error):
+                print(error)
+            case .success(let domains):
+                DispatchQueue.main.async {
+                    if domains.count == 0 {
+                        self.nnsLabel.isHidden = true
+                    } else if domains.count == 1 {
+                        self.nnsLabel.text = domains[0].domain
+                    } else {
+                        self.nnsLabel.text = domains[0] .domain + " +\(domains.count - 1) more"
+                    }
+                }
+            }
+        }
     }
 
     @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {

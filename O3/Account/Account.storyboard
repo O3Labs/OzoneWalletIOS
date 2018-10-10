@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="n0F-4W-k6A">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="n0F-4W-k6A">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -53,26 +52,26 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYa-XG-lmL" userLabel="confirmed" customClass="CardView" customModule="O3" customModuleProvider="target">
-                                            <rect key="frame" x="8" y="8" width="398" height="156"/>
+                                            <rect key="frame" x="8" y="8" width="398" height="155.66666666666666"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jAv-3M-q5w">
-                                                    <rect key="frame" x="16" y="0.0" width="33" height="44"/>
+                                                    <rect key="frame" x="16" y="0.0" width="33" height="43.666666666666664"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4jG-PF-IbZ">
-                                                    <rect key="frame" x="0.0" y="44" width="398" height="1"/>
+                                                    <rect key="frame" x="0.0" y="43.666666666666664" width="398" height="1"/>
                                                     <color key="backgroundColor" name="lightGreyTransparent"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="GP2-9a-dwI"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="INf-1r-56O">
-                                                    <rect key="frame" x="0.0" y="45" width="398" height="54"/>
+                                                    <rect key="frame" x="0.0" y="44.666666666666657" width="398" height="54"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1S9-E8-Nsy">
-                                                            <rect key="frame" x="360" y="12" width="30" height="30"/>
+                                                            <rect key="frame" x="360" y="12.000000000000007" width="30" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="HCE-48-W0X"/>
@@ -80,7 +79,7 @@
                                                             </constraints>
                                                         </view>
                                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EyM-0E-pH0">
-                                                            <rect key="frame" x="360" y="12" width="30" height="30"/>
+                                                            <rect key="frame" x="360" y="12.000000000000007" width="30" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="gw9-ci-f0H"/>
@@ -88,20 +87,20 @@
                                                             </constraints>
                                                         </view>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GASLOGO" translatesAutoresizingMaskIntoConstraints="NO" id="ok7-FK-pFw">
-                                                            <rect key="frame" x="16" y="15" width="24" height="24"/>
+                                                            <rect key="frame" x="16" y="15.000000000000007" width="24" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="24" id="YDo-qF-1ie"/>
                                                                 <constraint firstAttribute="height" constant="24" id="o1D-rt-O1V"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GAS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="I97-rI-qtr">
-                                                            <rect key="frame" x="157.66666666666666" y="8.6666666666666643" width="32.666666666666657" height="22"/>
+                                                            <rect key="frame" x="157.66666666666666" y="8.3333333333333357" width="32.666666666666657" height="22"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
                                                             <color key="textColor" name="grey"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="0.00000000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VUc-GL-yYB">
-                                                            <rect key="frame" x="48.000000000000007" y="6.6666666666666643" width="105.66666666666669" height="30"/>
+                                                            <rect key="frame" x="48.000000000000007" y="6.6666666666666714" width="105.66666666666669" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="0Ch-QL-nxl"/>
                                                             </constraints>
@@ -132,7 +131,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hao-tN-7je" customClass="LocalizableUILabel" customModule="O3" customModuleProvider="target">
-                                                            <rect key="frame" x="48" y="34" width="0.0" height="15"/>
+                                                            <rect key="frame" x="48" y="34.000000000000007" width="0.0" height="15"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="15" id="DJ4-nc-3A0"/>
                                                             </constraints>
@@ -186,7 +185,7 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mK6-1D-Kr2">
-                                                    <rect key="frame" x="0.0" y="99" width="398" height="54"/>
+                                                    <rect key="frame" x="0.0" y="98.666666666666671" width="398" height="54.000000000000014"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_ONG" translatesAutoresizingMaskIntoConstraints="NO" id="ui4-g0-3jN">
                                                             <rect key="frame" x="16" y="15" width="24" height="24"/>
@@ -212,13 +211,13 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ONG" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9Hh-sd-R3J">
-                                                            <rect key="frame" x="157.66666666666666" y="10.666666666666671" width="38.333333333333343" height="22"/>
+                                                            <rect key="frame" x="157.66666666666666" y="10.666666666666657" width="38.333333333333343" height="22"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
                                                             <color key="textColor" name="grey"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="0.00000000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="NeX-Ic-9oY">
-                                                            <rect key="frame" x="48.000000000000007" y="6.6666666666666714" width="105.66666666666669" height="30"/>
+                                                            <rect key="frame" x="48.000000000000007" y="6.6666666666666572" width="105.66666666666669" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="n3p-x3-hx5"/>
                                                             </constraints>
@@ -249,7 +248,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsi-tg-fuW" customClass="LocalizableUILabel" customModule="O3" customModuleProvider="target">
-                                                            <rect key="frame" x="48" y="34" width="0.0" height="15"/>
+                                                            <rect key="frame" x="48" y="33.999999999999986" width="0.0" height="15"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="15" id="0dV-fF-KY0"/>
                                                             </constraints>
@@ -356,7 +355,7 @@
                                             <rect key="frame" x="8" y="8" width="398" height="43.666666666666664"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="nNg-hY-FxM">
-                                                    <rect key="frame" x="0.0" y="0.66666666666666785" width="398" height="43.666666666666657"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="398" height="43.666666666666664"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="68U-NL-wEd">
                                                             <rect key="frame" x="0.0" y="0.0" width="132.66666666666666" height="43.666666666666664"/>
@@ -383,7 +382,7 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s4y-zs-AoM">
-                                                                    <rect key="frame" x="-0.66666666666665719" y="-0.66666666666666785" width="132.66666666666666" height="43.666666666666671"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="132.66666666666666" height="43.666666666666664"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                                                     <color key="tintColor" name="lightThemePrimary"/>
@@ -397,7 +396,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RKf-z6-oCY">
-                                                                    <rect key="frame" x="132.00000000000003" y="7.3333333333333339" width="0.66666666666665719" height="27.666666666666664"/>
+                                                                    <rect key="frame" x="132.33333333333334" y="8.0000000000000018" width="0.33333333333334281" height="27.666666666666671"/>
                                                                     <color key="backgroundColor" name="lightGreyTransparent"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="0.5" id="r5O-fj-LEc"/>
@@ -846,10 +845,10 @@ Get started by depositing some tokens from your wallet!</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ca-Bp-9JU" customClass="CardView" customModule="O3" customModuleProvider="target">
-                                            <rect key="frame" x="8" y="8" width="398" height="166"/>
+                                            <rect key="frame" x="8" y="8" width="398" height="165.66666666666666"/>
                                             <subviews>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QOn-RT-4aA">
-                                                    <rect key="frame" x="0.0" y="0.0" width="398" height="122"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="398" height="121.66666666666667"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N3f-Na-cuB">
                                                             <rect key="frame" x="8" y="16" width="30" height="30"/>
@@ -884,14 +883,14 @@ Get started by depositing some tokens from your wallet!</string>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xkb-fY-Nk0" userLabel="line">
-                                                    <rect key="frame" x="0.0" y="121" width="398" height="1"/>
+                                                    <rect key="frame" x="0.0" y="120.66666666666666" width="398" height="1"/>
                                                     <color key="backgroundColor" name="lightGreyTransparent"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="04d-qb-SOM"/>
                                                     </constraints>
                                                 </view>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lRh-jk-FCr">
-                                                    <rect key="frame" x="0.0" y="122" width="398" height="44"/>
+                                                    <rect key="frame" x="0.0" y="121.66666666666666" width="398" height="44"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kll-EC-RcT">
                                                             <rect key="frame" x="16" y="0.0" width="35" height="44"/>
@@ -966,23 +965,23 @@ Get started by depositing some tokens from your wallet!</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RPh-7d-ElB">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="65.666666666666671"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6JT-qb-q4y">
-                                                    <rect key="frame" x="16" y="18.333333333333329" width="30" height="30"/>
+                                                    <rect key="frame" x="16" y="18" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="Iod-5q-hGc"/>
                                                         <constraint firstAttribute="height" constant="30" id="c4N-Xt-FRb"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NEO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6er-ue-7n8">
-                                                    <rect key="frame" x="62" y="0.0" width="36" height="66"/>
+                                                    <rect key="frame" x="62" y="0.0" width="36" height="65.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dej-Kq-nq9">
-                                                    <rect key="frame" x="398" y="0.0" width="0.0" height="66"/>
+                                                    <rect key="frame" x="398" y="0.0" width="0.0" height="65.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                                                     <nil key="highlightedColor"/>
@@ -1023,29 +1022,29 @@ Get started by depositing some tokens from your wallet!</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Low-27-Yrf">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="65.666666666666671"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qa5-Wk-epi">
-                                                    <rect key="frame" x="16" y="18.333333333333329" width="30" height="30"/>
+                                                    <rect key="frame" x="16" y="18" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="2hB-EQ-oyT"/>
                                                         <constraint firstAttribute="height" constant="30" id="d2O-f1-ePG"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QLC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JW8-eN-YP0">
-                                                    <rect key="frame" x="62" y="15.333333333333336" width="33" height="22"/>
+                                                    <rect key="frame" x="62" y="15" width="33" height="22"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Token name" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zcj-Lg-OlY">
-                                                    <rect key="frame" x="62.000000000000007" y="35.333333333333336" width="65.666666666666686" height="17"/>
+                                                    <rect key="frame" x="62.000000000000007" y="35" width="65.666666666666686" height="17"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbL-i5-rf2">
-                                                    <rect key="frame" x="398" y="0.0" width="0.0" height="66"/>
+                                                    <rect key="frame" x="398" y="0.0" width="0.0" height="65.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                                                     <nil key="highlightedColor"/>
@@ -1272,8 +1271,8 @@ Get started by depositing some tokens from your wallet!</string>
                                         <color key="textColor" name="lightThemePrimary"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="https://o3.network" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nyB-40-J1d">
-                                        <rect key="frame" x="0.0" y="397" width="374" height="16.666666666666686"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nyB-40-J1d">
+                                        <rect key="frame" x="16" y="397.33333333333337" width="342" height="0.0"/>
                                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                         <color key="textColor" name="grey"/>
                                         <nil key="highlightedColor"/>
@@ -1282,14 +1281,14 @@ Get started by depositing some tokens from your wallet!</string>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="jc8-c0-b1X" firstAttribute="leading" secondItem="bEW-sc-cCW" secondAttribute="leading" id="9Ie-eh-Gtt"/>
+                                    <constraint firstAttribute="trailing" secondItem="nyB-40-J1d" secondAttribute="trailing" constant="16" id="FlL-z6-Zvd"/>
                                     <constraint firstItem="jc8-c0-b1X" firstAttribute="top" secondItem="bEW-sc-cCW" secondAttribute="bottom" constant="5" id="H9e-AJ-Mj7"/>
+                                    <constraint firstItem="nyB-40-J1d" firstAttribute="leading" secondItem="aMh-L3-48g" secondAttribute="leading" constant="16" id="P8p-bD-n4n"/>
                                     <constraint firstItem="nyB-40-J1d" firstAttribute="top" secondItem="jc8-c0-b1X" secondAttribute="bottom" constant="1.5" id="cLs-6k-HN6"/>
                                     <constraint firstItem="bEW-sc-cCW" firstAttribute="top" secondItem="aMh-L3-48g" secondAttribute="top" id="hK9-N3-PSL"/>
                                     <constraint firstAttribute="width" secondItem="aMh-L3-48g" secondAttribute="height" multiplier="1:1.2" id="j8K-s9-Y8w"/>
                                     <constraint firstItem="jc8-c0-b1X" firstAttribute="width" secondItem="bEW-sc-cCW" secondAttribute="width" id="ljm-bn-GY9"/>
-                                    <constraint firstItem="nyB-40-J1d" firstAttribute="leading" secondItem="jc8-c0-b1X" secondAttribute="leading" id="uSg-AP-U0V"/>
                                     <constraint firstItem="bEW-sc-cCW" firstAttribute="leading" secondItem="aMh-L3-48g" secondAttribute="leading" id="wtU-ia-Eh4"/>
-                                    <constraint firstItem="nyB-40-J1d" firstAttribute="width" secondItem="jc8-c0-b1X" secondAttribute="width" id="z7s-CT-3lD"/>
                                     <constraint firstAttribute="trailing" secondItem="bEW-sc-cCW" secondAttribute="trailing" id="zL8-q3-At0"/>
                                 </constraints>
                             </view>
@@ -1336,6 +1335,7 @@ Get started by depositing some tokens from your wallet!</string>
                     <connections>
                         <outlet property="addressInfoLabel" destination="3cP-Pl-93O" id="2Ke-u9-sa3"/>
                         <outlet property="addressLabel" destination="jc8-c0-b1X" id="KHk-FG-NPw"/>
+                        <outlet property="nnsLabel" destination="nyB-40-J1d" id="MFW-js-bve"/>
                         <outlet property="qrCodeContainerView" destination="aMh-L3-48g" id="zlA-yi-ygl"/>
                         <outlet property="qrImageView" destination="bEW-sc-cCW" id="NBP-HR-Uon"/>
                     </connections>
@@ -1509,7 +1509,7 @@ Get started by depositing some tokens from your wallet!</string>
         <image name="GASLOGO" width="21" height="21"/>
         <image name="NEO" width="78" height="90"/>
         <image name="ONG" width="90" height="90"/>
-        <image name="ONT" width="480" height="480"/>
+        <image name="ONT" width="66.847198486328125" height="66.847198486328125"/>
         <image name="angle-down-small" width="10" height="6"/>
         <image name="arrow-to-bottom" width="18" height="20"/>
         <image name="ellipsis-vertical" width="4" height="16"/>
@@ -1529,16 +1529,16 @@ Get started by depositing some tokens from your wallet!</string>
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="0.20000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="lightThemeOrange">
-            <color red="0.96078431369999995" green="0.65098039220000004" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.96078431372549022" green="0.65098039215686276" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="lightThemePrimary">
-            <color red="0.0" green="0.41176470590000003" blue="0.85098039219999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="superLightGrey">
-            <color red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textColor">
-            <color red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
