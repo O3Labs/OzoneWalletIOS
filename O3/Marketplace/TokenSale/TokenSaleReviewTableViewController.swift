@@ -156,8 +156,8 @@ class TokenSaleReviewTableViewController: UITableViewController {
         receiveTitleLabel.text = TokenSaleStrings.youWillReceiveTitle
         readSaleAgreementLabel.text = TokenSaleStrings.readSaleAgreement
         iUnderstandLabel.text = TokenSaleStrings.o3Agreement
-        participateButton.setTitle(TokenSaleStrings.participate, for: UIControlState())
-        tokenSaleWebsiteButton.setTitle(TokenSaleStrings.tokenSalesTitle, for: UIControlState())
+        participateButton.setTitle(TokenSaleStrings.participate, for: UIControl.State())
+        tokenSaleWebsiteButton.setTitle(TokenSaleStrings.tokenSalesTitle, for: UIControl.State())
     }
 
 }

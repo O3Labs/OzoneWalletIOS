@@ -82,7 +82,10 @@ public struct NeoScanTransactionEntry: Codable {
         let block_height: Int = try container.decode(Int.self, forKey: .block_height)
         let asset: String = try container.decode(String.self, forKey: .asset)
         let amountString: String = try container.decode(String.self, forKey: .amount)
-        let amount = Double(amountString)!
+        var amount = Double(0)
+        if amountString != "" {
+            amount = Double(amountString)!
+        }
         let address_to: String = try container.decode(String.self, forKey: .address_to)
         let address_from: String = try container.decode(String.self, forKey: .address_from)
         self.init(txid: txid, time: time, block_height: block_height, asset: asset,

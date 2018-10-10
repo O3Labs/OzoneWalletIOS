@@ -119,7 +119,7 @@ extension TokenSaleSuccessViewController {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? TokenSaleTransactionInfoTableViewCell else {
-            return UITableViewCell()
+            return UITableViewCell(frame: CGRect.zero)
         }
         let item = tokenSaleTransactionItems[indexPath.row]
         cell.info = item
@@ -129,7 +129,7 @@ extension TokenSaleSuccessViewController {
     func setLocalizedStrings() {
         statusLabel.text = TokenSaleStrings.successfulTransaction
         transactionLabel.text = TokenSaleStrings.transactionTitle
-    saveButton.setTitle(TokenSaleStrings.saveTitle, for: UIControlState())
-        closeButton.setTitle(TokenSaleStrings.closeTitle, for: UIControlState())
+    saveButton.setTitle(TokenSaleStrings.saveTitle, for: UIControl.State())
+        closeButton.setTitle(TokenSaleStrings.closeTitle, for: UIControl.State())
     }
 }

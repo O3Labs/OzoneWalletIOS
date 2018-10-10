@@ -12,7 +12,6 @@ import UIKit
 protocol WalletToolbarDelegate: class {
     func sendTapped(qrData: String?)
     func requestTapped()
-    func scanTapped()
 }
 
 class WalletToolBarCell: UITableViewCell {
@@ -23,7 +22,7 @@ class WalletToolBarCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        contentView.theme_backgroundColor = O3Theme.backgroundLightgrey
     }
 
     @IBAction func sendTapped() {
@@ -34,13 +33,9 @@ class WalletToolBarCell: UITableViewCell {
         delegate?.requestTapped()
     }
 
-    @IBAction func scanTapped() {
-        delegate?.scanTapped()
-    }
-
     func setLocalizedStrings() {
-        sendButton.setTitle(AccountStrings.send, for: UIControlState())
-        requestButton.setTitle(AccountStrings.request, for: UIControlState())
-        scanButton.setTitle(AccountStrings.scan, for: UIControlState())
+        sendButton.setTitle(AccountStrings.send, for: UIControl.State())
+        requestButton.setTitle(AccountStrings.request, for: UIControl.State())
+        scanButton.setTitle(AccountStrings.scan, for: UIControl.State())
     }
 }

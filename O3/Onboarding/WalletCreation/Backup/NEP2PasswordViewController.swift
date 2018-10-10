@@ -17,19 +17,19 @@ class NEP2PasswordViewController: UITableViewController {
     var wif = ""
 
     lazy var inputToolbar: UIToolbar = {
-        var toolbar = UIToolbar()
+        var toolbar = UIToolbar(frame: CGRect.zero)
         toolbar.barStyle = .default
         toolbar.barTintColor = .white
         toolbar.isTranslucent = true
         toolbar.sizeToFit()
 
-        let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.primaryColor,
-                                                        NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
-        let disabledAttributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.disabledColor,
-                                                                NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
-        doneButton.setTitleTextAttributes(attributes, for: UIControlState.normal)
-        doneButton.setTitleTextAttributes(disabledAttributes, for: UIControlState.disabled)
+        let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let attributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: Theme.light.primaryColor,
+                                                         NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        let disabledAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: Theme.light.disabledColor,
+                                                                 NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        doneButton.setTitleTextAttributes(attributes, for: UIControl.State.normal)
+        doneButton.setTitleTextAttributes(disabledAttributes, for: UIControl.State.disabled)
 
         toolbar.setItems([flexibleButton, doneButton], animated: false)
         toolbar.isUserInteractionEnabled = true
@@ -49,7 +49,7 @@ class NEP2PasswordViewController: UITableViewController {
         passwordTextField.setLeftPaddingPoints(CGFloat(10.0))
         passwordTextField.setRightPaddingPoints(CGFloat(10.0))
         passwordTextField.becomeFirstResponder()
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
         setLocalizedStrings()
     }
 

@@ -107,6 +107,9 @@ class UserDefaultsManager {
     static var referenceFiatCurrency: Currency {
         get {
             let stringValue = UserDefaults.standard.string(forKey: referenceFiatCurrencyKey)
+            if stringValue == nil {
+                return Currency.usd
+            }
             return Currency(rawValue: stringValue!)!
         }
         set {

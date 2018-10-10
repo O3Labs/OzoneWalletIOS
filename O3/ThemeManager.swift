@@ -158,7 +158,7 @@ enum Theme: String {
     var seperatorColor: UIColor {
         switch self {
         case .light:
-            return UITableView().separatorColor!
+            return UITableView(frame: CGRect.zero).separatorColor!
         case .dark:
             return UIColor(named: "darkThemeSecondaryBackground")!
         }
@@ -247,19 +247,19 @@ class O3Theme {
 
     //title attributes
     static let largeTitleAttributesPicker = ThemeDictionaryPicker(arrayLiteral:
-        [NSAttributedStringKey.foregroundColor.rawValue: UIColor.black,
-        NSAttributedStringKey.font.rawValue: O3Theme.largeTitleFont],
-        [NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
-        NSAttributedStringKey.font.rawValue: O3Theme.largeTitleFont],
-        [NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
-         NSAttributedStringKey.font.rawValue: O3Theme.largeTitleFont])
+        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.black,
+         NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont],
+        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
+        NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont],
+        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
+         NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont])
 
-    static let regularTitleAttributesPicker = ThemeDictionaryPicker(arrayLiteral: [NSAttributedStringKey.foregroundColor.rawValue: UIColor.black,
-        NSAttributedStringKey.font.rawValue: O3Theme.navBarTitle],
-        [NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
-        NSAttributedStringKey.font.rawValue: O3Theme.navBarTitle],
-        [NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
-         NSAttributedStringKey.font.rawValue: O3Theme.navBarTitle])
+    static let regularTitleAttributesPicker = ThemeDictionaryPicker(arrayLiteral: [NSAttributedString.Key.foregroundColor.rawValue: UIColor.black,
+                                                                                   NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle],
+        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
+        NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle],
+        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
+         NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle])
 
     //text fields
     static let clearTextFieldBackgroundColorPicker = ThemeColorPicker(colors: Theme.light.backgroundColor.hexString(false), Theme.dark.backgroundColor.hexString(false))
@@ -276,4 +276,8 @@ class O3Theme {
     static let statusBarStylePicker = ThemeStatusBarStylePicker(styles: .default, .lightContent, .lightContent)
     static let tabBarStylePicker = ThemeBarStylePicker(styles: .default, .black)
 
+    static let backgroundLightgrey = ThemeColorPicker(colors: "#FAFAFAFF",
+                                                   Theme.dark.backgroundColor.hexString(false),
+                                                   Theme.dark.backgroundColor.hexString(false))
+    
 }

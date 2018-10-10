@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Fgi-m0-wHN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Fgi-m0-wHN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,21 +21,74 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oge-23-l56">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4qd-sa-YOv">
+                                <rect key="frame" x="0.0" y="615" width="375" height="52"/>
+                                <subviews>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0n-eW-Jfc">
+                                        <rect key="frame" x="267" y="10" width="100" height="32"/>
+                                        <color key="backgroundColor" name="lightThemePrimary"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="1EV-xr-ydc"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                        <state key="normal" title="Trade">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="6"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="tradeTapped:" destination="Zsz-Q1-EQd" eventType="touchUpInside" id="WYf-4X-yqn"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EUP-qi-wEb" customClass="BadgeUIButton" customModule="O3" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="10" width="140" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="140" id="Tt3-o2-GeJ"/>
+                                            <constraint firstAttribute="height" constant="32" id="nko-md-N84"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                        <inset key="titleEdgeInsets" minX="24" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Open orders" image="receipt">
+                                            <color key="titleColor" name="lightThemePrimary"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="viewOpenOrders:" destination="Zsz-Q1-EQd" eventType="touchUpInside" id="oKF-yP-bVj"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="e0n-eW-Jfc" firstAttribute="centerY" secondItem="4qd-sa-YOv" secondAttribute="centerY" id="98V-6b-Em7"/>
+                                    <constraint firstItem="EUP-qi-wEb" firstAttribute="centerY" secondItem="4qd-sa-YOv" secondAttribute="centerY" id="Kg7-od-PyN"/>
+                                    <constraint firstAttribute="height" constant="52" id="kXd-41-sQP"/>
+                                    <constraint firstAttribute="trailing" secondItem="e0n-eW-Jfc" secondAttribute="trailing" constant="8" id="nBl-JY-jXk"/>
+                                    <constraint firstItem="EUP-qi-wEb" firstAttribute="leading" secondItem="4qd-sa-YOv" secondAttribute="leading" id="sQr-Gb-X8F"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="4qd-sa-YOv" firstAttribute="leading" secondItem="mTG-J7-DRW" secondAttribute="leading" id="2Fs-j6-UAr"/>
+                            <constraint firstItem="mTG-J7-DRW" firstAttribute="trailing" secondItem="4qd-sa-YOv" secondAttribute="trailing" id="42k-l4-Nnn"/>
                             <constraint firstItem="mTG-J7-DRW" firstAttribute="trailing" secondItem="Oge-23-l56" secondAttribute="trailing" id="GTD-nG-IBU"/>
                             <constraint firstItem="mTG-J7-DRW" firstAttribute="bottom" secondItem="Oge-23-l56" secondAttribute="bottom" id="Z27-En-b1w"/>
                             <constraint firstItem="Oge-23-l56" firstAttribute="top" secondItem="mTG-J7-DRW" secondAttribute="top" id="cZP-Uu-w8f"/>
                             <constraint firstItem="Oge-23-l56" firstAttribute="leading" secondItem="mTG-J7-DRW" secondAttribute="leading" id="xee-HD-WIK"/>
+                            <constraint firstItem="mTG-J7-DRW" firstAttribute="bottom" secondItem="4qd-sa-YOv" secondAttribute="bottom" id="yyA-hC-TgP"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="mTG-J7-DRW"/>
                     </view>
                     <navigationItem key="navigationItem" id="DD8-Px-70z"/>
                     <connections>
                         <outlet property="containerView" destination="Oge-23-l56" id="6T9-jG-nHE"/>
+                        <outlet property="openOrderButton" destination="EUP-qi-wEb" id="OVa-PW-N5j"/>
+                        <outlet property="toolbar" destination="4qd-sa-YOv" id="HNp-Gk-7yk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3hA-ba-nkE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -59,4 +114,10 @@
             <point key="canvasLocation" x="117.59999999999999" y="177.66116941529236"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="receipt" width="18" height="20"/>
+        <namedColor name="lightThemePrimary">
+            <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

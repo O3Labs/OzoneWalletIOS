@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PriceInputToolbar" customModule="O3" customModuleProvider="target">
+            <connections>
+                <outlet property="currentMedianPriceButton" destination="OBh-Ul-6MC" id="DMy-7x-jYR"/>
+                <outlet property="topPriceButton" destination="Xbf-nY-tve" id="dqs-dv-mrO"/>
+                <outlet property="topPriceView" destination="3oQ-Uq-tc2" id="cod-L3-wqp"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ThemedUIView" customModule="O3" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="370" height="176"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aVx-Yo-da4">
+                    <rect key="frame" x="0.0" y="0.0" width="370" height="44"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adjust price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WEZ-1R-g4y">
+                            <rect key="frame" x="16" y="12" width="75" height="19.5"/>
+                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                            <color key="textColor" name="grey"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jej-SQ-wPt">
+                            <rect key="frame" x="234" y="7" width="120" height="30"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OOh-XZ-Iuv">
+                                    <rect key="frame" x="0.0" y="0.0" width="56" height="30"/>
+                                    <color key="backgroundColor" name="lightThemeOrange"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                                    <state key="normal" title="-1%">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="15"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="minusTapped:" destination="-1" eventType="touchUpInside" id="Y6T-XI-urK"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ce-Xx-j7C">
+                                    <rect key="frame" x="64" y="0.0" width="56" height="30"/>
+                                    <color key="backgroundColor" name="lightThemeOrange"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                                    <state key="normal" title="+1%">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="15"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="plusTapped:" destination="-1" eventType="touchUpInside" id="0Wy-8Q-XdZ"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="120" id="hqK-4a-bt6"/>
+                                <constraint firstAttribute="height" constant="30" id="ldQ-bz-ag9"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" name="lightThemePrimary"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="6"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="9H1-i2-hMH"/>
+                        <constraint firstItem="jej-SQ-wPt" firstAttribute="centerY" secondItem="aVx-Yo-da4" secondAttribute="centerY" id="HK9-O0-lfA"/>
+                        <constraint firstItem="WEZ-1R-g4y" firstAttribute="centerY" secondItem="aVx-Yo-da4" secondAttribute="centerY" id="PRd-1i-Swf"/>
+                        <constraint firstItem="WEZ-1R-g4y" firstAttribute="leading" secondItem="aVx-Yo-da4" secondAttribute="leading" constant="16" id="STs-Uz-nQg"/>
+                        <constraint firstAttribute="trailing" secondItem="jej-SQ-wPt" secondAttribute="trailing" constant="16" id="zD5-nl-pXa"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DJX-OE-r6N">
+                    <rect key="frame" x="0.0" y="44" width="370" height="44"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current median price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z71-1Q-iKN">
+                            <rect key="frame" x="16" y="0.0" width="132.5" height="44"/>
+                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                            <color key="textColor" name="grey"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OBh-Ul-6MC">
+                            <rect key="frame" x="269" y="0.0" width="85" height="44"/>
+                            <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                            <state key="normal" title="0.01234567"/>
+                            <connections>
+                                <action selector="currentPriceTapped:" destination="-1" eventType="touchUpInside" id="Qpz-na-lcG"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="z71-1Q-iKN" firstAttribute="leading" secondItem="DJX-OE-r6N" secondAttribute="leading" constant="16" id="E2u-xE-2VU"/>
+                        <constraint firstAttribute="trailing" secondItem="OBh-Ul-6MC" secondAttribute="trailing" constant="16" id="JYx-7C-IrB"/>
+                        <constraint firstItem="OBh-Ul-6MC" firstAttribute="top" secondItem="DJX-OE-r6N" secondAttribute="top" id="QAk-hQ-run"/>
+                        <constraint firstAttribute="height" constant="44" id="i0p-zE-uE7"/>
+                        <constraint firstItem="z71-1Q-iKN" firstAttribute="top" secondItem="DJX-OE-r6N" secondAttribute="top" id="p2N-Po-X21"/>
+                        <constraint firstItem="z71-1Q-iKN" firstAttribute="centerY" secondItem="DJX-OE-r6N" secondAttribute="centerY" id="pOl-ft-Avl"/>
+                        <constraint firstAttribute="bottom" secondItem="OBh-Ul-6MC" secondAttribute="bottom" id="tCb-Jf-Brx"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3oQ-Uq-tc2">
+                    <rect key="frame" x="0.0" y="88" width="370" height="44"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current top order" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Atz-RZ-IaJ">
+                            <rect key="frame" x="16" y="0.0" width="110" height="44"/>
+                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                            <color key="textColor" name="grey"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xbf-nY-tve">
+                            <rect key="frame" x="269" y="0.0" width="85" height="44"/>
+                            <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                            <state key="normal" title="0.01234567"/>
+                            <connections>
+                                <action selector="topPriceTapped:" destination="-1" eventType="touchUpInside" id="lbH-5L-gxA"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="AFu-tG-Qdb"/>
+                        <constraint firstItem="Atz-RZ-IaJ" firstAttribute="centerY" secondItem="3oQ-Uq-tc2" secondAttribute="centerY" id="Hf8-8q-J6S"/>
+                        <constraint firstAttribute="bottom" secondItem="Xbf-nY-tve" secondAttribute="bottom" id="NuI-bQ-cIw"/>
+                        <constraint firstItem="Xbf-nY-tve" firstAttribute="top" secondItem="3oQ-Uq-tc2" secondAttribute="top" id="Swz-mR-x0l"/>
+                        <constraint firstAttribute="trailing" secondItem="Xbf-nY-tve" secondAttribute="trailing" constant="16" id="W6Q-Ur-4fd"/>
+                        <constraint firstItem="Atz-RZ-IaJ" firstAttribute="leading" secondItem="3oQ-Uq-tc2" secondAttribute="leading" constant="16" id="kpv-JJ-OKt"/>
+                        <constraint firstItem="Atz-RZ-IaJ" firstAttribute="top" secondItem="3oQ-Uq-tc2" secondAttribute="top" id="njU-WG-YFk"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="DJX-OE-r6N" firstAttribute="top" secondItem="aVx-Yo-da4" secondAttribute="bottom" id="2Yb-Hj-IXf"/>
+                <constraint firstItem="DJX-OE-r6N" firstAttribute="leading" secondItem="aVx-Yo-da4" secondAttribute="leading" id="9V1-ue-O4G"/>
+                <constraint firstItem="aVx-Yo-da4" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="HoO-ht-lJH"/>
+                <constraint firstItem="DJX-OE-r6N" firstAttribute="trailing" secondItem="aVx-Yo-da4" secondAttribute="trailing" id="Kco-AI-nAu"/>
+                <constraint firstItem="3oQ-Uq-tc2" firstAttribute="trailing" secondItem="DJX-OE-r6N" secondAttribute="trailing" id="MW6-9P-FrB"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="leading" secondItem="aVx-Yo-da4" secondAttribute="leading" id="NYc-Wn-sN2"/>
+                <constraint firstItem="3oQ-Uq-tc2" firstAttribute="leading" secondItem="DJX-OE-r6N" secondAttribute="leading" id="afz-6c-riw"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="aVx-Yo-da4" secondAttribute="trailing" id="lh7-e2-Yjh"/>
+                <constraint firstItem="3oQ-Uq-tc2" firstAttribute="top" secondItem="DJX-OE-r6N" secondAttribute="bottom" id="nIj-km-bqF"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="20" y="109"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="grey">
+            <color red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="lightThemeOrange">
+            <color red="0.96078431372549022" green="0.65098039215686276" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="lightThemePrimary">
+            <color red="0.0" green="0.41176470590000003" blue="0.85098039219999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

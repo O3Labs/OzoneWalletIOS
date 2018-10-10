@@ -33,7 +33,7 @@ public struct Asset: Codable {
     }
 }
 
-class JSONNull: Codable {
+public class JSONNull: Codable {
     public init() {}
     
     public required init(from decoder: Decoder) throws {

@@ -40,11 +40,11 @@ class NEP2DetectedViewController: UIViewController {
         nep2PasswordField.setLeftPaddingPoints(CGFloat(10.0))
         nep2PasswordField.setRightPaddingPoints(CGFloat(10.0))
 
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let visualEffectView = UIVisualEffectView(effect: blurEffect)
         visualEffectView.frame = view.bounds
         view.addSubview(visualEffectView)
-        view.bringSubview(toFront: alertContainer)
+        view.bringSubviewToFront(alertContainer)
 
         doneButton.isEnabled = false
 
@@ -110,6 +110,6 @@ class NEP2DetectedViewController: UIViewController {
     func setLocalizedStrings() {
         titleView.text = OnboardingStrings.encryptedKeyDetected
         subtitleLabel.text = OnboardingStrings.pleaseEnterNEP2Password
-        doneButton.setTitle(OnboardingStrings.submit, for: UIControlState())
+        doneButton.setTitle(OnboardingStrings.submit, for: UIControl.State())
     }
 }

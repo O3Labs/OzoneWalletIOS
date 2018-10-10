@@ -384,8 +384,11 @@
 /* Error to display when the user tries to send an invalid amount */
 "SEND_Invalid_Amount_Error" = "Invalid Amount Entered";
 
+/* text to display when NNS name couldn't be resolved */
+"SEND_Invalid_NNS" = "Couldn't resolve that NNS name, please check again"; /* NEW */
+
 /* A string that shows how many transactions are currently ahead of you in the mempool */
-"SEND_mempool_height" = "%@ transactions ahead of you"; /* NEW */
+"SEND_mempool_height" = "%@ transactions ahead of you";
 
 /* Error To display when the user is trying to send without enough balance */
 "SEND_Not_Enough_Balance_Error" = "You don't have enough %@. Your balance is %@";
@@ -514,7 +517,7 @@
 "TOKENSALE_Ends_In" = "Ends In %@";
 
 /* A detailed description about what will happen if the user signs up for the email list to get notified about token sales */
-"TOKENSALE_Get_Notified_Description" = "Share your email, and we'll send you info about the latest token sales. We vet all tokens that appear on O3, and this email is never shared with third parties. No 💩coins allowed!";
+"TOKENSALE_Get_Notified_Description" = "Share your email, and we'll send you info about the latest token sales. We vet all tokens that appear on O3, and this email is never shared with third parties.";
 
 /* A title showing users can get notified about the latest token sales */
 "TOKENSALE_Get_Notified_Title" = "Get Notified";
@@ -634,7 +637,7 @@
 "TOKENSELECTION_Under_Construction" = "TOKENSELECTION_Under_Construction";
 
 /* A title for the account screen */
-"WALLET_Account" = "Account";
+"WALLET_Account" = "My wallet";
 
 /* Title of assets tab in wallet screen */
 "WALLET_Assets" = "ASSETS";

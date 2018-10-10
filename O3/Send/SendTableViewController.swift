@@ -47,6 +47,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     var selectedAsset: TransferableAsset?
     var preselectedAddress = ""
     var incomingQRData: String?
+    var sendingWithDomain = false
     
     func addThemedElements() {
         let themedTitleLabels = [toLabel, assetLabel, amountLabel]
@@ -55,7 +56,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         }
         selectedAssetLabel.theme_textColor = O3Theme.titleColorPicker
         recipientCell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        recipientCell.theme_backgroundColor = O3Theme.backgroundColorPicker
         sendAmountCell.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        sendAmountCell.theme_backgroundColor = O3Theme.backgroundColorPicker
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -65,7 +68,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         for field in themedTextFields {
             field!.attributedPlaceholder = NSAttributedString(
                 string: field!.placeholder ?? "",
-                attributes: [NSAttributedStringKey.foregroundColor: placeHolderColor])
+                attributes: [NSAttributedString.Key.foregroundColor: placeHolderColor])
             field?.theme_keyboardAppearance = O3Theme.keyboardPicker
             field?.theme_backgroundColor = O3Theme.clearTextFieldBackgroundColorPicker
             field?.theme_textColor = O3Theme.textFieldTextColorPicker
@@ -76,6 +79,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight { result in
             switch(result) {
             case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
                 return
             case .success(let count):
                 DispatchQueue.main.async {
@@ -105,6 +111,8 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
         self.enableSendButton()
         self.toAddressField.text = preselectedAddress.trim()
+        
+        toAddressField.addTarget(self, action: #selector(addressTextFieldChanged(_:)), for: .editingChanged)
         if incomingQRData != nil {
             qrScanned(data: incomingQRData!)
         }
@@ -112,6 +120,52 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         //default to NEO
         self.selectedAsset = O3Cache.neo()
         self.assetSelected(selected: O3Cache.neo(), gasBalance: O3Cache.gas().value)
+    }
+    
+    func showAddressbyDomain(address: String?) {
+        if address == nil {
+            verifiedAddressDisplayNameLabel.text = ""
+            verifiedAddressBadge.isHidden = true
+            return
+        }
+        verifiedAddressDisplayNameLabel.text = address!
+        verifiedAddressBadge.image = UIImage(named: "nns")
+        verifiedAddressBadge.isHidden = false
+    }
+    
+    @objc func addressTextFieldChanged(_ sender: Any) {
+        //if it's ending in .neo then try to fetch the address by domain
+        //if length if 34 then try to validate neo address
+        sendingWithDomain = false
+        let text = toAddressField.text?.trim() ?? ""
+        if text.hasSuffix(".neo") {
+            O3APIClient(network: AppState.network).domainLookup(domain: text) { result in
+                switch result {
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.verifiedAddressDisplayNameLabel.text = SendStrings.invalidNNSName
+                        self.verifiedAddressDisplayNameLabel.isHidden = false
+                        self.verifiedAddressDisplayNameLabel.textColor = UIColor(named: "lightThemeRed")
+                    }
+                case .success(let address):
+                    print(address)
+                    DispatchQueue.main.async {
+                        self.sendingWithDomain = true
+                        self.showAddressbyDomain(address: address)
+                        self.verifiedAddressDisplayNameLabel.textColor = UIColor(named: "lightThemeGreen")
+                    }
+                }
+            }
+        } else {
+            showAddressbyDomain(address: nil)
+        }
+        if text.count < 34 {
+            return
+        }
+        
+//        if NEOValidator.validateNEOAddress(text) == true {
+//
+//        }
     }
     
     @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
@@ -125,12 +179,30 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     }
     
     func sendOntology(assetSymbol: String, amount: Double, toAddress: String) {
+        let ong = O3Cache.ontologyAssets().first { t -> Bool in
+            return t.symbol.uppercased() == "ONG"
+        }
+        
+        if ong == nil {
+            return
+        }
+        
+        if ong!.value.isLess(than: 0.01) {
+            OzoneAlert.alertDialog(message: "Ontology network requires 0.01 ONG for transaction fees. You don't seem to have enough ONG in your wallet", dismissTitle: "OK") {
+                
+            }
+            return
+        }
+        
         let wif = Authenticated.account?.wif
         var error: NSError?
         let endpoint = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
         OntologyClient().getGasPrice { result in
             switch result {
             case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
                 DispatchQueue.main.async {
                     self.transactionCompleted = false
                     self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
@@ -154,7 +226,11 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     func sendNEP5Token(tokenHash: String, decimals: Int, assetName: String, amount: Double, toAddress: String) {
         
         DispatchQueue.main.async {
-            OzoneAlert.confirmDialog(message: String(format: SendStrings.sendConfirmationPrompt, amount, assetName, toAddress),
+            var addressAndAlias = toAddress
+            if self.sendingWithDomain {
+                addressAndAlias = "\(self.toAddressField.text?.trim() ?? "") " + "(\(toAddress))"
+            }
+            OzoneAlert.confirmDialog(message: String(format: SendStrings.sendConfirmationPrompt, amount, assetName, addressAndAlias),
                                      cancelTitle: OzoneAlert.cancelNegativeConfirmString,
                                      confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
                                         let keychain = Keychain(service: "network.o3.neo.wallet")
@@ -283,7 +359,13 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             })
             return
         }
-        let toAddress = toAddressField.text?.trim() ?? ""
+        var toAddress = ""
+        if (sendingWithDomain) {
+            toAddress = verifiedAddressDisplayNameLabel.text?.trim() ?? ""
+        } else {
+            toAddress = toAddressField.text?.trim() ?? ""
+        }
+        
         
         //validate address first
         if NEOValidator.validateNEOAddress(toAddress) == false {
@@ -380,16 +462,26 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     }
     
     func showVerifiedAddress(verifiedAddress: VerifiedAddress?) {
+        if sendingWithDomain {
+            return
+        }
+        
         if verifiedAddress == nil {
             verifiedAddressDisplayNameLabel.text = ""
             verifiedAddressBadge.isHidden = true
             return
         }
         verifiedAddressDisplayNameLabel.text = verifiedAddress!.displayName
+        verifiedAddressBadge.image = UIImage(named: "shield-check")
         verifiedAddressBadge.isHidden = false
     }
     
     @IBAction func enableSendButton() {
+        if sendingWithDomain {
+            sendButton.isEnabled = true
+            return
+        }
+        
         self.showVerifiedAddress(verifiedAddress: nil)
         if toAddressField.text?.isEmpty == true {
             sendButton.isEnabled = false
@@ -404,6 +496,9 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         O3APIClient(network: AppState.network).checkVerifiedAddress(address: toAddressField.text!) { result in
             switch result {
             case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
                 DispatchQueue.main.async {
                     self.showVerifiedAddress(verifiedAddress: nil)
                 }
@@ -425,7 +520,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
             segue.destination.modalPresentationStyle = .custom
             segue.destination.transitioningDelegate = self.halfModalTransitioningDelegate
             guard let dest = segue.destination as? UINavigationController,
-                let addressSelectVC = dest.childViewControllers[0] as? AddressSelectTableViewController else {
+                let addressSelectVC = dest.children[0] as? AddressSelectTableViewController else {
                     fatalError("Undefined Table view behavior")
             }
             addressSelectVC.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(tappedCloseAddressSeletor(_:)))
@@ -456,7 +551,7 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
     }
     
     func showNetworkFeeLabel() {
-        ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
+        _ = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
         OntologyClient().getGasPrice { result in
             switch result {
             case (.failure):
@@ -476,11 +571,11 @@ class SendTableViewController: UITableViewController, AddressSelectDelegate, QRS
         toLabel.text = SendStrings.toLabel
         assetLabel.text = SendStrings.assetLabel
         amountLabel.text = SendStrings.amountLabel
-        pasteButton.setTitle(SendStrings.paste, for: UIControlState())
-        scanButton.setTitle(SendStrings.scan, for: UIControlState())
-        addressButton.setTitle(SendStrings.addressBook, for: UIControlState())
+        pasteButton.setTitle(SendStrings.paste, for: UIControl.State())
+        scanButton.setTitle(SendStrings.scan, for: UIControl.State())
+        addressButton.setTitle(SendStrings.addressBook, for: UIControl.State())
         selectedAssetLabel.text = SendStrings.selectedAssetLabel
-        sendButton.setTitle(SendStrings.send, for: UIControlState())
+        sendButton.setTitle(SendStrings.send, for: UIControl.State())
         self.title = SendStrings.send
         toAddressField.placeholder = SendStrings.toAddressPlaceholder
     }

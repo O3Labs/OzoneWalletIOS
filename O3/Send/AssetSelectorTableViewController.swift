@@ -89,7 +89,7 @@ class AssetSelectorTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == sections.nativeAssets.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nativeasset") as? NativeAssetSelectorTableViewCell else {
-                return UITableViewCell()
+                return UITableViewCell(frame: CGRect.zero)
             }
 
             //NEO
@@ -113,7 +113,7 @@ class AssetSelectorTableViewController: UITableViewController {
 
         if indexPath.section == sections.ontologyAssets.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nativeasset") as? NativeAssetSelectorTableViewCell else {
-                return UITableViewCell()
+                return UITableViewCell(frame: CGRect.zero)
             }
 
             cell.titleLabel.text = ontologyAssets[indexPath.row].symbol
@@ -125,7 +125,7 @@ class AssetSelectorTableViewController: UITableViewController {
         }
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenSelectorTableViewCell else {
-            return UITableViewCell()
+            return UITableViewCell(frame: CGRect.zero)
         }
 
         let token = tokens[indexPath.row]

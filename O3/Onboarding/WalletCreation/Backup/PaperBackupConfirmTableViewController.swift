@@ -21,16 +21,16 @@ class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDe
     @IBOutlet weak var wifTextView: O3TextView!
 
     lazy var inputToolbar: UIToolbar = {
-        var toolbar = UIToolbar()
+        var toolbar = UIToolbar(frame: CGRect.zero)
         toolbar.barStyle = .default
         toolbar.sizeToFit()
-        let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.primaryColor,
-                                                        NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
-        let disabledAttributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: Theme.light.disabledColor,
-                                                        NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 17)!]
-        doneButton.setTitleTextAttributes(attributes, for: UIControlState.normal)
-        doneButton.setTitleTextAttributes(disabledAttributes, for: UIControlState.disabled)
+        let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let attributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: Theme.light.primaryColor,
+                                                        NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        let disabledAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: Theme.light.disabledColor,
+                                                        NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 17)!]
+        doneButton.setTitleTextAttributes(attributes, for: UIControl.State.normal)
+        doneButton.setTitleTextAttributes(disabledAttributes, for: UIControl.State.disabled)
         toolbar.setItems([flexibleButton, doneButton], animated: false)
         toolbar.isUserInteractionEnabled = true
 

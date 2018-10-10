@@ -15,6 +15,7 @@ import Crashlytics
 import SwiftTheme
 import Neoutils
 import UserNotifications
+import Amplitude
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -85,7 +86,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
+            ////If your plist contain root as Dictionary
+            if let dic = NSDictionary(contentsOfFile: path) as? [String: Any] {
+                let amp = dic["Amplitude"] as! [String: Any]
+                let apiKey = amp["APIKey"] as! String
+                #if !DEBUG
+                Amplitude.instance().initializeApiKey(apiKey)
+                #endif
+            }
+        }
+        
+        
         #if DEBUG
         print("DEBUG BUILD")
         #else
@@ -162,7 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
          */
-        let container = NSPersistentContainer(name: "Account")
+        let container = NSPersistentContainer(name: "Transaction")
         container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
@@ -213,7 +226,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     // MARK: - deeplink
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         if app.applicationState == .inactive {
             Router.parseNEP9URL(url: url)
         }
@@ -245,15 +258,15 @@ extension AppDelegate: LoginToCurrentWalletViewControllerDelegate {
         //marketplace
         if (tabItem == 2 && components.count > 2) {
             guard let marketplaceNav = tabbar.selectedViewController as? UINavigationController,
-                let marketplace = marketplaceNav.childViewControllers[0] as? MarketplaceController else {
+                let marketplace = marketplaceNav.children[0] as? MarketplaceController else {
                 return
             }
             marketplace.startAtTokenSale = true
         }
     }
 
-    func authorized(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
-        if let url = launchOptions?[UIApplicationLaunchOptionsKey.url] as? URL {
+    func authorized(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        if let url = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
             Router.parseNEP9URL(url: url)
         }
         if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject] {

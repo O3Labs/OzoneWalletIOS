@@ -33,7 +33,7 @@ class ContributionTableViewCell: UITableViewCell {
 
     @IBOutlet weak var amountTextField: UITextField! {
         didSet {
-            inputToolbar = AssetInputToolbar()
+            inputToolbar = AssetInputToolbar(frame: CGRect.zero)
             inputToolbar?.delegate = self
             amountTextField.inputAccessoryView = inputToolbar?.loadNib()
             amountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker

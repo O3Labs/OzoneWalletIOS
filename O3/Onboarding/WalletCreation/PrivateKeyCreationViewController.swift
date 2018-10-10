@@ -71,8 +71,8 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
         view.isUserInteractionEnabled = true
 
         animationContainerView.embed(tutorialAnimation)
-        view.bringSubview(toFront: learnMoreContainer)
-        view.bringSubview(toFront: closeButton)
+        view.bringSubviewToFront(learnMoreContainer)
+        view.bringSubviewToFront(closeButton)
 
         tutorialAnimation.animationSpeed = CGFloat(1.4)
         presentWalletGeneratedViewController()
@@ -195,7 +195,7 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
         cell.data = data
         if row + 1 == Int(maxPosition) {
             cell.cardEmphasisLabel.textColor = Theme.light.positiveGainColor
-            cell.forwardButton.setTitle(OnboardingStrings.finish, for: UIControlState())
+            cell.forwardButton.setTitle(OnboardingStrings.finish, for: UIControl.State())
         } else {
             cell.cardEmphasisLabel.textColor = Theme.light.negativeLossColor
         }
@@ -228,7 +228,7 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
         segue.destination.modalPresentationStyle = .custom
         segue.destination.transitioningDelegate = self.halfModalTransitioningDelegate
         guard let dest = segue.destination as? UINavigationController,
-            let destChild = dest.childViewControllers[0] as? BackupTableViewController else {
+            let destChild = dest.children[0] as? BackupTableViewController else {
                 return
         }
         destChild.wif = wif
@@ -238,9 +238,9 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
         titleLabel.text = OnboardingStrings.titleAnimationHeader
         subtitleLabel.text = OnboardingStrings.subtitleAnimationHeader
         let attributedString = NSMutableAttributedString(string: OnboardingStrings.learnMore)
-        attributedString.addAttribute(NSAttributedStringKey.underlineStyle, value: NSUnderlineStyle.styleSingle.rawValue, range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(NSAttributedStringKey.underlineColor, value: Theme.light.accentColor, range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: Theme.light.accentColor, range: NSRange(location: 0, length: attributedString.length))
-        learnmoreButton.setAttributedTitle(attributedString, for: UIControlState())
+        attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSAttributedString.Key.underlineColor, value: Theme.light.accentColor, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.light.accentColor, range: NSRange(location: 0, length: attributedString.length))
+        learnmoreButton.setAttributedTitle(attributedString, for: UIControl.State())
     }
 }

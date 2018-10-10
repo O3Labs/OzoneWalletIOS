@@ -51,9 +51,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
         neoGasClaimingStateLabel?.text = AccountStrings.confirmedClaimableGasTitle
         ontClaimingStateTitle?.text = AccountStrings.confirmedClaimableGasTitle
         neoClaimNowButton?.setTitle(AccountStrings.claimNowButton, for: .normal)
-        neoSyncNowButton?.setTitle(AccountStrings.updateNowButton, for: UIControlState())
+        neoSyncNowButton?.setTitle(AccountStrings.updateNowButton, for: UIControl.State())
         ontClaimButton?.setTitle(AccountStrings.claimNowButton, for: .normal)
-        ontSyncButton?.setTitle(AccountStrings.updateNowButton, for: UIControlState())
+        ontSyncButton?.setTitle(AccountStrings.updateNowButton, for: UIControl.State())
         claimContainerTitleLabel.text = AccountStrings.claimNowButton
     }
 
@@ -62,12 +62,13 @@ class ClaimableGASTableViewCell: UITableViewCell {
         ontClaimingStateTitle?.theme_textColor = O3Theme.lightTextColorPicker
         claimableOntAmountLabel?.theme_textColor = O3Theme.titleColorPicker
         claimableGasAmountLabel?.theme_textColor = O3Theme.titleColorPicker
-        neoSyncNowButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControlState())
-        ontSyncButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControlState())
+        neoSyncNowButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
+        ontSyncButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
 
         claimContainerTitleLabel.theme_textColor = O3Theme.titleColorPicker
         confirmedClaimableGASContainer?.theme_backgroundColor = O3Theme.backgroundColorPicker
-        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        theme_backgroundColor = O3Theme.backgroundLightgrey
+        contentView.theme_backgroundColor = O3Theme.backgroundLightgrey
     }
 
     override func layoutSubviews() {
@@ -326,6 +327,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
         OntologyClient().getGasPrice { result in
             switch result {
             case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
                 //throw some error here
                 DispatchQueue.main.async {
                     self.delegate?.setIsClaimingOnt(false)
@@ -385,7 +389,9 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
 
     @objc func ontClaimNowTapped(_ sender: Any) {
-        self.claimConfirmedOng()
+        OzoneAlert.confirmDialog(message: "Claiming ONG requires the Ontology network fee of 0.01 ONG", cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.okPositiveConfirmString, didCancel: {return}) {
+            self.claimConfirmedOng()
+        }
     }
 
     func neoClaimedSuccess() {

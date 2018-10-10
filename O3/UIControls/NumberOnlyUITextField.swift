@@ -8,10 +8,14 @@
 
 import UIKit
 
-class NumberOnlyUITextField: NoActionUITextField, UITextFieldDelegate {
+class NumberOnlyUITextField: UITextField, UITextFieldDelegate {
 
     override func awakeFromNib() {
         delegate = self
+        super.awakeFromNib()
+    }
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return false
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

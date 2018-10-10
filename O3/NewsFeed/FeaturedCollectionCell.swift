@@ -18,6 +18,6 @@ class FeaturedCollectionCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         titleLabel.theme_textColor = O3Theme.primaryColorPicker
-        subtitleLabel.theme_textColor = O3Theme.lightTextColorPicker
+        subtitleLabel.theme_textColor = O3Theme.titleColorPicker
     }
 }

@@ -3,7 +3,7 @@
 //  O3
 //
 //  Created by Apisit Toompakdee on 4/17/18.
-//  Copyright © 2018 drei. All rights reserved.
+//  Copyright © 2018 O3 Labs Inc. All rights reserved.
 //
 
 import UIKit
@@ -100,7 +100,7 @@ extension UIView {
         let nibName = type(of: self).description().components(separatedBy: ".").last!
         let nib = UINib(nibName: nibName, bundle: bundle)
         guard let view = nib.instantiate(withOwner: self, options: nil).first as? UIView else {
-            return UIView()
+            return UIView(frame: CGRect.zero)
         }
         return view
     }

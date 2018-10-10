@@ -39,11 +39,16 @@ public enum O3APIClientResult<T> {
 class O3APIClient: NSObject {
 
     public var apiBaseEndpoint = "https://platform.o3.network/api"
+    public var apiWithCacheBaseEndpoint = "https://api.o3.network"
     public var network: Network = .main
 
-    init(network: Network) {
+    public var useCache: Bool = false
+    init(network: Network, useCache: Bool = false) {
         self.network = network
+        self.useCache = useCache
     }
+    
+    static var shared: O3APIClient = O3APIClient(network: AppState.network)
 
     enum o3APIResource: String {
         case getBalances = "balances"
@@ -53,14 +58,24 @@ class O3APIClient: NSObject {
         case postTokenSaleLog = "tokensales"
     }
 
-    func sendRESTAPIRequest(_ resourceEndpoint: String, data: Data?, requestType: String = "GET", completion :@escaping (O3APIClientResult<JSONDictionary>) -> Void) {
+    func queryString(_ value: String, params: [String: String]) -> String? {
+        var components = URLComponents(string: value)
+        components?.queryItems = params.map { element in URLQueryItem(name: element.key, value: element.value) }
+        
+        return components?.url?.absoluteString
+    }
+    
+    func sendRESTAPIRequest(_ resourceEndpoint: String, data: Data?, requestType: String = "GET", params: [String: String] = [:], completion :@escaping (O3APIClientResult<JSONDictionary>) -> Void) {
 
-        var fullURL = apiBaseEndpoint + resourceEndpoint
+        var fullURL = useCache ? apiWithCacheBaseEndpoint + resourceEndpoint : apiBaseEndpoint + resourceEndpoint
+        var updatedParams = params
         if network == .test {
-            fullURL += "?network=test"
+            updatedParams["network"] = "test"
         } else if network == .privateNet {
-            fullURL += "?network=private"
+            updatedParams["network"] = "private"
         }
+        
+        fullURL =  self.queryString(fullURL, params: updatedParams)!
 
         let request = NSMutableURLRequest(url: URL(string: fullURL)!)
         request.httpMethod = requestType
@@ -69,7 +84,9 @@ class O3APIClient: NSObject {
         request.httpBody = data
 
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, result, err) in
+            #if DEGUB
             print(result)
+            #endif
             if err != nil {
                 completion(.failure(.invalidRequest))
                 return
@@ -240,7 +257,7 @@ class O3APIClient: NSObject {
                 let decoder = JSONDecoder()
                 guard let dictionary = response["result"] as? JSONDictionary,
                     let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
-                    let decoded = try? decoder.decode(String.self, from: data) else {
+                    let _ = try? decoder.decode(String.self, from: data) else {
                         return
                 }
                 let success = O3APIClientResult.success(true)
@@ -248,7 +265,6 @@ class O3APIClient: NSObject {
             }
         }
     }
-    
     
     func getTxHistory(address: String, pageIndex: Int, completion: @escaping(O3APIClientResult<TransactionHistory>) -> Void) {
         let url = String(format:"/v1/history/%@?p=%d", address, pageIndex)
@@ -260,7 +276,174 @@ class O3APIClient: NSObject {
                 let decoder = JSONDecoder()
                 guard let dictionary = response["result"] as? JSONDictionary,
                     let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+
                     let decoded = try? decoder.decode(TransactionHistory.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
+    
+    func tradingBalances(address: String, completion: @escaping(O3APIClientResult<TradingAccount>) -> Void) {
+        let validAddress = NeoutilsValidateNEOAddress(address)
+        if validAddress == false {
+            completion(.failure(.invalidAddress))
+            return
+        }
+        let url = "/v1/trading/" + address
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(TradingAccount.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
+    
+    func loadPricing(symbol: String, currency: String, completion: @escaping(O3APIClientResult<AssetPrice>) -> Void) {
+        let url = String(format: "/v1/pricing/%@/%@", symbol, currency)
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(AssetPrice.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
+    
+    let cache = NSCache<NSString, AnyObject>()
+    func loadSupportedTokenSwitcheo(completion: @escaping(O3APIClientResult<[TradableAsset]>) -> Void) {
+        let cacheKey: NSString = "SUPPORTED_TOKENS_SWITCHEO"
+        if let cached = cache.object(forKey: cacheKey) {
+            // use the cached version
+            let decoded = cached as! [TradableAsset]
+            let w = O3APIClientResult.success(decoded)
+            completion(w)
+            return
+        }
+        
+        let url = String(format: "/v1/trading/%@/tokens", "switcheo")
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode([TradableAsset].self, from: data) else {
+                        return
+                }
+                self.cache.setObject(decoded as AnyObject, forKey: cacheKey)
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
+    
+    func loadSwitcheoOrders(address: String, status: SwitcheoOrderStatus, pair: String? = nil, completion: @escaping(O3APIClientResult<TradingOrders>) -> Void) {
+        
+        let url = String(format: "/v1/trading/%@/orders", address)
+        var params: [String: String] = [:]
+        if status.rawValue != "" {
+            params["status"] = status.rawValue
+        }
+        
+        if pair != nil {
+            params["pair"] = pair!
+        }
+        
+        sendRESTAPIRequest(url, data: nil, params: params) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(TradingOrders.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
+    
+    func loadDapps(completion: @escaping(O3APIClientResult<[Dapp]>) -> Void) {
+        let url = String(format: "/v1/dapps")
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode([Dapp].self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
+    
+    func domainLookup(domain: String, completion: @escaping(O3APIClientResult<String>) -> Void) {
+        struct domainInfo: Codable {
+            let address, expiration: String
+        }
+        let url = String(format: "/v1/neo/nns/%@", domain)
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(domainInfo.self, from: data) else {
+                        return
+                }
+                let success = O3APIClientResult.success(decoded.address)
+                completion(success)
+            }
+        }
+    }
+
+    struct reverseDomainInfo: Codable {
+        let address, expiration, domain: String
+    }
+    
+    func reverseDomainLookup(address: String, completion: @escaping(O3APIClientResult<[reverseDomainInfo]>) -> Void) {
+        let url = String(format: "/v1/neo/nns/%@/domains", address)
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode([reverseDomainInfo].self, from: data) else {
                         return
                 }
                 let success = O3APIClientResult.success(decoded)

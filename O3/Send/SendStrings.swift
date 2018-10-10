@@ -42,4 +42,6 @@ struct SendStrings {
     static let assetSelectorTitle = NSLocalizedString("SEND_Select_Asset_Title", comment: "A title for the Select Asset pull up menu")
 
     static let ontologySendRequiresGas = NSLocalizedString("SEND_Ontology_requires_gas", comment: "A label to show that ontology requires a network fee in order to send")
+    
+    static let invalidNNSName = NSLocalizedString("SEND_Invalid_NNS", comment: "text to display when NNS name couldn't be resolved")
 }

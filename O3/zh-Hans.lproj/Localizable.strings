@@ -384,8 +384,11 @@
 /* Error to display when the user tries to send an invalid amount */
 "SEND_Invalid_Amount_Error" = "输入金额无效";
 
+/* text to display when NNS name couldn't be resolved */
+"SEND_Invalid_NNS" = "SEND_Invalid_NNS"; /* NEW */
+
 /* A string that shows how many transactions are currently ahead of you in the mempool */
-"SEND_mempool_height" = "%@ transactions ahead of you"; /* NEW */
+"SEND_mempool_height" = "%@ transactions ahead of you";
 
 /* Error To display when the user is trying to send without enough balance */
 "SEND_Not_Enough_Balance_Error" = "您的金额不足%@，当前余额为%@";

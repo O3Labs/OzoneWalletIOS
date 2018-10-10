@@ -95,3 +95,14 @@ public struct PortfolioValue: Codable {
         self.init(data: data, price: price, firstPrice: firstPrice)
     }
 }
+
+struct AccountValue: Codable {
+    let total: String
+    let currency: String
+    
+    enum CodingKeys: String, CodingKey {
+        case total = "total"
+        case currency = "currency"
+    }
+}
+

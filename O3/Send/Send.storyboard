@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VaG-FZ-R5v">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VaG-FZ-R5v">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -19,6 +20,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="cbq-MT-4Ib">
+                            <rect key="frame" x="0.0" y="352" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                         <sections>
                             <tableViewSection id="jx3-1L-D82">
                                 <cells>
@@ -105,14 +111,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="77"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUv-g8-fWQ" customClass="SMIconLabel" customModule="O3" customModuleProvider="target">
-                                                    <rect key="frame" x="16" y="16" width="0.0" height="0.0"/>
-                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
-                                                    <color key="textColor" name="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Wallet Address" clearsOnBeginEditing="YES" minimumFontSize="12" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="VdJ-Y3-cv0">
-                                                    <rect key="frame" x="16" y="24" width="288" height="53"/>
+                                                    <rect key="frame" x="16" y="8" width="288" height="45"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
@@ -120,8 +120,14 @@
                                                         <action selector="enableSendButton" destination="VaG-FZ-R5v" eventType="editingChanged" id="1Io-Wg-ngi"/>
                                                     </connections>
                                                 </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUv-g8-fWQ" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
+                                                    <rect key="frame" x="16" y="45" width="0.0" height="0.0"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                                    <color key="textColor" name="lightThemeGreen"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shield-check" translatesAutoresizingMaskIntoConstraints="NO" id="Hid-UQ-SWP">
-                                                    <rect key="frame" x="24" y="8.5" width="15" height="15"/>
+                                                    <rect key="frame" x="24" y="37.5" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="15" id="Szi-sH-kvg"/>
                                                         <constraint firstAttribute="height" constant="15" id="ytX-QL-TpR"/>
@@ -133,11 +139,11 @@
                                                 <constraint firstItem="VdJ-Y3-cv0" firstAttribute="leading" secondItem="JSK-Ek-kNJ" secondAttribute="leading" constant="16" id="1cU-Hd-HfU"/>
                                                 <constraint firstItem="Hid-UQ-SWP" firstAttribute="leading" secondItem="mUv-g8-fWQ" secondAttribute="trailing" constant="8" id="7ea-ie-ABU"/>
                                                 <constraint firstItem="mUv-g8-fWQ" firstAttribute="leading" secondItem="JSK-Ek-kNJ" secondAttribute="leading" constant="16" id="A5a-zk-Z94"/>
-                                                <constraint firstItem="Hid-UQ-SWP" firstAttribute="centerY" secondItem="mUv-g8-fWQ" secondAttribute="centerY" id="LSe-Vx-PDF"/>
+                                                <constraint firstAttribute="bottom" secondItem="VdJ-Y3-cv0" secondAttribute="bottom" constant="24" id="JyC-tU-xKc"/>
                                                 <constraint firstAttribute="trailing" secondItem="VdJ-Y3-cv0" secondAttribute="trailing" constant="16" id="P2u-4d-fre"/>
-                                                <constraint firstItem="mUv-g8-fWQ" firstAttribute="top" secondItem="JSK-Ek-kNJ" secondAttribute="top" constant="16" id="XCj-n1-whr"/>
-                                                <constraint firstItem="VdJ-Y3-cv0" firstAttribute="top" secondItem="mUv-g8-fWQ" secondAttribute="bottom" constant="8" id="c2f-Wk-1ta"/>
-                                                <constraint firstAttribute="bottom" secondItem="VdJ-Y3-cv0" secondAttribute="bottom" id="v7Z-d9-JGf"/>
+                                                <constraint firstItem="VdJ-Y3-cv0" firstAttribute="top" secondItem="JSK-Ek-kNJ" secondAttribute="top" constant="8" id="Vzl-9u-VfT"/>
+                                                <constraint firstItem="Hid-UQ-SWP" firstAttribute="centerY" secondItem="mUv-g8-fWQ" secondAttribute="centerY" id="l4L-iL-lpI"/>
+                                                <constraint firstItem="mUv-g8-fWQ" firstAttribute="top" secondItem="VdJ-Y3-cv0" secondAttribute="bottom" constant="-8" id="ydg-8O-wyM"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -254,7 +260,7 @@
                                                             </connections>
                                                         </button>
                                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 transactions ahead of you" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3sW-z8-BW3">
-                                                            <rect key="frame" x="16" y="97" width="166" height="18"/>
+                                                            <rect key="frame" x="16" y="97.5" width="166" height="18"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
                                                             <color key="textColor" name="grey"/>
                                                             <nil key="highlightedColor"/>
@@ -461,7 +467,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="51.5"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PpM-HY-70S">
-                                                    <rect key="frame" x="16" y="10" width="30" height="30"/>
+                                                    <rect key="frame" x="16" y="11" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="2WI-PH-31Y"/>
                                                         <constraint firstAttribute="height" constant="30" id="TKL-af-XH4"/>
@@ -531,7 +537,7 @@
             <objects>
                 <tableViewController title="Address Book" id="HRS-tm-Fpj" customClass="AddressSelectTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="75" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ps6-ex-1wx">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="452"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="457"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -654,7 +660,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VdC-Si-otx" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" largeTitles="YES" id="vgF-AM-hmW">
-                        <rect key="frame" x="0.0" y="20" width="320" height="96"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="91"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -696,14 +702,14 @@
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="lightThemeGreen">
+            <color red="0.49411764705882355" green="0.82745098039215681" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="lightThemeOrange">
             <color red="0.96078431372549022" green="0.65098039215686276" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="lightThemePrimary">
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textColor">
-            <color red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
