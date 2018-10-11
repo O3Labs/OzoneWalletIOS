@@ -77,6 +77,7 @@ public class Switcheo {
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("o3", forHTTPHeaderField: "User-Agent")
+        request.setValue("o3-api", forHTTPHeaderField: "HTTP_X_REFERRAL_SOURCE")
         request.httpMethod = method.rawValue
         request.cachePolicy = .reloadIgnoringLocalCacheData
         if data.count > 0 {
