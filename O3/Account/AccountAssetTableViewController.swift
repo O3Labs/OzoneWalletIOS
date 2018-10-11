@@ -112,6 +112,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             case .success(let value):
                 let formatter = NumberFormatter()
                 formatter.currencySymbol = value.currency
+                formatter.locale = Locale(identifier: "en_US_POSIX")
                 let number = formatter.number(from: value.total)
                 DispatchQueue.main.async {
                     let fiat = Fiat(amount: number?.floatValue ?? 0.0)
