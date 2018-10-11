@@ -114,7 +114,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                 formatter.currencySymbol = value.currency
                 let number = formatter.number(from: value.total)
                 DispatchQueue.main.async {
-                    let fiat = Fiat(amount: number!.floatValue)
+                    let fiat = Fiat(amount: number?.floatValue ?? 0.0)
                     self.accountValues[account] = fiat.formattedString()
                     //somehow calling reloadSections makes the uitableview flickering
                     //using reloadData instead ¯\_(ツ)_/¯
