@@ -12,6 +12,7 @@ import UIKit
 import SwiftTheme
 import KeychainAccess
 import WebBrowser
+import ZendeskSDK
 
 class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate {
     @IBOutlet weak var showPrivateKeyView: UIView!
@@ -119,10 +120,12 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
 
     @objc func sendMail() {
-        let email = "support@o3.network"
-        if let url = URL(string: "mailto:\(email)") {
-            UIApplication.shared.open(url)
-        }
+        let config = RequestUiConfiguration()
+        config.subject = "iOS Support"
+        config.tags = [UIDevice.current.modelName, UIDevice.current.systemVersion,
+                       Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String ]
+        let viewController = RequestUi.buildRequestUi(with: [config])
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc func openSupportForum() {
@@ -211,6 +214,5 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         logoutLabel.text = SettingsStrings.logout
         supportLabel.text = SettingsStrings.supportTitle
         versionLabel.text = SettingsStrings.versionLabel
-
     }
 }

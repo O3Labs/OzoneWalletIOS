@@ -44,4 +44,11 @@ struct SendStrings {
     static let ontologySendRequiresGas = NSLocalizedString("SEND_Ontology_requires_gas", comment: "A label to show that ontology requires a network fee in order to send")
     
     static let invalidNNSName = NSLocalizedString("SEND_Invalid_NNS", comment: "text to display when NNS name couldn't be resolved")
+    
+    //v2
+    static let sendWhere = NSLocalizedString("SEND_where", comment: "Send flow where progress step")
+    static let sendWhat = NSLocalizedString("SEND_what", comment: "Send flow what progress step")
+    static let sendReview = NSLocalizedString("SEND_review", comment: "Send flow review progress step")
+    
+    static let continueButton = NSLocalizedString("SEND_continue", comment: "Continue send flow prog")
 }

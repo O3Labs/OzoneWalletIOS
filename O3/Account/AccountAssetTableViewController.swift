@@ -599,7 +599,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     func sendTapped(qrData: String? = nil) {
         DispatchQueue.main.async {
-            guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {
+            guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "sendWhereTableViewController") as? SendWhereTableViewController else {
                 fatalError("Presenting improper modal controller")
             }
             sendModal.incomingQRData = qrData
