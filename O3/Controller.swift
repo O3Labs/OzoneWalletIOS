@@ -49,7 +49,7 @@ class Controller: NSObject {
 
     func openSend(to: String, selectedAsset: TransferableAsset, amount: String?) {
 
-        guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {
+        guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "sendWhereTableViewController") as? SendWhereTableViewController else {
             fatalError("Presenting improper modal controller")
         }
 
@@ -68,10 +68,10 @@ class Controller: NSObject {
             nav.navigationItem.largeTitleDisplayMode = .automatic
 
             tabbar.present(nav, animated: true, completion: {
-                sendModal.assetSelected(selected: selectedAsset, gasBalance: O3Cache.gas().value)
-                sendModal.toAddressField.text = to
+                //sendModal.assetSelected(selected: selectedAsset, gasBalance: O3Cache.gas().value)
+                sendModal.addressTextField.text = to
                 if amount != nil {
-                    sendModal.amountField.text = String(format: "%@", amount!)
+                  //  sendModal.amountField.text = String(format: "%@", amount!)
                 }
             })
         }

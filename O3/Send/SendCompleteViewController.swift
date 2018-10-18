@@ -9,28 +9,72 @@
 import Foundation
 import UIKit
 
-class SendCompleteViewController: UIViewController {
+class SendCompleteViewController: UIViewController, AddressAddDelegate {
     @IBOutlet weak var completeImage: UIImageView!
     @IBOutlet weak var completeTitle: UILabel!
     @IBOutlet weak var completeSubtitle: UILabel!
-    var transactionSucceeded: Bool!
     @IBOutlet weak var closeButton: UIButton!
 
+    @IBOutlet weak var transactionIdLabel: UILabel!
+    @IBOutlet weak var addToContactsCheckbox: UIButton!
+    @IBOutlet weak var saveAddressLabel: UILabel!
+    
+    var contacts = [Contact]()
+
+    var transactionSucceeded: Bool!
+    var transactionId: String!
+    var toSendAddress: String!
+    
+    func loadContacts() {
+        do {
+            contacts = try UIApplication.appDelegate.persistentContainer.viewContext.fetch(Contact.fetchRequest())
+        } catch {
+            return
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadContacts()
         closeButton.setTitle(SendStrings.close, for: UIControl.State())
 
         if transactionSucceeded {
             completeImage.image = #imageLiteral(resourceName: "checked")
             completeTitle.text = SendStrings.transactionSucceededTitle
             completeSubtitle.text = SendStrings.transactionSucceededSubtitle
+            transactionIdLabel.text = transactionId
         } else {
+            transactionIdLabel.isHidden = true
+            addToContactsCheckbox.isHidden = true
+            saveAddressLabel.isHidden = true
             completeImage.image = #imageLiteral(resourceName: "sad")
             completeTitle.text = SendStrings.transactionFailedTitle
             completeSubtitle.text = SendStrings.transactionFailedSubtitle
         }
+        if contacts.contains(where: {$0.address == toSendAddress}) {
+            addToContactsCheckbox.isHidden = true
+            saveAddressLabel.isHidden = true
+        }
     }
+    @IBAction func checkboxTapped(_ sender: Any) {
+        addToContactsCheckbox.isSelected = !addToContactsCheckbox.isSelected
+    }
+    
     @IBAction func closeTapped(_ sender: Any) {
+        if addToContactsCheckbox.isSelected {
+            if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddressEntryTableViewController") as? AddressEntryTableViewController {
+                vc.delegate = self
+                self.present(vc, animated: true, completion: {
+                    vc.addressTextView.text = self.toSendAddress
+                    vc.nicknameField.becomeFirstResponder()
+                })
+            }
+        } else {
+            self.dismiss(animated: true)
+        }
+    }
+    
+    func addressAdded(_ address: String, nickName: String) {
         self.dismiss(animated: true)
     }
 }

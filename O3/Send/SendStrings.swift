@@ -51,4 +51,9 @@ struct SendStrings {
     static let sendReview = NSLocalizedString("SEND_review", comment: "Send flow review progress step")
     
     static let continueButton = NSLocalizedString("SEND_continue", comment: "Continue send flow prog")
+    static let sendReviewTitle = NSLocalizedString("SEND_review_title", comment: "Title text on sending review screen")
+    static let sendReviewFee = NSLocalizedString("SEND_review_fee", comment: "Label for fee in secnd screen")
+    
+    
+    
 }

@@ -32,7 +32,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         case tradingAccount
     }
     
-    var sendModal: SendTableViewController?
+    var sendModal: SendWhereTableViewController?
     
     var claims: Claimable?
     var isClaimingNeo: Bool = false

@@ -33,6 +33,8 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     
     @IBOutlet weak var continueButton: UIButton!
     var addressToSend = ""
+    var addressAlias = ""
+    var addressAliasImage: UIImage?
 
     let loadingView = LOTAnimationView(name: "loader_portfolio")
     var incomingQRData: String?
@@ -44,9 +46,11 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
         applyNavBarTheme()
         addThemedElements()
         addressTextField.addTarget(self, action: #selector(addressTextFieldChanged(_:)), for: .editingChanged)
+        continueButton.addTarget(self, action: #selector(continueButtonTapped(_:)), for: .touchUpInside)
         loadingView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         loadingView.play()
         resolvingLoadingContainer.embed(loadingView)
+        addressTextField.text = addressToSend
     }
     
     @IBAction func addressTapped(_ sender: Any) {
@@ -65,6 +69,8 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     func hideAddressInfo() {
         DispatchQueue.main.async {
             self.addressInfoLabel.text = ""
+            self.addressAlias = ""
+            self.addressAliasImage = nil
             self.addressBadgeImageView.isHidden = true
             self.resolvingLoadingContainer.isHidden = true
         }
@@ -73,6 +79,13 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     func showAddressInfo(addressInfo: String, badge: UIImage? = nil) {
         addressInfoLabel.isHidden = false
         addressInfoLabel.text = addressInfo
+        if NeoutilsValidateNEOAddress(addressInfoLabel.text) {
+            addressAlias = addressTextField.text!.trim()
+        } else {
+            addressAlias = addressInfoLabel.text!
+        }
+        
+        addressAliasImage = badge
         if (badge != nil) {
             addressBadgeImageView.isHidden = false
             addressBadgeImageView.image = badge
@@ -150,6 +163,13 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
                 fatalError("Undefined segue behavior")
             }
             dest.delegate = self
+        } else if segue.identifier == "segueToSendWhat" {
+            guard let dest = segue.destination as? SendWhatTableViewController else {
+                fatalError("Undefined segue behabior")
+            }
+            dest.selectedAddress = addressToSend
+            dest.toSendAlias = addressAlias
+            dest.toSendAliasImage = addressAliasImage
         }
     }
     
@@ -203,6 +223,10 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     
     @IBAction func tappedCloseAddressSelector(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func continueButtonTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "segueToSendWhat", sender: nil)
     }
     
     
