@@ -53,7 +53,7 @@ struct SendStrings {
     static let continueButton = NSLocalizedString("SEND_continue", comment: "Continue send flow prog")
     static let sendReviewTitle = NSLocalizedString("SEND_review_title", comment: "Title text on sending review screen")
     static let sendReviewFee = NSLocalizedString("SEND_review_fee", comment: "Label for fee in secnd screen")
-    
-    
-    
+    static let transactionId = NSLocalizedString("SEND_transaction_id", comment: "Label for generated transaction id")
+    static let saveToContacts = NSLocalizedString("SEND_save_to_contacts", comment: "Label for saving to contacts when")
+
 }

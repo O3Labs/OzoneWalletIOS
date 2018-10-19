@@ -24,6 +24,7 @@ class SendWhatTableViewController: UITableViewController {
     @IBOutlet weak var sendWhereLabel: UILabel!
     @IBOutlet weak var sendWhatLabel: UILabel!
     @IBOutlet weak var sendReviewLabel: UILabel!
+    @IBOutlet weak var contentView: UIView!
     
     var selectedAddress = ""
     var gasBalance: Double = 0.0
@@ -48,6 +49,8 @@ class SendWhatTableViewController: UITableViewController {
         //default to NEO
         self.selectedAsset = O3Cache.neo()
         self.assetSelected(selected: O3Cache.neo(), gasBalance: O3Cache.gas().value)
+        setLocalizedStrings()
+        addThemedElements()
     }
 
     func showNetworkFeeLabel() {
@@ -165,6 +168,19 @@ class SendWhatTableViewController: UITableViewController {
         sendWhatLabel.text = SendStrings.sendWhat
         sendWhereLabel.text = SendStrings.sendWhere
         sendReviewLabel.text = SendStrings.sendReview
+    }
+    
+    func addThemedElements() {
+        tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        amountField.theme_keyboardAppearance = O3Theme.keyboardPicker
+        selectedAssetLabel.theme_textColor = O3Theme.titleColorPicker
+        
+        amountField.theme_backgroundColor = O3Theme.textFieldBackgroundColorPicker
+        amountField.theme_textColor = O3Theme.textFieldTextColorPicker
+        amountField.theme_placeholderAttributes = O3Theme.placeholderAttributesPicker
+        amountField.theme_keyboardAppearance = O3Theme.keyboardPicker
     }
 }
 

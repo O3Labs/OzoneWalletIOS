@@ -46,7 +46,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             "usedDefaultSeedKey": false,
             "selectedThemeKey": Theme.light.rawValue,
             "referenceCurrencyKey": Currency.usd.rawValue,
-            "numClaimsKey": 0
+            "reviewClaimsKey": 0,
+            "numOrdersKey": 0
         ]
         UserDefaults.standard.register(defaults: userDefaultsDefaults)
     }

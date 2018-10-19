@@ -31,6 +31,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     @IBOutlet weak var scanButton: UIButton!
     @IBOutlet weak var addressTextField: UITextField!
     
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var continueButton: UIButton!
     var addressToSend = ""
     var addressAlias = ""
@@ -51,6 +52,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
         loadingView.play()
         resolvingLoadingContainer.embed(loadingView)
         addressTextField.text = addressToSend
+        enableContinueButton()
     }
     
     @IBAction func addressTapped(_ sender: Any) {
@@ -231,7 +233,13 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     
     
     func addThemedElements() {
-        
+        tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        addressTextField.theme_backgroundColor = O3Theme.textFieldBackgroundColorPicker
+        addressTextField.theme_textColor = O3Theme.textFieldTextColorPicker
+        addressTextField.theme_placeholderAttributes = O3Theme.placeholderAttributesPicker
+        addressTextField.theme_keyboardAppearance = O3Theme.keyboardPicker
     }
     
     func setLocalizedStrings() {

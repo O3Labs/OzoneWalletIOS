@@ -26,6 +26,7 @@ class SendReviewTableViewController: UITableViewController {
     @IBOutlet weak var feeLabel: UILabel!
     @IBOutlet weak var feeAmountLabel: UILabel!
     @IBOutlet weak var sendButton: ShadowedButton!
+    @IBOutlet weak var contentView: UIView!
     
     var selectedAsset: TransferableAsset!
     var selectedAmount: Double!
@@ -41,6 +42,7 @@ class SendReviewTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
+        addThemedElements()
         initiateViews()
     }
     
@@ -223,6 +225,15 @@ class SendReviewTableViewController: UITableViewController {
             dest.toSendAddress = self.sendToAddress
             dest.transactionId = self.txId
             
+        }
+    }
+    
+    func addThemedElements() {
+        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        let themedLabels = [sendReviewTitleLabel, sendWhatLabel, sendToAddressLabel, feeLabel, feeAmountLabel]
+        for label in themedLabels {
+            label?.theme_textColor = O3Theme.titleColorPicker
         }
     }
     

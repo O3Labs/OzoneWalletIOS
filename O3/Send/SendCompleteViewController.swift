@@ -35,6 +35,7 @@ class SendCompleteViewController: UIViewController, AddressAddDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
         loadContacts()
         closeButton.setTitle(SendStrings.close, for: UIControl.State())
 
@@ -42,7 +43,8 @@ class SendCompleteViewController: UIViewController, AddressAddDelegate {
             completeImage.image = #imageLiteral(resourceName: "checked")
             completeTitle.text = SendStrings.transactionSucceededTitle
             completeSubtitle.text = SendStrings.transactionSucceededSubtitle
-            transactionIdLabel.text = transactionId
+            transactionIdLabel.text = String(format: SendStrings.transactionId, transactionId)
+            saveAddressLabel.text = SendStrings.saveToContacts
         } else {
             transactionIdLabel.isHidden = true
             addToContactsCheckbox.isHidden = true

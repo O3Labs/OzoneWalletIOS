@@ -64,8 +64,8 @@ class Controller: NSObject {
             //otherwise, it won't open wiht deck transition
             nav.transitioningDelegate = tabbar.transitionDelegate
             nav.modalPresentationStyle = .custom
-            nav.navigationBar.prefersLargeTitles = true
-            nav.navigationItem.largeTitleDisplayMode = .automatic
+            nav.navigationBar.prefersLargeTitles = false
+            nav.navigationItem.largeTitleDisplayMode = .never
 
             tabbar.present(nav, animated: true, completion: {
                 //sendModal.assetSelected(selected: selectedAsset, gasBalance: O3Cache.gas().value)
