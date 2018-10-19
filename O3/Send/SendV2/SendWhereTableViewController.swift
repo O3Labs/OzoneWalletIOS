@@ -36,6 +36,9 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     var addressToSend = ""
     var addressAlias = ""
     var addressAliasImage: UIImage?
+    var selectedAsset: TransferableAsset?
+    var selectedAmount: Double?
+
 
     let loadingView = LOTAnimationView(name: "loader_portfolio")
     var incomingQRData: String?
@@ -52,6 +55,10 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
         loadingView.play()
         resolvingLoadingContainer.embed(loadingView)
         addressTextField.text = addressToSend
+        if incomingQRData != nil {
+            qrScanned(data: incomingQRData!)
+        }
+        
         enableContinueButton()
     }
     
@@ -172,6 +179,8 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
             dest.selectedAddress = addressToSend
             dest.toSendAlias = addressAlias
             dest.toSendAliasImage = addressAliasImage
+            dest.selectedAmount = NSNumber(value: selectedAmount ?? 0)
+            dest.selectedAsset = selectedAsset
         }
     }
     
@@ -181,7 +190,6 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     }
     
     func qrScanned(data: String) {
-        
         if data.range(of: "neo:") == nil {
             addressTextField.text = data
         } else {
@@ -192,35 +200,33 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
             
             addressTextField.text = address
             
-            /* if asset != "" {
-             var selected: TransferableAsset?
-             
-             if asset?.lowercased() == "neo" || asset == AssetId.neoAssetId.rawValue {
-             selected = O3Cache.neo()
-             } else if asset?.lowercased() == "gas" || asset == AssetId.gasAssetId.rawValue {
-             selected = O3Cache.gas()
-             } else {
-             let tokenAssets = O3Cache.tokenAssets()
-             let assetIndex = tokenAssets.index(where: { (item) -> Bool in
-             item.id.range(of: asset!) != nil
-             })
-             if assetIndex != nil {
-             selected = tokenAssets[assetIndex!]
-             }
-             }
-             
-             if selected != nil {
-             self.selectedAsset = selected
-             self.selectedAssetLabel.text = selected!.symbol
-             }
-             }*/
-            
-            /*if amount != nil {
-             self.amountField.text = String(format: "%f", amount!)
-             }*/
+            if asset != "" {
+                var selected: TransferableAsset?
+                
+                if asset?.lowercased() == "neo" || asset == AssetId.neoAssetId.rawValue {
+                    selected = O3Cache.neo()
+                } else if asset?.lowercased() == "gas" || asset == AssetId.gasAssetId.rawValue {
+                    selected = O3Cache.gas()
+                } else {
+                    let tokenAssets = O3Cache.tokenAssets()
+                    let assetIndex = tokenAssets.index(where: { (item) -> Bool in
+                        item.id.range(of: asset!) != nil
+                     })
+                    if assetIndex != nil {
+                        selected = tokenAssets[assetIndex!]
+                    }
+                }
+                
+                if selected != nil {
+                    self.selectedAsset = selected
+                }
+                
+                if amount != nil {
+                    self.selectedAmount = amount
+                }
+                
+            }
         }
-        
-        //enableSendButton()
     }
     
     @IBAction func tappedCloseAddressSelector(_ sender: UIBarButtonItem) {

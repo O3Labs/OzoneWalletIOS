@@ -47,8 +47,18 @@ class SendWhatTableViewController: UITableViewController {
         checkboxPriority.addTarget(self, action: #selector(priorityTapped(_:)), for: .touchUpInside)
         
         //default to NEO
-        self.selectedAsset = O3Cache.neo()
-        self.assetSelected(selected: O3Cache.neo(), gasBalance: O3Cache.gas().value)
+        if selectedAsset == nil {
+            self.selectedAsset = O3Cache.neo()
+            self.assetSelected(selected: O3Cache.neo(), gasBalance: O3Cache.gas().value)
+        } else {
+            self.assetSelected(selected: selectedAsset!, gasBalance: O3Cache.gas().value)
+        }
+        
+        if selectedAmount != 0 {
+            amountField.text = selectedAmount.doubleValue.formattedStringWithoutSeparator(8, removeTrailing: true)
+            continueButton.isEnabled = true
+        }
+        
         setLocalizedStrings()
         addThemedElements()
     }
