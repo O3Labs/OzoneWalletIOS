@@ -32,7 +32,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         case tradingAccount
     }
     
-    var sendModal: SendTableViewController?
+    var sendModal: SendWhereTableViewController?
     
     var claims: Claimable?
     var isClaimingNeo: Bool = false
@@ -599,13 +599,13 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     func sendTapped(qrData: String? = nil) {
         DispatchQueue.main.async {
-            guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {
+            guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "sendWhereTableViewController") as? SendWhereTableViewController else {
                 fatalError("Presenting improper modal controller")
             }
             sendModal.incomingQRData = qrData
             let nav = WalletHomeNavigationController(rootViewController: sendModal)
-            nav.navigationBar.prefersLargeTitles = true
-            nav.navigationItem.largeTitleDisplayMode = .automatic
+            nav.navigationBar.prefersLargeTitles = false
+            nav.navigationItem.largeTitleDisplayMode = .never
             sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
             let transitionDelegate = DeckTransitioningDelegate()
             nav.transitioningDelegate = transitionDelegate
@@ -617,7 +617,6 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
 }
 
 extension AccountAssetTableViewController {
-    
     @objc func viewOpenOrders() {
         guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTabsViewControllerNav") as? UINavigationController else {
             return
@@ -708,7 +707,6 @@ extension AccountAssetTableViewController {
 }
 
 extension AccountAssetTableViewController: WithdrawDepositTableViewControllerDelegate {
-    
     func didFinishAction(action: WithdrawDepositTableViewController.Action) {
         if action == WithdrawDepositTableViewController.Action.Deposit {
             self.loadAccountState()
@@ -718,7 +716,6 @@ extension AccountAssetTableViewController: WithdrawDepositTableViewControllerDel
 }
 
 extension AccountAssetTableViewController {
-    
     @IBAction func sectionHeaderRightButtonTapped(_ sender: UIButton) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
@@ -795,5 +792,4 @@ extension AccountAssetTableViewController: QRScanDelegate {
             self.sendTapped(qrData: data)
         }
     }
-    
 }

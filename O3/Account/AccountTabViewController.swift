@@ -104,13 +104,13 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     
     func sendTapped(qrData: String? = nil) {
         DispatchQueue.main.async {
-            guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {
+            guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "sendWhereTableViewController") as? SendWhereTableViewController else {
                 fatalError("Presenting improper modal controller")
             }
             sendModal.incomingQRData = qrData
             let nav = WalletHomeNavigationController(rootViewController: sendModal)
-            nav.navigationBar.prefersLargeTitles = true
-            nav.navigationItem.largeTitleDisplayMode = .automatic
+            nav.navigationBar.prefersLargeTitles = false
+            nav.navigationItem.largeTitleDisplayMode = .never
             sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
             let transitionDelegate = DeckTransitioningDelegate()
             nav.transitioningDelegate = transitionDelegate

@@ -10,6 +10,7 @@ import UIKit
 import Lottie
 import Crashlytics
 import Neoutils
+import StoreKit
 
 protocol ClaimingGasCellDelegate: class {
     func setIsClaimingNeo(_ isClaiming: Bool)
@@ -403,6 +404,10 @@ class ClaimableGASTableViewCell: UITableViewCell {
             self.neoGasClaimingStateLabel?.theme_textColor = O3Theme.positiveGainColorPicker
             self.neoGasClaimingStateLabel?.text = self.claimSucceededString
             self.startCountdownBackToNeoEstimated()
+            if UserDefaultsManager.numClaims % 10 == 0 {
+                UserDefaultsManager.numClaims = UserDefaultsManager.numClaims + 1
+                SKStoreReviewController.requestReview()
+            }
         }
     }
 

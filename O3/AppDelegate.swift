@@ -16,6 +16,9 @@ import SwiftTheme
 import Neoutils
 import UserNotifications
 import Amplitude
+import ZendeskSDK
+import ZendeskCoreSDK
+import ZendeskProviderSDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -43,7 +46,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             "usedDefaultSeedKey": false,
             "selectedThemeKey": Theme.light.rawValue,
             "referenceCurrencyKey": Currency.usd.rawValue,
-            "numClaimsKey": 0
+            "reviewClaimsKey": 0,
+            "numOrdersKey": 0
         ]
         UserDefaults.standard.register(defaults: userDefaultsDefaults)
     }
@@ -91,9 +95,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             ////If your plist contain root as Dictionary
             if let dic = NSDictionary(contentsOfFile: path) as? [String: Any] {
                 let amp = dic["Amplitude"] as! [String: Any]
-                let apiKey = amp["APIKey"] as! String
+                let ampApiKey = amp["APIKey"] as! String
+                
+                let zendesk = dic["Zendesk"] as! [String: Any]
+                let zendeskKey = zendesk["APIKey"] as! String
+                let zendeskClientId = zendesk["clientId"] as! String
+                
                 #if !DEBUG
-                Amplitude.instance().initializeApiKey(apiKey)
+                Amplitude.instance().initializeApiKey(ampApiKey)
+                Zendesk.initialize(appId: zendeskKey,
+                                   clientId: zendeskClientId,
+                                   zendeskUrl: "https://o3labs.zendesk.com/")
+                Support.initialize(withZendesk: Zendesk.instance)
+                let ident = Identity.createAnonymous()
+                Zendesk.instance?.setIdentity(ident)
                 #endif
             }
         }

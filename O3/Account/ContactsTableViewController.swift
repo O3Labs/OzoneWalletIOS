@@ -48,8 +48,8 @@ class ContactsTableViewController: UITableViewController, AddressAddDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? AddressEntryTableViewController {
             dest.delegate = self
-        } else if let dest = segue.destination as? SendTableViewController {
-            dest.preselectedAddress = selectedAddress
+        } else if let dest = segue.destination as? SendWhereTableViewController {
+            dest.addressToSend = selectedAddress
         }
     }
 
@@ -77,13 +77,13 @@ class ContactsTableViewController: UITableViewController, AddressAddDelegate {
     }
 
     func sendTapped() {
-        guard let modal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "SendTableViewController") as? SendTableViewController else {
+        guard let modal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "sendWhereTableViewController") as? SendWhereTableViewController else {
             fatalError("Unsupported Segue")
         }
-        modal.preselectedAddress = selectedAddress
+        modal.addressToSend = selectedAddress
         let nav = WalletHomeNavigationController(rootViewController: modal)
         nav.navigationBar.prefersLargeTitles = true
-        nav.navigationItem.largeTitleDisplayMode = .automatic
+        nav.navigationItem.largeTitleDisplayMode = .never
         modal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(tappedLeftBarButtonItem(_:)))
         let transitionDelegate = DeckTransitioningDelegate()
         nav.transitioningDelegate = transitionDelegate

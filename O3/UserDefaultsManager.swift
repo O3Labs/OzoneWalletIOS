@@ -119,14 +119,26 @@ class UserDefaultsManager {
         }
     }
 
-    private static let numClaimsKey = "numClaimsKey"
+    private static let reviewClaimsKey = "reviewClaimsKey"
     static var numClaims: Int {
         get {
-            let intValue = UserDefaults.standard.integer(forKey: numClaimsKey)
+            let intValue = UserDefaults.standard.integer(forKey: reviewClaimsKey)
             return intValue
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: numClaimsKey)
+            UserDefaults.standard.set(newValue, forKey: reviewClaimsKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    private static let numOrdersKey = "numOrdersKey"
+    static var numOrders: Int {
+        get {
+            let intValue = UserDefaults.standard.integer(forKey: numOrdersKey)
+            return intValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: numOrdersKey)
             UserDefaults.standard.synchronize()
         }
     }
