@@ -16,21 +16,21 @@ class ShadowedButton: UIButton {
 
     override var isEnabled: Bool {
         didSet {
-            self.theme_backgroundColor = isEnabled == true ?  O3Theme.primaryColorPicker : O3Theme.disabledColorPicker
+            self.theme_backgroundColor = isEnabled == true ?  O3Theme.accentColorPicker : O3Theme.disabledColorPicker
             if shadowLayer != nil {
                 shadowLayer.shadowOpacity = isEnabled == true ? 0.8 : 0
-                shadowLayer.fillColor = isEnabled == true ? Theme.light.primaryColor.cgColor : UIColor.clear.cgColor
+                shadowLayer.fillColor = isEnabled == true ? Theme.light.accentColor.cgColor : UIColor.clear.cgColor
             }
         }
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.theme_backgroundColor = isEnabled == true ? O3Theme.primaryColorPicker : O3Theme.disabledColorPicker
+        self.theme_backgroundColor = isEnabled == true ? O3Theme.accentColorPicker : O3Theme.disabledColorPicker
         if shadowLayer == nil {
             shadowLayer = CAShapeLayer()
             shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: self.cornerRadius).cgPath
-            shadowLayer.fillColor = isEnabled == true ? Theme.light.primaryColor.cgColor : UIColor.clear.cgColor
+            shadowLayer.fillColor = isEnabled == true ? Theme.light.accentColor.cgColor : UIColor.clear.cgColor
             shadowLayer.shadowColor = Theme.light.disabledColor.cgColor
             shadowLayer.shadowPath = shadowLayer.path
             shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)

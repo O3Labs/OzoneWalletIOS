@@ -9,6 +9,7 @@
 import UIKit
 import PKHUD
 import DeckTransition
+import StoreKit
 
 enum CreateOrderAction: Int {
     case Buy = 0
@@ -718,14 +719,22 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
             if filledPercent.isEqual(to: 100.0) {
                 title = String(format: "Yeahhhhh 🎉")
                 message = String(format: "Your order has been instantly filled and deposited into your trading account!")
+        
             }
             
             OzoneAlert.confirmDialog(title, message: message, cancelTitle: "Close", confirmTitle: "View my orders", didCancel: {
                 NotificationCenter.default.post(name: NSNotification.Name("needsReloadTradingBalances"), object: nil)
-                self.dismiss(animated: true, completion: {})
+                self.dismiss(animated: true, completion: {
+                    if filledPercent.isEqual(to: 100.0) {
+                        SKStoreReviewController.requestReview()
+                    }
+                })
             }, didConfirm: {
                 NotificationCenter.default.post(name: NSNotification.Name("needsReloadTradingBalances"), object: nil)
                 self.dismiss(animated: true, completion: {
+                    if filledPercent.isEqual(to: 100.0) {
+                        SKStoreReviewController.requestReview()
+                    }
                     NotificationCenter.default.post(name: NSNotification.Name("viewTradingOrders"), object: nil)
                 })
             })

@@ -253,6 +253,12 @@ class O3Theme {
         NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont],
         [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
          NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont])
+    
+    
+    static let placeholderAttributesPicker = ThemeDictionaryPicker(arrayLiteral:
+        [NSAttributedString.Key.foregroundColor.rawValue: Theme.light.textFieldPlaceHolderColor],
+            [NSAttributedString.Key.foregroundColor.rawValue: Theme.dark.textFieldPlaceHolderColor],
+          [NSAttributedString.Key.foregroundColor.rawValue: Theme.dark.textFieldPlaceHolderColor])
 
     static let regularTitleAttributesPicker = ThemeDictionaryPicker(arrayLiteral: [NSAttributedString.Key.foregroundColor.rawValue: UIColor.black,
                                                                                    NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle],

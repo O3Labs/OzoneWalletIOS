@@ -366,6 +366,9 @@
 /* A confirmation dialog that asks the user to confirm the asset, amount, and recipient of their transaction */
 "SEND_Confirmation_Prompt" = "%.8f %@を%@に送金しますか？";
 
+/* Continue send flow prog */
+"SEND_continue" = "Continue"; /* NEW */
+
 /* Description to display when the transaction has failed to be submitted to the NEO blockchain */
 "SEND_Created_Transaction_Failed_Description" = "エラーが発生しました。";
 
@@ -385,7 +388,7 @@
 "SEND_Invalid_Amount_Error" = "無効な金額が入力されています";
 
 /* text to display when NNS name couldn't be resolved */
-"SEND_Invalid_NNS" = "SEND_Invalid_NNS"; /* NEW */
+"SEND_Invalid_NNS" = "SEND_Invalid_NNS";
 
 /* A string that shows how many transactions are currently ahead of you in the mempool */
 "SEND_mempool_height" = "%@ transactions ahead of you";
@@ -402,8 +405,20 @@
 /* A title for the paste button in the send screen */
 "SEND_Paste_Button_Title" = "貼り付け";
 
+/* Send flow review progress step */
+"SEND_review" = "Review"; /* NEW */
+
+/* Label for fee in secnd screen */
+"SEND_review_fee" = "Total Fee"; /* NEW */
+
+/* Title text on sending review screen */
+"SEND_review_title" = "Please carefully review your transasction details. Once sent, this transaction cannot be reversed"; /* NEW */
+
 /* Error to display when the user is trying to send gas, but the amount they are sending is the max amount. The user can round down the gas amount a small amount to precent this error */
 "SEND_Rounding_Gas_Error" = "すべてのGASを送信する場合は、合計額から0.00000001を引いてください。これにより、エラーを回避しトランザクションが正常に処理されます。";
+
+/* Label for saving to contacts when */
+"SEND_save_to_contacts" = "SEND_save_to_contacts"; /* NEW */
 
 /* A title for the Select Asset pull up menu */
 "SEND_Select_Asset_Title" = "資産を選択";
@@ -419,6 +434,15 @@
 
 /* Label title for the send to field on the send screen */
 "SEND_To_Label" = "To";
+
+/* Label for generated transaction id */
+"SEND_transaction_id" = "Transaction Id: %@"; /* NEW */
+
+/* Send flow what progress step */
+"SEND_what" = "What?"; /* NEW */
+
+/* Send flow where progress step */
+"SEND_where" = "Where?"; /* NEW */
 
 /* A generic add button title */
 "SETTINGS_Add_Button" = "追加";
