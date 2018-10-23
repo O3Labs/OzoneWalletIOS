@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="EmptyPortfolioView" customModule="O3" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dl1-Vp-gyP">
+                    <rect key="frame" x="166.5" y="307" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chartLine" translatesAutoresizingMaskIntoConstraints="NO" id="Scs-Sw-qQV">
+                    <rect key="frame" x="164" y="253" width="47" height="46"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="47" id="278-wb-lXp"/>
+                        <constraint firstAttribute="height" constant="46" id="iIY-W5-eo7"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftV-cz-eoU" customClass="ShadowedButton" customModule="O3" customModuleProvider="target">
+                    <rect key="frame" x="16" y="344" width="343" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="1dQ-Gv-Lbr"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="22"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="buttonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="AUG-fm-GyE"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="dl1-Vp-gyP" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Fhz-9h-YgM"/>
+                <constraint firstItem="Scs-Sw-qQV" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" multiplier="0.8" constant="1" id="aaH-SX-zgj"/>
+                <constraint firstItem="dl1-Vp-gyP" firstAttribute="top" secondItem="Scs-Sw-qQV" secondAttribute="bottom" constant="8" id="c31-XU-KMA"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ftV-cz-eoU" secondAttribute="trailing" constant="16" id="cX2-Lu-aGx"/>
+                <constraint firstItem="Scs-Sw-qQV" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="jcz-9q-kfl"/>
+                <constraint firstItem="ftV-cz-eoU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="n50-b8-rsy"/>
+                <constraint firstItem="ftV-cz-eoU" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="oIj-ui-WNt"/>
+                <constraint firstItem="ftV-cz-eoU" firstAttribute="top" secondItem="dl1-Vp-gyP" secondAttribute="bottom" constant="16" id="yZL-jk-yfz"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="emptyActionButton" destination="ftV-cz-eoU" id="Huy-e3-lBh"/>
+                <outlet property="emptyLabel" destination="dl1-Vp-gyP" id="SWO-Yt-8G4"/>
+            </connections>
+            <point key="canvasLocation" x="144.80000000000001" y="137.18140929535232"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="chartLine" width="30" height="30"/>
+    </resources>
+</document>

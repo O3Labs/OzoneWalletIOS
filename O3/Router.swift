@@ -53,7 +53,7 @@ class Router: NSObject {
                     O3Cache.setGASForSession(gasBalance: gasBalance)
                     O3Cache.setNEOForSession(neoBalance: neoBalance)
                     O3Cache.setTokenAssetsForSession(tokens: tokenAssets)
-                    O3Cache.setReadOnlyOntologyAssetsForSession(tokens: accountState.ontology)
+                    O3Cache.setOntologyAssetsForSession(tokens: accountState.ontology)
 
                     if asset?.lowercased() == "neo" {
                         Controller().openSend(to: address!, selectedAsset: TransferableAsset.NEO(), amount: amount)

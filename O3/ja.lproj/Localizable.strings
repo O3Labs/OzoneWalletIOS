@@ -316,7 +316,7 @@
 "PORTFOLIO_Combined_Header" = "結合済";
 
 /* Portfolio Percentage Change String */
-"PORTFOLIO_Interval" = "%@ (%.2f%@) %@ 以降";
+"PORTFOLIO_Interval" = "%.2f%@ (%@)";
 
 /* Interval Button on portfolio page, interval specifies 1 Month */
 "PORTFOLIO_Interval_Button_1M" = "1M";

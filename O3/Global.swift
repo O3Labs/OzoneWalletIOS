@@ -96,9 +96,3 @@ enum PriceInterval: String {
         }
     }
 }
-
-enum PortfolioType {
-    case readOnly
-    case writable
-    case readOnlyAndWritable
-}

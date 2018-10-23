@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 
 protocol WalletHeaderCellDelegate: class {
-    func didTapLeft(index: Int, portfolioType: PortfolioType)
-    func didTapRight(index: Int, portfolioType: PortfolioType)
+    func didTapLeft(index: Int)
+    func didTapRight(index: Int)
 }
 
 class WalletHeaderCollectionCell: UICollectionViewCell {
     struct Data {
-        var portfolioType: PortfolioType
         var index: Int
+        var numWatchAddresses: Int
         var latestPrice: PriceData
         var previousPrice: PriceData
         var referenceCurrency: Currency
@@ -28,31 +28,55 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
     @IBOutlet weak var percentChangeLabel: UILabel!
     @IBOutlet weak var rightButton: UIButton!
     @IBOutlet weak var leftButton: UIButton!
-
+    @IBOutlet weak var walletMajorIcon: UIImageView!
+    @IBOutlet weak var walletMinorIcon: UIImageView!
+    
     weak var delegate: WalletHeaderCellDelegate?
     var data: WalletHeaderCollectionCell.Data? {
         didSet {
-            guard let portfolio = data?.portfolioType,
+            guard let index = data?.index,
+                let numWatchAddresses = data?.numWatchAddresses,
                 let latestPrice = data?.latestPrice,
                 let previousPrice = data?.previousPrice,
                 let referenceCurrency = data?.referenceCurrency,
                 let selectedInterval = data?.selectedInterval else {
                     fatalError("Cell is missing type")
             }
-            switch portfolio {
-            case .readOnly:
+            if index == 0 {
                 walletHeaderLabel.text = PortfolioStrings.portfolioHeaderO3Wallet
                 leftButton.isHidden = true
                 rightButton.isHidden = false
-            case .readOnlyAndWritable:
+                percentChangeLabel.isHidden = false
+                walletMajorIcon.image = UIImage(named: "ic_wallet")
+                walletMinorIcon.image = UIImage(named: "ic_unlocked")
+                walletMinorIcon.isHidden = false
+            } else if numWatchAddresses == 0 {
+                walletHeaderLabel.text = PortfolioStrings.noWatchAddresses
+                rightButton.isHidden = true
+                leftButton.isHidden = false
+                percentChangeLabel.isHidden = true
+                walletMajorIcon.image = UIImage(named: "ic_watch")
+                walletMinorIcon.image = UIImage(named: "ic_locked")
+                walletMinorIcon.isHidden = false
+            } else if index == numWatchAddresses + 1 {
                 walletHeaderLabel.text = PortfolioStrings.portfolioHeaderCombinedHeader
                 rightButton.isHidden = true
                 leftButton.isHidden = false
-            default:
-                walletHeaderLabel.text = PortfolioStrings.portfolioHeaderColdStorageHeader
+                percentChangeLabel.isHidden = false
+                walletMajorIcon.image = UIImage(named: "ic_watch")
+                walletMinorIcon.image = UIImage(named: "ic_locked")
+                walletMinorIcon.isHidden = false
+            } else {
+                walletHeaderLabel.text = (delegate as! HomeViewController).watchAddresses[index - 1].nickName
                 rightButton.isHidden = false
                 leftButton.isHidden = false
+                percentChangeLabel.isHidden = false
+                walletMajorIcon.image = UIImage(named: "ic_all_wallet")
+                walletMinorIcon.isHidden = true
             }
+            
+            
+            
             switch referenceCurrency {
             case .btc:
                 portfolioValueLabel.text = "₿"+latestPrice.averageBTC.string(Precision.btc, removeTrailing: true)
@@ -63,22 +87,21 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
             }
             percentChangeLabel.text = String.percentChangeString(latestPrice: latestPrice, previousPrice: previousPrice,
                                                                  with: selectedInterval, referenceCurrency: referenceCurrency)
+            walletHeaderLabel.theme_textColor = O3Theme.lightTextColorPicker
         }
     }
 
     @IBAction func didTapRight(_ sender: Any) {
-        guard let index = data?.index,
-            let portfolioType = data?.portfolioType else {
-                fatalError("undefined collection view cell behavior")
+        guard let index = data?.index else {
+            fatalError("undefined collection view cell behavior")
         }
-        delegate?.didTapRight(index: index, portfolioType: portfolioType)
+        delegate?.didTapRight(index: index)
     }
 
     @IBAction func didTapLeft(_ sender: Any) {
-        guard let index = data?.index,
-            let portfolioType = data?.portfolioType else {
+        guard let index = data?.index else {
             fatalError("undefined collection view cell behavior")
         }
-        delegate?.didTapLeft(index: index, portfolioType: portfolioType)
+        delegate?.didTapLeft(index: index)
     }
 }

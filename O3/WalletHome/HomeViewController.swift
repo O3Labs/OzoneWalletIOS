@@ -13,7 +13,8 @@ import Channel
 import PKHUD
 import SwiftTheme
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, GraphPanDelegate, ScrollableGraphViewDataSource, HomeViewModelDelegate {
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, GraphPanDelegate, ScrollableGraphViewDataSource, HomeViewModelDelegate, EmptyPortfolioDelegate, AddressAddDelegate {
+    
     @IBOutlet weak var walletHeaderCollectionView: UICollectionView!
     @IBOutlet weak var graphLoadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var assetsTable: UITableView!
@@ -26,7 +27,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var graphViewContainer: UIView!
     @IBOutlet var activatedLineLeftConstraint: NSLayoutConstraint?
     @IBOutlet weak var activatedLine: UIView!
-
+    var emptyGraphView: UIView?
+    
     var group: DispatchGroup?
     var activatedLineCenterXAnchor: NSLayoutConstraint?
     var graphView: ScrollableGraphView!
@@ -39,6 +41,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var homeviewModel: HomeViewModel!
     var selectedPrice: PriceData?
     var displayedAssets = [TransferableAsset]()
+    var watchAddresses = [WatchAddress]()
 
     func addThemedElements() {
         applyNavBarTheme()
@@ -61,6 +64,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         } catch {
             return []
         }
+    }
+    
+    @objc func updateWatchAddresses() {
+        watchAddresses = loadWatchAddresses()
+        getBalance()
     }
 
     @objc func getBalance() {
@@ -104,7 +112,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("ChangedNetwork"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("ChangedReferenceCurrency"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("UpdatedWatchOnlyAddress"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWatchAddresses), name: Notification.Name("UpdatedWatchOnlyAddress"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.removeObservers), name: Notification.Name("loggedOut"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateGraphAppearance(_:)), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
@@ -120,12 +128,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     deinit {
         removeObservers()
     }
+    
+    func roundIntervalLine() {
+        activatedLine.clipsToBounds = false
+        activatedLine.layer.cornerRadius = 3
+        activatedLine.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
 
     override func viewDidLoad() {
+        watchAddresses = loadWatchAddresses()
         setLocalizedStrings()
         ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
         addThemedElements()
         addObservers()
+        roundIntervalLine()
         activatedLineCenterXAnchor = activatedLine.centerXAnchor.constraint(equalTo: fifteenMinButton.centerXAnchor, constant: 0)
         activatedLineCenterXAnchor?.isActive = true
         homeviewModel = HomeViewModel(delegate: self)
@@ -339,7 +355,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, WalletHeaderCellDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        if watchAddresses.count == 0 {
+            return 2
+        } else {
+            return 2 + watchAddresses.count
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -347,20 +367,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             fatalError("Undefined collection view behavior")
         }
         cell.delegate = self
-        var portfolioType = PortfolioType.readOnly
-        switch indexPath.row {
-        case 0:
-            portfolioType = .readOnly
-        case 1:
-            portfolioType = .writable
-        case 2:
-            portfolioType = .readOnlyAndWritable
-        default: fatalError("Undefined wallet header cell")
-        }
 
-        var data = WalletHeaderCollectionCell.Data (
-            portfolioType: portfolioType,
+        var data =  WalletHeaderCollectionCell.Data (
             index: indexPath.row,
+            numWatchAddresses: watchAddresses.count,
             latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
             previousPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
             referenceCurrency: (homeviewModel?.referenceCurrency)!,
@@ -398,7 +408,56 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
         let visibleIndexPath: IndexPath? = walletHeaderCollectionView.indexPathForItem(at: visiblePoint)
         if visibleIndexPath != nil {
-            self.homeviewModel?.setPortfolioType(self.indexToPortfolioType(visibleIndexPath!.row))
+            self.homeviewModel?.setCurrentIndex(visibleIndexPath!.row)
+            if self.watchAddresses.count == 0 && visibleIndexPath!.row == 1 {
+                self.setEmptyGraphView()
+            } else {
+                emptyGraphView?.isHidden = true
+            }
+        }
+    }
+    
+    func setEmptyGraphView() {
+        if emptyGraphView == nil {
+            emptyGraphView = EmptyPortfolioView(frame: graphViewContainer.bounds).loadNib()
+            (emptyGraphView as! EmptyPortfolioView).emptyDelegate = self
+            graphViewContainer.embed(emptyGraphView!)
+            graphViewContainer.bringSubviewToFront(emptyGraphView!)
+        }
+    
+        if homeviewModel.currentIndex != 0 {
+            (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.noWatchAddresses
+            (emptyGraphView as! EmptyPortfolioView).emptyActionButton.setTitle(PortfolioStrings.addWatchAddress, for: UIControl.State())
+        } else {
+            (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.emptyBalance
+            (emptyGraphView as! EmptyPortfolioView).emptyActionButton.setTitle(PortfolioStrings.depositTokens, for: UIControl.State())
+        }
+        
+        emptyGraphView?.isHidden = false
+    }
+    
+    func addressAdded(_ address: String, nickName: String) {
+        let context = UIApplication.appDelegate.persistentContainer.viewContext
+        let watchAddress = WatchAddress(context: context)
+        watchAddress.address = address
+        watchAddress.nickName = nickName
+        UIApplication.appDelegate.saveContext()
+        Channel.shared().subscribe(toTopic: watchAddress.address!)
+        NotificationCenter.default.post(name: Notification.Name("UpdatedWatchOnlyAddress"), object: nil)
+    }
+    
+    func displayWatchAddress() {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddressEntryTableViewController") as? AddressEntryTableViewController {
+            vc.delegate = self
+            self.present(vc, animated: true, completion: {})
+        }
+    }
+    
+    func emptyPortfolioButtonTapped() {
+        if homeviewModel.currentIndex != 0 {
+            displayWatchAddress()
+        } else {
+            //display deposit tokens
         }
     }
 
@@ -417,30 +476,22 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
 
-    func indexToPortfolioType(_ index: Int) -> PortfolioType {
-        switch index {
-        case 0:
-            return .writable
-        case 1:
-            return .readOnly
-        case 2:
-            return .readOnlyAndWritable
-        default:
-            fatalError("Invalid Portfolio Index")
-        }
-    }
-
-    func didTapLeft(index: Int, portfolioType: PortfolioType) {
+    func didTapLeft(index: Int) {
         DispatchQueue.main.async {
             self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: index - 1, section: 0), at: .left, animated: true)
-            self.homeviewModel?.setPortfolioType(self.indexToPortfolioType(index - 1))
+            self.homeviewModel?.setCurrentIndex(index - 1)
         }
     }
 
-    func didTapRight(index: Int, portfolioType: PortfolioType) {
+    func didTapRight(index: Int) {
         DispatchQueue.main.async {
             self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: index + 1, section: 0), at: .right, animated: true)
-            self.homeviewModel?.setPortfolioType(self.indexToPortfolioType(index + 1))
+            self.homeviewModel?.setCurrentIndex(index + 1)
+            if self.watchAddresses.count == 0 && index + 1  == 1 {
+                self.setEmptyGraphView()
+            } else {
+                self.emptyGraphView?.isHidden = true
+            }
         }
     }
 }
