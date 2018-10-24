@@ -67,7 +67,24 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func updateWatchAddresses() {
+        var prevWatchAddrNum = watchAddresses.count
         watchAddresses = loadWatchAddresses()
+        //subtracted watch addr need to update the index in model to roll back one
+        if prevWatchAddrNum > watchAddresses.count {
+            homeviewModel.currentIndex = homeviewModel.currentIndex - 1
+        }
+        
+        if watchAddresses.count > 0 && homeviewModel.currentIndex > 0 {
+            emptyGraphView?.isHidden = true
+        }
+        
+        if watchAddresses.count == 0 {
+            self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: false)
+            homeviewModel.currentIndex = 0
+        }
+        
+        
+        walletHeaderCollectionView.reloadData()
         getBalance()
     }
 
@@ -480,6 +497,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         DispatchQueue.main.async {
             self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: index - 1, section: 0), at: .left, animated: true)
             self.homeviewModel?.setCurrentIndex(index - 1)
+            if self.watchAddresses.count == 0 && index + 1  == 1 {
+                self.setEmptyGraphView()
+            } else {
+                self.emptyGraphView?.isHidden = true
+            }
         }
     }
 

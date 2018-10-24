@@ -37,6 +37,65 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var supportLabel: UILabel!
 
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var headerTitleLabel: UILabel!
+    @IBOutlet weak var qrView: UIImageView!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var shareButton: UIButton!
+    
+    func saveQRCodeImage() {
+        let qrWithBranding = UIImage.imageWithView(view: self.qrView
+        )
+        UIImageWriteToSavedPhotosAlbum(qrWithBranding, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    func share() {
+        let shareURL = URL(string: "https://o3.network/")
+        let qrWithBranding = UIImage.imageWithView(view: self.qrView)
+        let activityViewController = UIActivityViewController(activityItems: [shareURL as Any, qrWithBranding], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    @IBAction func showActionSheet() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let saveQR = UIAlertAction(title: AccountStrings.saveQRAction, style: .default) { _ in
+            self.saveQRCodeImage()
+        }
+        alert.addAction(saveQR)
+        let copyAddress = UIAlertAction(title: AccountStrings.copyAddressAction, style: .default) { _ in
+            UIPasteboard.general.string = Authenticated.account?.address
+            //maybe need some Toast style to notify that it's copied
+        }
+        alert.addAction(copyAddress)
+        let share = UIAlertAction(title: AccountStrings.shareAction, style: .default) { _ in
+            self.share()
+        }
+        alert.addAction(share)
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        alert.addAction(cancel)
+        alert.popoverPresentationController?.sourceView = addressLabel
+        present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            let alert = UIAlertController(title: OzoneAlert.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default))
+            present(alert, animated: true)
+        } else {
+            //change it to Toast style.
+            let alert = UIAlertController(title: AccountStrings.saved, message: AccountStrings.savedMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default))
+            present(alert, animated: true)
+        }
+    }
+    
+    
     var themeString = UserDefaultsManager.themeIndex == 0 ? SettingsStrings.classicTheme: SettingsStrings.darkTheme {
         didSet {
             self.setThemeLabel()
@@ -64,6 +123,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         versionLabel?.theme_textColor = O3Theme.lightTextColorPicker
         tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        headerView.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
 
     override func viewDidLoad() {
@@ -71,8 +131,9 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         setLocalizedStrings()
         applyNavBarTheme()
         super.viewDidLoad()
-        let rightBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "angle-up"), style: .plain, target: self, action: #selector(SettingsMenuTableViewController.maximize(_:)))
-        navigationItem.rightBarButtonItem = rightBarButton
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
+        self.headerView.addGestureRecognizer(tap)
         showPrivateKeyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showPrivateKey)))
         contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
         supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
@@ -205,7 +266,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
 
     func setLocalizedStrings() {
-        self.title = SettingsStrings.settingsTitle
+        self.navigationController?.navigationBar.topItem?.title = SettingsStrings.settingsTitle
         privateKeyLabel.text = SettingsStrings.privateKeyTitle
         watchOnlyLabel.text = SettingsStrings.watchOnlyTitle
         themeLabel.text = SettingsStrings.themeTitle
@@ -214,5 +275,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         logoutLabel.text = SettingsStrings.logout
         supportLabel.text = SettingsStrings.supportTitle
         versionLabel.text = SettingsStrings.versionLabel
+        headerTitleLabel.text = AccountStrings.myAddressInfo
+
     }
 }

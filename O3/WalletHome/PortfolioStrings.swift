@@ -28,4 +28,5 @@ struct PortfolioStrings {
     static let emptyBalance = NSLocalizedString("PORTFOLIO_Empty_Balance", comment: "Title of empty state when user has no balance in wallte")
     static let depositTokens = NSLocalizedString("PORTFOLIO_Deposit_Tokens", comment: "Action Button to deposit tokens itno wallet")
     static let addWatchAddress = NSLocalizedString("PORTFOLIO_Add_Watch_Address", comment: "Action button to add watch address")
+    static let watchAddress = NSLocalizedString("PORTFOLIO_Watch_Address", comment: "title for empty view watch addresses")
 }

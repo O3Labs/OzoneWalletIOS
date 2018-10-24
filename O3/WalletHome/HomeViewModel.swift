@@ -91,7 +91,7 @@ class HomeViewModel {
         switch currentIndex {
         case 0: transferableAssetsToReturn = getWritableAssets()
         case watchAddresses.count + 1: transferableAssetsToReturn = getCombinedReadOnlyAndWriteable()
-        default: transferableAssetsToReturn = readOnlyAssets[watchAddresses[currentIndex - 1]]!
+        default: transferableAssetsToReturn = readOnlyAssets[watchAddresses[currentIndex - 1]] ?? []
         }
 
         //Put NEO + GAS at the top

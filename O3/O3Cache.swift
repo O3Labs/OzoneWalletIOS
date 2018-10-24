@@ -99,6 +99,7 @@ class O3Cache {
     static func setReadOnlyOntologyAssetsForSession(tokens: [TransferableAsset], address: String) {
         try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.readOnlyOntologyAssets.rawValue)
     }
+
     
     // MARK: Cache Getters for Writable Balances
     static func gas() -> TransferableAsset {

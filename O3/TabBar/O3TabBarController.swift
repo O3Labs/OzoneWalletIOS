@@ -26,41 +26,16 @@ class O3TabBarController: UITabBarController {
         tabBar.items?[4].title = ""
         tabBar.items?[4].imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -10, right: 0)
         tabBar.items?[4].isEnabled = true
-
-        let tabOverrideView = UIView(frame: tabBar.subviews[4].frame)
-        tabOverrideView.isUserInteractionEnabled = true
-        tabOverrideView.backgroundColor = UIColor.clear
-
-        let button = UIButton(type: .custom)
-        button.addTarget(self, action: #selector(tappedSettingsTab), for: .touchUpInside)
-        button.backgroundColor = UIColor.clear
-        tabOverrideView.embed(button)
-        self.tabBar.addSubview(tabOverrideView)
     }
 
     @IBAction func unwindToTabbar(segue: UIStoryboardSegue) {
     }
 
-    @objc func tappedSettingsTab() {
-       self.performSegue(withIdentifier: "segueToSettings", sender: nil)
-    }
 
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         guard let index = tabBar.items?.index(of: item) else { return }
         let tabTappedMessages = ["Portfolio", "Wallet", "Marketplace", "News", "Settings" ]
         Answers.logCustomEvent(withName: "Tab Tapped",
                                customAttributes: ["Tab Name": tabTappedMessages[index]])
-
-        if index == 4 {
-           self.performSegue(withIdentifier: "segueToSettings", sender: nil)
-        }
     }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: segue.destination)
-
-        segue.destination.modalPresentationStyle = .custom
-        segue.destination.transitioningDelegate = self.halfModalTransitioningDelegate
-    }
-
 }

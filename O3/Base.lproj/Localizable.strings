@@ -309,11 +309,20 @@
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "Welcome!";
 
+/* Action button to add watch address */
+"PORTFOLIO_Add_Watch_Address" = "Add Watch Address";
+
 /* A header title on the portfolio screen, show the displayed funds are inside cold storage */
 "PORTFOLIO_Cold_Storage_Header" = "COLD STORAGE";
 
 /* A header title on the portfolio screen, show the displayed funds are a combination of those store in O3 wallet and cold storage */
 "PORTFOLIO_Combined_Header" = "COMBINED";
+
+/* Action Button to deposit tokens itno wallet */
+"PORTFOLIO_Deposit_Tokens" = "PORTFOLIO_Deposit_Tokens";
+
+/* Title of empty state when user has no balance in wallte */
+"PORTFOLIO_Empty_Balance" = "PORTFOLIO_Empty_Balance";
 
 /* Portfolio Percentage Change String */
 "PORTFOLIO_Interval" = "%.2f%@ (%@)";
@@ -336,6 +345,9 @@
 /* Interval Button on portfolio page, interval specifies ALL of Time */
 "PORTFOLIO_Interval_Button_ALL" = "ALL";
 
+/* Title of empty state when no watch addresses added */
+"PORTFOLIO_No_Watch_Addresses" = "You haven't added any watch addresses or additional wallets yet.";
+
 /* A header title on the portfolio screen, shows the displayed funds are located in the O3Wallet */
 "PORTFOLIO_O3_Wallet_Header" = "O3 WALLET";
 
@@ -344,6 +356,9 @@
 
 /* Error message to display when the price history of a token is not available */
 "PORTFOLIO_Price_History_Not_Available" = "Price history isn't available for this token yet. Check back soon!";
+
+/* title for empty view watch addresses */
+"PORTFOLIO_Watch_Address" = "Watch Addresses"; /* NEW */
 
 /* A title for the scan button in the send screen */
 "SCAN_Button_Title" = "Scan";
@@ -367,7 +382,7 @@
 "SEND_Confirmation_Prompt" = "Are you sure you want to send %.8f %@ to %@?";
 
 /* Continue send flow prog */
-"SEND_continue" = "Continue"; /* NEW */
+"SEND_continue" = "Continue";
 
 /* Description to display when the transaction has failed to be submitted to the NEO blockchain */
 "SEND_Created_Transaction_Failed_Description" = "Something Went Wrong.";
@@ -406,19 +421,19 @@
 "SEND_Paste_Button_Title" = "Paste";
 
 /* Send flow review progress step */
-"SEND_review" = "Review"; /* NEW */
+"SEND_review" = "Review";
 
 /* Label for fee in secnd screen */
-"SEND_review_fee" = "Total Fee"; /* NEW */
+"SEND_review_fee" = "Total Fee";
 
 /* Title text on sending review screen */
-"SEND_review_title" = "Please carefully review your transaction details. Once sent, this transaction cannot be reversed"; /* NEW */
+"SEND_review_title" = "Please carefully review your transaction details. Once sent, this transaction cannot be reversed";
 
 /* Error to display when the user is trying to send gas, but the amount they are sending is the max amount. The user can round down the gas amount a small amount to precent this error */
 "SEND_Rounding_Gas_Error" = "When sending all GAS, please subtract 0.00000001 from the total amount. This prevents rounding errors which can cause the transaction to not process";
 
 /* Label for saving to contacts when */
-"SEND_save_to_contacts" = "Save To Contacts"; /* NEW */
+"SEND_save_to_contacts" = "Save To Contacts";
 
 /* A title for the Select Asset pull up menu */
 "SEND_Select_Asset_Title" = "Select Asset";
@@ -436,13 +451,13 @@
 "SEND_To_Label" = "To";
 
 /* Label for generated transaction id */
-"SEND_transaction_id" = "Transaction Id: %@"; /* NEW */
+"SEND_transaction_id" = "Transaction Id: %@";
 
 /* Send flow what progress step */
-"SEND_what" = "What?"; /* New */
+"SEND_what" = "What?";
 
 /* Send flow where progress step */
-"SEND_where" = "Where?"; /* New */
+"SEND_where" = "Where?";
 
 /* A generic add button title */
 "SETTINGS_Add_Button" = "Add";
