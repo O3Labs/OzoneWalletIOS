@@ -267,14 +267,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "segueToAssetDetail" {
-            guard let dest = segue.destination as? AssetDetailViewController else {
-                fatalError("Undefined behavior during segue")
-            }
-            dest.selectedAsset = self.selectedAsset
-        }
-    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)

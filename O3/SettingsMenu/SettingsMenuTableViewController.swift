@@ -13,6 +13,7 @@ import SwiftTheme
 import KeychainAccess
 import WebBrowser
 import ZendeskSDK
+import Neoutils
 
 class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate {
     @IBOutlet weak var showPrivateKeyView: UIView!
@@ -24,7 +25,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var contactCell: UITableViewCell!
     @IBOutlet weak var logoutCell: UITableViewCell!
     @IBOutlet weak var supportCell: UITableViewCell!
-
+    @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
+    
     @IBOutlet weak var supportView: UIView!
     @IBOutlet weak var currencyView: UIView!
     @IBOutlet weak var themeView: UIView!
@@ -42,6 +44,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var qrView: UIImageView!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var nnsLabel: UILabel!
     
     func saveQRCodeImage() {
         let qrWithBranding = UIImage.imageWithView(view: self.qrView
@@ -125,24 +128,61 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         headerView.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
+    
+    func setNNSNames() {
+        O3APIClient(network: AppState.network).reverseDomainLookup(address: (Authenticated.account?.address)!) { result in
+            switch result {
+            case .failure (let error):
+                print(error)
+            case .success(let domains):
+                DispatchQueue.main.async {
+                    if domains.count == 0 {
+                        self.nnsLabel.isHidden = true
+                    } else if domains.count == 1 {
+                        self.nnsLabel.text = domains[0].domain
+                    } else {
+                        self.nnsLabel.text = domains[0] .domain + " +\(domains.count - 1) more"
+                    }
+                }
+            }
+        }
+    }
 
     override func viewDidLoad() {
         setThemedElements()
         setLocalizedStrings()
         applyNavBarTheme()
         super.viewDidLoad()
+        setNNSNames()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
+        qrView.image = UIImage.init(qrData: (Authenticated.account?.address)!, width: qrView.bounds.size.width, height: qrView.bounds.size.height)
         self.headerView.addGestureRecognizer(tap)
         showPrivateKeyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showPrivateKey)))
         contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
         supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
         themeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTheme)))
+        enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
         setThemeLabel()
 
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.versionLabel.text = String(format: SettingsStrings.versionLabel, version)
         }
+    }
+    
+    @objc func enableMultiWallet() {
+        
+        let newAccount = NEP6.Account(address: "AKoT55PSEWT3fGA9EkKMTGsr7iqGTRZmim",
+                                      label: "Test Account", isDefault: true, lock: false,
+                                      key: "6PYKJWPP9ijUpyaW71p1gsQX6AKuB6goMDbphuqvECxfiQoq3hoxSYKCkV")
+        let nep6 = NEP6(name: "Test Wallet", version: "1.0", accounts: [newAccount])
+        let nep6Data = try! JSONEncoder().encode(nep6)
+    
+        let  fileName = "O3Wallet"
+        let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL 
+        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
+        try! nep6Data.write(to: fileURL)
+        CloudDataManager.sharedInstance.copyFileToCloud()
     }
 
     override func viewWillAppear(_ animated: Bool) {
