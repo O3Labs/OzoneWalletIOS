@@ -157,6 +157,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
         qrView.image = UIImage.init(qrData: (Authenticated.account?.address)!, width: qrView.bounds.size.width, height: qrView.bounds.size.height)
+        addressLabel.text = (Authenticated.account?.address)!
         self.headerView.addGestureRecognizer(tap)
         showPrivateKeyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showPrivateKey)))
         contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
@@ -171,8 +172,9 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     @objc func enableMultiWallet() {
-        
-        let newAccount = NEP6.Account(address: "AKoT55PSEWT3fGA9EkKMTGsr7iqGTRZmim",
+        self.performSegue(withIdentifier: "segueToAddItemToMultiWallet", sender: nil)
+        //self.performSegue(withIdentifier: "segueToMultiWalletActivation", sender: nil)
+        /*let newAccount = NEP6.Account(address: "AKoT55PSEWT3fGA9EkKMTGsr7iqGTRZmim",
                                       label: "Test Account", isDefault: true, lock: false,
                                       key: "6PYKJWPP9ijUpyaW71p1gsQX6AKuB6goMDbphuqvECxfiQoq3hoxSYKCkV")
         let nep6 = NEP6(name: "Test Wallet", version: "1.0", accounts: [newAccount])
@@ -182,7 +184,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL 
         let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
         try! nep6Data.write(to: fileURL)
-        CloudDataManager.sharedInstance.copyFileToCloud()
+        CloudDataManager.sharedInstance.copyFileToCloud()*/
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -256,7 +258,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
             do {
                 _ = try keychain
                     .authenticationPrompt(SettingsStrings.authenticate)
-                    .get("ozonePrivateKey")
+                    .get(AppState.protectedKeyValue)
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "segueToPrivateKey", sender: nil)
                 }
@@ -274,7 +276,9 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         O3Cache.clear()
         SwiftTheme.ThemeManager.setTheme(index: 0)
         UserDefaultsManager.themeIndex = 0
+        UserDefaultsManager.hasActivatedMultiWallet = false
         try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
+        try? Keychain(service: "network.o3.neo.wallet").remove("ozoneActiveNep6Password")
         Authenticated.account = nil
         UserDefaultsManager.o3WalletAddress = nil
         NotificationCenter.default.post(name: Notification.Name("loggedOut"), object: nil)

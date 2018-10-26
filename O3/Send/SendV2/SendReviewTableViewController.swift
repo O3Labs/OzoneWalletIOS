@@ -75,7 +75,8 @@ class SendReviewTableViewController: UITableViewController {
             do {
                 _ = try keychain
                     .authenticationPrompt(SendStrings.authenticateToSendPrompt)
-                    .get("ozonePrivateKey")
+                    .get(AppState.protectedKeyValue)
+                
                     O3HUD.start()
                     if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                         AppState.bestSeedNodeURL = bestNode
@@ -162,7 +163,7 @@ class SendReviewTableViewController: UITableViewController {
             do {
             _ = try keychain
                 .authenticationPrompt(SendStrings.authenticateToSendPrompt)
-                .get("ozonePrivateKey")
+                .get(AppState.protectedKeyValue)
                 O3HUD.start()
                 if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                     AppState.bestSeedNodeURL = bestNode

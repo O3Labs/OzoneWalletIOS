@@ -54,7 +54,7 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
                     //save pirivate key to keychain
                     try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .set(account.wif, key: "ozonePrivateKey")
+                        .set(account.wif, key: AppState.protectedKeyValue)
                     SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
                     self.instantiateMainAsNewRoot()
                 } catch _ {

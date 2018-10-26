@@ -53,4 +53,6 @@ class AppState: NSObject {
         UserDefaults.standard.setValue(dismiss, forKey: "dismissedPortfolioNotification1.8.0")
         UserDefaults.standard.synchronize()
     }
+    
+    static let protectedKeyValue = UserDefaultsManager.hasActivatedMultiWallet ?  "ozoneActiveNep6Password" :  "ozonePrivateKey"
 }

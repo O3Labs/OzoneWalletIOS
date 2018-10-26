@@ -28,10 +28,12 @@ class CloudDataManager {
             try! fileManager.createDirectory(at: DocumentsDirectory.localDocumentsURL, withIntermediateDirectories: true, attributes: nil)
         }
         
-        if fileManager.fileExists(atPath: DocumentsDirectory.iCloudDocumentsURL!.path, isDirectory:&isDir) {
-            
-        } else {
-            try! fileManager.createDirectory(at: DocumentsDirectory.iCloudDocumentsURL!, withIntermediateDirectories: true, attributes: nil)
+        if isCloudEnabled() {
+            if fileManager.fileExists(atPath: DocumentsDirectory.iCloudDocumentsURL!.path, isDirectory:&isDir) {
+                
+            } else {
+                try! fileManager.createDirectory(at: DocumentsDirectory.iCloudDocumentsURL!, withIntermediateDirectories: true, attributes: nil)
+            }
         }
     }
     

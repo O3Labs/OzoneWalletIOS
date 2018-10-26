@@ -426,8 +426,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                 do {
                     _ = try keychain
                         .authenticationPrompt(String(format: "Connect with %@?", host!))
-                        .get("ozonePrivateKey")
-                    
+                        .get(AppState.protectedKeyValue)
                     DispatchQueue.main.async {
                         self.title = host?.firstUppercased
                         //generate session ID

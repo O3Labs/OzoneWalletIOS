@@ -53,7 +53,7 @@ public class NEP6: Codable {
         var label: String
         var isDefault: Bool
         var lock: Bool
-        var key: String
+        var key: String?
         var contract: Any? = nil //contract is not necessary for our use cases at this time but we will inclide field
     
         public enum CodingKeys: String, CodingKey {
@@ -64,7 +64,7 @@ public class NEP6: Codable {
             case key
         }
         
-        public init(address: String, label: String, isDefault: Bool, lock: Bool, key: String) {
+        public init(address: String, label: String, isDefault: Bool, lock: Bool, key: String?) {
             self.address = address
             self.label = label
             self.isDefault = isDefault
@@ -78,7 +78,7 @@ public class NEP6: Codable {
             let label: String = try container.decode(String.self, forKey: .label)
             let isDefault: Bool = try container.decode(Bool.self, forKey: .isDefault)
             let lock: Bool = try container.decode(Bool.self, forKey: .lock)
-            let key: String = try container.decode(String.self, forKey: .key)
+            let key: String? = try container.decode(String?.self, forKey: .key)
             self.init(address: address, label: label, isDefault: isDefault, lock: lock, key: key)
         }
     }
@@ -134,6 +134,11 @@ public class NEP6: Codable {
         self.accounts.append(newAccount)
     }
     
+    func addWatchAddress(address: String, name: String) {
+        let newAccount = NEP6.Account(address: address, label: name, isDefault: false, lock: false, key: nil)
+        self.accounts.append(newAccount)
+    }
+    
     func removeEncryptedKey(name: String) {
         let index = accounts.firstIndex { $0.label == name }
         if index != nil {
@@ -171,6 +176,7 @@ public class NEP6: Codable {
         if newDefaultIndex == nil || currentDefaultIndex == nil {
             return
         }
+        
         accounts[currentDefaultIndex!].isDefault = false
         accounts[newDefaultIndex!].isDefault = true
     }

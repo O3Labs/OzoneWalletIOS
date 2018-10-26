@@ -10,6 +10,7 @@ import UIKit
 import KeychainAccess
 import LocalAuthentication
 import SwiftTheme
+import Neoutils
 
 protocol LoginToCurrentWalletViewControllerDelegate {
     func authorized(launchOptions: [UIApplication.LaunchOptionsKey: Any]?)
@@ -27,16 +28,39 @@ class LoginToCurrentWalletViewController: UIViewController {
         let keychain = Keychain(service: "network.o3.neo.wallet")
         DispatchQueue.global().async {
             do {
-                let key = try keychain
-                    .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                    .authenticationPrompt(OnboardingStrings.authenticationPrompt)
-                    .get("ozonePrivateKey")
-                if key == nil {
-                    return
+                var nep6Pass: String? = nil
+                var key: String? = nil
+                if UserDefaultsManager.hasActivatedMultiWallet {
+                    nep6Pass = try keychain
+                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                        .authenticationPrompt(OnboardingStrings.authenticationPrompt)
+                        .get(AppState.protectedKeyValue)
+                } else {
+                    key = try keychain
+                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                        .authenticationPrompt(OnboardingStrings.authenticationPrompt)
+                        .get(AppState.protectedKeyValue)
                 }
 
-                guard let account = Account(wif: key!) else {
+                if key == nil && nep6Pass == nil {
                     return
+                }
+                
+                var account: Account!
+                if key != nil {
+                    account = Account(wif: key!)!
+                } else {
+                    let fileName = "O3Wallet"
+                    let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
+                    let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
+                    let jsonNep6 = try! Data(contentsOf: fileURL)
+                    let nep6 = try! JSONDecoder().decode(NEP6.self, from: jsonNep6)
+                    var error: NSError?
+                    for accountLoop in nep6.accounts {
+                        if accountLoop.isDefault {
+                            account = Account(wif: NeoutilsNEP2Decrypt(accountLoop.key, nep6Pass, &error))!
+                        }
+                    }
                 }
                 O3HUD.start()
                 Authenticated.account = account
@@ -79,7 +103,9 @@ class LoginToCurrentWalletViewController: UIViewController {
 
     func performLogout() {
         O3Cache.clear()
-        try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
+        UserDefaultsManager.hasActivatedMultiWallet = false
+        try? Keychain(service: "network.o3.neo.wallet").remove(AppState.protectedKeyValue)
+        try? Keychain(service: "network.o3.neo.wallet").remove(AppState.protectedKeyValue)
         Authenticated.account = nil
         UserDefaultsManager.o3WalletAddress = nil
         SwiftTheme.ThemeManager.setTheme(index: 0)
