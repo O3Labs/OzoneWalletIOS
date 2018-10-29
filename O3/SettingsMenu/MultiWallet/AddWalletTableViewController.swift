@@ -9,19 +9,33 @@
 import Foundation
 import UIKit
 import Neoutils
+import Lottie
 
-class AddWalletTableViewController: UITableViewController {
+class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     @IBOutlet weak var animationContainerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var walletInputField: UITextField!
     @IBOutlet weak var addWalletButton: ShadowedButton!
     
+    let lottieView = LOTAnimationView(name: "wallet_generated")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
+        initiateNavBar()
         setThemedElements()
+        animationContainerView.embed(lottieView)
+        lottieView.loopAnimation = true
+        lottieView.play()
         addWalletButton.isEnabled = false
+    }
+    
+    @objc func scanTapped(_ sender: Any) {
+        self.performSegue(withIdentifier: "segueToQR", sender: nil)
+    }
+
+    func initiateNavBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_scan"), style: .plain, target: self, action: #selector(scanTapped(_:)))
     }
     
     func isInputAddress() -> Bool {
@@ -61,8 +75,22 @@ class AddWalletTableViewController: UITableViewController {
         }
     }
     
+    func qrScanned(data: String) {
+        walletInputField.text = data
+        if data != "" {
+            addWalletButton.isEnabled = true
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dest = segue.destination as? QRScannerController {
+            dest.delegate = self
+        }
+    }
+    
     func setLocalizedStrings() {
         titleLabel.text = MultiWalletStrings.addWalletDecription
+        addWalletButton.setTitle(MultiWalletStrings.continueAction, for: UIControl.State())
     }
     
     func setThemedElements() {

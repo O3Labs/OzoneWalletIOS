@@ -48,6 +48,57 @@
 /* Title for marketplace section in app */
 "MARKETPLACE_title" = "市场";
 
+/* additional info about what will happen when multiwallet is activated */
+"MULTIWALLET_activate_info" = "This password will be used to encrypt your private key"; /* NEW */
+
+/* subtitle for activating multiwallet */
+"MULTIWALLET_activate_multiwallet_subtitle" = "Just enter a strong password that yo won't forget and we will generate a new key for you"; /* NEW */
+
+/* title for activating multiwallet page */
+"MULTIWALLET_activate_multiwallet_title" = "To allow multi wallet functionality in O3, we need to update your private key to an encrypted key."; /* NEW */
+
+/* Description text when adding more wallets to your multi wallet */
+"MULTIWALLET_add_wallet_description" = "Enter a NEO/Ontology encrypted key, private key or address to add wallet or watch address."; /* NEW */
+
+/* Button title to backup up encrypted key and nep6 file */
+"MULTIWALLET_backup_encrypted_key" = "Back it up"; /* NEW */
+
+/* text for continue action */
+"MULTIWALLET_continue" = "Next"; /* NEW */
+
+/* Description when an encrypted key is detected in multiwallet add */
+"MULTIWALLET_encrypted_key_detected" = "Encrypted key detected\n\nPlease enter your password to continue"; /* NEW */
+
+/* Hint for entering encrypted key password in multiwallet setup */
+"MULTIWALLET_encrypted_password_hint" = "Encrypted key password"; /* NEW */
+
+/* error alert after failing to decrrypt the encrypted key */
+"MULTIWALLET_failed_to_decrypt" = "Failed to decrypt key, please double check it"; /* NEW */
+
+/* button title after finished multiwallet creation */
+"MULTIWALLET_finished" = "Done"; /* NEW */
+
+/* Button title to generate an encrypted key when activating multiwallet */
+"MULTIWALLET_generate_encrypted_key" = "Generate Encrypted Key"; /* NEW */
+
+/* description text after a multi wallet has been generated */
+"MULTIWALLET_generated_decription" = "All done. Here is your new encrypted key! Don't forget your password or else it won't work"; /* NEW */
+
+/* error text when they enter text that can't be parsed as a key or address */
+"MULTIWALLET_invalid_wallet_entry" = "That key or address is invalid, please double check it"; /* NEW */
+
+/* Input hint for when making password to generate encrypted ket */
+"MULTIWALLET_password_hint" = "Password"; /* NEW */
+
+/* Input hint for when verifying password to generate encrypted key */
+"MULTIWALLET_password_verify_hint" = "Verify Password"; /* NEW */
+
+/* description of adding a name to a wallet title */
+"MULTIWALLET_set_wallet_title" = "Give this wallet a name"; /* NEW */
+
+/* A description to display after a watch address has been successfully added */
+"MULTIWALLET_watch_address_added" = "A watch address has been added. You can unlock this address at ay time via settings > manage wallet and entering a private or encrypted key"; /* NEW */
+
 /* Title of the news feed page */
 "NEWSFEED_News_Title" = "动态消息";
 
@@ -358,7 +409,7 @@
 "PORTFOLIO_Price_History_Not_Available" = "该代币历史价格不可见，请稍后查看！";
 
 /* title for empty view watch addresses */
-"PORTFOLIO_Watch_Address" = "Watch Addresses"; /* NEW */
+"PORTFOLIO_Watch_Address" = "Watch Addresses";
 
 /* A title for the scan button in the send screen */
 "SCAN_Button_Title" = "浏览";

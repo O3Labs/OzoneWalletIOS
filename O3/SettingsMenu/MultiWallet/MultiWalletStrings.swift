@@ -24,5 +24,11 @@ struct MultiWalletStrings {
     
     static let invalidWalletEntry = NSLocalizedString("MULTIWALLET_invalid_wallet_entry", comment: "error text when they enter text that can't be parsed as a key or address")
     static let addWalletDecription = NSLocalizedString("MULTIWALLET_add_wallet_description", comment: "Description text when adding more wallets to your multi wallet")
-
+    static let encryptedKeyDetected = NSLocalizedString("MULTIWALLET_encrypted_key_detected", comment: "Description when an encrypted key is detected in multiwallet add")
+    static let encryptedPasswordHint = NSLocalizedString("MULTIWALLET_encrypted_password_hint", comment: "Hint for entering encrypted key password in multiwallet setup")
+    static let continueAction = NSLocalizedString("MULTIWALLET_continue", comment: "text for continue action")
+    
+    static let failedToDecrypt = NSLocalizedString("MULTIWALLET_failed_to_decrypt", comment: "error alert after failing to decrrypt the encrypted key")
+    
+    static let setWalletNameTitle = NSLocalizedString("MULTIWALLET_set_wallet_title", comment: "description of adding a name to a wallet title")
 }
