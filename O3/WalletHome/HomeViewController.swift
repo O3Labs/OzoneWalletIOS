@@ -463,16 +463,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         NotificationCenter.default.post(name: Notification.Name("UpdatedWatchOnlyAddress"), object: nil)
     }
     
-    func displayWatchAddress() {
-        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddressEntryTableViewController") as? AddressEntryTableViewController {
-            vc.delegate = self
+    func displayEnableMultiWallet() {
+        if NEP6.getFromFileSystem() == nil {
+            if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "activateMultiWalletTableViewController") as? ActivateMultiWalletTableViewController {
+                self.present(vc, animated: true, completion: {})
+            }
+        } else {
+            let vc = UIStoryboard(name: "AddNewMultiWallet", bundle: nil).instantiateInitialViewController()!
             self.present(vc, animated: true, completion: {})
         }
     }
     
     func emptyPortfolioButtonTapped() {
         if homeviewModel.currentIndex != 0 {
-            displayWatchAddress()
+            displayEnableMultiWallet()
         } else {
             //display deposit tokens
         }

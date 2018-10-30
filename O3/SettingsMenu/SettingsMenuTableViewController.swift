@@ -20,7 +20,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var contactView: UIView!
     @IBOutlet weak var themeCell: UITableViewCell!
     @IBOutlet weak var privateKeyCell: UITableViewCell!
-    @IBOutlet weak var watchOnlyCell: UITableViewCell!
     @IBOutlet weak var currencyCell: UITableViewCell!
     @IBOutlet weak var contactCell: UITableViewCell!
     @IBOutlet weak var logoutCell: UITableViewCell!
@@ -31,20 +30,25 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var currencyView: UIView!
     @IBOutlet weak var themeView: UIView!
     @IBOutlet weak var privateKeyLabel: UILabel!
-    @IBOutlet weak var watchOnlyLabel: UILabel!
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var themeLabel: UILabel!
     @IBOutlet weak var logoutLabel: UILabel!
     @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var supportLabel: UILabel!
-
+    @IBOutlet weak var multiWalletLabel: UILabel!
+    
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
     @IBOutlet weak var qrView: UIImageView!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var nnsLabel: UILabel!
+    
+    // swiftlint:disable weak_delegate
+    var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
+    // swiftlint:enable weak_delegate
+
     
     func saveQRCodeImage() {
         let qrWithBranding = UIImage.imageWithView(view: self.qrView
@@ -113,8 +117,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
 
     func setThemedElements() {
-        let themedTitleLabels = [privateKeyLabel, watchOnlyLabel, contactLabel, themeLabel, currencyLabel, logoutLabel, versionLabel, supportLabel]
-        let themedCells = [themeCell, privateKeyCell, watchOnlyCell, currencyCell, contactCell, logoutCell]
+        let themedTitleLabels = [privateKeyLabel, contactLabel, themeLabel, currencyLabel, logoutLabel, versionLabel, supportLabel, multiWalletLabel]
+        let themedCells = [themeCell, privateKeyCell, currencyCell, contactCell, logoutCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
             cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -172,7 +176,19 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     @objc func enableMultiWallet() {
-        self.performSegue(withIdentifier: "segueToAddItemToMultiWallet", sender: nil)
+        if NEP6.getFromFileSystem()?.accounts == nil {
+            self.performSegue(withIdentifier: "segueToMultiWalletActivation", sender: nil)
+        } else {
+            self.performSegue(withIdentifier: "segueToManageWallets", sender: nil)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueToManageWallets" {
+            self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: segue.destination)
+            segue.destination.modalPresentationStyle = .custom
+            segue.destination.transitioningDelegate = self.halfModalTransitioningDelegate
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -267,6 +283,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         UserDefaultsManager.hasActivatedMultiWallet = false
         try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
         try? Keychain(service: "network.o3.neo.wallet").remove("ozoneActiveNep6Password")
+        NEP6.removeFromDevice()
         Authenticated.account = nil
         UserDefaultsManager.o3WalletAddress = nil
         NotificationCenter.default.post(name: Notification.Name("loggedOut"), object: nil)
@@ -300,14 +317,17 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     func setLocalizedStrings() {
         self.navigationController?.navigationBar.topItem?.title = SettingsStrings.settingsTitle
         privateKeyLabel.text = SettingsStrings.privateKeyTitle
-        watchOnlyLabel.text = SettingsStrings.watchOnlyTitle
         themeLabel.text = SettingsStrings.themeTitle
         currencyLabel.text = SettingsStrings.currencyTitle + UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased()
         contactLabel.text = SettingsStrings.contactTitle
         logoutLabel.text = SettingsStrings.logout
         supportLabel.text = SettingsStrings.supportTitle
         versionLabel.text = SettingsStrings.versionLabel
+        if NEP6.getFromFileSystem() == nil {
+            multiWalletLabel.text = SettingsStrings.enableMultiWallet
+        } else {
+            multiWalletLabel.text = SettingsStrings.manageWallets
+        }
         headerTitleLabel.text = AccountStrings.myAddressInfo
-
     }
 }

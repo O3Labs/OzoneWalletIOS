@@ -173,6 +173,14 @@ public class NEP6: Codable {
         return walletAccounts
     }
     
+    static func removeFromDevice() {
+        let fileName = "O3Wallet"
+        let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
+        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
+        let _ = try? FileManager.default.removeItem(at: fileURL)
+        UserDefaultsManager.hasActivatedMultiWallet = true
+    }
+    
     public func makeNewDefault(address: String, pass: String) {
         let currentDefaultIndex = accounts.firstIndex { $0.isDefault }
         let newDefaultIndex = accounts.firstIndex { $0.address == address }

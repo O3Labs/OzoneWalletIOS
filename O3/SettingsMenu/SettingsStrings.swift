@@ -44,4 +44,8 @@ struct SettingsStrings {
     static let classicTheme = NSLocalizedString("SETTINGS_Theme_Classic", comment: "Label For Classic Theme")
     static let darkTheme = NSLocalizedString("SETTINGS_Theme_Dark", comment: "Label For Dark Theme")
     static let versionLabel = NSLocalizedString("SETTINGS_Version", comment: "Settings Menu Title For Version")
+    
+    static let enableMultiWallet = NSLocalizedString("SETTINGS_enable_multiwallet", comment: "settings item to enable multi wallet if not active")
+    static let manageWallets = NSLocalizedString("SETTINGS_manage_wallets", comment: "settings item to manage existing wallets")
+    static let addWallet = NSLocalizedString("SETTINGS_add_wallet", comment: "settings item to add another wallet to nep 6")
 }

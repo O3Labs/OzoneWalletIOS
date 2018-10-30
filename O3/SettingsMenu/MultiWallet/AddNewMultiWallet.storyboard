@@ -16,7 +16,7 @@
                 <viewControllerPlaceholder storyboardName="QR" id="loy-iG-SKX" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hol-xF-W0X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4322" y="1328"/>
+            <point key="canvasLocation" x="4891" y="2257"/>
         </scene>
         <!--Add Wallet Table View Controller-->
         <scene sceneID="ZYT-BV-jbH">
@@ -57,7 +57,7 @@
                                     </connections>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IsZ-Wm-X28" customClass="ShadowedButton" customModule="O3" customModuleProvider="target">
-                                    <rect key="frame" x="16" y="268.5" width="343" height="44"/>
+                                    <rect key="frame" x="16" y="208.5" width="343" height="44"/>
                                     <color key="backgroundColor" name="lightThemeOrange"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="uVV-qL-Xn6"/>
@@ -75,36 +75,21 @@
                                         <action selector="addWalletButtonTapped:" destination="3yq-kz-beK" eventType="touchUpInside" id="QW3-mI-0gE"/>
                                     </connections>
                                 </button>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="R9c-0a-GWO">
-                                    <rect key="frame" x="16" y="208.5" width="343" height="44"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="44" id="f0s-Pi-37c"/>
-                                    </constraints>
-                                    <nil key="textColor"/>
-                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                    <connections>
-                                        <action selector="walletInputChanged:" destination="3yq-kz-beK" eventType="editingChanged" id="f58-1b-KmW"/>
-                                    </connections>
-                                </textField>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="i5u-0Y-Cns" firstAttribute="centerX" secondItem="EFP-OB-60m" secondAttribute="centerX" id="0gx-PG-T9K"/>
-                                <constraint firstItem="IsZ-Wm-X28" firstAttribute="top" secondItem="R9c-0a-GWO" secondAttribute="bottom" constant="16" id="1ku-SM-REj"/>
                                 <constraint firstItem="LDn-Jh-XIS" firstAttribute="leading" secondItem="EFP-OB-60m" secondAttribute="leading" constant="16" id="CLa-7g-E3J"/>
                                 <constraint firstItem="LDn-Jh-XIS" firstAttribute="centerX" secondItem="EFP-OB-60m" secondAttribute="centerX" id="Hbc-Kj-mAt"/>
-                                <constraint firstItem="R9c-0a-GWO" firstAttribute="top" secondItem="DcV-zi-rTJ" secondAttribute="bottom" constant="16" id="IXu-Ry-Fch"/>
-                                <constraint firstItem="R9c-0a-GWO" firstAttribute="leading" secondItem="EFP-OB-60m" secondAttribute="leading" constant="16" id="JWt-EO-oim"/>
                                 <constraint firstItem="DcV-zi-rTJ" firstAttribute="top" secondItem="LDn-Jh-XIS" secondAttribute="bottom" constant="16" id="Lit-Q2-gau"/>
                                 <constraint firstAttribute="trailing" secondItem="IsZ-Wm-X28" secondAttribute="trailing" constant="16" id="Plq-3m-9Zg"/>
                                 <constraint firstAttribute="trailing" secondItem="LDn-Jh-XIS" secondAttribute="trailing" constant="16" id="cMu-O1-A3k"/>
+                                <constraint firstItem="IsZ-Wm-X28" firstAttribute="top" secondItem="DcV-zi-rTJ" secondAttribute="bottom" constant="16" id="cmZ-Bi-bvz"/>
                                 <constraint firstAttribute="trailing" secondItem="DcV-zi-rTJ" secondAttribute="trailing" constant="16" id="gyD-5K-Trj"/>
                                 <constraint firstItem="IsZ-Wm-X28" firstAttribute="leading" secondItem="EFP-OB-60m" secondAttribute="leading" constant="16" id="hTC-2A-FSI"/>
                                 <constraint firstItem="DcV-zi-rTJ" firstAttribute="leading" secondItem="EFP-OB-60m" secondAttribute="leading" constant="16" id="mCb-Tg-OzE"/>
                                 <constraint firstItem="LDn-Jh-XIS" firstAttribute="top" secondItem="i5u-0Y-Cns" secondAttribute="bottom" constant="16" id="qLf-p5-7IL"/>
                                 <constraint firstItem="i5u-0Y-Cns" firstAttribute="top" secondItem="EFP-OB-60m" secondAttribute="top" constant="16" id="vzW-I1-biV"/>
-                                <constraint firstAttribute="trailing" secondItem="R9c-0a-GWO" secondAttribute="trailing" constant="16" id="wGA-ql-IsO"/>
                             </constraints>
                         </view>
                         <prototypes>
@@ -574,7 +559,7 @@
         <!--Activate Multi Wallet Table View Controller-->
         <scene sceneID="o4g-AD-2XT">
             <objects>
-                <tableViewController id="vwa-gJ-Gna" customClass="ActivateMultiWalletTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="activateMultiWalletTableViewController" id="vwa-gJ-Gna" customClass="ActivateMultiWalletTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="kyJ-T3-TDO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
