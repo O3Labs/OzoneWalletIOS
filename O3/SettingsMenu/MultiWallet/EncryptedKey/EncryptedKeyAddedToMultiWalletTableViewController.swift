@@ -19,6 +19,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
     
     let lottieView = LOTAnimationView(name: "wallet_generated")
     var encryptedKey = ""
+    var address = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,13 +41,21 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
     
     @IBAction func continueTapped(_ sender: Any) {
         var error: NSError?
-        var wif = NeoutilsNEP2Decrypt(encryptedKey, passwordInputField.text!, &error)
+        let wif = NeoutilsNEP2Decrypt(encryptedKey, passwordInputField.text!, &error)
+        address = Account(wif: wif!)!.address
         if error != nil {
             OzoneAlert.alertDialog(message: MultiWalletStrings.failedToDecrypt, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
         } else {
             performSegue(withIdentifier: "segueToAddNameForEncryptedKey", sender: nil)
         }
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dest = segue.destination as? AddNameEncryptedKeyTableViewController {
+            dest.address = address
+            dest.encryptedKey = encryptedKey
+        }
     }
     
     func setLocalizedStrings() {

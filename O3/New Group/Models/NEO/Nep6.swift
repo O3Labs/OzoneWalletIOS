@@ -8,6 +8,7 @@
 
 import Foundation
 import Neoutils
+import KeychainAccess
 
 public class NEP6: Codable {
     var name: String
@@ -78,7 +79,7 @@ public class NEP6: Codable {
             let label: String = try container.decode(String.self, forKey: .label)
             let isDefault: Bool = try container.decode(Bool.self, forKey: .isDefault)
             let lock: Bool = try container.decode(Bool.self, forKey: .lock)
-            let key: String? = try container.decode(String?.self, forKey: .key)
+            let key: String? = try? container.decode(String.self, forKey: .key)
             self.init(address: address, label: label, isDefault: isDefault, lock: lock, key: key)
         }
     }
@@ -160,34 +161,110 @@ public class NEP6: Codable {
         }
     }
     
-    public func makeNewDefault(address: String) {
+    public func getWalletAccounts() -> [Account] {
+        var walletAccounts = [Account]()
+        let defaultIndex = accounts.index { $0.isDefault == true }
+        walletAccounts.append(accounts[defaultIndex!])
+        for account in accounts {
+            if account.isDefault == false && account.key != nil {
+                walletAccounts.append(account)
+            }
+        }
+        return walletAccounts
+    }
+    
+    public func makeNewDefault(address: String, pass: String) {
         let currentDefaultIndex = accounts.firstIndex { $0.isDefault }
         let newDefaultIndex = accounts.firstIndex { $0.address == address }
         if newDefaultIndex == nil || currentDefaultIndex == nil {
             return
         }
-        accounts[currentDefaultIndex!].isDefault = false
-        accounts[newDefaultIndex!].isDefault = true
+        let keychain = Keychain(service: "network.o3.neo.wallet")
+        do {
+            //save pirivate key to keychain
+            try keychain
+                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                .set(pass, key: "ozoneActiveNep6Password")
+            accounts[currentDefaultIndex!].isDefault = false
+            accounts[newDefaultIndex!].isDefault = true
+        } catch _ {
+            return
+        }
     }
     
-    public func makeNewDefault(name: String) {
+    public func makeNewDefault(name: String, pass: String) {
         let currentDefaultIndex = accounts.firstIndex { $0.isDefault }
         let newDefaultIndex = accounts.firstIndex { $0.label == name }
         if newDefaultIndex == nil || currentDefaultIndex == nil {
             return
         }
-        
-        accounts[currentDefaultIndex!].isDefault = false
-        accounts[newDefaultIndex!].isDefault = true
+        let keychain = Keychain(service: "network.o3.neo.wallet")
+        do {
+            //save pirivate key to keychain
+            try keychain
+                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                .set(pass, key: "ozoneActiveNep6Password")
+            accounts[currentDefaultIndex!].isDefault = false
+            accounts[newDefaultIndex!].isDefault = true
+        } catch _ {
+            return
+        }
     }
     
-    public func makeNewDefault(key: String) {
+    public func makeNewDefault(key: String, pass: String) {
         let currentDefaultIndex = accounts.firstIndex { $0.isDefault }
-        let newDefaultIndex = accounts.firstIndex { $0.address == key }
+        let newDefaultIndex = accounts.firstIndex { $0.key == key }
         if newDefaultIndex == nil || currentDefaultIndex == nil {
             return
         }
-        accounts[currentDefaultIndex!].isDefault = false
-        accounts[newDefaultIndex!].isDefault = true
+        let keychain = Keychain(service: "network.o3.neo.wallet")
+        do {
+            //save pirivate key to keychain
+            try keychain
+                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                .set(pass, key: "ozoneActiveNep6Password")
+            accounts[currentDefaultIndex!].isDefault = false
+            accounts[newDefaultIndex!].isDefault = true
+        } catch _ {
+            return
+        }
     }
+    
+    static public func clearAllExceptDefault() {
+        let nep6 = getFromFileSystem()
+        nep6?.accounts.removeAll { $0.isDefault == false}
+        nep6?.writeToFileSystem()
+    }
+    
+    static public func getFromFileSystem() -> NEP6? {
+        let fileName = "O3Wallet"
+        let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
+        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
+        let jsonNep6 = try? Data(contentsOf: fileURL)
+        if jsonNep6 == nil {
+            return nil
+        }
+        let nep6 = try? JSONDecoder().decode(NEP6.self, from: jsonNep6!)
+        return nep6
+    }
+    
+    static public func getFromFileSystemAsData() -> Data {
+        let fileName = "O3Wallet"
+        let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
+        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
+        let jsonNep6 = try! Data(contentsOf: fileURL)
+        return jsonNep6
+    }
+    
+    public func writeToFileSystem() {
+        let nep6Data = try! JSONEncoder().encode(self)
+        let fileName = "O3Wallet"
+        let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
+        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
+        try! nep6Data.write(to: fileURL, options: .completeFileProtection)
+        CloudDataManager.sharedInstance.copyFileToCloud()
+        UserDefaultsManager.hasActivatedMultiWallet = true
+    }
+    
+    
 }

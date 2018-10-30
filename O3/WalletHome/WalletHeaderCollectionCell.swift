@@ -66,7 +66,7 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
                 walletMajorIcon.image = UIImage(named: "ic_all_wallet")
                 walletMinorIcon.isHidden = true
             } else {
-                walletHeaderLabel.text = (delegate as! HomeViewController).watchAddresses[index - 1].nickName
+                walletHeaderLabel.text = (delegate as! HomeViewController).watchAddresses[index - 1].label
                 rightButton.isHidden = false
                 leftButton.isHidden = false
                 percentChangeLabel.isHidden = false

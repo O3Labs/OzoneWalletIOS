@@ -50,13 +50,9 @@ class LoginToCurrentWalletViewController: UIViewController {
                 if key != nil {
                     account = Account(wif: key!)!
                 } else {
-                    let fileName = "O3Wallet"
-                    let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
-                    let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
-                    let jsonNep6 = try! Data(contentsOf: fileURL)
-                    let nep6 = try! JSONDecoder().decode(NEP6.self, from: jsonNep6)
+                    let nep6 = NEP6.getFromFileSystem()
                     var error: NSError?
-                    for accountLoop in nep6.accounts {
+                    for accountLoop in nep6!.accounts {
                         if accountLoop.isDefault {
                             account = Account(wif: NeoutilsNEP2Decrypt(accountLoop.key, nep6Pass, &error))!
                         }

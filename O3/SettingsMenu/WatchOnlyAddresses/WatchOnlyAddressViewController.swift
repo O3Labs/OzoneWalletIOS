@@ -15,14 +15,14 @@ class WatchOnlyAddressViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addWatchAddressDescription: UILabel!
 
-    var watchAddresses = [WatchAddress]()
+    var watchAddresses = [NEP6.Account]()
 
     func loadWatchAddresses() {
-        do {
+        /*do {
             watchAddresses = try UIApplication.appDelegate.persistentContainer.viewContext.fetch(WatchAddress.fetchRequest())
         } catch {
             return
-        }
+        }*/
     }
 
     func setThemedElements() {
@@ -60,7 +60,7 @@ class WatchOnlyAddressViewController: UIViewController, UITableViewDelegate, UIT
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "watchOnlyAddressTableViewCell") as? WatchOnlyAddressTableViewCell else {
                 fatalError("Undefined table view behavior")
             }
-            cell.data = WatchOnlyAddressTableViewCell.Data(addressName: watchAddresses[indexPath.row].nickName ?? "",
+            cell.data = WatchOnlyAddressTableViewCell.Data(addressName: watchAddresses[indexPath.row].label ?? "",
                                                            address: watchAddresses[indexPath.row].address ?? "")
             cell.selectionStyle = .none
             return cell
@@ -90,7 +90,7 @@ class WatchOnlyAddressViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     func tappedRemoveAddress(_ index: Int) {
-        OzoneAlert.confirmDialog(message: SettingsStrings.deleteConfirmationPrompt, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
+        /*OzoneAlert.confirmDialog(message: SettingsStrings.deleteConfirmationPrompt, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
             let toDelete = self.watchAddresses[index]
             Channel.shared().unsubscribe(fromTopic: toDelete.address!) {}
             UIApplication.appDelegate.persistentContainer.viewContext.delete(self.watchAddresses[index])
@@ -98,7 +98,7 @@ class WatchOnlyAddressViewController: UIViewController, UITableViewDelegate, UIT
             self.loadWatchAddresses()
             NotificationCenter.default.post(name: Notification.Name("UpdatedWatchOnlyAddress"), object: nil)
             self.tableView.reloadData()
-        }
+        }*/
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -132,14 +132,14 @@ class WatchOnlyAddressViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     func tappedEditWatchOnlyAddress(_ index: Int) {
-     let toUpdate = self.watchAddresses[index]
+    /* let toUpdate = self.watchAddresses[index]
         let alert = UIAlertController(title: SettingsStrings.editNameString, message: nil, preferredStyle: .alert)
         alert.addTextField { (textfield) in
-            textfield.text = toUpdate.nickName
+            textfield.text = toUpdate.label
         }
         let save = UIAlertAction(title: SettingsStrings.saveString, style: .default) { _ in
             let textfield = alert.textFields?.first
-            toUpdate.nickName = textfield?.text?.trim()
+            toUpdate.label = textfield?.text?.trim()
             try? UIApplication.appDelegate.persistentContainer.viewContext.save()
             Answers.logCustomEvent(withName: "Watch Address Added",
                                    customAttributes: ["Total Watch Addresses": self.watchAddresses.count + 1])
@@ -150,7 +150,7 @@ class WatchOnlyAddressViewController: UIViewController, UITableViewDelegate, UIT
 
         }
         alert.addAction(cancel)
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)*/
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

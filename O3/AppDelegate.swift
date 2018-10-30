@@ -139,14 +139,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let walletExists =  UserDefaultsManager.o3WalletAddress != nil
         if walletExists {
             guard let login = UIStoryboard(name: "Onboarding", bundle: nil)
-                .instantiateViewController(withIdentifier: "LoginToCurrentWalletViewController") as? LoginToCurrentWalletViewController else {
+                .instantiateViewController(withIdentifier: "LoginToNep6ViewController") as? LoginToNep6ViewController else {
                     return false
             }
 
             if let window = self.window {
-                login.delegate = self
+               // login.delegate = self
                 //pass the launchOptions to the login screen
-                login.launchOptions = launchOptions
+               // login.launchOptions = launchOptions
                 window.rootViewController = login
                 return false
             }

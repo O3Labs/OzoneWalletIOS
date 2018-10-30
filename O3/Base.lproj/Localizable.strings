@@ -49,55 +49,55 @@
 "MARKETPLACE_title" = "Marketplace";
 
 /* additional info about what will happen when multiwallet is activated */
-"MULTIWALLET_activate_info" = "This password will be used to encrypt your private key"; /* NEW */
+"MULTIWALLET_activate_info" = "This password will be used to encrypt your private key";
 
 /* subtitle for activating multiwallet */
-"MULTIWALLET_activate_multiwallet_subtitle" = "Just enter a strong password that you won't forget and we will generate a new key for you"; /* NEW */
+"MULTIWALLET_activate_multiwallet_subtitle" = "Just enter a strong password that you won't forget and we will generate a new key for you";
 
 /* title for activating multiwallet page */
-"MULTIWALLET_activate_multiwallet_title" = "To allow multi wallet functionality in O3, we need to update your private key to an encrypted key."; /* NEW */
+"MULTIWALLET_activate_multiwallet_title" = "To allow multi wallet functionality in O3, we need to update your private key to an encrypted key.";
 
 /* Description text when adding more wallets to your multi wallet */
-"MULTIWALLET_add_wallet_description" = "Enter a NEO/Ontology encrypted key, private key or address to add wallet or watch address."; /* NEW */
+"MULTIWALLET_add_wallet_description" = "Enter a NEO/Ontology encrypted key, private key or address to add wallet or watch address.";
 
 /* Button title to backup up encrypted key and nep6 file */
-"MULTIWALLET_backup_encrypted_key" = "Back it up"; /* NEW */
+"MULTIWALLET_backup_encrypted_key" = "Back it up";
 
 /* text for continue action */
-"MULTIWALLET_continue" = "Next"; /* NEW */
+"MULTIWALLET_continue" = "Next";
 
 /* Description when an encrypted key is detected in multiwallet add */
-"MULTIWALLET_encrypted_key_detected" = "Encrypted key detected\n\nPlease enter your password to continue"; /* NEW */
+"MULTIWALLET_encrypted_key_detected" = "Encrypted key detected\n\nPlease enter your password to continue";
 
 /* Hint for entering encrypted key password in multiwallet setup */
-"MULTIWALLET_encrypted_password_hint" = "Encrypted key password"; /* NEW */
+"MULTIWALLET_encrypted_password_hint" = "Encrypted key password";
 
 /* error alert after failing to decrrypt the encrypted key */
-"MULTIWALLET_failed_to_decrypt" = "Failed to decrypt key, please double check it"; /* NEW */
+"MULTIWALLET_failed_to_decrypt" = "Failed to decrypt key, please double check it";
 
 /* button title after finished multiwallet creation */
-"MULTIWALLET_finished" = "Done"; /* NEW */
+"MULTIWALLET_finished" = "Done";
 
 /* Button title to generate an encrypted key when activating multiwallet */
-"MULTIWALLET_generate_encrypted_key" = "Generate Encrypted Key"; /* NEW */
+"MULTIWALLET_generate_encrypted_key" = "Generate Encrypted Key";
 
 /* description text after a multi wallet has been generated */
-"MULTIWALLET_generated_decription" = "All done. Here is your new encrypted key! Don't forget your password or else it won't work"; /* NEW */
+"MULTIWALLET_generated_decription" = "All done. Here is your new encrypted key! Don't forget your password or else it won't work";
 
 /* error text when they enter text that can't be parsed as a key or address */
-"MULTIWALLET_invalid_wallet_entry" = "That key or address is invalid, please double check it"; /* NEW */
+"MULTIWALLET_invalid_wallet_entry" = "That key or address is invalid, please double check it";
 
 /* Input hint for when making password to generate encrypted ket */
-"MULTIWALLET_password_hint" = "Password"; /* NEW */
+"MULTIWALLET_password_hint" = "Password";
 
 /* Input hint for when verifying password to generate encrypted key */
-"MULTIWALLET_password_verify_hint" = "Verify Password"; /* NEW */
+"MULTIWALLET_password_verify_hint" = "Verify Password";
 
 /* description of adding a name to a wallet title */
-"MULTIWALLET_set_wallet_title" = "Give this wallet a name"; /* NEW */
+"MULTIWALLET_set_wallet_title" = "Give this wallet a name";
 
 /* A description to display after a watch address has been successfully added */
-"MULTIWALLET_watch_address_added" = "A watch address has been added. You can unlock this address at ay time via settings > manage wallet and entering a private or encrypted key"; /* NEW */
+"MULTIWALLET_watch_address_added" = "A watch address has been added. You can unlock this address at ay time via settings > manage wallet and entering a private or encrypted key";
 
 /* Title of the news feed page */
 "NEWSFEED_News_Title" = "News Feed";
@@ -357,8 +357,17 @@
 /* Title for wallet generated popup */
 "ONBOARDING_Wallet_Generated" = "Wallet generated!";
 
+/* Title to select a wall to login with */
+"ONBOARDING_wallet_select" = "Please select a wallet to log in with:"; /* NEW */
+
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "Welcome!";
+
+/* Subtitle for welcome back authentication */
+"ONBOARDING_welcome_back_subtitle" = "Your gateway to the smart economy"; /* NEW */
+
+/* Title for welcome back authentication */
+"ONBOARDING_welcome_back_title" = "Welcome back to O3"; /* NEW */
 
 /* Action button to add watch address */
 "PORTFOLIO_Add_Watch_Address" = "Add Watch Address";

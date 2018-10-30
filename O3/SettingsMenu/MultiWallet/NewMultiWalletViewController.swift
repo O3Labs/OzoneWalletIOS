@@ -32,12 +32,8 @@ class NewMultiWalletViewController: UIViewController, MFMailComposeViewControlle
             }
             return
         }
-        
-        let fileName = "O3Wallet"
-        let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
-        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
-        let jsonNep6 = try! Data(contentsOf: fileURL)
-        let nep6 = try! JSONDecoder().decode(NEP6.self, from: jsonNep6)
+    
+        let nep6 = NEP6.getFromFileSystem()!
         var nep2String = ""
         for wallet in nep6.accounts {
             if wallet.isDefault {
@@ -53,7 +49,7 @@ class NewMultiWalletViewController: UIViewController, MFMailComposeViewControlle
         composeVC.setSubject(OnboardingStrings.emailSubject)
         composeVC.setMessageBody(String.localizedStringWithFormat(String(OnboardingStrings.emailBody), nep2String), isHTML: false)
         
-        composeVC.addAttachmentData(jsonNep6, mimeType: "application/json", fileName: "O3Wallet.json")
+        composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
         composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")
         
         // Present the view controller modally.

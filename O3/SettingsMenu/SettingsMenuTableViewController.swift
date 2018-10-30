@@ -173,18 +173,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     
     @objc func enableMultiWallet() {
         self.performSegue(withIdentifier: "segueToAddItemToMultiWallet", sender: nil)
-        //self.performSegue(withIdentifier: "segueToMultiWalletActivation", sender: nil)
-        /*let newAccount = NEP6.Account(address: "AKoT55PSEWT3fGA9EkKMTGsr7iqGTRZmim",
-                                      label: "Test Account", isDefault: true, lock: false,
-                                      key: "6PYKJWPP9ijUpyaW71p1gsQX6AKuB6goMDbphuqvECxfiQoq3hoxSYKCkV")
-        let nep6 = NEP6(name: "Test Wallet", version: "1.0", accounts: [newAccount])
-        let nep6Data = try! JSONEncoder().encode(nep6)
-    
-        let  fileName = "O3Wallet"
-        let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL 
-        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
-        try! nep6Data.write(to: fileURL)
-        CloudDataManager.sharedInstance.copyFileToCloud()*/
     }
 
     override func viewWillAppear(_ animated: Bool) {

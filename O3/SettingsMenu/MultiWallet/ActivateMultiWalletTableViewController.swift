@@ -87,13 +87,7 @@ class ActivateMultiWalletTableViewController: UITableViewController {
                                       label: "My O3 Wallet", isDefault: true, lock: false,
                                       key: nep2!.encryptedKey())
         let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
-        let nep6Data = try! JSONEncoder().encode(nep6)
-        let fileName = "O3Wallet"
-        let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
-        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
-        try! nep6Data.write(to: fileURL, options: .completeFileProtection)
-        CloudDataManager.sharedInstance.copyFileToCloud()
-        UserDefaultsManager.hasActivatedMultiWallet = true
+        nep6.writeToFileSystem()
         let keychain = Keychain(service: "network.o3.neo.wallet")
        do {
             //save pirivate key to keychain

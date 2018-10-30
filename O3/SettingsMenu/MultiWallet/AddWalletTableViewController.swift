@@ -86,6 +86,14 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
         if let dest = segue.destination as? QRScannerController {
             dest.delegate = self
         }
+        
+        if let dest = segue.destination as? AddNameWatchAddressTableViewController {
+            dest.address = walletInputField.text!
+        }
+        
+        if let dest = segue.destination as? EncryptedKeyAddedToMultiWalletTableViewController {
+            dest.encryptedKey = walletInputField.text!
+        }
     }
     
     func setLocalizedStrings() {

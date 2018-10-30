@@ -41,7 +41,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var homeviewModel: HomeViewModel!
     var selectedPrice: PriceData?
     var displayedAssets = [TransferableAsset]()
-    var watchAddresses = [WatchAddress]()
+    var watchAddresses = [NEP6.Account]()
 
     func addThemedElements() {
         applyNavBarTheme()
@@ -56,13 +56,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
-    func loadWatchAddresses() -> [WatchAddress] {
-        do {
-            let watchAddresses: [WatchAddress] = try
-                UIApplication.appDelegate.persistentContainer.viewContext.fetch(WatchAddress.fetchRequest())
-            return watchAddresses
-        } catch {
+    //transition period for multi wallet to use the old watch address feature
+    //TODO: After multi wallet activation restore the old watcha ddreses
+    func loadWatchAddresses() -> [NEP6.Account] {
+        if !UserDefaultsManager.hasActivatedMultiWallet {
             return []
+        } else {
+            let nep6Accounts = NEP6.getFromFileSystem()!.accounts
+            var watchAddrs = [NEP6.Account]()
+            for account in nep6Accounts {
+                if account.isDefault {
+                    continue
+                }
+                watchAddrs.append(account)
+            }
+            return watchAddrs
         }
     }
     
