@@ -307,9 +307,6 @@
 		75D5BFBC1F6D0EC400E64855 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D5BFBB1F6D0EC400E64855 /* Global.swift */; };
 		75D5BFC21F6D196200E64855 /* OnboardingAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75D5BFC11F6D196200E64855 /* OnboardingAssets.xcassets */; };
 		75D5BFC41F6D1A4F00E64855 /* AppAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75D5BFC31F6D1A4F00E64855 /* AppAssets.xcassets */; };
-		75DA59011F7A6C7D0065FE0D /* WatchOnlyAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DA59001F7A6C7D0065FE0D /* WatchOnlyAddressViewController.swift */; };
-		75DA59031F7A6CEF0065FE0D /* WatchOnlyAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DA59021F7A6CEF0065FE0D /* WatchOnlyAddressTableViewCell.swift */; };
-		75DA59051F7A6CFB0065FE0D /* AddAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DA59041F7A6CFB0065FE0D /* AddAddressTableViewCell.swift */; };
 		75DA59091F7A815E0065FE0D /* OzoneAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DA59081F7A815E0065FE0D /* OzoneAlert.swift */; };
 		75DA590B1F7A83940065FE0D /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DA590A1F7A83940065FE0D /* UIViewController.swift */; };
 		75E14E541F7D27F900BEAE22 /* O3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75E14E521F7D27F900BEAE22 /* O3.xcdatamodeld */; };
@@ -650,9 +647,6 @@
 		75D5BFBB1F6D0EC400E64855 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		75D5BFC11F6D196200E64855 /* OnboardingAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = OnboardingAssets.xcassets; sourceTree = "<group>"; };
 		75D5BFC31F6D1A4F00E64855 /* AppAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppAssets.xcassets; sourceTree = "<group>"; };
-		75DA59001F7A6C7D0065FE0D /* WatchOnlyAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchOnlyAddressViewController.swift; sourceTree = "<group>"; };
-		75DA59021F7A6CEF0065FE0D /* WatchOnlyAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchOnlyAddressTableViewCell.swift; sourceTree = "<group>"; };
-		75DA59041F7A6CFB0065FE0D /* AddAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressTableViewCell.swift; sourceTree = "<group>"; };
 		75DA59081F7A815E0065FE0D /* OzoneAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OzoneAlert.swift; sourceTree = "<group>"; };
 		75DA590A1F7A83940065FE0D /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		75E14E531F7D27F900BEAE22 /* O3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = O3.xcdatamodel; sourceTree = "<group>"; };
@@ -1431,23 +1425,12 @@
 				35C370AA21815D4F0023AABC /* MultiWallet */,
 				35AD2B71209317950024A900 /* SettingsStrings.swift */,
 				350100F020441B34000F6648 /* Currency */,
-				75DA590C1F7A86EA0065FE0D /* WatchOnlyAddresses */,
 				7501C0261F7BBFF400B4B2FF /* AddressEntryTableViewController.swift */,
 				7501E8421F79536300123EA8 /* SettingsMenuTableViewController.swift */,
 				7520068B1F7F8AC400D19B5F /* PrivateKeyViewController.swift */,
 				35E5F60B20283AA600D65BEA /* AddressBookEntryTableViewCell.swift */,
 			);
 			path = SettingsMenu;
-			sourceTree = "<group>";
-		};
-		75DA590C1F7A86EA0065FE0D /* WatchOnlyAddresses */ = {
-			isa = PBXGroup;
-			children = (
-				75DA59001F7A6C7D0065FE0D /* WatchOnlyAddressViewController.swift */,
-				75DA59021F7A6CEF0065FE0D /* WatchOnlyAddressTableViewCell.swift */,
-				75DA59041F7A6CFB0065FE0D /* AddAddressTableViewCell.swift */,
-			);
-			path = WatchOnlyAddresses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1660,7 +1643,6 @@
 				3557BA9C20AA9C870034937C /* Account.swift in Sources */,
 				3557BAC520AA9D0B0034937C /* NeoScanTransactionHistory.swift in Sources */,
 				755D8F561F665F8200058434 /* HomeViewController.swift in Sources */,
-				75DA59051F7A6CFB0065FE0D /* AddAddressTableViewCell.swift in Sources */,
 				6E64C0D12159CE19002B1366 /* Deposit.swift in Sources */,
 				752006901F7FD0FF00D19B5F /* AddressSelectTableViewController.swift in Sources */,
 				35AF806520CA543F00E48457 /* WalletGeneratedViewController.swift in Sources */,
@@ -1798,7 +1780,6 @@
 				75BEB2621F89FB2A00DC20E9 /* O3HUD.swift in Sources */,
 				6E7C92741F7A5FBA00F8D7AA /* UINavigationController.swift in Sources */,
 				6E43769821460CB90091367A /* String+Util.swift in Sources */,
-				75DA59031F7A6CEF0065FE0D /* WatchOnlyAddressTableViewCell.swift in Sources */,
 				6E43769B21460CB90091367A /* Dictionary+SWTHEncoding.swift in Sources */,
 				6EC48384216334F4002CBF76 /* Dapp.swift in Sources */,
 				353E799E20C690A200B9AB1F /* TutorialCardCollectionViewCell.swift in Sources */,
@@ -1808,7 +1789,6 @@
 				35E5F6102029412900D65BEA /* PortfolioAssetCell.swift in Sources */,
 				6E72436420D0F0A5007D1201 /* LocalizableUILabel.swift in Sources */,
 				35CE4A362176CD1400F460ED /* SendWhatTableViewController.swift in Sources */,
-				75DA59011F7A6C7D0065FE0D /* WatchOnlyAddressViewController.swift in Sources */,
 				35E5F6122029477400D65BEA /* HomeViewModel.swift in Sources */,
 				6E4E6F9A20147ABB001A5844 /* AccentButton.swift in Sources */,
 				6E64C0D8215A0E7D002B1366 /* MainToolbarTableViewCell.swift in Sources */,
