@@ -60,7 +60,7 @@ class DAppBrowserViewController: UIViewController {
     }
     
     @objc private func loadOpenOrders() {
-        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open) { result in
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.wallet!.address, status: SwitcheoOrderStatus.open) { result in
             switch result{
             case .failure(let error):
                 #if DEBUG
@@ -78,7 +78,7 @@ class DAppBrowserViewController: UIViewController {
     private var tradableAsset: TradableAsset?
     private var tradingAccount: TradingAccount?
     @objc private func loadTradingAccountBalances() {
-        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.account!.address) { result in
+        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.wallet!.address) { result in
             switch result {
             case .failure(let error):
                 print(error)
@@ -159,7 +159,7 @@ class DAppBrowserViewController: UIViewController {
         self.hidesBottomBarWhenPushed = true
         self.navigationController?.hideHairline()
         
-        if Authenticated.account == nil {
+        if Authenticated.wallet == nil {
             return
         }
         
@@ -343,8 +343,8 @@ extension DAppBrowserViewController {
 extension DAppBrowserViewController: WKScriptMessageHandler {
     
     func currentAccount() -> [String: Any] {
-        return ["address": Authenticated.account!.address,
-                "publicKey": Authenticated.account!.publicKeyString]
+        return ["address": Authenticated.wallet!.address,
+                "publicKey": Authenticated.wallet!.publicKeyString]
     }
 
     func parseAndAnalyzeTransaction(unsignedHex: String) {
@@ -379,7 +379,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
         }) {
             let data = unsignedRawTransaction.dataWithHexString()
             var error: NSError?
-            let signed = NeoutilsSign(data, Authenticated.account!.privateKey.fullHexString, &error)
+            let signed = NeoutilsSign(data, Authenticated.wallet!.privateKey.fullHexString, &error)
             if error != nil {
                 self.callback(command: "requestToSign", data: nil, errorMessage: error?.localizedDescription, withSession: true)
                 return
@@ -484,7 +484,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
     }
     
     func getBalances() {
-        O3APIClient(network: Network.main).getAccountState(address: Authenticated.account!.address) { result in
+        O3APIClient(network: Network.main).getAccountState(address: Authenticated.wallet!.address) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .failure:

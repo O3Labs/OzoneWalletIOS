@@ -59,6 +59,14 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         UIImageWriteToSavedPhotosAlbum(qrWithBranding, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
+    func addWalletChangeObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletInfo(_:)), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
+    }
+    
     func share() {
         let shareURL = URL(string: "https://o3.network/")
         let qrWithBranding = UIImage.imageWithView(view: self.qrView)
@@ -75,7 +83,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         }
         alert.addAction(saveQR)
         let copyAddress = UIAlertAction(title: AccountStrings.copyAddressAction, style: .default) { _ in
-            UIPasteboard.general.string = Authenticated.account?.address
+            UIPasteboard.general.string = Authenticated.wallet?.address
             //maybe need some Toast style to notify that it's copied
         }
         alert.addAction(copyAddress)
@@ -137,7 +145,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     func setNNSNames() {
-        O3APIClient(network: AppState.network).reverseDomainLookup(address: (Authenticated.account?.address)!) { result in
+        O3APIClient(network: AppState.network).reverseDomainLookup(address: (Authenticated.wallet?.address)!) { result in
             switch result {
             case .failure (let error):
                 print(error)
@@ -171,25 +179,29 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
             }
         }
     }
-
-    override func viewDidLoad() {
-        setThemedElements()
-        setLocalizedStrings()
-        applyNavBarTheme()
-        super.viewDidLoad()
+    
+    @objc func updateWalletInfo(_ sender: Any?) {
         setNNSNames()
-        checkCongestion()
-        
+        qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: qrView.bounds.size.width, height: qrView.bounds.size.height)
+        addressLabel.text = (Authenticated.wallet?.address)!
         if let nep6 = NEP6.getFromFileSystem() {
             let defaultIndex = nep6.accounts.index { $0.isDefault == true }
             walletNameLabel.text = nep6.accounts[defaultIndex!].label
         } else {
             walletNameLabel.text = "My O3 Wallet"
         }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setThemedElements()
+        setLocalizedStrings()
+        applyNavBarTheme()
+        addWalletChangeObserver()
+        updateWalletInfo(nil)
+        checkCongestion()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
-        qrView.image = UIImage.init(qrData: (Authenticated.account?.address)!, width: qrView.bounds.size.width, height: qrView.bounds.size.height)
-        addressLabel.text = (Authenticated.account?.address)!
         self.headerView.addGestureRecognizer(tap)
         contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
         supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
@@ -283,19 +295,14 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.dismiss(animated: true, completion: nil)
     }
 
-    func logoutTapped(_ sender: Any) {
-
-    }
-
     func performLogoutCleanup() {
         O3Cache.clear()
         SwiftTheme.ThemeManager.setTheme(index: 0)
         UserDefaultsManager.themeIndex = 0
-        UserDefaultsManager.hasActivatedMultiWallet = false
         try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
         try? Keychain(service: "network.o3.neo.wallet").remove("ozoneActiveNep6Password")
         NEP6.removeFromDevice()
-        Authenticated.account = nil
+        Authenticated.wallet = nil
         UserDefaultsManager.o3WalletAddress = nil
         NotificationCenter.default.post(name: Notification.Name("loggedOut"), object: nil)
         self.dismiss(animated: false)
@@ -312,7 +319,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     //properly implement cell did tap
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 6 {
+        if indexPath.row == 5 {
             OzoneAlert.confirmDialog(message: SettingsStrings.logoutWarning, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: SettingsStrings.logout, didCancel: {
 
             }, didConfirm: {

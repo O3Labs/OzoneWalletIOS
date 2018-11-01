@@ -14,9 +14,9 @@ import Security
 public class SwitcheoAccount{
     
     var switcheo: Switcheo!
-    var account: Account!
+    var account: Wallet!
     
-    init(network: Switcheo.Net, account: Account) {
+    init(network: Switcheo.Net, account: Wallet) {
         self.switcheo = Switcheo(net: network)
         self.account = account
     }

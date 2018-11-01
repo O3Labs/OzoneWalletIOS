@@ -48,12 +48,12 @@ class LoginTableViewController: UITableViewController, QRScanDelegate {
     }
 
     @IBAction func loginButtonTapped(_ sender: Any) {
-        guard let account = Account(wif: self.wifTextField.text.trim()) else {
+        guard let account = Wallet(wif: self.wifTextField.text.trim()) else {
             return
         }
         let keychain = Keychain(service: "network.o3.neo.wallet")
 
-        Authenticated.account = account
+        Authenticated.wallet = account
 
         //subscribe to a topic which is an address to receive push notification
         //enable push notifcation. maybe put this in somewhere else?

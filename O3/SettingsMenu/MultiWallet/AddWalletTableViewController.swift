@@ -55,7 +55,7 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     }
     
     func isInputWif() -> Bool {
-        if let account = Account(wif: walletInputField.text!) {
+        if let account = Wallet(wif: walletInputField.text!) {
             return true
         }
         return false

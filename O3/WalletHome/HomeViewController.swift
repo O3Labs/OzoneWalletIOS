@@ -59,7 +59,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     //transition period for multi wallet to use the old watch address feature
     //TODO: After multi wallet activation restore the old watcha ddreses
     func loadWatchAddresses() -> [NEP6.Account] {
-        if !UserDefaultsManager.hasActivatedMultiWallet {
+        if NEP6.getFromFileSystem() == nil {
             return []
         } else {
             let nep6Accounts = NEP6.getFromFileSystem()!.accounts
@@ -133,8 +133,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         selectedPrice = self.portfolio?.data.first
         DispatchQueue.main.async { self.walletHeaderCollectionView.reloadData() }
     }
-
+    
     func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.resetPage(_:)), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("ChangedNetwork"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("ChangedReferenceCurrency"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateWatchAddresses), name: Notification.Name("UpdatedWatchOnlyAddress"), object: nil)
@@ -148,6 +149,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NotificationCenter.default.removeObserver(self, name: Notification.Name("UpdatedWatchOnlyAddress"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name("ChangedReferenceCurrency"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
     }
 
     deinit {
@@ -158,6 +160,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         activatedLine.clipsToBounds = false
         activatedLine.layer.cornerRadius = 3
         activatedLine.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
+    
+    @objc func resetPage(_ sender: Any?) {
+        homeviewModel = HomeViewModel(delegate: self)
+        walletHeaderCollectionView.reloadData()
     }
 
     override func viewDidLoad() {
@@ -171,10 +178,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         activatedLineCenterXAnchor?.isActive = true
         homeviewModel = HomeViewModel(delegate: self)
 
-        if UserDefaults.standard.string(forKey: "subscribedAddress") != Authenticated.account?.address {
+        if UserDefaults.standard.string(forKey: "subscribedAddress") != Authenticated.wallet?.address {
             Channel.shared().unsubscribe(fromTopic: "*") {
-                Channel.shared().subscribe(toTopic: (Authenticated.account?.address)!)
-                UserDefaults.standard.set(Authenticated.account?.address, forKey: "subscribedAddress")
+                Channel.shared().subscribe(toTopic: (Authenticated.wallet?.address)!)
+                UserDefaults.standard.set(Authenticated.wallet?.address, forKey: "subscribedAddress")
                 UserDefaults.standard.synchronize()
             }
         }
@@ -287,7 +294,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if asset.assetType == TransferableAsset.AssetType.ontologyAsset {
             chain = "ont"
         }
-        let url = URL(string: String(format: "https://public.o3.network/%@/assets/%@?address=%@", chain, asset.symbol, Authenticated.account!.address))
+        let url = URL(string: String(format: "https://public.o3.network/%@/assets/%@?address=%@", chain, asset.symbol, Authenticated.wallet!.address))
         DispatchQueue.main.async {
             Controller().openDappBrowser(url: url!, modal: true, assetSymbol: asset.symbol)
         }

@@ -176,7 +176,7 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
         guard let dest = segue.destination as? PrivateKeyCreationViewController else {
             return
         }
-        dest.wif = (Account()?.wif)!
+        dest.wif = (Wallet()?.wif)!
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {

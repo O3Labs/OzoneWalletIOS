@@ -18,7 +18,7 @@ class OrdersTableViewController: UITableViewController {
         DispatchQueue.main.async {
             HUD.show(.progress)
         }
-        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: status) { result in
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.wallet!.address, status: status) { result in
             switch result{
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -151,7 +151,7 @@ extension OrdersTableViewController: OrderViewModelDelegate {
             DispatchQueue.main.async {
                 HUD.show(.progress)
             }
-            let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.account!)
+            let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.wallet!)
             switcheoAccount.cancellation(orderID: v.orderID) { result in
                 DispatchQueue.main.async {
                     HUD.hide()

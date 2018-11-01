@@ -91,7 +91,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
     
     
     func loadTransactionHistory(appendPage: Bool, pageNo: Int) {
-        O3APIClient(network: AppState.network).getTxHistory(address: Authenticated.account!.address, pageIndex: pageNo) { result in
+        O3APIClient(network: AppState.network).getTxHistory(address: Authenticated.wallet!.address, pageIndex: pageNo) { result in
             switch result {
             case .failure:
                 DispatchQueue.main.async {
@@ -234,7 +234,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         alert.addAction(viewDetail)
         
         let addressToCheck: String?
-        if tx.to == Authenticated.account!.address {
+        if tx.to == Authenticated.wallet!.address {
             addressToCheck = tx.from
         } else {
             addressToCheck = tx.to
@@ -242,7 +242,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         
         var exists = getContacts().contains(where: {$0.address == addressToCheck})
         //if sending it to this account we don't offer add to contacts option
-        if tx.to == Authenticated.account!.address {
+        if tx.to == Authenticated.wallet!.address {
             exists = true
         }
         

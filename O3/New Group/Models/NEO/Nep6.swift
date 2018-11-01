@@ -183,12 +183,12 @@ public class NEP6: Codable {
         let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
         let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
         let _ = try? FileManager.default.removeItem(at: fileURL)
-        UserDefaultsManager.hasActivatedMultiWallet = true
     }
     
-    public func makeNewDefault(address: String, pass: String) {
-        let currentDefaultIndex = accounts.firstIndex { $0.isDefault }
-        let newDefaultIndex = accounts.firstIndex { $0.address == address }
+    static public func makeNewDefault(address: String, pass: String) {
+        let nep6 = getFromFileSystem()!
+        let currentDefaultIndex = nep6.accounts.firstIndex { $0.isDefault }
+        let newDefaultIndex = nep6.accounts.firstIndex { $0.address == address }
         if newDefaultIndex == nil || currentDefaultIndex == nil {
             return
         }
@@ -198,16 +198,21 @@ public class NEP6: Codable {
             try keychain
                 .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                 .set(pass, key: "ozoneActiveNep6Password")
-            accounts[currentDefaultIndex!].isDefault = false
-            accounts[newDefaultIndex!].isDefault = true
+            nep6.accounts[currentDefaultIndex!].isDefault = false
+            nep6.accounts[newDefaultIndex!].isDefault = true
+            nep6.writeToFileSystem()
+            var error: NSError?
+            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[newDefaultIndex!].key!, pass, &error))
+            NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
         } catch _ {
             return
         }
     }
     
-    public func makeNewDefault(name: String, pass: String) {
-        let currentDefaultIndex = accounts.firstIndex { $0.isDefault }
-        let newDefaultIndex = accounts.firstIndex { $0.label == name }
+    static public func makeNewDefault(name: String, pass: String) {
+        let nep6 = getFromFileSystem()!
+        let currentDefaultIndex = nep6.accounts.firstIndex { $0.isDefault }
+        let newDefaultIndex = nep6.accounts.firstIndex { $0.label == name }
         if newDefaultIndex == nil || currentDefaultIndex == nil {
             return
         }
@@ -217,16 +222,26 @@ public class NEP6: Codable {
             try keychain
                 .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                 .set(pass, key: "ozoneActiveNep6Password")
-            accounts[currentDefaultIndex!].isDefault = false
-            accounts[newDefaultIndex!].isDefault = true
+            nep6.accounts[currentDefaultIndex!].isDefault = false
+            nep6.accounts[newDefaultIndex!].isDefault = true
+            nep6.writeToFileSystem()
+            var error: NSError?
+            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[newDefaultIndex!].key!, pass, &error))
+            NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
         } catch _ {
             return
         }
     }
     
-    public func makeNewDefault(key: String, pass: String) {
-        let currentDefaultIndex = accounts.firstIndex { $0.isDefault }
-        let newDefaultIndex = accounts.firstIndex { $0.key == key }
+    public func editName(address: String, newName: String) {
+        let currentDefaultIndex = accounts.firstIndex { $0.address == address }
+        accounts[currentDefaultIndex!].label = newName
+    }
+    
+    static public func makeNewDefault(key: String, pass: String) {
+        let nep6 = getFromFileSystem()!
+        let currentDefaultIndex = nep6.accounts.firstIndex { $0.isDefault }
+        let newDefaultIndex = nep6.accounts.firstIndex { $0.key == key }
         if newDefaultIndex == nil || currentDefaultIndex == nil {
             return
         }
@@ -236,8 +251,12 @@ public class NEP6: Codable {
             try keychain
                 .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                 .set(pass, key: "ozoneActiveNep6Password")
-            accounts[currentDefaultIndex!].isDefault = false
-            accounts[newDefaultIndex!].isDefault = true
+            nep6.accounts[currentDefaultIndex!].isDefault = false
+            nep6.accounts[newDefaultIndex!].isDefault = true
+            nep6.writeToFileSystem()
+            var error: NSError?
+            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[newDefaultIndex!].key!, pass, &error))
+            NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
         } catch _ {
             return
         }
@@ -247,6 +266,7 @@ public class NEP6: Codable {
         let nep6 = getFromFileSystem()
         nep6?.accounts.removeAll { $0.isDefault == false}
         nep6?.writeToFileSystem()
+        NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
     }
     
     static public func getFromFileSystem() -> NEP6? {
@@ -276,7 +296,7 @@ public class NEP6: Codable {
         let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
         try! nep6Data.write(to: fileURL, options: .completeFileProtection)
         CloudDataManager.sharedInstance.copyFileToCloud()
-        UserDefaultsManager.hasActivatedMultiWallet = true
+        NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
     }
     
     

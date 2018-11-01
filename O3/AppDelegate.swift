@@ -86,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return
         }
 
-        if Authenticated.account != nil {
+        if Authenticated.wallet != nil {
             parsePushLink(link: link)
         }
     }

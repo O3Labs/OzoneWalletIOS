@@ -46,4 +46,9 @@ struct MultiWalletStrings {
     static let deleteWatchAddress = NSLocalizedString("MULTIWALLET_delete_watch_addr", comment: "conforim title for when you want to delete your watch address")
     
     static let encryptedKey = NSLocalizedString("MULTIWALLET_encrypted_key", comment: "encrypted key title")
+    static let addKeyDescription = NSLocalizedString("MULTIWALLET_add_key_description", comment: "description for adding key to a watch address")
+    
+    static let editName = NSLocalizedString("MUTLIWALLET_edit_name", comment: "Title to edit name in multiwallet")
+    static let enterNewName = NSLocalizedString("MULTIWALLET_enter_new_name", comment: "Description when entering a new name")
+    static let myWalletPlaceholder = NSLocalizedString("MULTIWALLET_my_wallet_placeholder", comment: "placeholder for when entering a new name for wallet")
 }

@@ -10,7 +10,7 @@ import Foundation
 import Neoutils
 import Security
 
-public class Account {
+public class Wallet {
     public var wif: String
     public var publicKey: Data
     public var privateKey: Data

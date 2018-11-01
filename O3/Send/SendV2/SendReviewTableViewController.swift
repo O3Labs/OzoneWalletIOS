@@ -88,7 +88,7 @@ class SendReviewTableViewController: UITableViewController {
                     if self.feeEnabled {
                         fee = 0.0011
                     }
-                    Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes, fee: fee) { txid, _ in
+                    Authenticated.wallet?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes, fee: fee) { txid, _ in
                         O3HUD.stop {
                             if txid != nil {
                                 self.txId = txid!
@@ -100,7 +100,7 @@ class SendReviewTableViewController: UITableViewController {
                             }
                             //save to pending tx if it's completed
                             if self.transactionCompleted == true {
-                                self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.account?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
+                                self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
                             }
                             self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                         }
@@ -127,7 +127,7 @@ class SendReviewTableViewController: UITableViewController {
             return
         }
         
-        let wif = Authenticated.account?.wif
+        let wif = Authenticated.wallet?.wif
         var error: NSError?
         let endpoint = ONTNetworkMonitor.autoSelectBestNode(network: AppState.network)
         OntologyClient().getGasPrice { result in
@@ -142,7 +142,7 @@ class SendReviewTableViewController: UITableViewController {
                 DispatchQueue.main.async {
                     if txid != "" {
                         self.txId = txid!
-                        self.savePendingTransaction(blockchain: "ontology", txID: txid!, from: (Authenticated.account?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
+                        self.savePendingTransaction(blockchain: "ontology", txID: txid!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
                         self.transactionCompleted = true
                         self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                     } else {
@@ -172,7 +172,7 @@ class SendReviewTableViewController: UITableViewController {
                 if self.feeEnabled {
                  fee = 0.0011
                 }
-                Authenticated.account?.sendNep5Token(network: AppState.network, seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, decimals: self.selectedAsset!.decimals, amount: amount, toAddress: toAddress, fee: fee) { (completed, _ , txID) in
+                Authenticated.wallet?.sendNep5Token(network: AppState.network, seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, decimals: self.selectedAsset!.decimals, amount: amount, toAddress: toAddress, fee: fee) { (completed, _ , txID) in
                         O3HUD.stop {
                             self.transactionCompleted = completed ?? false
                             Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
@@ -180,7 +180,7 @@ class SendReviewTableViewController: UITableViewController {
                             self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                             if self.transactionCompleted == true {
                                 self.txId = txID!
-                                self.savePendingTransaction(blockchain: "neo", txID: txID!, from: (Authenticated.account?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
+                                self.savePendingTransaction(blockchain: "neo", txID: txID!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
                             }
                         }
                 }

@@ -10,11 +10,11 @@ import Foundation
 import UIKit
 
 struct Authenticated {
-    static var account: Account? {
+    static var wallet: Wallet? {
         didSet {
-            if account != nil {
+            if wallet != nil {
                 //store current address in user default
-                UserDefaultsManager.o3WalletAddress = account?.address
+                UserDefaultsManager.o3WalletAddress = wallet?.address
             }
         }
     }

@@ -43,7 +43,13 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
                     fatalError("Cell is missing type")
             }
             if index == 0 {
-                walletHeaderLabel.text = PortfolioStrings.portfolioHeaderO3Wallet
+                if let nep6 = NEP6.getFromFileSystem() {
+                    let defaultIndex = nep6.accounts.index { $0.isDefault == true }
+                    walletHeaderLabel.text = nep6.accounts[defaultIndex!].label
+                } else {
+                    walletHeaderLabel.text = "My O3 Wallet"
+                }
+                
                 leftButton.isHidden = true
                 rightButton.isHidden = false
                 percentChangeLabel.isHidden = false

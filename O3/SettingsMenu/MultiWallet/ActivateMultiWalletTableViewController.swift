@@ -82,8 +82,8 @@ class ActivateMultiWalletTableViewController: UITableViewController {
         }
         
         var error: NSError?
-        let nep2 = NeoutilsNEP2Encrypt(Authenticated.account!.wif, passwordInputField.text, &error)
-        let newAccount = NEP6.Account(address: Authenticated.account!.address,
+        let nep2 = NeoutilsNEP2Encrypt(Authenticated.wallet!.wif, passwordInputField.text, &error)
+        let newAccount = NEP6.Account(address: Authenticated.wallet!.address,
                                       label: "My O3 Wallet", isDefault: true, lock: false,
                                       key: nep2!.encryptedKey())
         let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])

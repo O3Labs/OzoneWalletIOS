@@ -142,16 +142,4 @@ class UserDefaultsManager {
             UserDefaults.standard.synchronize()
         }
     }
-    
-    private static let hasActivatedMultiWalletKey = "activatedMultiWalletKey"
-    static var hasActivatedMultiWallet: Bool {
-        get {
-            let boolValue = UserDefaults.standard.bool(forKey: hasActivatedMultiWalletKey)
-            return boolValue
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: hasActivatedMultiWalletKey)
-            UserDefaults.standard.synchronize()
-        }
-    }
 }

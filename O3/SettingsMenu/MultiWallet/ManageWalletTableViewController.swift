@@ -33,6 +33,9 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     @IBOutlet weak var contentView3: UIView!
     @IBOutlet weak var contentView4: UIView!
     
+    @IBOutlet weak var unlockWatchAddressDescription: UILabel!
+    @IBOutlet weak var unlockWatchAddressButton: ShadowedButton!
+    
     
     var isWatchOnly = false
     var account: NEP6.Account!
@@ -41,26 +44,69 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
     // swiftlint:enable weak_delegate
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setThemedElements()
-        setLocalizedStrings()
-        
+    
+    func addWalletChangeObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateAccount(_:)), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
+    }
+    
+    @objc func updateAccount(_ sender: Any?) {
+        let nep6 = NEP6.getFromFileSystem()!
+        let accountIndex: Int = nep6.accounts.firstIndex {$0.address == account.address}!
+        account = nep6.accounts[accountIndex]
+        setWalletDetails()
+    }
+    
+    func setWalletDetails() {
         if isWatchOnly {
             addKeyTableViewCell.isHidden = true
         }
+        
         addressLabel.text = account.address
         addressQrView.image = UIImage(qrData: account.address, width: addressQrView.frame.width, height: addressQrView.frame.height, qrLogoName: "ic_QRaddress")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismissTapped(_: )))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_edit"), style: .plain, target: self, action: #selector(editNameTapped(_: )))
         navigationItem.leftBarButtonItem?.theme_tintColor = O3Theme.primaryColorPicker
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_edit"), style: .plain, target: self, action: #selector(editNameTapped(_: )))
         navigationItem.rightBarButtonItem?.theme_tintColor = O3Theme.primaryColorPicker
-        applyNavBarTheme()
         setEncryptedKey()
+        self.title = account.label
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addWalletChangeObserver()
+        setThemedElements()
+        setLocalizedStrings()
+        setWalletDetails()
+        applyNavBarTheme()
+        
     }
     
     @objc func editNameTapped(_ sender: Any) {
+        let alertController = UIAlertController(title: MultiWalletStrings.editName, message: MultiWalletStrings.enterNewName, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
+            let inputNewName = alertController.textFields?[0].text!
+            let nep6 = NEP6.getFromFileSystem()!
+            nep6.editName(address: self.account.address, newName: inputNewName!)
+            nep6.writeToFileSystem()
+        }
         
+        let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = MultiWalletStrings.myWalletPlaceholder
+        }
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
+    }
+    
+    @IBAction func unlockWatchAddressTapped(_ sender: Any) {
+        self.performSegue(withIdentifier: "segueToConvertWallet", sender: nil)
     }
     
     @objc func dismissTapped(_ sender: Any) {
@@ -72,7 +118,14 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         if account.key != nil {
             encryptedKeyQrView.image = UIImage(qrData: account.address, width: encryptedKeyQrView.frame.width, height: encryptedKeyQrView.frame.height, qrLogoName: "ic_QRencryptedKey")
             encryptedKeyLabel.text = account.key!
+            unlockWatchAddressButton.isHidden = true
+            unlockWatchAddressDescription.isHidden = true
+            encryptedKeyQrView.isHidden = false
+            encryptedKeyLabel.isHidden = false
+            encryptedTitleLabel.isHidden = false
         } else {
+            unlockWatchAddressButton.isHidden = false
+            unlockWatchAddressDescription.isHidden = false
             encryptedKeyQrView.isHidden = true
             encryptedKeyLabel.isHidden = true
             encryptedTitleLabel.isHidden = true
@@ -123,16 +176,27 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     }
     
     func deleteEncryptedKeyVerify() {
-        let alertController = UIAlertController(title: "Make a password", message: "some message", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
-            let inputPass = alertController.textFields?[0].text!
-            var error: NSError?
-            let decrypted =  NeoutilsNEP2Decrypt(self.account.key!, inputPass, &error)
-    
-            if error == nil {
+        OzoneAlert.confirmDialog(MultiWalletStrings.deleteEncryptedConfirm, message: MultiWalletStrings.deleteWatchAddress, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
                 let nep6 = NEP6.getFromFileSystem()!
                 nep6.removeEncryptedKey(address: self.account.address)
                 nep6.writeToFileSystem()
+        }
+    }
+    
+    func setWalletToDefault() {
+        let alertController = UIAlertController(title: "Do something", message: "Password", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
+            let inputPass = alertController.textFields?[0].text!
+            var error: NSError?
+            if inputPass == inputPass {
+                var error: NSError?
+                _ = NeoutilsNEP2Decrypt(self.account.key, inputPass, &error)
+                if error == nil {
+                    NEP6.makeNewDefault(address: self.account.address, pass: inputPass!)
+                }
+            
+            } else {
+                OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}
             }
         }
         
@@ -147,7 +211,6 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         alertController.addAction(cancelAction)
         
         UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
-
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -156,7 +219,11 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         } else if indexPath.row == 1 {
             self.performSegue(withIdentifier: "segueToShowPrivateKey", sender: nil)
         } else if indexPath.row == 2 {
-            self.performSegue(withIdentifier: "segueToConvertWallet", sender: nil)
+            if account.key == nil {
+                self.performSegue(withIdentifier: "segueToConvertWallet", sender: nil)
+            } else {
+                setWalletToDefault()
+            }
         } else if indexPath.row == 3 {
             if account.isDefault {
                 OzoneAlert.alertDialog(message: MultiWalletStrings.cannotDeletePrimary, dismissTitle: OzoneAlert.okPositiveConfirmString) { }
@@ -188,7 +255,8 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         removeWalletLabel.text = MultiWalletStrings.removeWallet
         addKeyLabel.text = MultiWalletStrings.addKey
         encryptedTitleLabel.text = MultiWalletStrings.encryptedKey
-        self.title = account.label
+        unlockWatchAddressDescription.text = MultiWalletStrings.addKeyDescription
+        unlockWatchAddressButton.setTitle(MultiWalletStrings.addKey, for: UIControl.State())
     }
     
     func setThemedElements() {
@@ -196,7 +264,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         addressLabel.theme_textColor = O3Theme.titleColorPicker
         encryptedTitleLabel.theme_textColor = O3Theme.titleColorPicker
         encryptedKeyLabel.theme_textColor = O3Theme.titleColorPicker
-        
+        unlockWatchAddressDescription.theme_textColor = O3Theme.titleColorPicker
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         
         contentView1.theme_backgroundColor = O3Theme.backgroundColorPicker

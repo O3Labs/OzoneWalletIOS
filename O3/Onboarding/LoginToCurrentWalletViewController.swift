@@ -30,7 +30,7 @@ class LoginToCurrentWalletViewController: UIViewController {
             do {
                 var nep6Pass: String? = nil
                 var key: String? = nil
-                if UserDefaultsManager.hasActivatedMultiWallet {
+                if NEP6.getFromFileSystem() != nil {
                     nep6Pass = try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .authenticationPrompt(OnboardingStrings.authenticationPrompt)
@@ -46,20 +46,20 @@ class LoginToCurrentWalletViewController: UIViewController {
                     return
                 }
                 
-                var account: Account!
+                var account: Wallet!
                 if key != nil {
-                    account = Account(wif: key!)!
+                    account = Wallet(wif: key!)!
                 } else {
                     let nep6 = NEP6.getFromFileSystem()
                     var error: NSError?
                     for accountLoop in nep6!.accounts {
                         if accountLoop.isDefault {
-                            account = Account(wif: NeoutilsNEP2Decrypt(accountLoop.key, nep6Pass, &error))!
+                            account = Wallet(wif: NeoutilsNEP2Decrypt(accountLoop.key, nep6Pass, &error))!
                         }
                     }
                 }
                 O3HUD.start()
-                Authenticated.account = account
+                Authenticated.wallet = account
                 DispatchQueue.global(qos: .background).async {
                     if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                         AppState.bestSeedNodeURL = bestNode
@@ -99,10 +99,9 @@ class LoginToCurrentWalletViewController: UIViewController {
 
     func performLogout() {
         O3Cache.clear()
-        UserDefaultsManager.hasActivatedMultiWallet = false
         try? Keychain(service: "network.o3.neo.wallet").remove(AppState.protectedKeyValue)
         try? Keychain(service: "network.o3.neo.wallet").remove(AppState.protectedKeyValue)
-        Authenticated.account = nil
+        Authenticated.wallet = nil
         UserDefaultsManager.o3WalletAddress = nil
         SwiftTheme.ThemeManager.setTheme(index: 0)
         UserDefaultsManager.themeIndex = 0

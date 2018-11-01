@@ -39,7 +39,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
             do {
                 var nep6Pass: String? = nil
                 var key: String? = nil
-                if UserDefaultsManager.hasActivatedMultiWallet {
+                if NEP6.getFromFileSystem != nil  {
                     nep6Pass = try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .authenticationPrompt(OnboardingStrings.authenticationPrompt)
@@ -55,20 +55,20 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
                     return
                 }
                 
-                var account: Account!
+                var account: Wallet!
                 if key != nil {
-                    account = Account(wif: key!)!
+                    account = Wallet(wif: key!)!
                 } else {
                     let nep6 = NEP6.getFromFileSystem()!
                     var error: NSError?
                     for accountLoop in nep6.accounts {
                         if accountLoop.isDefault {
-                            account = Account(wif: NeoutilsNEP2Decrypt(accountLoop.key, nep6Pass, &error))!
+                            account = Wallet(wif: NeoutilsNEP2Decrypt(accountLoop.key, nep6Pass, &error))!
                         }
                     }
                 }
                 O3HUD.start()
-                Authenticated.account = account
+                Authenticated.wallet = account
                 DispatchQueue.global(qos: .background).async {
                     if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                         AppState.bestSeedNodeURL = bestNode
@@ -119,8 +119,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
             let inputPass = alertController.textFields?[0].text
             var error: NSError?
             if let wif = NeoutilsNEP2Decrypt(encryptedKey, inputPass, &error) {
-                self.nep6?.makeNewDefault(key: encryptedKey, pass: inputPass!)
-                self.nep6?.writeToFileSystem()
+                NEP6.makeNewDefault(key: encryptedKey, pass: inputPass!)
                 self.login()
             } else {
                 OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}

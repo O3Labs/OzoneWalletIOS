@@ -58,7 +58,7 @@
 "MULTIWALLET_activate_multiwallet_title" = "To allow multi wallet functionality in O3, we need to update your private key to an encrypted key.";
 
 /* title to add key to a watch only address */
-"MULTIWALLET_add_key" = "Unlock Watch Address";
+"MULTIWALLET_add_key" = "Unlock";
 
 /* Description text when adding more wallets to your multi wallet */
 "MULTIWALLET_add_wallet_description" = "Enter a NEO/Ontology encrypted key, private key or address to add wallet or watch address.";

@@ -126,7 +126,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     func loadInbox() {
-        O3APIClient(network: AppState.network).getInbox(address: Authenticated.account!.address) { result in
+        O3APIClient(network: AppState.network).getInbox(address: Authenticated.wallet!.address) { result in
             switch result {
             case .failure(let error):
                 print(error)
@@ -142,7 +142,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     var numberOfOpenOrders: Int = 0
     @objc func loadTradingAccountBalances() {
-        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.account!.address) { result in
+        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.wallet!.address) { result in
             switch result {
             case .failure(let error):
                 print(error)
@@ -189,7 +189,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     @objc func loadClaimableGAS() {
-        if Authenticated.account == nil {
+        if Authenticated.wallet == nil {
             return
         }
         
@@ -204,7 +204,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     @objc func loadClaimableOng() {
-        if Authenticated.account == nil {
+        if Authenticated.wallet == nil {
             return
         }
         
@@ -243,7 +243,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     func loadAccountState() {
-        O3APIClient(network: AppState.network).getAccountState(address: Authenticated.account?.address ?? "") { result in
+        O3APIClient(network: AppState.network).getAccountState(address: Authenticated.wallet?.address ?? "") { result in
             DispatchQueue.main.async {
                 switch result {
                 case .failure:
@@ -557,7 +557,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
         
         tradingEvent.shared.viewTokenDetail(asset: symbol, source: TradingActionSource.o3Account)
-        let urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.account!.address)
+        let urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.wallet!.address)
         Controller().openDappBrowser(url: URL(string: urlString)!, modal: true, assetSymbol: symbol )
     }
     
@@ -737,7 +737,7 @@ extension AccountAssetTableViewController {
 
 extension AccountAssetTableViewController {
     func loadOpenOrders(completion: @escaping(Int)->Void) {
-        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open) { result in
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.wallet!.address, status: SwitcheoOrderStatus.open) { result in
             switch result{
             case .failure(let error):
                 #if DEBUG
@@ -756,7 +756,7 @@ extension AccountAssetTableViewController: QRScanDelegate {
     
     func postToChannel(channel: String) {
         let headers = ["content-type": "application/json"]
-        let parameters = ["address": Authenticated.account!.address,
+        let parameters = ["address": Authenticated.wallet!.address,
                           "device": "iOS" ] as [String: Any]
         
         let postData = try? JSONSerialization.data(withJSONObject: parameters, options: [])

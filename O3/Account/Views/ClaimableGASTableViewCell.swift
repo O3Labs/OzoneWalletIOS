@@ -124,7 +124,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
 
     func loadClaimableGASNeo() {
-        O3APIClient(network: AppState.network).getClaims(address: (Authenticated.account?.address)!) { result in
+        O3APIClient(network: AppState.network).getClaims(address: (Authenticated.wallet?.address)!) { result in
             switch result {
             case .failure(let error):
                 self.resetNEOState()
@@ -133,7 +133,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
             case .success(let claims):
                 DispatchQueue.main.async {
                     if claims.claims.count > 0 {
-                        AppState.setClaimingState(address: Authenticated.account!.address, claimingState: .ReadyToClaim)
+                        AppState.setClaimingState(address: Authenticated.wallet!.address, claimingState: .ReadyToClaim)
                     }
                     self.displayClaimableStateNeo(claimable: claims)
                 }
@@ -142,7 +142,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
 
     func loadClaimableOng() {
-        O3Client().getUnboundOng(address: (Authenticated.account?.address)!) { result in
+        O3Client().getUnboundOng(address: (Authenticated.wallet?.address)!) { result in
             switch result {
             case .failure(let error):
                 self.resetOntState()
@@ -252,7 +252,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
         let remark = String(format: "O3XFORCLAIM")
         customAttributes.append(TransactionAttritbute(remark: remark))
 
-        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: O3Cache.neo().value, toAddress: (Authenticated.account?.address)!, attributes: customAttributes) { txid, _ in
+        Authenticated.wallet?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: O3Cache.neo().value, toAddress: (Authenticated.wallet?.address)!, attributes: customAttributes) { txid, _ in
             if txid == nil {
                 self.delegate?.setIsClaimingNeo(false)
                 //if sending failed then show error message and load the claimable gas again to reset the state
@@ -280,7 +280,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
             #endif
         }
 
-        Authenticated.account?.claimGas(network: AppState.network, seedURL: AppState.bestSeedNodeURL) { success, error in
+        Authenticated.wallet?.claimGas(network: AppState.network, seedURL: AppState.bestSeedNodeURL) { success, error in
 
             DispatchQueue.main.async {
 
@@ -339,7 +339,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
                 }
             case .success(let gasPrice):
                 var error: NSError?
-                let txid = NeoutilsOntologyTransfer(endpoint, gasPrice, 20000, Authenticated.account!.wif, "ONT", Authenticated.account!.address, 1.0, &error)
+                let txid = NeoutilsOntologyTransfer(endpoint, gasPrice, 20000, Authenticated.wallet!.wif, "ONT", Authenticated.wallet!.address, 1.0, &error)
                 DispatchQueue.main.async {
                     if txid == "" {
                         OzoneAlert.alertDialog(SendStrings.transactionFailedTitle, message: SendStrings.transactionFailedSubtitle, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
@@ -369,7 +369,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
                 }
             case .success(let gasPrice):
                 var error: NSError?
-                let txid = NeoutilsClaimONG(endpoint, gasPrice, 20000, Authenticated.account!.wif, &error)
+                let txid = NeoutilsClaimONG(endpoint, gasPrice, 20000, Authenticated.wallet!.wif, &error)
                 DispatchQueue.main.async {
                     if txid != "" {
                         self.ontClaimedSuccess()
@@ -396,7 +396,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
 
     func neoClaimedSuccess() {
-        AppState.setClaimingState(address: Authenticated.account!.address, claimingState: .Fresh)
+        AppState.setClaimingState(address: Authenticated.wallet!.address, claimingState: .Fresh)
         DispatchQueue.main.async {
             self.neoClaimLoadingContainer.isHidden = true
             self.neoClaimSuccessContainer.isHidden = false

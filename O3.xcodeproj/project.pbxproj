@@ -68,7 +68,7 @@
 		354AF80E217EC6E100B82408 /* EmptyPortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354AF80D217EC6E100B82408 /* EmptyPortfolioView.swift */; };
 		3552DE0F209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552DE0E209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift */; };
 		3552DE1120A025D900836341 /* AccountState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552DE1020A025D900836341 /* AccountState.swift */; };
-		3557BA9C20AA9C870034937C /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BA9A20AA9C870034937C /* Account.swift */; };
+		3557BA9C20AA9C870034937C /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BA9A20AA9C870034937C /* Wallet.swift */; };
 		3557BA9D20AA9C870034937C /* AssetIdConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BA9B20AA9C870034937C /* AssetIdConstants.swift */; };
 		3557BAA220AA9C930034937C /* ScriptBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BA9F20AA9C930034937C /* ScriptBuilder.swift */; };
 		3557BAA320AA9C930034937C /* OpCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAA020AA9C930034937C /* OpCodes.swift */; };
@@ -417,7 +417,7 @@
 		354AF80D217EC6E100B82408 /* EmptyPortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPortfolioView.swift; sourceTree = "<group>"; };
 		3552DE0E209FF09900836341 /* NEP5TokenSelectorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEP5TokenSelectorTableViewCell.swift; sourceTree = "<group>"; };
 		3552DE1020A025D900836341 /* AccountState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountState.swift; sourceTree = "<group>"; };
-		3557BA9A20AA9C870034937C /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		3557BA9A20AA9C870034937C /* Wallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		3557BA9B20AA9C870034937C /* AssetIdConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetIdConstants.swift; sourceTree = "<group>"; };
 		3557BA9F20AA9C930034937C /* ScriptBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptBuilder.swift; sourceTree = "<group>"; };
 		3557BAA020AA9C930034937C /* OpCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodes.swift; sourceTree = "<group>"; };
@@ -869,7 +869,7 @@
 		35B399D7210EDA4D00284BFA /* Clients */ = {
 			isa = PBXGroup;
 			children = (
-				3557BA9A20AA9C870034937C /* Account.swift */,
+				3557BA9A20AA9C870034937C /* Wallet.swift */,
 				6EA7F9271F6E2F7F00E31B78 /* O3Client.swift */,
 				35B399D4210ECDB400284BFA /* OntologyClient.swift */,
 				3557BAC720AA9D180034937C /* NeoClient.swift */,
@@ -1656,7 +1656,7 @@
 				6E244EC72085C15A001B4B22 /* AssetInputToolbar.swift in Sources */,
 				6EFF839A20148CD700BDBE52 /* CardView.swift in Sources */,
 				7518C0001F8B49D500FBA0BA /* UserDefaultsManager.swift in Sources */,
-				3557BA9C20AA9C870034937C /* Account.swift in Sources */,
+				3557BA9C20AA9C870034937C /* Wallet.swift in Sources */,
 				3557BAC520AA9D0B0034937C /* NeoScanTransactionHistory.swift in Sources */,
 				755D8F561F665F8200058434 /* HomeViewController.swift in Sources */,
 				6E64C0D12159CE19002B1366 /* Deposit.swift in Sources */,

@@ -50,11 +50,13 @@ class ManageWalletsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == nep6!.accounts.count {
-            self.performSegue(withIdentifier: "segueToAddItemToMultiWallet", sender: nil)
-        } else {
-            selectedAccount = nep6!.accounts[indexPath.row]
-            self.performSegue(withIdentifier: "segueToManageWallet", sender: nil)
+        DispatchQueue.main.async {
+            if indexPath.row == self.nep6!.accounts.count {
+                self.performSegue(withIdentifier: "segueToAddItemToMultiWallet", sender: nil)
+            } else {
+                self.selectedAccount = self.nep6!.accounts[indexPath.row]
+                self.performSegue(withIdentifier: "segueToManageWallet", sender: nil)
+            }
         }
     }
     

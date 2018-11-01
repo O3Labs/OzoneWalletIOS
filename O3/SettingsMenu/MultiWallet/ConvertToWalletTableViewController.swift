@@ -17,6 +17,7 @@ import PKHUD
 
 class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetadataOutputObjectsDelegate, Nep2PasswordDelegate, UITextViewDelegate {
 
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var keyTextView: O3TextView!
     @IBOutlet weak var pkeyLabel: UILabel!
     @IBOutlet weak var convertButton: UIButton!
@@ -48,6 +49,7 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
+        setThemedElements()
         keyTextView.delegate = self
         convertButton.isEnabled = false
         self.navigationController?.hideHairline()
@@ -91,7 +93,7 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
         }
     }
     
-    func passwordEntered(account: Account?) {
+    func passwordEntered(account: Wallet?) {
         if  account!.address != watchAddress {
             //error this priate key unlocks a different wallet
             return
@@ -100,13 +102,13 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
         self.nep6.writeToFileSystem()
     }
     
-    func updateNep6(account: Account) {
+    func updateNep6(account: Wallet) {
         dismissKeyboard()
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
         DispatchQueue.main.async {
-            self.dismiss(animated: true, completion: nil)
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -129,6 +131,7 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
                 let key = NeoutilsNEP2Encrypt(wif, inputPass, &error)
                 self.nep6.convertWatchAddrToWallet(addr: self.watchAddress, key: key!.encryptedKey())
                 self.nep6.writeToFileSystem()
+                self.navigationController?.popViewController(animated: true)
             } else {
                 OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}
             }
@@ -157,7 +160,7 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
             DispatchQueue.main.async {
                 self.presentNEP2Detected()
             }
-        } else if let account = Account(wif: key) {
+        } else if let account = Wallet(wif: key) {
             if  account.address != watchAddress {
                 //error this priate key unlocks a different wallet
             } else {
@@ -190,6 +193,15 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
                 }
             }
         }
+    }
+    
+    func setThemedElements() {
+        tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        pkeyLabel.theme_textColor = O3Theme.titleColorPicker
+        keyTextView.theme_backgroundColor = O3Theme.textFieldBackgroundColorPicker
+        keyTextView.theme_textColor = O3Theme.textFieldTextColorPicker
+        keyTextView.theme_keyboardAppearance = O3Theme.keyboardPicker
+        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
     
     func setLocalizedStrings() {

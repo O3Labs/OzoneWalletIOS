@@ -66,11 +66,11 @@ class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDe
     }
 
     func loginToApp() {
-        guard let account = Account(wif: wif) else {
+        guard let account = Wallet(wif: wif) else {
             return
         }
         let keychain = Keychain(service: "network.o3.neo.wallet")
-        Authenticated.account = account
+        Authenticated.wallet = account
         Channel.pushNotificationEnabled(true)
 
         DispatchQueue.main.async {

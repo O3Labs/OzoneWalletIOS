@@ -124,7 +124,7 @@ class HomeViewModel {
     }
 
     func reloadBalances() {
-        guard let address = Authenticated.account?.address else {
+        guard let address = Authenticated.wallet?.address else {
             return
         }
         loadAccountState(address: address, isReadOnly: false)

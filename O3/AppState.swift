@@ -54,5 +54,5 @@ class AppState: NSObject {
         UserDefaults.standard.synchronize()
     }
     
-    static let protectedKeyValue = UserDefaultsManager.hasActivatedMultiWallet ?  "ozoneActiveNep6Password" :  "ozonePrivateKey"
+    static let protectedKeyValue = NEP6.getFromFileSystem() != nil ?  "ozoneActiveNep6Password" :  "ozonePrivateKey"
 }

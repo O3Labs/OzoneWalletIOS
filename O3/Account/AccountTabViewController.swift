@@ -134,7 +134,7 @@ extension AccountTabViewController: QRScanDelegate {
     
     func postToChannel(channel: String) {
         let headers = ["content-type": "application/json"]
-        let parameters = ["address": Authenticated.account!.address,
+        let parameters = ["address": Authenticated.wallet!.address,
                           "device": "iOS" ] as [String: Any]
         
         let postData = try? JSONSerialization.data(withJSONObject: parameters, options: [])
