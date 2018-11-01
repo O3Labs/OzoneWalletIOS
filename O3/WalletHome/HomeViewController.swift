@@ -163,8 +163,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func resetPage(_ sender: Any?) {
+        self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: false)
+        watchAddresses = loadWatchAddresses()
         homeviewModel = HomeViewModel(delegate: self)
-        walletHeaderCollectionView.reloadData()
     }
 
     override func viewDidLoad() {

@@ -54,6 +54,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadAllData), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAllData), name: NSNotification.Name(rawValue: "tokenSelectorDismissed"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadCells), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadTradingAccountBalances), name: NSNotification.Name(rawValue: "needsReloadTradingBalances"), object: nil)
@@ -62,6 +63,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "tokenSelectiorDismissed"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "needsReloadTradingBalances"), object: nil)
