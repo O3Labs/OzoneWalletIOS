@@ -168,10 +168,10 @@
                                                     </constraints>
                                                 </imageView>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_unlocked" translatesAutoresizingMaskIntoConstraints="NO" id="dBg-Bp-PSn">
-                                                    <rect key="frame" x="112" y="14.5" width="12" height="15"/>
+                                                    <rect key="frame" x="112" y="15.5" width="13" height="13"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="12" id="7FA-sE-ILA"/>
-                                                        <constraint firstAttribute="height" constant="15" id="mhq-36-WAD"/>
+                                                        <constraint firstAttribute="width" constant="13" id="7FA-sE-ILA"/>
+                                                        <constraint firstAttribute="height" constant="13" id="mhq-36-WAD"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
@@ -622,7 +622,7 @@
     </scenes>
     <resources>
         <image name="O3_logo_large_white" width="78" height="77"/>
-        <image name="ic_unlocked" width="9" height="13"/>
+        <image name="ic_unlocked" width="16" height="16"/>
         <image name="ic_walletItem" width="35" height="35"/>
         <image name="logo-clear" width="499" height="493"/>
         <namedColor name="grey">

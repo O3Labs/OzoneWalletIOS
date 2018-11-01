@@ -31,4 +31,19 @@ struct MultiWalletStrings {
     static let failedToDecrypt = NSLocalizedString("MULTIWALLET_failed_to_decrypt", comment: "error alert after failing to decrrypt the encrypted key")
     
     static let setWalletNameTitle = NSLocalizedString("MULTIWALLET_set_wallet_title", comment: "description of adding a name to a wallet title")
+
+    static let address = NSLocalizedString("MULTIWALLET_Address", comment: "address title label" )
+    static let backupWallet = NSLocalizedString("MULTIWALLET_backup_wallet", comment: "title to backup a saved wallet again")
+    static let showRawKey = NSLocalizedString("MULTIWALLET_show_raw_key", comment: "title to show the raw private key of a wallet")
+    static let removeWallet = NSLocalizedString("MULTIWALLET_remove_wallet", comment: "title to remove wallet")
+    static let addKey = NSLocalizedString("MULTIWALLET_add_key", comment: "title to add key to a watch only address")
+    static let Wallets = NSLocalizedString("MULTIWALLET_wallets", comment: "title for manage wallets bottom sehet")
+    
+    static let deleteEncryptedConfirm = NSLocalizedString("MULTIWALLET_delete_encrypted_confirm", comment: "message to display warning deleting encrypted cannot be undone")
+    
+    static let cannotDeletePrimary = NSLocalizedString("MULTIWALLET_cannot_delete_primary", comment: "message stating that you cant delete primary key")
+    
+    static let deleteWatchAddress = NSLocalizedString("MULTIWALLET_delete_watch_addr", comment: "conforim title for when you want to delete your watch address")
+    
+    static let encryptedKey = NSLocalizedString("MULTIWALLET_encrypted_key", comment: "encrypted key title")
 }

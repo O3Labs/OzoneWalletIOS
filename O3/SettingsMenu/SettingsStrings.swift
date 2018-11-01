@@ -48,4 +48,5 @@ struct SettingsStrings {
     static let enableMultiWallet = NSLocalizedString("SETTINGS_enable_multiwallet", comment: "settings item to enable multi wallet if not active")
     static let manageWallets = NSLocalizedString("SETTINGS_manage_wallets", comment: "settings item to manage existing wallets")
     static let addWallet = NSLocalizedString("SETTINGS_add_wallet", comment: "settings item to add another wallet to nep 6")
+    static let congestionWarning = NSLocalizedString("SETTINGS_congestion_warning", comment: "warning in settings when there is congestion in the neo blockchain")
 }

@@ -16,10 +16,8 @@ import ZendeskSDK
 import Neoutils
 
 class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate {
-    @IBOutlet weak var showPrivateKeyView: UIView!
     @IBOutlet weak var contactView: UIView!
     @IBOutlet weak var themeCell: UITableViewCell!
-    @IBOutlet weak var privateKeyCell: UITableViewCell!
     @IBOutlet weak var currencyCell: UITableViewCell!
     @IBOutlet weak var contactCell: UITableViewCell!
     @IBOutlet weak var logoutCell: UITableViewCell!
@@ -29,7 +27,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var supportView: UIView!
     @IBOutlet weak var currencyView: UIView!
     @IBOutlet weak var themeView: UIView!
-    @IBOutlet weak var privateKeyLabel: UILabel!
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var themeLabel: UILabel!
@@ -44,6 +41,12 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var nnsLabel: UILabel!
+    
+    @IBOutlet weak var walletNameLabel: UILabel!
+
+    @IBOutlet weak var congestionIcon: UIImageView!
+    @IBOutlet weak var congestionWarning: UILabel!
+    
     
     // swiftlint:disable weak_delegate
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
@@ -117,8 +120,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
 
     func setThemedElements() {
-        let themedTitleLabels = [privateKeyLabel, contactLabel, themeLabel, currencyLabel, logoutLabel, versionLabel, supportLabel, multiWalletLabel]
-        let themedCells = [themeCell, privateKeyCell, currencyCell, contactCell, logoutCell]
+        let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, logoutLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel]
+        let themedCells = [themeCell, currencyCell, contactCell, logoutCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
             cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -151,6 +154,23 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
             }
         }
     }
+    
+    func checkCongestion() {
+        NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight() { (result) in
+            switch result {
+            case .failure(let error):
+                return
+            case .success(let pending):
+                DispatchQueue.main.async {
+                    if pending > 1000 {
+                        self.congestionIcon.isHidden = false
+                        self.congestionWarning.isHidden = false
+                        self.congestionWarning.text = String(format: SettingsStrings.congestionWarning, pending)
+                    }
+                }
+            }
+        }
+    }
 
     override func viewDidLoad() {
         setThemedElements()
@@ -158,12 +178,19 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         applyNavBarTheme()
         super.viewDidLoad()
         setNNSNames()
+        checkCongestion()
+        
+        if let nep6 = NEP6.getFromFileSystem() {
+            let defaultIndex = nep6.accounts.index { $0.isDefault == true }
+            walletNameLabel.text = nep6.accounts[defaultIndex!].label
+        } else {
+            walletNameLabel.text = "My O3 Wallet"
+        }
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
         qrView.image = UIImage.init(qrData: (Authenticated.account?.address)!, width: qrView.bounds.size.width, height: qrView.bounds.size.height)
         addressLabel.text = (Authenticated.account?.address)!
         self.headerView.addGestureRecognizer(tap)
-        showPrivateKeyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showPrivateKey)))
         contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
         supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
         themeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTheme)))
@@ -256,22 +283,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.dismiss(animated: true, completion: nil)
     }
 
-    @objc func showPrivateKey() {
-        let keychain = Keychain(service: "network.o3.neo.wallet")
-        DispatchQueue.global().async {
-            do {
-                _ = try keychain
-                    .authenticationPrompt(SettingsStrings.authenticate)
-                    .get(AppState.protectedKeyValue)
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "segueToPrivateKey", sender: nil)
-                }
-            } catch {
-
-            }
-        }
-    }
-
     func logoutTapped(_ sender: Any) {
 
     }
@@ -316,7 +327,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
 
     func setLocalizedStrings() {
         self.navigationController?.navigationBar.topItem?.title = SettingsStrings.settingsTitle
-        privateKeyLabel.text = SettingsStrings.privateKeyTitle
         themeLabel.text = SettingsStrings.themeTitle
         currencyLabel.text = SettingsStrings.currencyTitle + UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased()
         contactLabel.text = SettingsStrings.contactTitle

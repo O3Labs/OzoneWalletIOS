@@ -19,7 +19,6 @@ class AddNameWatchAddressTableViewController: UITableViewController {
     @IBOutlet weak var animationContainer: UIView!
     
     var address = ""
-    var name = ""
     
     let lottieView = LOTAnimationView(name: "wallet_generated")
     override func viewDidLoad() {
@@ -43,7 +42,7 @@ class AddNameWatchAddressTableViewController: UITableViewController {
     @IBAction func continueTapped(_ sender: Any) {
         self.performSegue(withIdentifier: "segueToWatchAddressFinished", sender: nil)
         var updatedNep6 = NEP6.getFromFileSystem()!
-        updatedNep6.addWatchAddress(address: address, name: name)
+        updatedNep6.addWatchAddress(address: address, name: nameInputField.text!)
         updatedNep6.writeToFileSystem()
 
     }

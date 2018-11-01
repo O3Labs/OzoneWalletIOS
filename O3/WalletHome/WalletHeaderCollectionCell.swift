@@ -66,13 +66,20 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
                 walletMajorIcon.image = UIImage(named: "ic_all_wallet")
                 walletMinorIcon.isHidden = true
             } else {
-                walletHeaderLabel.text = (delegate as! HomeViewController).watchAddresses[index - 1].label
+                let account = (delegate as! HomeViewController).watchAddresses[index - 1]
+                walletHeaderLabel.text = account.label
                 rightButton.isHidden = false
                 leftButton.isHidden = false
                 percentChangeLabel.isHidden = false
-                walletMajorIcon.image = UIImage(named: "ic_watch")
-                walletMinorIcon.image = UIImage(named: "ic_locked")
-                walletMinorIcon.isHidden = false
+                if account.key == nil {
+                    walletMajorIcon.image = UIImage(named: "ic_watch")
+                    walletMinorIcon.isHidden = true
+                } else {
+                    walletMajorIcon.image = UIImage(named: "ic_wallet")
+                    walletMinorIcon.image = UIImage(named: "ic_locked")
+                    walletMinorIcon.isHidden = false
+                }
+                
             }
             
             

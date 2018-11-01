@@ -16,5 +16,6 @@ class AddWalletTableViewCell: UITableViewCell {
         super.awakeFromNib()
         addWalletLabel.theme_textColor = O3Theme.primaryColorPicker
         addWalletLabel.text = SettingsStrings.addWallet
+        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
 }

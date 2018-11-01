@@ -11,9 +11,12 @@ import UIKit
 
 class ManageWalletsTableViewController: UITableViewController {
     let nep6 = NEP6.getFromFileSystem()
-
+    var selectedAccount: NEP6.Account!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        applyNavBarTheme()
         setLocalizedStrings()
         setThemedElements()
     }
@@ -30,7 +33,18 @@ class ManageWalletsTableViewController: UITableViewController {
             let account = nep6!.accounts[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: "manageWalletTableViewCell") as! ManageWalletTableViewCell
             cell.walletLabel.text = account.label
-            cell.walletIsDefaultView.isHidden == !account.isDefault
+            if account.isDefault == false {
+                if account.key == nil {
+                    cell.walletIsDefaultView.image = UIImage(named: "ic_watch")
+                } else {
+                    cell.walletIsDefaultView.image = UIImage(named: "ic_locked")
+                }
+            } else {
+                cell.walletIsDefaultView.image = UIImage(named: "ic_unlocked")
+
+            }
+            
+            
             return cell
         }
     }
@@ -39,12 +53,23 @@ class ManageWalletsTableViewController: UITableViewController {
         if indexPath.row == nep6!.accounts.count {
             self.performSegue(withIdentifier: "segueToAddItemToMultiWallet", sender: nil)
         } else {
-            //something else
+            selectedAccount = nep6!.accounts[indexPath.row]
+            self.performSegue(withIdentifier: "segueToManageWallet", sender: nil)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueToManageWallet" {
+            guard let nav = segue.destination as? UINavigationController,
+                let child = nav.children[0] as? ManageWalletTableViewController else {
+                    fatalError("Something went terribly wrong")
+            }
+            child.account = selectedAccount
         }
     }
     
     func setLocalizedStrings() {
-        
+        self.title = MultiWalletStrings.Wallets
     }
     
     func setThemedElements() {

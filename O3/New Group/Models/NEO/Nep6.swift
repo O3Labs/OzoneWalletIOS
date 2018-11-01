@@ -173,6 +173,11 @@ public class NEP6: Codable {
         return walletAccounts
     }
     
+    public func convertWatchAddrToWallet(addr: String, key: String) {
+        let index = accounts.firstIndex { $0.address == addr }
+        accounts[index!].key = key
+    }
+    
     static func removeFromDevice() {
         let fileName = "O3Wallet"
         let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL

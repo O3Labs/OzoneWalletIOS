@@ -486,7 +486,6 @@
                                     </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="finishButtonTapped:" destination="kAa-V0-G3Z" eventType="touchUpInside" id="JH3-21-2Z2"/>
-                                        <action selector="watchAddressFinishedTapped:" destination="kAa-V0-G3Z" eventType="touchUpInside" id="4LC-ac-KcI"/>
                                     </connections>
                                 </button>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OJu-mS-YWA">

@@ -34,7 +34,12 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     }
     
     @objc func dismissPage(_ sender: Any) {
-        self.dismiss(animated: true)
+        //parent is nav controller presenter will be the one above it
+        if let parentVC = self.presentingViewController as? ManageWalletsTableViewController {
+            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+        } else {
+            self.dismiss(animated: true)
+        }
     }
     
     @objc func scanTapped(_ sender: Any) {

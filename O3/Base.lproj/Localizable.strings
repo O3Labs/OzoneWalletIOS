@@ -57,14 +57,35 @@
 /* title for activating multiwallet page */
 "MULTIWALLET_activate_multiwallet_title" = "To allow multi wallet functionality in O3, we need to update your private key to an encrypted key.";
 
+/* title to add key to a watch only address */
+"MULTIWALLET_add_key" = "Unlock Watch Address";
+
 /* Description text when adding more wallets to your multi wallet */
 "MULTIWALLET_add_wallet_description" = "Enter a NEO/Ontology encrypted key, private key or address to add wallet or watch address.";
+
+/* address title label */
+"MULTIWALLET_Address" = "Address";
 
 /* Button title to backup up encrypted key and nep6 file */
 "MULTIWALLET_backup_encrypted_key" = "Back it up";
 
+/* title to backup a saved wallet again */
+"MULTIWALLET_backup_wallet" = "Backup Wallet";
+
+/* message stating that you cant delete primary key */
+"MULTIWALLET_cannot_delete_primary" = "You cannot delete your primary wallet, please make a new primary wallet and try again";
+
 /* text for continue action */
 "MULTIWALLET_continue" = "Next";
+
+/* message to display warning deleting encrypted cannot be undone */
+"MULTIWALLET_delete_encrypted_confirm" = "Are you sure you want to delete this encrypted key? This action cannot be undone.";
+
+/* conforim title for when you want to delete your watch address */
+"MULTIWALLET_delete_watch_addr" = "Are you sure you want to delete this watch address?";
+
+/* encrypted key title */
+"MULTIWALLET_encrypted_key" = "Encrypted Key";
 
 /* Description when an encrypted key is detected in multiwallet add */
 "MULTIWALLET_encrypted_key_detected" = "Encrypted key detected\n\nPlease enter your password to continue";
@@ -93,8 +114,17 @@
 /* Input hint for when verifying password to generate encrypted key */
 "MULTIWALLET_password_verify_hint" = "Verify Password";
 
+/* title to remove wallet */
+"MULTIWALLET_remove_wallet" = "Remove Wallet";
+
 /* description of adding a name to a wallet title */
 "MULTIWALLET_set_wallet_title" = "Give this wallet a name";
+
+/* title to show the raw private key of a wallet */
+"MULTIWALLET_show_raw_key" = "Show Raw Private Key";
+
+/* title for manage wallets bottom sehet */
+"MULTIWALLET_wallets" = "Manage Wallets";
 
 /* A description to display after a watch address has been successfully added */
 "MULTIWALLET_watch_address_added" = "A watch address has been added. You can unlock this address at ay time via settings > manage wallet and entering a private or encrypted key";
@@ -358,16 +388,16 @@
 "ONBOARDING_Wallet_Generated" = "Wallet generated!";
 
 /* Title to select a wall to login with */
-"ONBOARDING_wallet_select" = "Please select a wallet to log in with:"; /* NEW */
+"ONBOARDING_wallet_select" = "Please select a wallet to log in with:";
 
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "Welcome!";
 
 /* Subtitle for welcome back authentication */
-"ONBOARDING_welcome_back_subtitle" = "Your gateway to the smart economy"; /* NEW */
+"ONBOARDING_welcome_back_subtitle" = "Your gateway to the smart economy";
 
 /* Title for welcome back authentication */
-"ONBOARDING_welcome_back_title" = "Welcome back to O3"; /* NEW */
+"ONBOARDING_welcome_back_title" = "Welcome back to O3";
 
 /* Action button to add watch address */
 "PORTFOLIO_Add_Watch_Address" = "Add Watch Address";
@@ -522,6 +552,9 @@
 /* A generic add button title */
 "SETTINGS_Add_Button" = "Add";
 
+/* settings item to add another wallet to nep 6 */
+"SETTINGS_add_wallet" = "+ Add Wallet";
+
 /* Title for add watch address button */
 "SETTINGS_Add_Watch_Address" = "Add Watch Address";
 
@@ -537,6 +570,9 @@
 /* String to describe a close action */
 "SETTINGS_Close_Title" = "Close";
 
+/* warning in settings when there is congestion in the neo blockchain */
+"SETTINGS_congestion_warning" = "%d unconfirmed transactions. Due to congestion, transactions may take some time to process"; /* NEW */
+
 /* Settings Menu Title For Contact */
 "SETTINGS_Contact" = "Contact";
 
@@ -546,6 +582,9 @@
 /* Title for Currency Menu, but does not include the type like USD or BTC */
 "SETTINGS_Currency_Title_No_Type" = "Currency";
 
+/* settings item to enable multi wallet if not active */
+"SETTINGS_enable_multiwallet" = "Enable MultiWallet";
+
 /* Error To display when user tries to add an invalid address */
 "SETTINGS_Invalid_Address" = "Invalid Address";
 
@@ -554,6 +593,9 @@
 
 /* Warning that appears when attempting to logout from settings */
 "SETTINGS_Logout_Warning" = "Logging out will remove the Private Key from your device. Please make sure you already back it up or write it down. You will need to restore it from your backup to reenter the application.";
+
+/* settings item to manage existing wallets */
+"SETTINGS_manage_wallets" = "Manage Wallets";
 
 /* Settings Menu Title for Private Key */
 "SETTINGS_My_Private_Key" = "My Private Key";
