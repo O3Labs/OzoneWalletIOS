@@ -11,71 +11,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Login To Current Wallet View Controller-->
-        <scene sceneID="Qga-0C-y6A">
-            <objects>
-                <viewController storyboardIdentifier="LoginToCurrentWalletViewController" id="xk2-J6-ZVf" customClass="LoginToCurrentWalletViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="grv-a0-Tfn">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" image="logo-clear" translatesAutoresizingMaskIntoConstraints="NO" id="Foa-Cs-0Cp">
-                                <rect key="frame" x="157.5" y="293.5" width="60" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="cZd-1a-kya"/>
-                                    <constraint firstAttribute="height" constant="60" id="eAy-3g-fm7"/>
-                                </constraints>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zxT-w2-Mdf">
-                                <rect key="frame" x="20" y="373.5" width="335" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="grQ-Rt-EEo"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
-                                <state key="normal" title="Login using TouchID">
-                                    <color key="titleColor" red="0.0" green="0.41176470590000003" blue="0.85098039219999999" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
-                                </state>
-                                <connections>
-                                    <action selector="didTapLogin:" destination="xk2-J6-ZVf" eventType="touchUpInside" id="5Yd-bD-6Qh"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BgK-hP-zRg">
-                                <rect key="frame" x="20" y="46" width="335" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="loM-6c-2Pc"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
-                                <state key="normal" title="Cancel">
-                                    <color key="titleColor" name="grey"/>
-                                </state>
-                                <connections>
-                                    <action selector="didTapCancel:" destination="xk2-J6-ZVf" eventType="touchUpInside" id="MOK-i6-sAC"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="hCT-fL-H0W" firstAttribute="trailing" secondItem="BgK-hP-zRg" secondAttribute="trailing" constant="20" id="8ka-2J-QF4"/>
-                            <constraint firstItem="zxT-w2-Mdf" firstAttribute="top" secondItem="Foa-Cs-0Cp" secondAttribute="bottom" constant="20" id="Ife-DC-JPu"/>
-                            <constraint firstItem="BgK-hP-zRg" firstAttribute="top" secondItem="hCT-fL-H0W" secondAttribute="top" constant="26" id="MIf-2w-WfF"/>
-                            <constraint firstItem="zxT-w2-Mdf" firstAttribute="leading" secondItem="hCT-fL-H0W" secondAttribute="leading" constant="20" id="Tbw-uL-AGR"/>
-                            <constraint firstItem="Foa-Cs-0Cp" firstAttribute="centerX" secondItem="hCT-fL-H0W" secondAttribute="centerX" id="Zro-Ga-ZxX"/>
-                            <constraint firstItem="hCT-fL-H0W" firstAttribute="trailing" secondItem="zxT-w2-Mdf" secondAttribute="trailing" constant="20" id="rt1-rQ-sU0"/>
-                            <constraint firstItem="BgK-hP-zRg" firstAttribute="leading" secondItem="hCT-fL-H0W" secondAttribute="leading" constant="20" id="sdQ-Zc-u6o"/>
-                            <constraint firstItem="Foa-Cs-0Cp" firstAttribute="centerY" secondItem="hCT-fL-H0W" secondAttribute="centerY" constant="-20" id="uJZ-RY-gPZ"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="hCT-fL-H0W"/>
-                    </view>
-                    <connections>
-                        <outlet property="cancelButton" destination="BgK-hP-zRg" id="3BX-lQ-nD5"/>
-                        <outlet property="loginButton" destination="zxT-w2-Mdf" id="RLx-O5-zKd"/>
-                        <segue destination="6fG-df-BHS" kind="presentation" identifier="loggedin" modalTransitionStyle="crossDissolve" id="2cU-TJ-2tJ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hEv-OX-lBp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-478" y="288"/>
-        </scene>
         <!--Table View Controller-->
         <scene sceneID="lNE-Vj-wXd">
             <objects>
@@ -92,7 +27,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wKP-Pt-5WG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-479.19999999999999" y="984.55772113943033"/>
+            <point key="canvasLocation" x="-442" y="445"/>
         </scene>
         <!--Login To Nep6 View Controller-->
         <scene sceneID="RQ4-ph-ry7">
@@ -211,15 +146,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MpP-QK-aAl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="260" y="981.85907046476768"/>
-        </scene>
-        <!--Main-->
-        <scene sceneID="JFO-7g-scy">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Main" id="6fG-df-BHS" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LV7-F0-l2s" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="51" y="287"/>
+            <point key="canvasLocation" x="230" y="445"/>
         </scene>
         <!--preCreateWallet-->
         <scene sceneID="JSL-MU-Bh1">
@@ -624,7 +551,6 @@
         <image name="O3_logo_large_white" width="78" height="77"/>
         <image name="ic_unlocked" width="16" height="16"/>
         <image name="ic_walletItem" width="35" height="35"/>
-        <image name="logo-clear" width="499" height="493"/>
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -51,4 +51,8 @@ struct MultiWalletStrings {
     static let editName = NSLocalizedString("MUTLIWALLET_edit_name", comment: "Title to edit name in multiwallet")
     static let enterNewName = NSLocalizedString("MULTIWALLET_enter_new_name", comment: "Description when entering a new name")
     static let myWalletPlaceholder = NSLocalizedString("MULTIWALLET_my_wallet_placeholder", comment: "placeholder for when entering a new name for wallet")
+    
+    static let newWallet = NSLocalizedString("MULTIWALLET_new_wallet", comment: "button title to create a new wallet")
+    
+    static let encryptionFinishedDescription = NSLocalizedString("MULTIWALLET_encryption_finished_decription", comment: "Description for when you have finished encrypting a private key and storing it in NEP5")
 }

@@ -70,6 +70,10 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "viewTradingOrders"), object: nil)
     }
     
+    @objc func tappedWalletSwap() {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
@@ -80,6 +84,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         applyNavBarTheme()
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
+                
         
         //first state of the section
         sectionHeaderCollapsedState[sections.neoAssets.rawValue] = true
@@ -341,7 +346,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nativeasset") as? NativeAssetTableViewCell else {
                 let cell =  UITableViewCell(frame: CGRect.zero)
-                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                cell.theme_backgroundColor = O3Theme.backgroundLightgrey
                 return cell
             }
             
@@ -365,7 +370,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         if indexPath.section == sections.nep5tokens.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
                 let cell =  UITableViewCell(frame: CGRect.zero)
-                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                cell.theme_backgroundColor = O3Theme.backgroundLightgrey
                 return cell
             }
             let list = tokenAssets
@@ -382,7 +387,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
                 let cell =  UITableViewCell(frame: CGRect.zero)
-                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                cell.theme_backgroundColor = O3Theme.backgroundLightgrey
                 return cell
             }
             let list = self.tradingAccount?.switcheo.confirmed
@@ -404,7 +409,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         //ontology asset using the same nep5 token cell
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
             let cell =  UITableViewCell(frame: CGRect.zero)
-            cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+            cell.theme_backgroundColor = O3Theme.backgroundLightgrey
             return cell
         }
         let list = ontologyAssets

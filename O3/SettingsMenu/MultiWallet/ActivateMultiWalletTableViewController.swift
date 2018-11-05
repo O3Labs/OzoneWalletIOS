@@ -29,8 +29,14 @@ class ActivateMultiWalletTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismissPage(_:)))
+        navigationItem.leftBarButtonItem?.theme_tintColor = O3Theme.primaryColorPicker
         setLocalizedStrings()
         setThemedElements()
+    }
+    
+    @objc func dismissPage(_ sender: Any) {
+        self.dismiss(animated: true)
     }
     
     func validatePassword() -> Bool {

@@ -49,4 +49,8 @@ struct SettingsStrings {
     static let manageWallets = NSLocalizedString("SETTINGS_manage_wallets", comment: "settings item to manage existing wallets")
     static let addWallet = NSLocalizedString("SETTINGS_add_wallet", comment: "settings item to add another wallet to nep 6")
     static let congestionWarning = NSLocalizedString("SETTINGS_congestion_warning", comment: "warning in settings when there is congestion in the neo blockchain")
+    
+    static let idLabel = NSLocalizedString("SETTINGS_id_label", comment: "label for identity page that user can use")
+    
+    static let nnsEmpty = NSLocalizedString("SETTINGS_nns_empty", comment: "description when no nns names currently listed")
 }

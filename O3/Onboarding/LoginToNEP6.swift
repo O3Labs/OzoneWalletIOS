@@ -13,6 +13,10 @@ import KeychainAccess
 import SwiftTheme
 import Neoutils
 
+protocol LoginToNEP6ViewControllerDelegate {
+    func authorized(launchOptions: [UIApplication.LaunchOptionsKey: Any]?)
+}
+
 class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var animationViewContainer: UIView!
     @IBOutlet weak var tableView: UITableView!
@@ -21,7 +25,9 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     
     let animation = LOTAnimationView(name: "RocketSplash")
     let nep6 = NEP6.getFromFileSystem()
-    
+    var delegate: LoginToNEP6ViewControllerDelegate?
+    var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+
     func setGradient() {
         let gradient: CAGradientLayer = CAGradientLayer()
        gradient.colors = [UIColor(hexString:"#002D5DFF")!.cgColor, UIColor(hexString: "#00A2EEFF")!.cgColor]
@@ -39,7 +45,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
             do {
                 var nep6Pass: String? = nil
                 var key: String? = nil
-                if NEP6.getFromFileSystem != nil  {
+                if NEP6.getFromFileSystem() != nil  {
                     nep6Pass = try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .authenticationPrompt(OnboardingStrings.authenticationPrompt)
@@ -54,7 +60,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
                 if key == nil && nep6Pass == nil {
                     return
                 }
-                
+                O3HUD.start()
                 var account: Wallet!
                 if key != nil {
                     account = Wallet(wif: key!)!
@@ -67,7 +73,6 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
                         }
                     }
                 }
-                O3HUD.start()
                 Authenticated.wallet = account
                 DispatchQueue.global(qos: .background).async {
                     if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
@@ -87,7 +92,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
                                     
                                 }, completion: { (finished: Bool) -> Void in
                                     if finished {
-                                       // self.delegate?.authorized(launchOptions: self.launchOptions)
+                                        self.delegate?.authorized(launchOptions: self.launchOptions)
                                     }
                                 })
                             }

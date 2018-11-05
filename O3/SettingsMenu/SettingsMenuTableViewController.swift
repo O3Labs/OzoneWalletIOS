@@ -23,6 +23,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var logoutCell: UITableViewCell!
     @IBOutlet weak var supportCell: UITableViewCell!
     @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
+    @IBOutlet weak var idCell: UITableViewCell!
     
     @IBOutlet weak var supportView: UIView!
     @IBOutlet weak var currencyView: UIView!
@@ -34,25 +35,22 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var supportLabel: UILabel!
     @IBOutlet weak var multiWalletLabel: UILabel!
+    @IBOutlet weak var idLabel: UILabel!
     
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
     @IBOutlet weak var qrView: UIImageView!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var shareButton: UIButton!
-    @IBOutlet weak var nnsLabel: UILabel!
-    
     @IBOutlet weak var walletNameLabel: UILabel!
 
     @IBOutlet weak var congestionIcon: UIImageView!
-    @IBOutlet weak var congestionWarning: UILabel!
     
     
     // swiftlint:disable weak_delegate
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
     // swiftlint:enable weak_delegate
 
-    
     func saveQRCodeImage() {
         let qrWithBranding = UIImage.imageWithView(view: self.qrView
         )
@@ -126,42 +124,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         }
         DispatchQueue.main.async { label.text = self.themeString }
     }
-
-    func setThemedElements() {
-        let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, logoutLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel]
-        let themedCells = [themeCell, currencyCell, contactCell, logoutCell]
-        for cell in themedCells {
-            cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
-            cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
-        }
-
-        for label in themedTitleLabels {
-            label?.theme_textColor = O3Theme.titleColorPicker
-        }
-        versionLabel?.theme_textColor = O3Theme.lightTextColorPicker
-        tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
-        tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
-        headerView.theme_backgroundColor = O3Theme.backgroundColorPicker
-    }
-    
-    func setNNSNames() {
-        O3APIClient(network: AppState.network).reverseDomainLookup(address: (Authenticated.wallet?.address)!) { result in
-            switch result {
-            case .failure (let error):
-                print(error)
-            case .success(let domains):
-                DispatchQueue.main.async {
-                    if domains.count == 0 {
-                        self.nnsLabel.isHidden = true
-                    } else if domains.count == 1 {
-                        self.nnsLabel.text = domains[0].domain
-                    } else {
-                        self.nnsLabel.text = domains[0] .domain + " +\(domains.count - 1) more"
-                    }
-                }
-            }
-        }
-    }
     
     func checkCongestion() {
         NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight() { (result) in
@@ -172,8 +134,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
                 DispatchQueue.main.async {
                     if pending > 1000 {
                         self.congestionIcon.isHidden = false
-                        self.congestionWarning.isHidden = false
-                        self.congestionWarning.text = String(format: SettingsStrings.congestionWarning, pending)
+                        self.headerTitleLabel.text = String(format: SettingsStrings.congestionWarning, pending)
+                        self.headerTitleLabel.textColor = Theme.light.accentColor
                     }
                 }
             }
@@ -181,14 +143,13 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     @objc func updateWalletInfo(_ sender: Any?) {
-        setNNSNames()
         qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: qrView.bounds.size.width, height: qrView.bounds.size.height)
         addressLabel.text = (Authenticated.wallet?.address)!
         if let nep6 = NEP6.getFromFileSystem() {
             let defaultIndex = nep6.accounts.index { $0.isDefault == true }
-            walletNameLabel.text = nep6.accounts[defaultIndex!].label
+            self.navigationController?.navigationBar.topItem?.title = nep6.accounts[defaultIndex!].label
         } else {
-            walletNameLabel.text = "My O3 Wallet"
+            self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
         }
     }
 
@@ -199,7 +160,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         applyNavBarTheme()
         addWalletChangeObserver()
         updateWalletInfo(nil)
-        checkCongestion()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
         self.headerView.addGestureRecognizer(tap)
@@ -207,11 +167,16 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
         themeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTheme)))
         enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
+        idCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openIdentity)))
         setThemeLabel()
 
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.versionLabel.text = String(format: SettingsStrings.versionLabel, version)
         }
+    }
+    
+    @objc func openIdentity() {
+        self.performSegue(withIdentifier: "segueToIdentitiesList", sender: nil)
     }
     
     @objc func enableMultiWallet() {
@@ -223,7 +188,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "segueToManageWallets" {
+        if segue.identifier == "segueToManageWallets" || segue.identifier == "segueToIdentitiesList" {
             self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: segue.destination)
             segue.destination.modalPresentationStyle = .custom
             segue.destination.transitioningDelegate = self.halfModalTransitioningDelegate
@@ -232,6 +197,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        checkCongestion()
         currencyLabel.text = String(format: SettingsStrings.currencyTitle, UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased())
     }
 
@@ -319,27 +285,43 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     //properly implement cell did tap
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 5 {
+        if indexPath.row == 6 {
             OzoneAlert.confirmDialog(message: SettingsStrings.logoutWarning, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: SettingsStrings.logout, didCancel: {
 
             }, didConfirm: {
                 self.performLogoutCleanup()
                 self.view.window!.rootViewController?.dismiss(animated: false)
                 UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()
-
             })
-
         }
     }
+    
+    func setThemedElements() {
+        let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, logoutLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel, idLabel]
+        let themedCells = [themeCell, currencyCell, contactCell, logoutCell, idCell]
+        for cell in themedCells {
+            cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+            cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        }
+        
+        for label in themedTitleLabels {
+            label?.theme_textColor = O3Theme.titleColorPicker
+        }
+        versionLabel?.theme_textColor = O3Theme.lightTextColorPicker
+        tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
+        tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        headerView.theme_backgroundColor = O3Theme.backgroundColorPicker
+    }
+    
 
     func setLocalizedStrings() {
-        self.navigationController?.navigationBar.topItem?.title = SettingsStrings.settingsTitle
         themeLabel.text = SettingsStrings.themeTitle
         currencyLabel.text = SettingsStrings.currencyTitle + UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased()
         contactLabel.text = SettingsStrings.contactTitle
         logoutLabel.text = SettingsStrings.logout
         supportLabel.text = SettingsStrings.supportTitle
         versionLabel.text = SettingsStrings.versionLabel
+        idLabel.text = SettingsStrings.idLabel
         if NEP6.getFromFileSystem() == nil {
             multiWalletLabel.text = SettingsStrings.enableMultiWallet
         } else {

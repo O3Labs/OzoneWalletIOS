@@ -8,21 +8,30 @@
 
 import Foundation
 import UIKit
+import Neoutils
 
 protocol WalletHeaderCellDelegate: class {
-    func didTapLeft(index: Int)
-    func didTapRight(index: Int)
+    func didTapLeft()
+    func didTapRight()
 }
 
 class WalletHeaderCollectionCell: UICollectionViewCell {
     struct Data {
-        var index: Int
+        var type: HeaderType
+        var account: NEP6.Account?
         var numWatchAddresses: Int
         var latestPrice: PriceData
         var previousPrice: PriceData
         var referenceCurrency: Currency
         var selectedInterval: PriceInterval
     }
+    enum HeaderType {
+        case activeWallet
+        case lockedWallet
+        case combined
+    }
+    
+    
     @IBOutlet weak var walletHeaderLabel: UILabel!
     @IBOutlet weak var portfolioValueLabel: UILabel!
     @IBOutlet weak var percentChangeLabel: UILabel!
@@ -31,10 +40,53 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
     @IBOutlet weak var walletMajorIcon: UIImageView!
     @IBOutlet weak var walletMinorIcon: UIImageView!
     
+    @IBOutlet weak var walletUnlockHeaderArea: UIView!
+    
     weak var delegate: WalletHeaderCellDelegate?
+    
+    func setupActiveWallet() {
+        if data?.account != nil {
+            walletHeaderLabel.text = data?.account!.label
+        } else {
+            walletHeaderLabel.text = "MY O3 Wallet"
+        }
+        
+        leftButton.isHidden = true
+        rightButton.isHidden = false
+        percentChangeLabel.isHidden = false
+        walletMajorIcon.image = UIImage(named: "ic_wallet")
+        walletMinorIcon.image = UIImage(named: "ic_unlocked")
+        walletMinorIcon.isHidden = false
+    }
+
+    func setupCombined() {
+        walletHeaderLabel.text = PortfolioStrings.portfolioHeaderCombinedHeader
+        rightButton.isHidden = true
+        leftButton.isHidden = false
+        percentChangeLabel.isHidden = false
+        walletMajorIcon.image = UIImage(named: "ic_all_wallet")
+        walletMinorIcon.isHidden = true
+    }
+    
+    func setupLockedWallet() {
+        walletHeaderLabel.text = data?.account!.label
+        rightButton.isHidden = false
+        leftButton.isHidden = false
+        percentChangeLabel.isHidden = false
+        if data?.account!.key == nil {
+            walletMajorIcon.image = UIImage(named: "ic_watch")
+            walletMinorIcon.isHidden = true
+        } else {
+            walletMajorIcon.image = UIImage(named: "ic_wallet")
+            walletMinorIcon.image = UIImage(named: "ic_locked")
+            walletMinorIcon.isHidden = false
+        }
+    }
+    
+    
     var data: WalletHeaderCollectionCell.Data? {
         didSet {
-            guard let index = data?.index,
+            guard let type = data?.type,
                 let numWatchAddresses = data?.numWatchAddresses,
                 let latestPrice = data?.latestPrice,
                 let previousPrice = data?.previousPrice,
@@ -42,52 +94,14 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
                 let selectedInterval = data?.selectedInterval else {
                     fatalError("Cell is missing type")
             }
-            if index == 0 {
-                if let nep6 = NEP6.getFromFileSystem() {
-                    let defaultIndex = nep6.accounts.index { $0.isDefault == true }
-                    walletHeaderLabel.text = nep6.accounts[defaultIndex!].label
-                } else {
-                    walletHeaderLabel.text = "My O3 Wallet"
-                }
-                
-                leftButton.isHidden = true
-                rightButton.isHidden = false
-                percentChangeLabel.isHidden = false
-                walletMajorIcon.image = UIImage(named: "ic_wallet")
-                walletMinorIcon.image = UIImage(named: "ic_unlocked")
-                walletMinorIcon.isHidden = false
-            } else if numWatchAddresses == 0 {
-                walletHeaderLabel.text = PortfolioStrings.watchAddress
-                rightButton.isHidden = true
-                leftButton.isHidden = false
-                percentChangeLabel.isHidden = true
-                walletMajorIcon.image = UIImage(named: "ic_watch")
-                walletMinorIcon.image = UIImage(named: "ic_locked")
-                walletMinorIcon.isHidden = false
-            } else if index == numWatchAddresses + 1 {
-                walletHeaderLabel.text = PortfolioStrings.portfolioHeaderCombinedHeader
-                rightButton.isHidden = true
-                leftButton.isHidden = false
-                percentChangeLabel.isHidden = false
-                walletMajorIcon.image = UIImage(named: "ic_all_wallet")
-                walletMinorIcon.isHidden = true
-            } else {
-                let account = (delegate as! HomeViewController).watchAddresses[index - 1]
-                walletHeaderLabel.text = account.label
-                rightButton.isHidden = false
-                leftButton.isHidden = false
-                percentChangeLabel.isHidden = false
-                if account.key == nil {
-                    walletMajorIcon.image = UIImage(named: "ic_watch")
-                    walletMinorIcon.isHidden = true
-                } else {
-                    walletMajorIcon.image = UIImage(named: "ic_wallet")
-                    walletMinorIcon.image = UIImage(named: "ic_locked")
-                    walletMinorIcon.isHidden = false
-                }
-                
+            switch type {
+            case .activeWallet:
+                setupActiveWallet()
+            case .lockedWallet:
+                setupLockedWallet()
+            case .combined:
+                setupCombined()
             }
-            
             
             
             switch referenceCurrency {
@@ -101,20 +115,50 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
             percentChangeLabel.text = String.percentChangeString(latestPrice: latestPrice, previousPrice: previousPrice,
                                                                  with: selectedInterval, referenceCurrency: referenceCurrency)
             walletHeaderLabel.theme_textColor = O3Theme.lightTextColorPicker
+            walletUnlockHeaderArea.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(unlockTapped)))
         }
     }
+    
+    
+    @objc func unlockTapped() {
+        if let key = data?.account?.key {
+            if data?.account?.isDefault == true {
+                return
+            }
+
+            let alertController = UIAlertController(title: "Enter the password", message: "It will replace default ", preferredStyle: .alert)
+            let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
+                let inputPass = alertController.textFields?[0].text!
+                var error: NSError?
+                let _ = NeoutilsNEP2Decrypt(key, inputPass, &error)
+                if error == nil {
+                    NEP6.makeNewDefault(key: key, pass: inputPass!)
+                } else {
+                    OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
+            
+            alertController.addTextField { (textField) in
+                textField.placeholder = "Password"
+                textField.isSecureTextEntry = true
+            }
+            
+            alertController.addAction(confirmAction)
+            alertController.addAction(cancelAction)
+            
+            UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    
 
     @IBAction func didTapRight(_ sender: Any) {
-        guard let index = data?.index else {
-            fatalError("undefined collection view cell behavior")
-        }
-        delegate?.didTapRight(index: index)
+        delegate?.didTapRight()
     }
 
     @IBAction func didTapLeft(_ sender: Any) {
-        guard let index = data?.index else {
-            fatalError("undefined collection view cell behavior")
-        }
-        delegate?.didTapLeft(index: index)
+        delegate?.didTapLeft()
     }
 }

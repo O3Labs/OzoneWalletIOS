@@ -200,9 +200,11 @@ public class NEP6: Codable {
                 .set(pass, key: "ozoneActiveNep6Password")
             nep6.accounts[currentDefaultIndex!].isDefault = false
             nep6.accounts[newDefaultIndex!].isDefault = true
+            nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
+
             nep6.writeToFileSystem()
             var error: NSError?
-            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[newDefaultIndex!].key!, pass, &error))
+            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
             NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
         } catch _ {
             return
@@ -224,9 +226,10 @@ public class NEP6: Codable {
                 .set(pass, key: "ozoneActiveNep6Password")
             nep6.accounts[currentDefaultIndex!].isDefault = false
             nep6.accounts[newDefaultIndex!].isDefault = true
+            nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
             nep6.writeToFileSystem()
             var error: NSError?
-            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[newDefaultIndex!].key!, pass, &error))
+            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
             NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
         } catch _ {
             return
@@ -253,9 +256,10 @@ public class NEP6: Codable {
                 .set(pass, key: "ozoneActiveNep6Password")
             nep6.accounts[currentDefaultIndex!].isDefault = false
             nep6.accounts[newDefaultIndex!].isDefault = true
+            nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
             nep6.writeToFileSystem()
             var error: NSError?
-            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[newDefaultIndex!].key!, pass, &error))
+            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
             NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
         } catch _ {
             return

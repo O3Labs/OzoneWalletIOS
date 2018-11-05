@@ -55,6 +55,7 @@
 		353F365020037DFB002B4FE1 /* Kingfisher.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 353F364E20037DFB002B4FE1 /* Kingfisher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		353F36522003842F002B4FE1 /* NewsItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353F36512003842F002B4FE1 /* NewsItemViewController.swift */; };
 		354394D3218979AE000C1D8C /* ConvertToWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354394D2218979AE000C1D8C /* ConvertToWalletTableViewController.swift */; };
+		354394D6218BF16B000C1D8C /* IdentitiesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354394D5218BF16B000C1D8C /* IdentitiesTableViewController.swift */; };
 		3549456D203BF1F700332E53 /* Pageboy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4E6F9020146A14001A5844 /* Pageboy.framework */; };
 		35494572203C01F500332E53 /* Pageboy.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4E6F9020146A14001A5844 /* Pageboy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35494574203C02B800332E53 /* Tabman.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35494573203C02B800332E53 /* Tabman.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -88,6 +89,10 @@
 		3557BAD420AA9D310034937C /* Array+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACE20AA9D300034937C /* Array+Util.swift */; };
 		3557BAD520AA9D310034937C /* NEP9.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACF20AA9D300034937C /* NEP9.swift */; };
 		3557BAD720AA9D310034937C /* Data+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAD120AA9D310034937C /* Data+Util.swift */; };
+		356F1B05218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */; };
+		356F1B07218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */; };
+		356F1B0921901AA30004C088 /* EncryptPasswordEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */; };
+		356F1B0B219049130004C088 /* EncyptionCompletedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B0A219049130004C088 /* EncyptionCompletedViewController.swift */; };
 		357D28C22122E16700DA67A0 /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 357D28C12122E16700DA67A0 /* Amplitude.framework */; };
 		357D28C32122E16700DA67A0 /* Amplitude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 357D28C12122E16700DA67A0 /* Amplitude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		358E95D9200358AA00A1878B /* NewsFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358E95D8200358AA00A1878B /* NewsFeed.swift */; };
@@ -167,7 +172,6 @@
 		6E2F264321549BF900A3DEB1 /* OrdersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2F264221549BF900A3DEB1 /* OrdersTableViewController.swift */; };
 		6E2F264521549C1800A3DEB1 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2F264421549C1800A3DEB1 /* OrderTableViewCell.swift */; };
 		6E2F26472154CA9C00A3DEB1 /* OrdersTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2F26462154CA9C00A3DEB1 /* OrdersTabsViewController.swift */; };
-		6E3E381E1FA44C84004965F8 /* LoginToCurrentWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3E381D1FA44C84004965F8 /* LoginToCurrentWalletViewController.swift */; };
 		6E40F64421182E0E00B2B633 /* Browser.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E40F64321182E0E00B2B633 /* Browser.xcassets */; };
 		6E40F64621192E7100B2B633 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40F64521192E7100B2B633 /* Asset.swift */; };
 		6E40F6482119771300B2B633 /* PortfolioNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40F6472119771300B2B633 /* PortfolioNotificationTableViewCell.swift */; };
@@ -408,6 +412,7 @@
 		353F364E20037DFB002B4FE1 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		353F36512003842F002B4FE1 /* NewsItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsItemViewController.swift; sourceTree = "<group>"; };
 		354394D2218979AE000C1D8C /* ConvertToWalletTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertToWalletTableViewController.swift; sourceTree = "<group>"; };
+		354394D5218BF16B000C1D8C /* IdentitiesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentitiesTableViewController.swift; sourceTree = "<group>"; };
 		3549456B203BF0A400332E53 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		35494573203C02B800332E53 /* Tabman.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Tabman.framework; path = Carthage/Build/iOS/Tabman.framework; sourceTree = "<group>"; };
 		35494576203C03DC00332E53 /* AutoInsetter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AutoInsetter.framework; path = Carthage/Build/iOS/AutoInsetter.framework; sourceTree = "<group>"; };
@@ -438,6 +443,10 @@
 		3557BACF20AA9D300034937C /* NEP9.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEP9.swift; sourceTree = "<group>"; };
 		3557BAD120AA9D310034937C /* Data+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Util.swift"; sourceTree = "<group>"; };
 		3557BADD20AAA0940034937C /* O3-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "O3-Bridging-Header.h"; sourceTree = "<group>"; };
+		356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewController.swift; sourceTree = "<group>"; };
+		356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewCell.swift; sourceTree = "<group>"; };
+		356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptPasswordEntryTableViewController.swift; sourceTree = "<group>"; };
+		356F1B0A219049130004C088 /* EncyptionCompletedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncyptionCompletedViewController.swift; sourceTree = "<group>"; };
 		357D28C12122E16700DA67A0 /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
 		358E95D8200358AA00A1878B /* NewsFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeed.swift; sourceTree = "<group>"; };
 		35A6390E203517BB0054EA20 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -512,7 +521,6 @@
 		6E2F264221549BF900A3DEB1 /* OrdersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersTableViewController.swift; sourceTree = "<group>"; };
 		6E2F264421549C1800A3DEB1 /* OrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
 		6E2F26462154CA9C00A3DEB1 /* OrdersTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersTabsViewController.swift; sourceTree = "<group>"; };
-		6E3E381D1FA44C84004965F8 /* LoginToCurrentWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginToCurrentWalletViewController.swift; sourceTree = "<group>"; };
 		6E40F64321182E0E00B2B633 /* Browser.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Browser.xcassets; sourceTree = "<group>"; };
 		6E40F64521192E7100B2B633 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		6E40F6472119771300B2B633 /* PortfolioNotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioNotificationTableViewCell.swift; sourceTree = "<group>"; };
@@ -731,6 +739,8 @@
 		350E18752186B27D00AA10CE /* PrivateKey */ = {
 			isa = PBXGroup;
 			children = (
+				356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */,
+				356F1B0A219049130004C088 /* EncyptionCompletedViewController.swift */,
 			);
 			path = PrivateKey;
 			sourceTree = "<group>";
@@ -797,6 +807,14 @@
 				35061E46205F5CFE004E89EB /* FeaturedCollectionCell.swift */,
 			);
 			path = NewsFeed;
+			sourceTree = "<group>";
+		};
+		354394D4218BF121000C1D8C /* Identities */ = {
+			isa = PBXGroup;
+			children = (
+				354394D5218BF16B000C1D8C /* IdentitiesTableViewController.swift */,
+			);
+			path = Identities;
 			sourceTree = "<group>";
 		};
 		3557BA9920AA9C6C0034937C /* API */ = {
@@ -978,6 +996,8 @@
 				35C370B52182ADB20023AABC /* AddWalletTableViewController.swift */,
 				350E188021894E4700AA10CE /* ManageWalletTableViewController.swift */,
 				354394D2218979AE000C1D8C /* ConvertToWalletTableViewController.swift */,
+				356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */,
+				356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */,
 			);
 			path = MultiWallet;
 			sourceTree = "<group>";
@@ -1396,7 +1416,6 @@
 				350E18782186FB1400AA10CE /* LoginToNEP6.swift */,
 				75D5BFB51F6CF59C00E64855 /* LoginTableViewController.swift */,
 				75D5BFC11F6D196200E64855 /* OnboardingAssets.xcassets */,
-				6E3E381D1FA44C84004965F8 /* LoginToCurrentWalletViewController.swift */,
 				35AF806A20CA6CF700E48457 /* NEP2DetectedViewController.swift */,
 			);
 			path = Onboarding;
@@ -1437,6 +1456,7 @@
 		75DA58F91F7A67690065FE0D /* SettingsMenu */ = {
 			isa = PBXGroup;
 			children = (
+				354394D4218BF121000C1D8C /* Identities */,
 				35C370AA21815D4F0023AABC /* MultiWallet */,
 				35AD2B71209317950024A900 /* SettingsStrings.swift */,
 				350100F020441B34000F6648 /* Currency */,
@@ -1675,6 +1695,7 @@
 				35061E47205F5CFE004E89EB /* FeaturedCollectionCell.swift in Sources */,
 				35061E49205F6306004E89EB /* FeatureFeed.swift in Sources */,
 				6E64C0D52159CE19002B1366 /* RequestTrade.swift in Sources */,
+				356F1B0921901AA30004C088 /* EncryptPasswordEntryTableViewController.swift in Sources */,
 				6E5568EC214A4FD700BA805E /* AccountHeaderTableViewCell.swift in Sources */,
 				6E2F264321549BF900A3DEB1 /* OrdersTableViewController.swift in Sources */,
 				75E14E571F7D2AEC00BEAE22 /* UIApplication.swift in Sources */,
@@ -1689,6 +1710,7 @@
 				6EC4838C21634044002CBF76 /* ThemedUITableView.swift in Sources */,
 				75DA59091F7A815E0065FE0D /* OzoneAlert.swift in Sources */,
 				35AD2B74209320140024A900 /* TabbarStrings.swift in Sources */,
+				356F1B0B219049130004C088 /* EncyptionCompletedViewController.swift in Sources */,
 				6EA7F9291F6E32B600E31B78 /* PriceData.swift in Sources */,
 				6E4C4FA92165E650001B7114 /* SAConfettiView.swift in Sources */,
 				35B399D32106F65100284BFA /* TokenSaleLog.swift in Sources */,
@@ -1704,7 +1726,6 @@
 				3557BAD320AA9D310034937C /* validator.swift in Sources */,
 				6E73679D2084B3C400F4202B /* TokenSaleErrorViewController.swift in Sources */,
 				3557BAD720AA9D310034937C /* Data+Util.swift in Sources */,
-				6E3E381E1FA44C84004965F8 /* LoginToCurrentWalletViewController.swift in Sources */,
 				353F364B200370D6002B4FE1 /* NewsFeedViewController.swift in Sources */,
 				6E40F64621192E7100B2B633 /* Asset.swift in Sources */,
 				6E73679B2084B3B900F4202B /* TokenSaleSuccessViewController.swift in Sources */,
@@ -1778,6 +1799,7 @@
 				3527F8CF20C539A500C2FCB9 /* MarketplaceController.swift in Sources */,
 				35E5F60C20283AA600D65BEA /* AddressBookEntryTableViewCell.swift in Sources */,
 				350771CC208470C90049346B /* O3Cache.swift in Sources */,
+				354394D6218BF16B000C1D8C /* IdentitiesTableViewController.swift in Sources */,
 				75E28F311F9B3B34006C6E37 /* ThemeManager.swift in Sources */,
 				353E79AB20C8F68500B9AB1F /* PaperBackupConfirmTableViewController.swift in Sources */,
 				6E64C0D62159CE19002B1366 /* RequestTransaction.swift in Sources */,
@@ -1794,6 +1816,7 @@
 				752006861F7F698300D19B5F /* O3TabBarController.swift in Sources */,
 				6E4E6F89201465BE001A5844 /* NativeAssetTableViewCell.swift in Sources */,
 				6ED5D7EC2016BFC900AF3713 /* AssetSelectorTableViewController.swift in Sources */,
+				356F1B05218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift in Sources */,
 				6E64C0CF2159CE19002B1366 /* TokenDetail.swift in Sources */,
 				35B426D120984C4800957211 /* TokenGridCell.swift in Sources */,
 				75BEB2621F89FB2A00DC20E9 /* O3HUD.swift in Sources */,
@@ -1816,6 +1839,7 @@
 				35CCEF642182DB44005EF03C /* EncryptedKeyAddedToMultiWalletTableViewController.swift in Sources */,
 				6ED600201F765C9C006760E6 /* WalletHomeNavigationController.swift in Sources */,
 				350E187F21884F7700AA10CE /* AddWalletTableViewCell.swift in Sources */,
+				356F1B07218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift in Sources */,
 				750E17431F6FD560001F62FD /* GraphPanView.swift in Sources */,
 				6ED600161F763434006760E6 /* O3TextView.swift in Sources */,
 				3557BAA220AA9C930034937C /* ScriptBuilder.swift in Sources */,

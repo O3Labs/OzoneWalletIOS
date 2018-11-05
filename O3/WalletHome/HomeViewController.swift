@@ -393,8 +393,26 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
         cell.delegate = self
 
+        var account: NEP6.Account? = nil
+        var type: WalletHeaderCollectionCell.HeaderType
+        var nep6 = NEP6.getFromFileSystem()
+        if indexPath.row == 0 {
+            type = WalletHeaderCollectionCell.HeaderType.activeWallet
+            if nep6 != nil {
+                account = nep6!.accounts[indexPath.row]
+            }
+        } else if indexPath.row <= watchAddresses.count {
+            type = WalletHeaderCollectionCell.HeaderType.lockedWallet
+            account = nep6!.accounts[indexPath.row]
+        } else {
+            type = WalletHeaderCollectionCell.HeaderType.combined
+        }
+        
+        
+        
         var data =  WalletHeaderCollectionCell.Data (
-            index: indexPath.row,
+            type: type,
+            account: account,
             numWatchAddresses: watchAddresses.count,
             latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
             previousPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
@@ -505,8 +523,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
 
-    func didTapLeft(index: Int) {
+    func didTapLeft() {
         DispatchQueue.main.async {
+            let index = self.walletHeaderCollectionView.indexPathsForVisibleItems[0].row
             self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: index - 1, section: 0), at: .left, animated: true)
             self.homeviewModel?.setCurrentIndex(index - 1)
             if self.watchAddresses.count == 0 && index + 1  == 1 {
@@ -517,9 +536,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
 
-    func didTapRight(index: Int) {
+    func didTapRight() {
         DispatchQueue.main.async {
-            self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: index + 1, section: 0), at: .right, animated: true)
+            let index = self.walletHeaderCollectionView.indexPathsForVisibleItems[0].row
+            self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row:
+                 index + 1, section: 0), at: .right, animated: true)
             self.homeviewModel?.setCurrentIndex(index + 1)
             if self.watchAddresses.count == 0 && index + 1  == 1 {
                 self.setEmptyGraphView()

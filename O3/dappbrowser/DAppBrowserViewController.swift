@@ -187,9 +187,7 @@ class DAppBrowserViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: loadingView)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
+
     @objc func didTapLeft(_ sender: Any) {
         if self.loggedIn == true {
             let message = String(format: "You are connected to %@\nDisconnect and close O3 dapp browser?", self.currentURL!.host!)
@@ -246,7 +244,7 @@ class DAppBrowserViewController: UIViewController {
     }
     
     @objc func close() {
-        self.dismiss(animated: true, completion: nil)
+        self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func logout() {

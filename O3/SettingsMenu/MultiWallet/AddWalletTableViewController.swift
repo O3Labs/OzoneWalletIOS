@@ -17,6 +17,10 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     @IBOutlet weak var walletInputField: UITextField!
     @IBOutlet weak var addWalletButton: ShadowedButton!
     
+    @IBOutlet weak var generateNewWalletButton: UIButton!
+    
+    var newWif = ""
+    
     let lottieView = LOTAnimationView(name: "wallet_generated")
     
     override func viewDidLoad() {
@@ -75,12 +79,13 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     
     
     @IBAction func addWalletButtonTapped(_ sender: Any) {
+        newWif = ""
         if isInputAddress() {
             self.performSegue(withIdentifier: "segueToAddedWatchAddress", sender: nil)
         } else if isInputEncryptedKey() {
             self.performSegue(withIdentifier: "segueToVerifyEncryptedKey", sender: nil)
         } else if isInputWif() {
-            self.performSegue(withIdentifier: "segueToAddedWif", sender: nil)
+            self.performSegue(withIdentifier: "segueToEncryptWif", sender: nil)
         } else  {
             OzoneAlert.alertDialog(message: MultiWalletStrings.invalidWalletEntry, dismissTitle: OzoneAlert.okPositiveConfirmString) {
             }
@@ -106,11 +111,27 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
         if let dest = segue.destination as? EncryptedKeyAddedToMultiWalletTableViewController {
             dest.encryptedKey = walletInputField.text!
         }
+        
+        if let dest = segue.destination as? EncryptPasswordEntryTableViewController {
+            if newWif == "" {
+                dest.wif = walletInputField.text!
+            } else {
+                dest.wif = newWif
+            }
+        }
     }
+    
+    @IBAction func generateNewWalletTapped(_ sender: Any) {
+        let wallet = Wallet()!
+        newWif = wallet.wif
+        self.performSegue(withIdentifier: "segueToEncryptWif", sender: nil)
+    }
+    
     
     func setLocalizedStrings() {
         titleLabel.text = MultiWalletStrings.addWalletDecription
         addWalletButton.setTitle(MultiWalletStrings.continueAction, for: UIControl.State())
+        generateNewWalletButton.setTitle(MultiWalletStrings.newWallet, for: UIControl.State())
     }
     
     func setThemedElements() {
@@ -120,5 +141,6 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
         walletInputField.theme_textColor = O3Theme.textFieldTextColorPicker
         walletInputField.theme_placeholderAttributes = O3Theme.placeholderAttributesPicker
         walletInputField.theme_keyboardAppearance = O3Theme.keyboardPicker
+        
     }
 }

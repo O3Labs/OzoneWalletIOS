@@ -144,9 +144,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
 
             if let window = self.window {
-               // login.delegate = self
+                login.delegate = self
                 //pass the launchOptions to the login screen
-               // login.launchOptions = launchOptions
+                login.launchOptions = launchOptions
                 window.rootViewController = login
                 return false
             }
@@ -250,7 +250,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 }
 
-extension AppDelegate: LoginToCurrentWalletViewControllerDelegate {
+extension AppDelegate: LoginToNEP6ViewControllerDelegate {
     func parsePushLink(link: String) {
         UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {

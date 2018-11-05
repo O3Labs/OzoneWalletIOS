@@ -55,9 +55,10 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     
     @objc func updateAccount(_ sender: Any?) {
         let nep6 = NEP6.getFromFileSystem()!
-        let accountIndex: Int = nep6.accounts.firstIndex {$0.address == account.address}!
-        account = nep6.accounts[accountIndex]
-        setWalletDetails()
+        if let accountIndex = nep6.accounts.firstIndex(where: {$0.address == account.address}) {
+            account = nep6.accounts[accountIndex]
+            setWalletDetails()
+        }
     }
     
     func setWalletDetails() {
@@ -116,7 +117,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     
     func setEncryptedKey() {
         if account.key != nil {
-            encryptedKeyQrView.image = UIImage(qrData: account.address, width: encryptedKeyQrView.frame.width, height: encryptedKeyQrView.frame.height, qrLogoName: "ic_QRencryptedKey")
+            encryptedKeyQrView.image = UIImage(qrData: account.key!, width: encryptedKeyQrView.frame.width, height: encryptedKeyQrView.frame.height, qrLogoName: "ic_QRencryptedKey")
             encryptedKeyLabel.text = account.key!
             unlockWatchAddressButton.isHidden = true
             unlockWatchAddressDescription.isHidden = true

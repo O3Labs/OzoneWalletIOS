@@ -55,10 +55,10 @@ class AccountHeaderTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         titleLabel?.theme_textColor = O3Theme.titleColorPicker
         totalAmountLabel?.theme_textColor = O3Theme.titleColorPicker
-        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
-        theme_backgroundColor = O3Theme.backgroundColorPicker
+        contentView.theme_backgroundColor = O3Theme.cardColorPicker
+        theme_backgroundColor = O3Theme.cardColorPicker
         if let topbarView = viewWithTag(9) {
-            topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
+            topbarView.theme_backgroundColor = O3Theme.cardColorPicker
         }
         super.awakeFromNib()
     }

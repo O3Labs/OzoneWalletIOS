@@ -12,9 +12,12 @@ import Pageboy
 import DeckTransition
 import SwiftTheme
 
-class AccountTabViewController: TabmanViewController, PageboyViewControllerDataSource {
-
+class AccountTabViewController: TabmanViewController, PageboyViewControllerDataSource, HalfModalPresentable {
+    
     var viewControllers: [UIViewController] = []
+    // swiftlint:disable weak_delegate
+    var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
+    // swiftlint:enable weak_delegate
     
     func addThemeObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.changedTheme), name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
@@ -61,6 +64,19 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
         
+        if let nep6 = NEP6.getFromFileSystem() {
+            var numAccount = 0
+            for account in nep6.accounts {
+                if account.isDefault == false && account.key != nil {
+                    numAccount += 1
+                }
+            }
+            if numAccount > 0 {
+                navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_wallet_swap.png"), style: .plain, target: self, action: #selector(self.swapWalletTapped))
+            }
+        }
+        
+        
         #if TESTNET
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openDAppBrowser(_:)))
         #endif
@@ -85,6 +101,16 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
 
     func defaultPage(for pageboyViewController: PageboyViewController) -> PageboyViewController.Page? {
         return nil
+    }
+    
+    @objc func swapWalletTapped() {
+        guard let modal = UIStoryboard(name: "AddNewMultiWallet", bundle: nil).instantiateViewController(withIdentifier: "UnlockMultiWalletTableViewController") as? UnlockMultiWalletTableViewController else {
+            fatalError("Presenting improper modal controller")
+        }
+        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: modal)
+        modal.modalPresentationStyle = .custom
+        modal.transitioningDelegate = self.halfModalTransitioningDelegate
+        self.present(modal, animated: true)
     }
 
     @objc func rightBarButtonTapped(_ sender: Any) {
