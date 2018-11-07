@@ -297,9 +297,17 @@ public class NEP6: Codable {
         let nep6Data = try! JSONEncoder().encode(self)
         let fileName = "O3Wallet"
         let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
+        let fileManager = FileManager.default
+        var isDir : ObjCBool = false
+        if fileManager.fileExists(atPath: DocumentDirURL.path, isDirectory: &isDir) {
+            
+        } else {
+            try! fileManager.createDirectory(at: DocumentDirURL, withIntermediateDirectories: true, attributes: nil)
+        }
+        
         let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
-        try! nep6Data.write(to: fileURL, options: .completeFileProtection)
-        CloudDataManager.sharedInstance.copyFileToCloud()
+        try! nep6Data.write(to: fileURL, options: [.atomic, .completeFileProtection])
+        //CloudDataManager.sharedInstance.copyFileToCloud()
         NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
     }
     

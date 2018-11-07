@@ -8,13 +8,15 @@
 
 import Foundation
 
+// gonna remove to icloud and write to local only for now
+// too many unknowns with icloud and requries further testing
 class CloudDataManager {
-    
     static let sharedInstance = CloudDataManager() // Singleton
     
     struct DocumentsDirectory {
-        static let localDocumentsURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: .userDomainMask).first!
-        static let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
+        static let localDocumentsURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: .userDomainMask).first!.appendingPathComponent("O3")
+        
+        /*static let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")*/
     }
     
     init () {
@@ -27,14 +29,14 @@ class CloudDataManager {
         } else {
             try! fileManager.createDirectory(at: DocumentsDirectory.localDocumentsURL, withIntermediateDirectories: true, attributes: nil)
         }
-        
+        /*
         if isCloudEnabled() {
             if fileManager.fileExists(atPath: DocumentsDirectory.iCloudDocumentsURL!.path, isDirectory:&isDir) {
                 
             } else {
                 try! fileManager.createDirectory(at: DocumentsDirectory.iCloudDocumentsURL!, withIntermediateDirectories: true, attributes: nil)
             }
-        }
+        }*/
     }
     
     
@@ -42,19 +44,19 @@ class CloudDataManager {
     // To do in a background thread
     
     func getDocumentDiretoryURL() -> URL {
-        if isCloudEnabled()  {
-            return DocumentsDirectory.iCloudDocumentsURL!
-        } else {
+       // if isCloudEnabled()  {
+         //   return DocumentsDirectory.iCloudDocumentsURL!
+       // } else {
             return DocumentsDirectory.localDocumentsURL
-        }
+       // }
     }
     
     // Return true if iCloud is enabled
     
-    func isCloudEnabled() -> Bool {
+    /*func isCloudEnabled() -> Bool {
         if DocumentsDirectory.iCloudDocumentsURL != nil { return true }
         else { return false }
-    }
+    }*/
     
     // Delete All files at URL
     
@@ -74,7 +76,7 @@ class CloudDataManager {
     // Copy local files to iCloud
     // iCloud will be cleared before any operation
     // No data merging
-    
+    /*
     func copyFileToCloud() {
         if isCloudEnabled() {
             deleteFilesInDirectory(url: DocumentsDirectory.iCloudDocumentsURL!) // Clear all files in iCloud Doc Dir
@@ -91,12 +93,12 @@ class CloudDataManager {
                 }
             }
         }
-    }
+    }*/
     
     // Copy iCloud files to local directory
     // Local dir will be cleared
     // No data merging
-    
+    /*
     func copyFileToLocal() {
         if isCloudEnabled() {
             deleteFilesInDirectory(url: DocumentsDirectory.localDocumentsURL)
@@ -113,5 +115,5 @@ class CloudDataManager {
                 }
             }
         }
-    }
+    }*/
 }
