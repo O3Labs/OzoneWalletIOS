@@ -307,6 +307,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         for label in themedTitleLabels {
             label?.theme_textColor = O3Theme.titleColorPicker
         }
+        logoutLabel.theme_textColor = O3Theme.negativeLossColorPicker
         versionLabel?.theme_textColor = O3Theme.lightTextColorPicker
         tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker

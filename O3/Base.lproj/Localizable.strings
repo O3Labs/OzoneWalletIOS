@@ -589,10 +589,10 @@
 "SETTINGS_Invalid_Address" = "Invalid Address";
 
 /* Settings Menu Title for Logout */
-"SETTINGS_Logout" = "Logout";
+"SETTINGS_Logout" = "Clear App Data";
 
 /* Warning that appears when attempting to logout from settings */
-"SETTINGS_Logout_Warning" = "Logging out will remove the Private Key from your device. Please make sure you already back it up or write it down. You will need to restore it from your backup to reenter the application.";
+"SETTINGS_Logout_Warning" = "Are you sure you wish to clear all O3 app data? This includes all Private and Encrypted keys stored on this device. Please make sure your keys are backed up. You cannot undo this action.";
 
 /* settings item to manage existing wallets */
 "SETTINGS_manage_wallets" = "Manage Wallets";

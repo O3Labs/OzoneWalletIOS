@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Neoutils
 import KeychainAccess
+import Lottie
 
 class ActivateMultiWalletTableViewController: UITableViewController {
     @IBOutlet weak var titleLabel: UILabel!
@@ -22,6 +23,9 @@ class ActivateMultiWalletTableViewController: UITableViewController {
     @IBOutlet weak var passwordInputShowButton: UIButton!
     @IBOutlet weak var passwordVerifyShowButton: UIButton!
     
+    @IBOutlet weak var animationContainerView: UIView!
+    let animation = LOTAnimationView(name: "EnterPasswordKey")
+    
     var passwordInputIsSecure = true
     var passwordVerifyIsSecure = true
     
@@ -31,13 +35,39 @@ class ActivateMultiWalletTableViewController: UITableViewController {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismissPage(_:)))
         navigationItem.leftBarButtonItem?.theme_tintColor = O3Theme.primaryColorPicker
+        
+        applyNavBarTheme()
         setLocalizedStrings()
         setThemedElements()
+        animation.loopAnimation = true
+        animationContainerView.accessibilityIdentifier = "fds"
+        animationContainerView.embed(animation)
+        animation.play()
+        generateNEP6Button.isEnabled = false
+        
+
     }
     
     @objc func dismissPage(_ sender: Any) {
         self.dismiss(animated: true)
     }
+    
+    @IBAction func passwordEntryChanged(_ sender: Any) {
+        if passwordInputField.text != "" && verifyPasswordInputField.text != "" {
+            generateNEP6Button.isEnabled = true
+        } else {
+            generateNEP6Button.isEnabled = false
+        }
+    }
+    
+    @IBAction func verifyEntryChanged(_ sender: Any) {
+        if passwordInputField.text != "" && verifyPasswordInputField.text != "" {
+            generateNEP6Button.isEnabled = true
+        } else {
+            generateNEP6Button.isEnabled = false
+        }
+    }
+    
     
     func validatePassword() -> Bool {
         let passwordText = passwordInputField.text?.trim() ?? ""
@@ -136,6 +166,7 @@ class ActivateMultiWalletTableViewController: UITableViewController {
         verifyPasswordInputField.placeholder = MultiWalletStrings.verifyPasswordInputHint
         infoLabel.text = MultiWalletStrings.activateMultiWalletInfo
         generateNEP6Button.setTitle(MultiWalletStrings.generateEncryptedKey, for: UIControl.State())
+        self.title = SettingsStrings.enableMultiWallet
     }
     
     func setThemedElements() {
