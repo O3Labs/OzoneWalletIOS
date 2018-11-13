@@ -176,7 +176,6 @@ class CreateOrderViewModel {
         O3APIClient(network: AppState.network).loadPricing(symbol: symbol, currency: currency) { result in
             switch result {
             case .failure(_):
-                //TODO show error
                 self.delegate?.endLoading()
                 return
             case .success(let pairResponse):
@@ -185,7 +184,6 @@ class CreateOrderViewModel {
                 O3APIClient(network: AppState.network, useCache: true).loadPricing(symbol: self.offerAsset.symbol, currency: UserDefaultsManager.referenceFiatCurrency.rawValue) { result in
                     switch result {
                     case .failure(_):
-                        //TODO show error
                         self.delegate?.endLoading()
                         return
                     case .success(let fiatResponse):
@@ -367,7 +365,7 @@ class CreateOrderTableViewController: UITableViewController {
     
     var viewModel: CreateOrderViewModel!
     
-    @IBOutlet var targetPriceTextField: UITextField!
+    @IBOutlet var targetPriceTextField: FixedDecimalTextField!
     @IBOutlet var targetPriceTitle: UILabel!
     @IBOutlet var targetPriceSubtitle: UILabel!
     @IBOutlet var targetFiatPriceLabel: UILabel!
@@ -795,6 +793,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
     func onPriceReceived(pairPrice: AssetPrice, fiatPrice: AssetPrice) {
         DispatchQueue.main.async {
             HUD.hide()
+            self.targetPriceTextField.decimals = self.viewModel.pairPrecision
             self.targetPriceSubtitle.text = self.viewModel.priceChangeDescription
             //assign default value to the toolbar
             self.targetFiatPriceLabel.text = Fiat(amount: Float(fiatPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: self.viewModel.defaultPrecision)
