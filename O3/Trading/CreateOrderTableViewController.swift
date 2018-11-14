@@ -420,12 +420,12 @@ class CreateOrderTableViewController: UITableViewController {
     
     func setupInputToolbar() {
         inputToolbar.delegate = self
+        wantAmountTextField.decimals = viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision
+        offerAmountTextField.decimals = self.viewModel.defaultPrecision //always 8 decimals
         if viewModel.selectedAction == CreateOrderAction.Sell {
-            wantAmountTextField.decimals = viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision
             wantAmountTextField.inputAccessoryView = inputToolbar.loadNib()
             wantAmountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
         } else {
-            offerAmountTextField.decimals = viewModel.offerAsset.precision ?? self.viewModel.defaultPrecision
             offerAmountTextField.inputAccessoryView = inputToolbar.loadNib()
             offerAmountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
         }
@@ -474,7 +474,7 @@ class CreateOrderTableViewController: UITableViewController {
         }
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = viewModel.offerAsset.precision ?? self.viewModel.defaultPrecision
+        formatter.maximumFractionDigits = self.viewModel.defaultPrecision //always 8 decimals
         formatter.numberStyle = .decimal
         let number = formatter.number(from: (sender.text?.trim())!)
         if number == nil {
@@ -825,7 +825,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                 self.offerAmountTextField.text = ""
                 return
             }
-            self.offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.offerAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
+            self.offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.defaultPrecision, removeTrailing: true)
             
             self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: self.viewModel.defaultPrecision)
         }
@@ -871,7 +871,7 @@ extension CreateOrderTableViewController: AssetInputToolbarDelegate{
             wantAmountTextField.text = value.formattedStringWithoutSeparator(viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
         } else {
             viewModel.setOfferAmount(value: value)
-            offerAmountTextField.text = value.formattedStringWithoutSeparator(viewModel.offerAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
+            offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.defaultPrecision, removeTrailing: true)
         }
     }
     
@@ -881,7 +881,7 @@ extension CreateOrderTableViewController: AssetInputToolbarDelegate{
             wantAmountTextField.text = value.formattedStringWithoutSeparator(viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
         } else {
             viewModel.setOfferAmount(value: value)
-            offerAmountTextField.text = value.formattedStringWithoutSeparator(viewModel.offerAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
+            offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.defaultPrecision, removeTrailing: true)
         }
     }
 }
