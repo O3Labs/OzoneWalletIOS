@@ -19,6 +19,11 @@ class UnlockMultiWalletTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setThemedElements()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(dismissTapped))
+    }
+    
+    @objc func dismissTapped() {
+        self.dismiss(animated: true)
     }
     
     func setThemedElements() {
@@ -45,18 +50,19 @@ class UnlockMultiWalletTableViewController: UITableViewController {
         return accountsToDisplay.count
     }
     
-    func displayPasswordInput(key: String) {
-        let alertController = UIAlertController(title: "Enter the password", message: "It will replace default ", preferredStyle: .alert)
+    func displayPasswordInput(key: String, name: String) {
+        let alertController = UIAlertController(title: "Unlock " + name, message: "Please enter the password for this wallet. This will set it to default and lock all other wallets.", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
-            let inputPass = alertController.textFields?[0].text!
-            var error: NSError?
-            let _ = NeoutilsNEP2Decrypt(key, inputPass, &error)
-            self.navigationController?.popViewController(animated: true)
-            if error == nil {
-                NEP6.makeNewDefault(key: key, pass: inputPass!)
-                self.dismiss(animated: true)
-            } else {
-                OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}
+                let inputPass = alertController.textFields?[0].text!
+                var error: NSError?
+                let _ = NeoutilsNEP2Decrypt(key, inputPass, &error)
+               // self.navigationController?.popViewController(animated: true)
+                if error == nil {
+                    NEP6.makeNewDefault(key: key, pass: inputPass!)
+                    self.dismiss(animated: true)
+                } else {
+                    OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
+            
             }
         }
         
@@ -75,6 +81,7 @@ class UnlockMultiWalletTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let key = accounts[indexPath.row].key!
-        displayPasswordInput(key: key)
+        let name = accounts[indexPath.row].label
+        displayPasswordInput(key: key, name: name)
     }
 }

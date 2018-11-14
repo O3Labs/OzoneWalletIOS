@@ -107,10 +107,12 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         guard let modal = UIStoryboard(name: "AddNewMultiWallet", bundle: nil).instantiateViewController(withIdentifier: "UnlockMultiWalletTableViewController") as? UnlockMultiWalletTableViewController else {
             fatalError("Presenting improper modal controller")
         }
-        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: modal)
-        modal.modalPresentationStyle = .custom
-        modal.transitioningDelegate = self.halfModalTransitioningDelegate
-        self.present(modal, animated: true)
+        let modalWithNav = UINavigationController(rootViewController: modal)
+        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: modalWithNav)
+        modal.title = "Switch Wallets"
+        modalWithNav.modalPresentationStyle = .custom
+        modalWithNav.transitioningDelegate = self.halfModalTransitioningDelegate
+        self.present(modalWithNav, animated: true)
     }
 
     @objc func rightBarButtonTapped(_ sender: Any) {

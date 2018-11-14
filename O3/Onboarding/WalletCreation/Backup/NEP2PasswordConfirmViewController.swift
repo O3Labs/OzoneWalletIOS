@@ -71,7 +71,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
             doneButton.isEnabled = true
         }
     }
-
+    
     @IBAction func continueButtonTapped(_ sender: Any) {
         if validatePassword() {
             if !MFMailComposeViewController.canSendMail() {
@@ -99,12 +99,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
             composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")
 
             // Present the view controller modally.
-            DispatchQueue.main.async {
-                let transitionDelegate = DeckTransitioningDelegate()
-                composeVC.transitioningDelegate = transitionDelegate
-                composeVC.modalPresentationStyle = .custom
-                self.present(composeVC, animated: true, completion: nil)
-            }
+            self.present(composeVC, animated: true, completion: nil)
         } else {
             OzoneAlert.alertDialog(message: OnboardingStrings.passwordMismatch, dismissTitle: OzoneAlert.okPositiveConfirmString) {
                 self.passwordField.text = ""

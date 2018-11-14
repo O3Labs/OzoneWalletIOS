@@ -12,6 +12,7 @@ import ScrollableGraphView
 import Channel
 import PKHUD
 import SwiftTheme
+import DeckTransition
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, GraphPanDelegate, ScrollableGraphViewDataSource, HomeViewModelDelegate, EmptyPortfolioDelegate, AddressAddDelegate {
     
@@ -102,10 +103,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     @objc func updateGraphAppearance(_ sender: Any) {
         DispatchQueue.main.async {
+            
+            let needEmptyView = self.graphViewContainer.subviews.last ?? UIView() == self.emptyGraphView ?? UIView()
+            
             self.graphView.removeFromSuperview()
             self.panView.removeFromSuperview()
             self.setupGraphView()
             self.getBalance()
+            if needEmptyView {
+                self.graphViewContainer.bringSubviewToFront(self.emptyGraphView!)
+            }
         }
     }
 
@@ -238,6 +245,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.selectedPrice = portfolio.data.first
             self.walletHeaderCollectionView.reloadData()
             self.assetsTable.reloadData()
+            if portfolio.data.first?.average == 0.0 &&
+                portfolio.data.last?.average == 0.0 &&
+                self.homeviewModel.currentIndex == 0 {
+                self.setEmptyGraphView()
+            } else {
+                self.emptyGraphView?.isHidden = true
+            }
             self.graphView.reload()
         }
 
@@ -419,6 +433,12 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             referenceCurrency: (homeviewModel?.referenceCurrency)!,
             selectedInterval: (homeviewModel?.selectedInterval)!
         )
+        
+        //portfolio prices can only be loaded when the cell actually appeaRS
+        if (homeviewModel.currentIndex != indexPath.row) {
+            cell.data = data
+            return cell
+        }
 
         guard let latestPrice = selectedPrice,
             let previousPrice = portfolio?.data.last else {
@@ -492,7 +512,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func displayEnableMultiWallet() {
         if NEP6.getFromFileSystem() == nil {
             if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "activateMultiWalletTableViewController") as? ActivateMultiWalletTableViewController {
-                self.present(vc, animated: true, completion: {})
+                let vcWithNav = (UINavigationController(rootViewController: vc))
+                self.present(vcWithNav, animated: true, completion: {})
             }
         } else {
             let vc = UIStoryboard(name: "AddNewMultiWallet", bundle: nil).instantiateInitialViewController()!
@@ -500,11 +521,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
     
+    func displayDepositTokens() {
+        let modal = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "MyAddressNavigationController")
+        
+        let transitionDelegate = DeckTransitioningDelegate()
+        modal.transitioningDelegate = transitionDelegate
+        modal.modalPresentationStyle = .custom
+        present(modal, animated: true, completion: nil)
+    }
+    
     func emptyPortfolioButtonTapped() {
         if homeviewModel.currentIndex != 0 {
             displayEnableMultiWallet()
         } else {
-            //display deposit tokens
+            displayDepositTokens()
         }
     }
 

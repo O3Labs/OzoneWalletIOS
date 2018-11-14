@@ -40,10 +40,20 @@ class AddNameWatchAddressTableViewController: UITableViewController {
     }
     
     @IBAction func continueTapped(_ sender: Any) {
-        self.performSegue(withIdentifier: "segueToWatchAddressFinished", sender: nil)
+        let nameText = nameInputField.text?.trim() ?? ""
+        let index = NEP6.getFromFileSystem()!.accounts.firstIndex { $0.label == nameText}
+        if index != nil {
+            OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+                self.nameInputField.text = ""
+            }
+            return
+        }
+        
         var updatedNep6 = NEP6.getFromFileSystem()!
         updatedNep6.addWatchAddress(address: address, name: nameInputField.text!)
         updatedNep6.writeToFileSystem()
+        self.performSegue(withIdentifier: "segueToWatchAddressFinished", sender: nil)
+        
 
     }
     

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Neoutils
+import Lottie
 
 class EncryptPasswordEntryTableViewController: UITableViewController {
     
@@ -22,14 +23,16 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
     
     @IBOutlet weak var passwordInputShowButton: UIButton!
     @IBOutlet weak var passwordVerifyShowButton: UIButton!
-    @IBOutlet weak var descriptionLabel: UILabel!
     
     @IBOutlet weak var continueButton: UIButton!
     
+    @IBOutlet weak var animationContainerView: UIView!
     
     var passwordInputIsSecure = true
     var passwordVerifyIsSecure = true
     var wif = ""
+    
+    let animation = LOTAnimationView(name: "wallet_generated")
     
     var allowedCharacters = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~`!@#$%^&*()+=-/;:\"\'{}[]<>^?,")
     var nep2: NeoutilsNEP2?
@@ -38,6 +41,11 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
         super.viewDidLoad()
         setLocalizedStrings()
         setThemedElements()
+        applyNavBarTheme()
+        animationContainerView.embed(animation)
+        animation.loopAnimation = true
+        animation.play()
+        continueButton.isEnabled = false
     }
     
     func validatePasswordAndName() -> Bool {
@@ -68,7 +76,7 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
         let nameText = nameEntryTextField.text?.trim() ?? ""
         let index = NEP6.getFromFileSystem()!.accounts.firstIndex { $0.label == nameText}
         if index != nil {
-            OzoneAlert.alertDialog(message: "Already have dat name bruh", dismissTitle: OzoneAlert.okPositiveConfirmString) {
+            OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
                 self.nameEntryTextField.text = ""
             }
             return false
@@ -78,23 +86,29 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
     }
     
     @IBAction func continutButtonTapped(_ sender: Any) {
-        DispatchQueue.main.async {
-            if !self.validatePasswordAndName() {
+    if !self.validatePasswordAndName() {
+        return
+    }
+    
+    var updatedNep6 = NEP6.getFromFileSystem()!
+        do {
+            var error: NSError?
+            self.nep2 = NeoutilsNEP2Encrypt(self.wif, self.passwordTextField.text!, &error)
+            let index = NEP6.getFromFileSystem()!.accounts.firstIndex { $0.address == nep2?.address()}
+            if (index != nil) {
+                OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+                }
                 return
             }
             
-            var updatedNep6 = NEP6.getFromFileSystem()!
-            do {
-                var error: NSError?
-                self.nep2 = NeoutilsNEP2Encrypt(self.wif, self.passwordTextField.text!, &error)
-                try updatedNep6.addEncryptedKey(name: self.nameEntryTextField.text!, address: self.nep2!.address(), key: self.nep2!.encryptedKey())
-                updatedNep6.writeToFileSystem()
-                self.performSegue(withIdentifier: "segueToFinishedEncryption", sender: nil)
-            } catch {
-                OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
-            }
+            try updatedNep6.addEncryptedKey(name: self.nameEntryTextField.text!, address: self.nep2!.address(), key: self.nep2!.encryptedKey())
+            updatedNep6.writeToFileSystem()
+            self.performSegue(withIdentifier: "segueToFinishedEncryption", sender: nil)
+        } catch {
+            OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
         }
     }
+
     
     @IBAction func nameFieldChanged(_ sender:Any) {
        if nameEntryTextField.text != "" && passwordTextField.text != "" && confirmPasswordTextField.text != "" {
@@ -156,12 +170,11 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
         subtitleLabel.text = MultiWalletStrings.activateMultiWalletSubtitle
         passwordTextField.placeholder = MultiWalletStrings.passwordInputHint
         confirmPasswordTextField.placeholder = MultiWalletStrings.verifyPasswordInputHint
-        descriptionLabel.text = MultiWalletStrings.activateMultiWalletInfo
+        nameEntryTextField.placeholder = "My O3 Wallet"
     }
     func setThemedElements() {
         titleLabel.theme_textColor = O3Theme.titleColorPicker
         subtitleLabel.theme_textColor = O3Theme.titleColorPicker
-        descriptionLabel.theme_textColor = O3Theme.lightTextColorPicker
         passwordTextField.theme_placeholderAttributes = O3Theme.placeholderAttributesPicker
         passwordTextField.theme_textColor = O3Theme.textFieldTextColorPicker
         passwordTextField.theme_keyboardAppearance = O3Theme.keyboardPicker
@@ -176,6 +189,8 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
         nameEntryTextField.theme_textColor = O3Theme.textFieldTextColorPicker
         nameEntryTextField.theme_keyboardAppearance = O3Theme.keyboardPicker
         nameEntryTextField.theme_backgroundColor = O3Theme.textFieldBackgroundColorPicker
+        
+        continueButton.setTitle(MultiWalletStrings.continueAction, for: UIControl.State())
         
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker

@@ -27,6 +27,7 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
         super.viewDidLoad()
         setLocalizedStrings()
         initiateNavBar()
+        applyNavBarTheme()
         setThemedElements()
         animationContainerView.embed(lottieView)
         lottieView.loopAnimation = true
@@ -39,11 +40,7 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     
     @objc func dismissPage(_ sender: Any) {
         //parent is nav controller presenter will be the one above it
-        if let parentVC = self.presentingViewController as? ManageWalletsTableViewController {
-            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
-        } else {
-            self.dismiss(animated: true)
-        }
+        self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func scanTapped(_ sender: Any) {
@@ -77,13 +74,40 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
         }
     }
     
+    func addressIsNotPresent() -> Bool {
+        for account in NEP6.getFromFileSystem()!.accounts {
+            if account.address == walletInputField.text! {
+                return false
+            }
+        }
+        return true
+    }
+    
+    func keyIsNotPresent() -> Bool {
+        for account in NEP6.getFromFileSystem()!.accounts {
+            if account.key == walletInputField.text! {
+                return false
+            }
+        }
+        return true
+    }
     
     @IBAction func addWalletButtonTapped(_ sender: Any) {
         newWif = ""
         if isInputAddress() {
-            self.performSegue(withIdentifier: "segueToAddedWatchAddress", sender: nil)
+            if addressIsNotPresent() {
+                self.performSegue(withIdentifier: "segueToAddedWatchAddress", sender: nil)
+            } else {
+                OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+                }
+            }
         } else if isInputEncryptedKey() {
-            self.performSegue(withIdentifier: "segueToVerifyEncryptedKey", sender: nil)
+            if keyIsNotPresent() {
+                self.performSegue(withIdentifier: "segueToVerifyEncryptedKey", sender: nil)
+            } else {
+                OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+                }
+            }
         } else if isInputWif() {
             self.performSegue(withIdentifier: "segueToEncryptWif", sender: nil)
         } else  {

@@ -52,13 +52,16 @@
 "MULTIWALLET_activate_info" = "This password will be used to encrypt your private key";
 
 /* subtitle for activating multiwallet */
-"MULTIWALLET_activate_multiwallet_subtitle" = "Just enter a strong password that you won't forget and we will generate a new key for you";
+"MULTIWALLET_activate_multiwallet_subtitle" = "Please enter a name and passphrase for this wallet";
 
 /* title for activating multiwallet page */
-"MULTIWALLET_activate_multiwallet_title" = "To allow multi wallet functionality in O3, we need to update your private key to an encrypted key.";
+"MULTIWALLET_activate_multiwallet_title" = "To ensure your funds are secure, O3 requires you to convert your private key to a safer encrypted key.";
 
 /* title to add key to a watch only address */
 "MULTIWALLET_add_key" = "Unlock";
+
+/* description for adding key to a watch address */
+"MULTIWALLET_add_key_description" = "Add an encrypted key to convert this watch address"; /* NEW */
 
 /* Description text when adding more wallets to your multi wallet */
 "MULTIWALLET_add_wallet_description" = "Enter a NEO/Ontology encrypted key, private key or address to add wallet or watch address.";
@@ -73,7 +76,7 @@
 "MULTIWALLET_backup_wallet" = "Backup Wallet";
 
 /* message stating that you cant delete primary key */
-"MULTIWALLET_cannot_delete_primary" = "You cannot delete your primary wallet, please make a new primary wallet and try again";
+"MULTIWALLET_cannot_delete_primary" = "You cannot delete your primary wallet. Please create a new wallet or unlock a different wallet and try again";
 
 /* text for continue action */
 "MULTIWALLET_continue" = "Next";
@@ -93,6 +96,12 @@
 /* Hint for entering encrypted key password in multiwallet setup */
 "MULTIWALLET_encrypted_password_hint" = "Encrypted key password";
 
+/* Description for when you have finished encrypting a private key and storing it in NEP5 */
+"MULTIWALLET_encryption_finished_decription" = "We've encrypted this wallet for you. Please make sure to back it up and remember your password"; /* NEW */
+
+/* Description when entering a new name */
+"MULTIWALLET_enter_new_name" = "MULTIWALLET_enter_new_name"; /* NEW */
+
 /* error alert after failing to decrrypt the encrypted key */
 "MULTIWALLET_failed_to_decrypt" = "Failed to decrypt key, please double check it";
 
@@ -107,6 +116,12 @@
 
 /* error text when they enter text that can't be parsed as a key or address */
 "MULTIWALLET_invalid_wallet_entry" = "That key or address is invalid, please double check it";
+
+/* placeholder for when entering a new name for wallet */
+"MULTIWALLET_my_wallet_placeholder" = "My Awesome Wallet"; /* NEW */
+
+/* button title to create a new wallet */
+"MULTIWALLET_new_wallet" = "Generate New Wallet"; /* NEW */
 
 /* Input hint for when making password to generate encrypted ket */
 "MULTIWALLET_password_hint" = "Password";
@@ -128,6 +143,9 @@
 
 /* A description to display after a watch address has been successfully added */
 "MULTIWALLET_watch_address_added" = "A watch address has been added. You can unlock this address at ay time via settings > manage wallet and entering a private or encrypted key";
+
+/* Title to edit name in multiwallet */
+"MUTLIWALLET_edit_name" = "Edit Name"; /* NEW */
 
 /* Title of the news feed page */
 "NEWSFEED_News_Title" = "News Feed";
@@ -400,7 +418,7 @@
 "ONBOARDING_welcome_back_title" = "Welcome back to O3";
 
 /* Action button to add watch address */
-"PORTFOLIO_Add_Watch_Address" = "Add Watch Address";
+"PORTFOLIO_Add_Watch_Address" = "Activate Multiwallet";
 
 /* A header title on the portfolio screen, show the displayed funds are inside cold storage */
 "PORTFOLIO_Cold_Storage_Header" = "COLD STORAGE";
@@ -409,10 +427,10 @@
 "PORTFOLIO_Combined_Header" = "COMBINED";
 
 /* Action Button to deposit tokens itno wallet */
-"PORTFOLIO_Deposit_Tokens" = "PORTFOLIO_Deposit_Tokens";
+"PORTFOLIO_Deposit_Tokens" = "Deposit Tokens";
 
 /* Title of empty state when user has no balance in wallte */
-"PORTFOLIO_Empty_Balance" = "PORTFOLIO_Empty_Balance";
+"PORTFOLIO_Empty_Balance" = "You currently have no tokens in your wallet";
 
 /* Portfolio Percentage Change String */
 "PORTFOLIO_Interval" = "%.2f%@ (%@)";
@@ -571,7 +589,7 @@
 "SETTINGS_Close_Title" = "Close";
 
 /* warning in settings when there is congestion in the neo blockchain */
-"SETTINGS_congestion_warning" = "%d unconfirmed transactions. Due to congestion, transactions may take some time to process"; /* NEW */
+"SETTINGS_congestion_warning" = "%d unconfirmed transactions. Due to congestion, transactions may take some time to process";
 
 /* Settings Menu Title For Contact */
 "SETTINGS_Contact" = "Contact";
@@ -584,6 +602,9 @@
 
 /* settings item to enable multi wallet if not active */
 "SETTINGS_enable_multiwallet" = "Enable MultiWallet";
+
+/* label for identity page that user can use */
+"SETTINGS_id_label" = "Identities"; /* NEW */
 
 /* Error To display when user tries to add an invalid address */
 "SETTINGS_Invalid_Address" = "Invalid Address";
@@ -608,6 +629,9 @@
 
 /* Lavel to describe a nickname input field */
 "SETTINGS_Nickname_LAbel" = "Nickname";
+
+/* description when no nns names currently listed */
+"SETTINGS_nns_empty" = "SETTINGS_nns_empty"; /* NEW */
 
 /* Title for Settings Menu */
 "SETTINGS_Settings_Title" = "More...";
@@ -835,7 +859,7 @@
 "WALLET_From_Prefix" = "FROM: %@";
 
 /* Informative text explaining you can store neo, gas, and nep-5 tokens using this address */
-"WALLET_My_Address_Explanation" = "You can use this address to receive NEO, GAS, ONT, ONG, or any NEP5 Token from an exchange or another wallet.";
+"WALLET_My_Address_Explanation" = "This address accepts NEO, Ontology & NEP-5 tokens.";
 
 /* Title of the My Address Page */
 "WALLET_My_Address_Title" = "My Address";

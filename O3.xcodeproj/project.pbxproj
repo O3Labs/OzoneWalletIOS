@@ -31,7 +31,6 @@
 		3522945821117790004A03A7 /* claim_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522945621117790004A03A7 /* claim_success.json */; };
 		3522945921117790004A03A7 /* loader_portfolio.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522945721117790004A03A7 /* loader_portfolio.json */; };
 		3522945B2111A693004A03A7 /* UnboundOng.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522945A2111A693004A03A7 /* UnboundOng.swift */; };
-		3522CB3D219A6CA600FAE382 /* EnterPasswordKey.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522CB3C219A6CA600FAE382 /* EnterPasswordKey.json */; };
 		3527F8CD20C5349200C2FCB9 /* Marketplace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */; };
 		3527F8CF20C539A500C2FCB9 /* MarketplaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3527F8CE20C539A500C2FCB9 /* MarketplaceController.swift */; };
 		3537848D20807FD800648AF2 /* ContributionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3537848C20807FD800648AF2 /* ContributionTableViewCell.swift */; };
@@ -390,7 +389,6 @@
 		3522945621117790004A03A7 /* claim_success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = claim_success.json; sourceTree = "<group>"; };
 		3522945721117790004A03A7 /* loader_portfolio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loader_portfolio.json; sourceTree = "<group>"; };
 		3522945A2111A693004A03A7 /* UnboundOng.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnboundOng.swift; sourceTree = "<group>"; };
-		3522CB3C219A6CA600FAE382 /* EnterPasswordKey.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = EnterPasswordKey.json; sourceTree = "<group>"; };
 		3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Marketplace.storyboard; sourceTree = "<group>"; };
 		3527F8CE20C539A500C2FCB9 /* MarketplaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceController.swift; sourceTree = "<group>"; };
 		3537848C20807FD800648AF2 /* ContributionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionTableViewCell.swift; sourceTree = "<group>"; };
@@ -1000,7 +998,6 @@
 				354394D2218979AE000C1D8C /* ConvertToWalletTableViewController.swift */,
 				356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */,
 				356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */,
-				3522CB3C219A6CA600FAE382 /* EnterPasswordKey.json */,
 			);
 			path = MultiWallet;
 			sourceTree = "<group>";
@@ -1557,7 +1554,6 @@
 			files = (
 				6E244ECB208714E8001B4B22 /* TokenSaleAsset.xcassets in Resources */,
 				35AD2B64209179010024A900 /* Base.lproj in Resources */,
-				3522CB3D219A6CA600FAE382 /* EnterPasswordKey.json in Resources */,
 				6E60CC6020CE38630062F1CE /* AccountAssets.xcassets in Resources */,
 				6E5B1074215DF9F600D076C6 /* Tokens.xcassets in Resources */,
 				6E8B0A4F21587AD700E8A2E5 /* PriceInputToolbar.xib in Resources */,

@@ -198,35 +198,11 @@ public class NEP6: Codable {
             try keychain
                 .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                 .set(pass, key: "ozoneActiveNep6Password")
+            
             nep6.accounts[currentDefaultIndex!].isDefault = false
             nep6.accounts[newDefaultIndex!].isDefault = true
             nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
 
-            nep6.writeToFileSystem()
-            var error: NSError?
-            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
-            NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
-        } catch _ {
-            return
-        }
-    }
-    
-    static public func makeNewDefault(name: String, pass: String) {
-        let nep6 = getFromFileSystem()!
-        let currentDefaultIndex = nep6.accounts.firstIndex { $0.isDefault }
-        let newDefaultIndex = nep6.accounts.firstIndex { $0.label == name }
-        if newDefaultIndex == nil || currentDefaultIndex == nil {
-            return
-        }
-        let keychain = Keychain(service: "network.o3.neo.wallet")
-        do {
-            //save pirivate key to keychain
-            try keychain
-                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                .set(pass, key: "ozoneActiveNep6Password")
-            nep6.accounts[currentDefaultIndex!].isDefault = false
-            nep6.accounts[newDefaultIndex!].isDefault = true
-            nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
             nep6.writeToFileSystem()
             var error: NSError?
             Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))

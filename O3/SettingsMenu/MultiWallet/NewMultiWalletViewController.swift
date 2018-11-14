@@ -18,10 +18,20 @@ class NewMultiWalletViewController: UIViewController, MFMailComposeViewControlle
     @IBOutlet weak var finishButton: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
     
+    @IBOutlet weak var encryptedKeyQrImageView: UIImageView!
+    
+    func setEncryptedKeyInfo() {
+        let nep2String = (NEP6.getFromFileSystem()?.accounts[0].key)!
+        encryptedKeyLabel.text = nep2String
+        let image = UIImage(qrData: nep2String, width: 200, height: 200, qrLogoName: "ic_QRencryptedKey")
+        encryptedKeyQrImageView.image = image
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
         setThemedElements()
+        setEncryptedKeyInfo()
     }
     
     @IBAction func backupButtonTapped(_ sender: Any) {
@@ -53,12 +63,7 @@ class NewMultiWalletViewController: UIViewController, MFMailComposeViewControlle
         composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")
         
         // Present the view controller modally.
-        DispatchQueue.main.async {
-            let transitionDelegate = DeckTransitioningDelegate()
-            composeVC.transitioningDelegate = transitionDelegate
-            composeVC.modalPresentationStyle = .custom
-            self.present(composeVC, animated: true, completion: nil)
-        }
+        self.present(composeVC, animated: true, completion: nil)
     }
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {

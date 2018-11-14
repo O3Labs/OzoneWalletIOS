@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Neoutils
+import PKHUD
 
 protocol WalletHeaderCellDelegate: class {
     func didTapLeft()
@@ -86,6 +87,7 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
     
     var data: WalletHeaderCollectionCell.Data? {
         didSet {
+            portfolioValueLabel.theme_textColor = O3Theme.primaryColorPicker
             guard let type = data?.type,
                 let numWatchAddresses = data?.numWatchAddresses,
                 let latestPrice = data?.latestPrice,
@@ -114,9 +116,21 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
             }
             percentChangeLabel.text = String.percentChangeString(latestPrice: latestPrice, previousPrice: previousPrice,
                                                                  with: selectedInterval, referenceCurrency: referenceCurrency)
-            walletHeaderLabel.theme_textColor = O3Theme.lightTextColorPicker
             walletUnlockHeaderArea.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(unlockTapped)))
+            
+            if (latestPrice.average - previousPrice.average == 0.0) {
+                portfolioValueLabel.theme_textColor = O3Theme.tableSeparatorColorPicker
+                percentChangeLabel.theme_textColor = O3Theme.tableSeparatorColorPicker
+                portfolioValueLabel.text = Fiat(amount: Float(0.0)).formattedString()
+            }
         }
+    }
+    
+    override func prepareForReuse() {
+        portfolioValueLabel.theme_textColor = O3Theme.backgroundLightgrey
+        percentChangeLabel.theme_textColor = O3Theme.backgroundLightgrey
+        portfolioValueLabel.text = Fiat(amount: Float(0.0)).formattedString()
+        super.prepareForReuse()
     }
     
     
@@ -126,16 +140,17 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
                 return
             }
 
-            let alertController = UIAlertController(title: "Enter the password", message: "It will replace default ", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Unlock " + (data?.account?.label ?? ""), message: "Please enter the password for this wallet. This will set it to default and lock all other wallets.", preferredStyle: .alert)
             let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
-                let inputPass = alertController.textFields?[0].text!
-                var error: NSError?
-                let _ = NeoutilsNEP2Decrypt(key, inputPass, &error)
-                if error == nil {
-                    NEP6.makeNewDefault(key: key, pass: inputPass!)
-                } else {
-                    OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}
-                }
+                    let inputPass = alertController.textFields?[0].text!
+                    var error: NSError?
+                    let _ = NeoutilsNEP2Decrypt(key, inputPass, &error)
+                    if error == nil {
+                        NEP6.makeNewDefault(key: key, pass: inputPass!)
+                    } else {
+                        OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
+                    }
+                
             }
             
             let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
@@ -150,6 +165,11 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
             
             UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
         }
+    }
+    
+    override func awakeFromNib() {
+        walletHeaderLabel.theme_textColor = O3Theme.lightTextColorPicker
+        super.awakeFromNib()
     }
     
     

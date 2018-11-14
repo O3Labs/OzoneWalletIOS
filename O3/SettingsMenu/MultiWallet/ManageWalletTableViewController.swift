@@ -133,6 +133,19 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         }
     }
     
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        DispatchQueue.main.async {
+            controller.dismiss(animated: true, completion: nil)
+            if result == .cancelled || result == .failed {
+                OzoneAlert.alertDialog(message: OnboardingStrings.failedToSendEmailDescription, dismissTitle: OzoneAlert.okPositiveConfirmString) {
+                    return
+                }
+            } else {
+                UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
     func backupEncryptedKey() {
         if !MFMailComposeViewController.canSendMail() {
             OzoneAlert.confirmDialog(OnboardingStrings.mailNotSetupTitle, message: OnboardingStrings.mailNotSetupMessage,
@@ -161,44 +174,40 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
         composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")
         
-        // Present the view controller modally.
-        DispatchQueue.main.async {
-            let transitionDelegate = DeckTransitioningDelegate()
-            composeVC.transitioningDelegate = transitionDelegate
-            composeVC.modalPresentationStyle = .custom
-            self.present(composeVC, animated: true, completion: nil)
-        }
+        self.present(composeVC, animated: true, completion: nil)
     }
     
     func deleteWatchAddress() {
         let nep6 = NEP6.getFromFileSystem()!
         nep6.removeEncryptedKey(address: account.address)
         nep6.writeToFileSystem()
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
     }
     
     func deleteEncryptedKeyVerify() {
-        OzoneAlert.confirmDialog(MultiWalletStrings.deleteEncryptedConfirm, message: MultiWalletStrings.deleteWatchAddress, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
+        OzoneAlert.confirmDialog(MultiWalletStrings.deleteEncryptedConfirm, message: "", cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
                 let nep6 = NEP6.getFromFileSystem()!
                 nep6.removeEncryptedKey(address: self.account.address)
                 nep6.writeToFileSystem()
+                UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
         }
     }
     
     func setWalletToDefault() {
-        let alertController = UIAlertController(title: "Do something", message: "Password", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Unlock " + self.account.label, message: "Please enter the password for this wallet. This will set it to default and lock all other wallets.", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
             let inputPass = alertController.textFields?[0].text!
             var error: NSError?
-            if inputPass == inputPass {
-                var error: NSError?
-                _ = NeoutilsNEP2Decrypt(self.account.key, inputPass, &error)
-                if error == nil {
-                    NEP6.makeNewDefault(address: self.account.address, pass: inputPass!)
+                if inputPass == inputPass {
+                    var error: NSError?
+                    _ = NeoutilsNEP2Decrypt(self.account.key, inputPass, &error)
+                    if error == nil {
+                        NEP6.makeNewDefault(address: self.account.address, pass: inputPass!)
+                    }
+                } else {
+                    OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
                 }
             
-            } else {
-                OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}
-            }
         }
         
         let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
@@ -216,15 +225,15 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            backupEncryptedKey()
-        } else if indexPath.row == 1 {
-            self.performSegue(withIdentifier: "segueToShowPrivateKey", sender: nil)
-        } else if indexPath.row == 2 {
             if account.key == nil {
                 self.performSegue(withIdentifier: "segueToConvertWallet", sender: nil)
             } else {
                 setWalletToDefault()
             }
+        } else if indexPath.row == 1 {
+            backupEncryptedKey()
+        } else if indexPath.row == 2 {
+            self.performSegue(withIdentifier: "segueToShowPrivateKey", sender: nil)
         } else if indexPath.row == 3 {
             if account.isDefault {
                 OzoneAlert.alertDialog(message: MultiWalletStrings.cannotDeletePrimary, dismissTitle: OzoneAlert.okPositiveConfirmString) { }

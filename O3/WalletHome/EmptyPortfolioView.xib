@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,20 +17,20 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dl1-Vp-gyP">
-                    <rect key="frame" x="16" y="307" width="343" height="20.5"/>
+                    <rect key="frame" x="16" y="318.5" width="343" height="20.5"/>
                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chartLine" translatesAutoresizingMaskIntoConstraints="NO" id="Scs-Sw-qQV">
-                    <rect key="frame" x="164" y="253" width="47" height="46"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QHi-Li-1Bm">
+                    <rect key="frame" x="0.0" y="343" width="375" height="1"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="47" id="278-wb-lXp"/>
-                        <constraint firstAttribute="height" constant="46" id="iIY-W5-eo7"/>
+                        <constraint firstAttribute="height" constant="1" id="Ihw-p7-qUx"/>
                     </constraints>
-                </imageView>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftV-cz-eoU" customClass="ShadowedButton" customModule="O3" customModuleProvider="target">
-                    <rect key="frame" x="16" y="351.5" width="343" height="44"/>
+                    <rect key="frame" x="16" y="349" width="343" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="1dQ-Gv-Lbr"/>
                     </constraints>
@@ -50,16 +50,17 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="QHi-Li-1Bm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="7Yy-vf-w6J"/>
                 <constraint firstItem="dl1-Vp-gyP" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Fhz-9h-YgM"/>
+                <constraint firstItem="QHi-Li-1Bm" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="MiF-Np-Clt"/>
+                <constraint firstItem="QHi-Li-1Bm" firstAttribute="top" secondItem="dl1-Vp-gyP" secondAttribute="bottom" constant="4" id="Mtw-dB-e4K"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dl1-Vp-gyP" secondAttribute="trailing" constant="16" id="aH8-Kd-ljz"/>
-                <constraint firstItem="Scs-Sw-qQV" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" multiplier="0.8" constant="1" id="aaH-SX-zgj"/>
-                <constraint firstItem="dl1-Vp-gyP" firstAttribute="top" secondItem="Scs-Sw-qQV" secondAttribute="bottom" constant="8" id="c31-XU-KMA"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ftV-cz-eoU" secondAttribute="trailing" constant="16" id="cX2-Lu-aGx"/>
                 <constraint firstItem="dl1-Vp-gyP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="daz-M6-WbF"/>
-                <constraint firstItem="Scs-Sw-qQV" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="jcz-9q-kfl"/>
+                <constraint firstItem="QHi-Li-1Bm" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="hoS-bU-ONS"/>
                 <constraint firstItem="ftV-cz-eoU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="n50-b8-rsy"/>
                 <constraint firstItem="ftV-cz-eoU" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="oIj-ui-WNt"/>
-                <constraint firstItem="ftV-cz-eoU" firstAttribute="top" secondItem="dl1-Vp-gyP" secondAttribute="bottom" constant="24" id="yZL-jk-yfz"/>
+                <constraint firstItem="ftV-cz-eoU" firstAttribute="top" secondItem="QHi-Li-1Bm" secondAttribute="bottom" constant="5" id="sVG-cu-kc6"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
@@ -69,7 +70,4 @@
             <point key="canvasLocation" x="144.80000000000001" y="137.18140929535232"/>
         </view>
     </objects>
-    <resources>
-        <image name="chartLine" width="30" height="30"/>
-    </resources>
 </document>

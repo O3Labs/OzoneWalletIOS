@@ -40,7 +40,6 @@ class ActivateMultiWalletTableViewController: UITableViewController {
         setLocalizedStrings()
         setThemedElements()
         animation.loopAnimation = true
-        animationContainerView.accessibilityIdentifier = "fds"
         animationContainerView.embed(animation)
         animation.play()
         generateNEP6Button.isEnabled = false
@@ -116,20 +115,20 @@ class ActivateMultiWalletTableViewController: UITableViewController {
         if !validatePassword() {
             return
         }
-        
         var error: NSError?
-        let nep2 = NeoutilsNEP2Encrypt(Authenticated.wallet!.wif, passwordInputField.text, &error)
+        let nep2 = NeoutilsNEP2Encrypt(Authenticated.wallet!.wif, self.passwordInputField.text, &error)
         let newAccount = NEP6.Account(address: Authenticated.wallet!.address,
-                                      label: "My O3 Wallet", isDefault: true, lock: false,
-                                      key: nep2!.encryptedKey())
+                                          label: "My O3 Wallet", isDefault: true, lock: false,
+                                          key: nep2!.encryptedKey())
         let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
         nep6.writeToFileSystem()
+        
         let keychain = Keychain(service: "network.o3.neo.wallet")
-       do {
+        do {
             //save pirivate key to keychain
             try keychain
                 .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                .set(passwordInputField.text!, key: "ozoneActiveNep6Password")
+                .set(self.passwordInputField.text!, key: "ozoneActiveNep6Password")
             } catch _ {
                 return
         }

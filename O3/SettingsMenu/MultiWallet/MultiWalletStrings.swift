@@ -55,4 +55,6 @@ struct MultiWalletStrings {
     static let newWallet = NSLocalizedString("MULTIWALLET_new_wallet", comment: "button title to create a new wallet")
     
     static let encryptionFinishedDescription = NSLocalizedString("MULTIWALLET_encryption_finished_decription", comment: "Description for when you have finished encrypting a private key and storing it in NEP5")
+    
+    static let cannotAddDuplicate = NSLocalizedString("MULTIWALLET_cannot_add_duplicate", comment: "You cannot add the same wallet twice.")
 }

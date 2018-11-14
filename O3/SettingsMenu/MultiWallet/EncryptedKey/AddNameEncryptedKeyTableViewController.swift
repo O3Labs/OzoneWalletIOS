@@ -8,19 +8,26 @@
 
 import Foundation
 import UIKit
+import Lottie
 
 class AddNameEncryptedKeyTableViewController: UITableViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var nameInputField: UITextField!
     @IBOutlet weak var finishButton: ShadowedButton!
+    @IBOutlet weak var animationContainerView: UIView!
     
     var address = ""
     var encryptedKey = ""
+    
+    var animation = LOTAnimationView(name: "wallet_generated")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
         setThemedElements()
+        animationContainerView.embed(animation)
+        animation.loopAnimation = true
+        animation.play()
     }
     
     @IBAction func finishButtonTapped(_ sender: Any) {
@@ -29,7 +36,7 @@ class AddNameEncryptedKeyTableViewController: UITableViewController {
         do {
             try updatedNep6.addEncryptedKey(name: nameInputField.text!, address: address, key: encryptedKey)
                 updatedNep6.writeToFileSystem()
-                self.dismiss(animated: true)
+                UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
         } catch {
             OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
         }

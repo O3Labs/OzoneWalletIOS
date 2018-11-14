@@ -17,7 +17,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
     @IBOutlet weak var passwordInputField: UITextField!
     @IBOutlet weak var continueButton: ShadowedButton!
     
-    let lottieView = LOTAnimationView(name: "wallet_generated")
+    let lottieView = LOTAnimationView(name: "EnterPasswordKey")
     var encryptedKey = ""
     var address = ""
     
@@ -29,6 +29,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
         lottieView.loopAnimation = true
         lottieView.play()
         continueButton.isEnabled = false
+        passwordInputField.isSecureTextEntry = true
     }
     
     @IBAction func passwordInputChanged(_ sender: Any) {

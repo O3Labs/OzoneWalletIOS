@@ -76,7 +76,6 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setLocalizedStrings()
         addObservers()
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.tableView.theme_backgroundColor = O3Theme.backgroundLightgrey
@@ -101,6 +100,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         super.viewDidAppear(animated)
         loadClaimableGAS()
         loadClaimableOng()
+        setLocalizedStrings()
     }
     
     private func loadAccountValue(account: accounts,  list: [TransferableAsset]) {
@@ -185,6 +185,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             self.tableView.refreshControl?.endRefreshing()
             // self.tableView.reloadData()
         }
+        setLocalizedStrings()
     }
     
     func setIsClaimingNeo(_ isClaiming: Bool) {
@@ -570,7 +571,11 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     //MARK: -
     func setLocalizedStrings() {
-        self.navigationController?.navigationBar.topItem?.title = AccountStrings.accountTitle
+        if NEP6.getFromFileSystem()?.accounts.count ?? 0 > 0 {
+            self.navigationController?.navigationBar.topItem?.title = NEP6.getFromFileSystem()?.accounts[0].label
+        } else {
+            self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
+        }
     }
     
     @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {

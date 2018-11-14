@@ -151,6 +151,13 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         } else {
             self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
         }
+        
+        if NEP6.getFromFileSystem() == nil {
+            multiWalletLabel.text = SettingsStrings.enableMultiWallet
+        } else {
+            multiWalletLabel.text = SettingsStrings.manageWallets
+        }
+        
     }
 
     override func viewDidLoad() {

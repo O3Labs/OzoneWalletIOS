@@ -114,7 +114,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.delegate = self
         tableView.dataSource = self
         setLocalizedStrings()
-        //login()
+        login()
     }
     
     func inputPassword(encryptedKey: String) {
@@ -123,11 +123,12 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
             let inputPass = alertController.textFields?[0].text
             var error: NSError?
-            if let wif = NeoutilsNEP2Decrypt(encryptedKey, inputPass, &error) {
-                NEP6.makeNewDefault(key: encryptedKey, pass: inputPass!)
-                self.login()
-            } else {
-                OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}
+                if let wif = NeoutilsNEP2Decrypt(encryptedKey, inputPass, &error) {
+                    NEP6.makeNewDefault(key: encryptedKey, pass: inputPass!)
+                    self.login()
+                } else {
+                    OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}
+            
             }
         }
         

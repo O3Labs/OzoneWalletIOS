@@ -13,7 +13,6 @@ import Neoutils
 import SwiftTheme
 import KeychainAccess
 import Channel
-import PKHUD
 
 class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetadataOutputObjectsDelegate, Nep2PasswordDelegate, UITextViewDelegate {
 
@@ -133,7 +132,7 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
                 self.nep6.writeToFileSystem()
                 self.navigationController?.popViewController(animated: true)
             } else {
-                OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}
+                OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
             }
         }
         

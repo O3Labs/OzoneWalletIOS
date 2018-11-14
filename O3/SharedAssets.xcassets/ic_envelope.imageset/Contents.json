@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ic_envelope_light.png",
+      "filename" : "ic_contact.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_envelope_light@2x.png",
+      "filename" : "ic_contact@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_envelope_light@3x.png",
+      "filename" : "ic_contact@3x.png",
       "scale" : "3x"
     }
   ],

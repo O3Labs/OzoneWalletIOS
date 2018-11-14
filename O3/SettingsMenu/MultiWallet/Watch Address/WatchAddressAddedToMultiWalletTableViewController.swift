@@ -28,7 +28,7 @@ class WatchAddressAddedToMultiWalletTableViewController: UITableViewController {
     }
     
     @IBAction func watchAddressFinishedTapped(_ sender: Any) {
-        self.dismiss(animated: true)
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
     }
     
     func setLocalizedStrings() {

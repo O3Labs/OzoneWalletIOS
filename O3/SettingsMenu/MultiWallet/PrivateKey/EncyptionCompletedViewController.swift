@@ -41,6 +41,7 @@ class EncryptionCompletedViewController: UIViewController {
     func setLocalizedStrings() {
         finishButton.setTitle(MultiWalletStrings.multiWalletFinished, for: UIControl.State())
         descriptionLabel.text = MultiWalletStrings.encryptionFinishedDescription
+        title = "Encryption Complete"
         
     }
 }
