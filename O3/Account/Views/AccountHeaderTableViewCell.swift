@@ -17,6 +17,9 @@ class AccountHeaderTableViewCell: UITableViewCell {
     @IBOutlet var assetCountTitleLabel: UILabel?
     @IBOutlet var moreButton: BadgeUIButton?
     @IBOutlet var toggleStateButton: UIButton?
+    @IBOutlet weak var dividerView: UIView!
+    
+    
     var sectionIndex: Int? = 0
     
     @IBOutlet var horizontalStackView: UIStackView?
@@ -57,9 +60,7 @@ class AccountHeaderTableViewCell: UITableViewCell {
         totalAmountLabel?.theme_textColor = O3Theme.titleColorPicker
         contentView.theme_backgroundColor = O3Theme.cardColorPicker
         theme_backgroundColor = O3Theme.cardColorPicker
-        if let topbarView = viewWithTag(9) {
-            topbarView.theme_backgroundColor = O3Theme.cardColorPicker
-        }
+        dividerView?.theme_backgroundColor = O3Theme.backgroundLightgrey
         super.awakeFromNib()
     }
 }

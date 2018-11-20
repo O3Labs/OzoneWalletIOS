@@ -12,10 +12,12 @@ import UIKit
 class ManageWalletTableViewCell: UITableViewCell {
     @IBOutlet weak var walletLabel: UILabel!
     @IBOutlet weak var walletIsDefaultView: UIImageView!
+    @IBOutlet weak var addressLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         walletLabel.theme_textColor = O3Theme.primaryColorPicker
+        addressLabel.theme_textColor = O3Theme.lightTextColorPicker
         contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
 }

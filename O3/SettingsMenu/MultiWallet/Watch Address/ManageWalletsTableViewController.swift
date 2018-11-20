@@ -33,6 +33,7 @@ class ManageWalletsTableViewController: UITableViewController {
             let account = nep6!.accounts[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: "manageWalletTableViewCell") as! ManageWalletTableViewCell
             cell.walletLabel.text = account.label
+            cell.addressLabel.text = account.address
             if account.isDefault == false {
                 if account.key == nil {
                     cell.walletIsDefaultView.image = UIImage(named: "ic_watch")

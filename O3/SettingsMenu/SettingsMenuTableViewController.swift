@@ -66,7 +66,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     func share() {
-        let shareURL = URL(string: "https://o3.network/")
+        let shareURL = URL(string: "https://o3.app/" + (Authenticated.wallet?.address)!)
         let qrWithBranding = UIImage.imageWithView(view: self.qrView)
         let activityViewController = UIActivityViewController(activityItems: [shareURL as Any, qrWithBranding], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view

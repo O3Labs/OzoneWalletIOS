@@ -34,6 +34,9 @@ class WalletToolBarCell: UITableViewCell {
     }
 
     func setLocalizedStrings() {
+        sendButton.imageView?.contentMode = .scaleAspectFit
+        requestButton.imageView?.contentMode = .scaleAspectFit
+        scanButton.imageView?.contentMode = .scaleAspectFit
         sendButton.setTitle(AccountStrings.send, for: UIControl.State())
         requestButton.setTitle(AccountStrings.request, for: UIControl.State())
         scanButton.setTitle(AccountStrings.scan, for: UIControl.State())

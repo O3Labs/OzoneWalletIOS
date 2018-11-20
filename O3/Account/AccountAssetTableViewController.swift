@@ -449,9 +449,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         if section == sections.neoAssets.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "o3-account-header") as! AccountHeaderTableViewCell
-            if let topbarView = cell.viewWithTag(9) {
-                topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
-            }
+        
             cell.totalAmountLabel?.text = accountValues[accounts.o3Account]
             cell.assetCountTitleLabel?.isHidden = self.tokenAssets.count == 0
             cell.assetCountTitleLabel?.text = String(format: "+%d more", self.tokenAssets.count)
@@ -480,9 +478,6 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "trading-account-header") as! AccountHeaderTableViewCell
             
-            if let topbarView = cell.viewWithTag(9) {
-                topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
-            }
             cell.totalAmountLabel?.text = accountValues[accounts.tradingAccount]
             cell.sectionIndex = section
             cell.toggleStateButton?.tag = section
