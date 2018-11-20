@@ -56,6 +56,8 @@ class CreateOrderViewModel {
             self.delegate?.onStateChange(readyToSubmit: self.readyToSubmit)
         }
     }
+    var defaultPrecision: Int = 8
+    var pairPrecision: Int = 8 //default to 8
     
     var firstFetchedPairPrice: AssetPrice!
     var topOrderPrice: Double!
@@ -143,10 +145,37 @@ class CreateOrderViewModel {
         self.delegate?.beginLoading()
         let symbol = wantAsset.symbol
         let currency = offerAsset.symbol
+        
+        let group = DispatchGroup()
+        group.enter()
+        
+       
+        DispatchQueue.global().async {
+            
+        }
+        // avoid deadlocks by not using .main queue here
+        DispatchQueue.global().async {
+            let pair = String(format:"%@_%@", self.wantAsset.symbol.uppercased(), self.offerAsset.symbol.uppercased())
+            O3APIClient(network: AppState.network).loadTradablePairsSwitcheo { result in
+                switch result {
+                case .failure(_):
+                    group.leave()
+                    return
+                case .success(let pairs):
+                    let foundPair = pairs.first(where: { p -> Bool in
+                        return p.name.isEqual(to: pair)
+                    })
+                    self.pairPrecision = foundPair == nil ? self.defaultPrecision : foundPair!.precision
+                    group.leave()
+                }
+            }
+        }
+
+        group.wait()
+       
         O3APIClient(network: AppState.network).loadPricing(symbol: symbol, currency: currency) { result in
             switch result {
             case .failure(_):
-                //TODO show error
                 self.delegate?.endLoading()
                 return
             case .success(let pairResponse):
@@ -155,7 +184,6 @@ class CreateOrderViewModel {
                 O3APIClient(network: AppState.network, useCache: true).loadPricing(symbol: self.offerAsset.symbol, currency: UserDefaultsManager.referenceFiatCurrency.rawValue) { result in
                     switch result {
                     case .failure(_):
-                        //TODO show error
                         self.delegate?.endLoading()
                         return
                     case .success(let fiatResponse):
@@ -337,7 +365,7 @@ class CreateOrderTableViewController: UITableViewController {
     
     var viewModel: CreateOrderViewModel!
     
-    @IBOutlet var targetPriceTextField: UITextField!
+    @IBOutlet var targetPriceTextField: FixedDecimalTextField!
     @IBOutlet var targetPriceTitle: UILabel!
     @IBOutlet var targetPriceSubtitle: UILabel!
     @IBOutlet var targetFiatPriceLabel: UILabel!
@@ -346,8 +374,8 @@ class CreateOrderTableViewController: UITableViewController {
     @IBOutlet var wantAssetLabel: UITextField!
     @IBOutlet var offerAssetLabel: UITextField!
     
-    @IBOutlet var wantAmountTextField: UITextField!
-    @IBOutlet var offerAmountTextField: UITextField!
+    @IBOutlet var wantAmountTextField: FixedDecimalTextField!
+    @IBOutlet var offerAmountTextField: FixedDecimalTextField!
     @IBOutlet var offerTotalFiatPriceLabel: UILabel!
     
     @IBOutlet var leftAssetImageView: UIImageView!
@@ -392,6 +420,8 @@ class CreateOrderTableViewController: UITableViewController {
     
     func setupInputToolbar() {
         inputToolbar.delegate = self
+        wantAmountTextField.decimals = viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision
+        offerAmountTextField.decimals = self.viewModel.defaultPrecision //always 8 decimals
         if viewModel.selectedAction == CreateOrderAction.Sell {
             wantAmountTextField.inputAccessoryView = inputToolbar.loadNib()
             wantAmountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -425,7 +455,7 @@ class CreateOrderTableViewController: UITableViewController {
         }
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 8
+        formatter.maximumFractionDigits = viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision
         formatter.numberStyle = .decimal
         let number = formatter.number(from: (sender.text?.trim())!)
         if number == nil {
@@ -444,7 +474,7 @@ class CreateOrderTableViewController: UITableViewController {
         }
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 8
+        formatter.maximumFractionDigits = self.viewModel.defaultPrecision //always 8 decimals
         formatter.numberStyle = .decimal
         let number = formatter.number(from: (sender.text?.trim())!)
         if number == nil {
@@ -463,7 +493,7 @@ class CreateOrderTableViewController: UITableViewController {
         }
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 8
+        formatter.maximumFractionDigits = self.viewModel.pairPrecision
         formatter.numberStyle = .decimal
         let number = formatter.number(from: (sender.text?.trim())!)
         if number == nil {
@@ -560,7 +590,7 @@ class CreateOrderTableViewController: UITableViewController {
     @IBAction func submitTapped(_ sender: Any) {
         let title = "Confirm your order"
         let action = viewModel.selectedAction == CreateOrderAction.Buy ? "buy" : "sell"
-        let message = String(format: "You are about to place a %@ order of %@ %@ at a price of %@ %@ per %@.", action, viewModel.wantAmount!.string(8, removeTrailing: true), viewModel.wantAsset.symbol.uppercased(), viewModel.pairPrice.price.string(8, removeTrailing: true), viewModel.offerAsset.symbol.uppercased(),viewModel.wantAsset.symbol.uppercased())
+        let message = String(format: "You are about to place a %@ order of %@ %@ at a price of %@ %@ per %@.", action, viewModel.wantAmount!.string(viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision , removeTrailing: true), viewModel.wantAsset.symbol.uppercased(), viewModel.pairPrice.price.string(viewModel.pairPrecision, removeTrailing: true), viewModel.offerAsset.symbol.uppercased(),viewModel.wantAsset.symbol.uppercased())
         
         OzoneAlert.confirmDialog(title, message: message, cancelTitle: "Cancel", confirmTitle: "Confirm", didCancel: {
             
@@ -671,8 +701,8 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                 self.offerTotalFiatPriceLabel.text = ""
                 return
             }
-            self.targetFiatPriceLabel.text = Fiat(amount: Float(self.viewModel.fiatPairPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: 8)
-            self.targetPriceTextField.text = pairPrice.price.formattedStringWithoutSeparator(8, removeTrailing: true)
+            self.targetFiatPriceLabel.text = Fiat(amount: Float(self.viewModel.fiatPairPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: self.viewModel.defaultPrecision)
+            self.targetPriceTextField.text = pairPrice.price.formattedStringWithoutSeparator(self.viewModel.pairPrecision, removeTrailing: true)
         }
     }
     
@@ -763,10 +793,11 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
     func onPriceReceived(pairPrice: AssetPrice, fiatPrice: AssetPrice) {
         DispatchQueue.main.async {
             HUD.hide()
+            self.targetPriceTextField.decimals = self.viewModel.pairPrecision
             self.targetPriceSubtitle.text = self.viewModel.priceChangeDescription
             //assign default value to the toolbar
-            self.targetFiatPriceLabel.text = Fiat(amount: Float(fiatPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: 8)
-            self.targetPriceTextField.text = pairPrice.price.formattedStringWithoutSeparator(8, removeTrailing: true)
+            self.targetFiatPriceLabel.text = Fiat(amount: Float(fiatPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: self.viewModel.defaultPrecision)
+            self.targetPriceTextField.text = pairPrice.price.formattedStringWithoutSeparator(self.viewModel.pairPrecision, removeTrailing: true)
             self.priceInputToolbar.setNewValue(v: pairPrice.price)
             
             if self.viewModel.selectedAction == CreateOrderAction.Sell {
@@ -783,9 +814,8 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                 self.wantAmountTextField.text = ""
                 return
             }
-            self.wantAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
-            
-            self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: 8)
+            self.wantAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
+            self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: self.viewModel.defaultPrecision)
         }
     }
     
@@ -795,9 +825,9 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                 self.offerAmountTextField.text = ""
                 return
             }
-            self.offerAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
+            self.offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.defaultPrecision, removeTrailing: true)
             
-            self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: 8)
+            self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: self.viewModel.defaultPrecision)
         }
     }
     
@@ -838,20 +868,20 @@ extension CreateOrderTableViewController: AssetInputToolbarDelegate{
     func percentAmountTapped(value: Double) {
         if viewModel.selectedAction == CreateOrderAction.Sell {
             viewModel.setWantAmount(value: value)
-            wantAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
+            wantAmountTextField.text = value.formattedStringWithoutSeparator(viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
         } else {
             viewModel.setOfferAmount(value: value)
-            offerAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
+            offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.defaultPrecision, removeTrailing: true)
         }
     }
     
     func maxAmountTapped(value: Double) {
         if viewModel.selectedAction == CreateOrderAction.Sell {
             viewModel.setWantAmount(value: value)
-            wantAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
+            wantAmountTextField.text = value.formattedStringWithoutSeparator(viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
         } else {
             viewModel.setOfferAmount(value: value)
-            offerAmountTextField.text = value.formattedStringWithoutSeparator(8, removeTrailing: true)
+            offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.defaultPrecision, removeTrailing: true)
         }
     }
 }
