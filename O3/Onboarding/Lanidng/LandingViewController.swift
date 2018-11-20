@@ -159,7 +159,6 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
             OzoneAlert.alertDialog(message: OnboardingStrings.createWalletNoPassCodeError, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
             return
         }
-        Answers.logCustomEvent(withName: "Wallet Created", customAttributes: [:])
         performSegue(withIdentifier: "segueToWelcome", sender: nil)
     }
 

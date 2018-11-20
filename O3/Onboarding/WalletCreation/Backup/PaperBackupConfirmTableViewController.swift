@@ -88,7 +88,8 @@ class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDe
                     //save pirivate key to keychain
                     try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .set(account.wif, key: AppState.protectedKeyValue)
+                        .set(account.wif, key: "ozonePrivateKey")
+                    NEP6.removeFromDevice()
                     SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
                     self.instantiateMainAsNewRoot()
                 } catch _ {
@@ -106,7 +107,6 @@ class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDe
 
     @objc func continueButtonTapped(_ sender: Any?) {
         if wifTextView.text.trim() == wif {
-            Answers.logCustomEvent(withName: "Paper Backup Completed", customAttributes: [:])
             loginToApp()
         } else {
             DispatchQueue.main.async {

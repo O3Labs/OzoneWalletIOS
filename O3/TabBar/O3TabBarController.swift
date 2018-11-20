@@ -30,12 +30,4 @@ class O3TabBarController: UITabBarController {
 
     @IBAction func unwindToTabbar(segue: UIStoryboardSegue) {
     }
-
-
-    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        guard let index = tabBar.items?.index(of: item) else { return }
-        let tabTappedMessages = ["Portfolio", "Wallet", "Marketplace", "News", "Settings" ]
-        Answers.logCustomEvent(withName: "Tab Tapped",
-                               customAttributes: ["Tab Name": tabTappedMessages[index]])
-    }
 }

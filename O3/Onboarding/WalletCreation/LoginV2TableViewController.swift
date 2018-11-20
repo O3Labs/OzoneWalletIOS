@@ -119,8 +119,9 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
                     //save pirivate key to keychain
                     try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .set(account.wif, key: AppState.protectedKeyValue)
+                        .set(account.wif, key: "ozonePrivateKey")
                     SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
+                    NEP6.removeFromDevice()
                     self.instantiateMainAsNewRoot()
                 } catch _ {
                     return

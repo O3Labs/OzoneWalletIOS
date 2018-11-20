@@ -249,6 +249,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 portfolio.data.last?.average == 0.0 &&
                 self.homeviewModel.currentIndex == 0 {
                 self.setEmptyGraphView()
+            } else if self.homeviewModel.currentIndex == 1 && self.watchAddresses.count == 0 {
+                self.setEmptyGraphView()
             } else {
                 self.emptyGraphView?.isHidden = true
             }

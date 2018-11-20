@@ -103,11 +103,7 @@ class NewsFeedViewController: UIViewController, UITableViewDelegate, UITableView
         if item?.link == nil {
             return
         }
-        Answers.logContentView(withName: "NewsFeed Item View",
-                                       contentType: "NEO News Today",
-                                       contentId: item?.title ?? "",
-                                       customAttributes: nil)
-
+    
         let webBrowserViewController = WebBrowserViewController()
         webBrowserViewController.hidesBottomBarWhenPushed = true
         applyTheme(webViewController: webBrowserViewController)
@@ -123,10 +119,7 @@ class NewsFeedViewController: UIViewController, UITableViewDelegate, UITableView
         guard let featureItem = featureData?.features[indexPath.row] else {
             fatalError("Undefined Selection Behavior")
         }
-        Answers.logContentView(withName: "Featured Item View",
-                               contentType: featureItem.category,
-                               contentId: featureItem.title,
-                               customAttributes: nil)
+    
         let withAddressURLString = featureItem.actionURL.replacingOccurrences(of: "{address}", with: Authenticated.wallet!.address)
         if let link = URL(string: withAddressURLString) {
             let webBrowserViewController = WebBrowserViewController()

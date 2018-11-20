@@ -115,7 +115,6 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
                     return
                 }
             } else {
-                Answers.logCustomEvent(withName: "Email Backup Completed", customAttributes: [:])
                 self.loginToApp()
             }
         }
@@ -158,7 +157,8 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
                     //save pirivate key to keychain
                     try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .set(account.wif, key: AppState.protectedKeyValue)
+                        .set(account.wif, key: "ozonePrivateKey")
+                    NEP6.removeFromDevice()
                     SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
                     self.instantiateMainAsNewRoot()
                 } catch _ {

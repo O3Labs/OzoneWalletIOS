@@ -831,15 +831,31 @@
                                     <action selector="finishButtonTapped:" destination="wU6-ny-EBX" eventType="touchUpInside" id="mCu-cH-2Ub"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bnr-E4-1cl">
+                                <rect key="frame" x="16" y="355" width="343" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Wgn-C5-FlO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" name="lightThemePrimary"/>
+                                </state>
+                                <connections>
+                                    <action selector="backupTapped:" destination="wU6-ny-EBX" eventType="touchUpInside" id="vhx-p8-k9u"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="X12-jR-rnx" firstAttribute="centerX" secondItem="ID1-4R-mnI" secondAttribute="centerX" id="1pJ-B6-42P"/>
                             <constraint firstItem="c7m-3v-rbq" firstAttribute="leading" secondItem="ID1-4R-mnI" secondAttribute="leading" constant="16" id="2T2-c1-mOA"/>
                             <constraint firstItem="c7m-3v-rbq" firstAttribute="centerX" secondItem="ID1-4R-mnI" secondAttribute="centerX" id="3Gb-VB-xae"/>
+                            <constraint firstItem="Bnr-E4-1cl" firstAttribute="top" secondItem="fhw-Ae-1t6" secondAttribute="bottom" constant="35" id="61u-PF-JDa"/>
                             <constraint firstItem="X12-jR-rnx" firstAttribute="top" secondItem="BU0-L8-q6R" secondAttribute="bottom" constant="30" id="6x8-kg-tdL"/>
                             <constraint firstItem="X12-jR-rnx" firstAttribute="leading" secondItem="ID1-4R-mnI" secondAttribute="leading" constant="16" id="Cuf-7l-lkp"/>
                             <constraint firstItem="fhw-Ae-1t6" firstAttribute="top" secondItem="X12-jR-rnx" secondAttribute="bottom" constant="16" id="L0T-0Z-bxS"/>
+                            <constraint firstItem="Bnr-E4-1cl" firstAttribute="leading" secondItem="ID1-4R-mnI" secondAttribute="leading" constant="16" id="LQ9-cj-SQv"/>
+                            <constraint firstItem="ID1-4R-mnI" firstAttribute="trailing" secondItem="Bnr-E4-1cl" secondAttribute="trailing" constant="16" id="Vab-ns-oO1"/>
                             <constraint firstItem="ID1-4R-mnI" firstAttribute="trailing" secondItem="c7m-3v-rbq" secondAttribute="trailing" constant="16" id="gqu-1k-6Mb"/>
                             <constraint firstItem="ID1-4R-mnI" firstAttribute="trailing" secondItem="fhw-Ae-1t6" secondAttribute="trailing" constant="16" id="hxa-wf-V13"/>
                             <constraint firstItem="BU0-L8-q6R" firstAttribute="centerX" secondItem="ID1-4R-mnI" secondAttribute="centerX" id="lOk-I4-nt9"/>
@@ -852,6 +868,7 @@
                         <viewLayoutGuide key="safeArea" id="ID1-4R-mnI"/>
                     </view>
                     <connections>
+                        <outlet property="backupButton" destination="Bnr-E4-1cl" id="eWP-is-p8f"/>
                         <outlet property="descriptionLabel" destination="fhw-Ae-1t6" id="0aR-Ee-doa"/>
                         <outlet property="encryptedKeyLabel" destination="X12-jR-rnx" id="roL-Na-jKb"/>
                         <outlet property="finishButton" destination="c7m-3v-rbq" id="YkP-0q-XEp"/>

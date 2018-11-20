@@ -191,7 +191,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
         DispatchQueue.main.async {
             self.ontSyncButton.isHidden = false
             if value != nil {
-                self.ontSyncButton.isHidden = value!        .isZero
+                self.ontSyncButton.isHidden = value!.isZero
                 self.claimableOntAmountLabel.text = value!.string(8, removeTrailing: true)
             }
         }
@@ -294,8 +294,6 @@ class ClaimableGASTableViewCell: UITableViewCell {
 
                 if success == true {
                     self.neoClaimedSuccess()
-                    Answers.logCustomEvent(withName: "Gas Claimed",
-                                           customAttributes: ["Amount": self.claimableGasAmountLabel?.text ?? ""])
                 } else {
                     DispatchQueue.main.async {
                         self.delegate?.setIsClaimingNeo(false)

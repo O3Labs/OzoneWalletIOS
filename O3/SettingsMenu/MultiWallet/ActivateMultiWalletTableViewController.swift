@@ -129,18 +129,18 @@ class ActivateMultiWalletTableViewController: UITableViewController {
             try keychain
                 .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                 .set(self.passwordInputField.text!, key: "ozoneActiveNep6Password")
+                do {
+                    // remove private key from settings
+                    try keychain
+                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                        .remove("ozonePrivateKey")
+                } catch _ {
+                    return
+                }
             } catch _ {
                 return
         }
         
-        do {
-            // remove private key from settings
-            try keychain
-                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                .remove("ozonePrivateKey")
-        } catch _ {
-            return
-        }
         self.performSegue(withIdentifier: "segueToNep6Complete", sender: nil)
     }
     

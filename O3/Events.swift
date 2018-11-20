@@ -74,7 +74,7 @@ class tradingEvent: NSObject {
     func successfullyDeposit(asset: String, amount: Double){
         let properties: [String: Any] = [tradingEventField.asset.rawValue: asset,
                                          tradingEventField.amount.rawValue: amount]
-         log(event: tradingEventName.depositInitiated.rawValue, data: properties)
+         log(event: tradingEventName.depositSuccessfully.rawValue, data: properties)
     }
     
     func startBuy(asset: String, source: TradingActionSource){

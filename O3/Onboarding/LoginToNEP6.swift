@@ -51,7 +51,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
                         .authenticationPrompt(OnboardingStrings.authenticationPrompt)
                         .get(AppState.protectedKeyValue)
                 } else {
-                    key = try keychain
+                    key = try! keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .authenticationPrompt(OnboardingStrings.authenticationPrompt)
                         .get(AppState.protectedKeyValue)
