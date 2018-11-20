@@ -123,7 +123,7 @@ class DAppBrowserViewController: UIViewController {
         contentController.add(self, name: "sendMessageHandler")
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
-        self.webView = WKWebView( frame: self.view.bounds, configuration: config)
+        self.webView = WKWebView( frame: self.containerView!.bounds, configuration: config)
         self.containerView?.addSubview(self.webView!)
         
         if selectedAssetSymbol != nil {
@@ -144,6 +144,11 @@ class DAppBrowserViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.webView?.frame = self.containerView!.bounds
     }
     
     override func viewDidLoad() {
