@@ -19,16 +19,12 @@ class UnlockMultiWalletTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setThemedElements()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(dismissTapped))
-    }
-    
-    @objc func dismissTapped() {
-        self.dismiss(animated: true)
     }
     
     func setThemedElements() {
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        applyBottomSheetNavBarTheme(title: "Switch Wallets")
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

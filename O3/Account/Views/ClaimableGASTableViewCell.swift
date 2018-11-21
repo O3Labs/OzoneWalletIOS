@@ -21,6 +21,8 @@ class ClaimableGASTableViewCell: UITableViewCell {
     weak var delegate: ClaimingGasCellDelegate?
     var neoClaimSuccessAnimation: LOTAnimationView = LOTAnimationView(name: "claim_success")
     var ontClaimSuccessAnimation: LOTAnimationView = LOTAnimationView(name: "claim_success")
+    
+    var ongBalance = 0.0
 
     @IBOutlet var confirmedClaimableGASContainer: UIView!
     @IBOutlet weak var claimContainerTitleLabel: UILabel!
@@ -194,6 +196,11 @@ class ClaimableGASTableViewCell: UITableViewCell {
                 self.ontSyncButton.isHidden = value!.isZero
                 self.claimableOntAmountLabel.text = value!.string(8, removeTrailing: true)
             }
+            
+            if self.ongBalance < 0.02 {
+                self.ontSyncButton.isHidden = true
+                self.ontClaimingStateTitle?.text = "You must have 0.02 ONG in order to sync"
+            }
         }
     }
 
@@ -205,6 +212,11 @@ class ClaimableGASTableViewCell: UITableViewCell {
             self.ontClaimingLoadingContainer.isHidden = true
             if value != nil {
                 self.claimableOntAmountLabel.text = value!.string(8, removeTrailing: true)
+            }
+            
+            if self.ongBalance < 0.01 {
+                self.ontClaimButton.isHidden = true
+                self.ontClaimingStateTitle?.text = "You must have 0.01 ONG in order to claim"
             }
         }
     }

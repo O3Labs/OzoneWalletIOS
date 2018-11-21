@@ -30,16 +30,11 @@ class IdentitiesTableViewController: UITableViewController, WebBrowserDelegate {
         }
     }
     
-    @objc func dismissTapped() {
-        self.dismiss(animated: true)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismissTapped))
         setLocalizedStrings()
         setThemedElements()
-        applyNavBarTheme()
         loadNNSNames()
     }
     
@@ -77,5 +72,6 @@ class IdentitiesTableViewController: UITableViewController, WebBrowserDelegate {
     
     func setThemedElements() {
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        applyBottomSheetNavBarTheme(title: SettingsStrings.idLabel)
     }
 }

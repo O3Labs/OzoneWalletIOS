@@ -49,6 +49,8 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     private var accountValues: [accounts: String] = [:]
     
+    var ongAmount = 0.0
+    
     @objc func reloadCells() {
         DispatchQueue.main.async { self.tableView.reloadData() }
     }
@@ -91,6 +93,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         //load everything from cache first
         self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neo(), O3Cache.gas()] + O3Cache.ontologyAssets() + O3Cache.tokenAssets())
+        loadAccountState()
         
         self.loadInbox()
         self.loadTradingAccountBalances()
@@ -124,6 +127,11 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                 DispatchQueue.main.async {
                     let fiat = Fiat(amount: number?.floatValue ?? 0.0)
                     self.accountValues[account] = fiat.formattedString()
+                    let index = list.firstIndex{$0.symbol == "ONG"}
+                    if let index = index {
+                        self.ongAmount = list[index].value
+                    }
+                    
                     //somehow calling reloadSections makes the uitableview flickering
                     //using reloadData instead ¯\_(ツ)_/¯
                     self.tableView.reloadData()
@@ -257,6 +265,10 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                 case .failure:
                     return
                 case .success(let accountState):
+                    let index = accountState.ontology.firstIndex{$0.symbol == "ONG"}
+                    if let index = index {
+                        self.ongAmount = accountState.ontology[index].value
+                    }
                     self.updateCacheAndLocalBalance(accountState: accountState)
                 }
             }
@@ -316,6 +328,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
+            cell.ongBalance = ongAmount
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
             cell.delegate = self
             return cell

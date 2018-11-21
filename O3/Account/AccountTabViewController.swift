@@ -109,7 +109,6 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         }
         let modalWithNav = UINavigationController(rootViewController: modal)
         self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: modalWithNav)
-        modal.title = "Switch Wallets"
         modalWithNav.modalPresentationStyle = .custom
         modalWithNav.transitioningDelegate = self.halfModalTransitioningDelegate
         self.present(modalWithNav, animated: true)

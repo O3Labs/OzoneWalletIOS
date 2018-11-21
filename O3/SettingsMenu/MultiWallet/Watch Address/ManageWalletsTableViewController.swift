@@ -13,10 +13,10 @@ class ManageWalletsTableViewController: UITableViewController {
     let nep6 = NEP6.getFromFileSystem()
     var selectedAccount: NEP6.Account!
     
+    @IBOutlet weak var headerView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        applyNavBarTheme()
         setLocalizedStrings()
         setThemedElements()
     }
@@ -72,11 +72,13 @@ class ManageWalletsTableViewController: UITableViewController {
     }
     
     func setLocalizedStrings() {
-        self.title = MultiWalletStrings.Wallets
+        self.title = ""
     }
     
     func setThemedElements() {
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
-        
+        headerView.theme_backgroundColor =
+            O3Theme.backgroundColorPicker
+        applyBottomSheetNavBarTheme(title: MultiWalletStrings.Wallets)
     }
 }

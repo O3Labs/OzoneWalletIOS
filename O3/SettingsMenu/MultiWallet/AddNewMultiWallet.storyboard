@@ -601,13 +601,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B2o-KP-9E7">
-                                            <rect key="frame" x="32" y="10.5" width="41.5" height="23.5"/>
+                                            <rect key="frame" x="20" y="10.5" width="41.5" height="23.5"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_locked" translatesAutoresizingMaskIntoConstraints="NO" id="VkU-nC-ORK">
-                                            <rect key="frame" x="81.5" y="15" width="14" height="14"/>
+                                            <rect key="frame" x="69.5" y="15" width="14" height="14"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="14" id="GB9-tm-f2X"/>
                                                 <constraint firstAttribute="width" constant="14" id="gm1-OD-HrR"/>
@@ -616,7 +616,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="B2o-KP-9E7" firstAttribute="centerY" secondItem="3AC-pZ-Hvm" secondAttribute="centerY" id="Sbi-LH-eK8"/>
-                                        <constraint firstItem="B2o-KP-9E7" firstAttribute="leading" secondItem="3AC-pZ-Hvm" secondAttribute="leading" constant="32" id="bD8-EC-Kgr"/>
+                                        <constraint firstItem="B2o-KP-9E7" firstAttribute="leading" secondItem="3AC-pZ-Hvm" secondAttribute="leading" constant="20" id="bD8-EC-Kgr"/>
                                         <constraint firstItem="VkU-nC-ORK" firstAttribute="leading" secondItem="B2o-KP-9E7" secondAttribute="trailing" constant="8" id="gcK-89-F1p"/>
                                         <constraint firstItem="VkU-nC-ORK" firstAttribute="centerY" secondItem="3AC-pZ-Hvm" secondAttribute="centerY" id="nTe-9e-T06"/>
                                     </constraints>

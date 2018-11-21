@@ -61,7 +61,7 @@
 "MULTIWALLET_add_key" = "Unlock Watch Address";
 
 /* description for adding key to a watch address */
-"MULTIWALLET_add_key_description" = "Add an encrypted key to convert this watch address"; /* NEW */
+"MULTIWALLET_add_key_description" = "Add an encrypted key to convert this watch address";
 
 /* Description text when adding more wallets to your multi wallet */
 "MULTIWALLET_add_wallet_description" = "Enter a NEO/Ontology encrypted key, private key or address to add wallet or watch address.";
@@ -74,6 +74,9 @@
 
 /* title to backup a saved wallet again */
 "MULTIWALLET_backup_wallet" = "MULTIWALLET_backup_wallet";
+
+/* You cannot add the same wallet twice. */
+"MULTIWALLET_cannot_add_duplicate" = "MULTIWALLET_cannot_add_duplicate"; /* NEW */
 
 /* message stating that you cant delete primary key */
 "MULTIWALLET_cannot_delete_primary" = "You cannot delete your primary wallet. Please create a new wallet or unlock a different wallet and try again";
@@ -97,10 +100,10 @@
 "MULTIWALLET_encrypted_password_hint" = "Encrypted key password";
 
 /* Description for when you have finished encrypting a private key and storing it in NEP5 */
-"MULTIWALLET_encryption_finished_decription" = "We've encrypted this wallet for you. Please make sure to back it up and remember your password"; /* NEW */
+"MULTIWALLET_encryption_finished_decription" = "We've encrypted this wallet for you. Please make sure to back it up and remember your password";
 
 /* Description when entering a new name */
-"MULTIWALLET_enter_new_name" = "Enter new name"; /* NEW */
+"MULTIWALLET_enter_new_name" = "Enter new name";
 
 /* error alert after failing to decrrypt the encrypted key */
 "MULTIWALLET_failed_to_decrypt" = "Failed to decrypt key, please double check it";
@@ -118,10 +121,10 @@
 "MULTIWALLET_invalid_wallet_entry" = "That key or address is invalid, please double check it";
 
 /* placeholder for when entering a new name for wallet */
-"MULTIWALLET_my_wallet_placeholder" = "My Awesome Wallet"; /* NEW */
+"MULTIWALLET_my_wallet_placeholder" = "My Awesome Wallet";
 
 /* button title to create a new wallet */
-"MULTIWALLET_new_wallet" = "Generate New Wallet"; /* NEW */
+"MULTIWALLET_new_wallet" = "Generate New Wallet";
 
 /* Input hint for when making password to generate encrypted ket */
 "MULTIWALLET_password_hint" = "Password";
@@ -145,7 +148,7 @@
 "MULTIWALLET_watch_address_added" = "A watch address has been added. You can unlock this address at ay time via settings > manage wallet and entering a private or encrypted key";
 
 /* Title to edit name in multiwallet */
-"MUTLIWALLET_edit_name" = "Edit Name"; /* NEW */
+"MUTLIWALLET_edit_name" = "Edit Name";
 
 /* Title of the news feed page */
 "NEWSFEED_News_Title" = "ニュースフィード";
@@ -571,7 +574,7 @@
 "SETTINGS_Add_Button" = "追加";
 
 /* settings item to add another wallet to nep 6 */
-"SETTINGS_add_wallet" = "SETTINGS_add_wallet";
+"SETTINGS_add_wallet" = "Add Wallet";
 
 /* Title for add watch address button */
 "SETTINGS_Add_Watch_Address" = "残高確認用アドレス追加";
@@ -601,10 +604,10 @@
 "SETTINGS_Currency_Title_No_Type" = "通貨";
 
 /* settings item to enable multi wallet if not active */
-"SETTINGS_enable_multiwallet" = "SETTINGS_enable_multiwallet";
+"SETTINGS_enable_multiwallet" = "Enable Multiwallet";
 
 /* label for identity page that user can use */
-"SETTINGS_id_label" = "Identities"; /* NEW */
+"SETTINGS_id_label" = "Identities";
 
 /* Error To display when user tries to add an invalid address */
 "SETTINGS_Invalid_Address" = "無効なアドレス";
@@ -631,7 +634,7 @@
 "SETTINGS_Nickname_LAbel" = "ニックネーム";
 
 /* description when no nns names currently listed */
-"SETTINGS_nns_empty" = "SETTINGS_nns_empty"; /* NEW */
+"SETTINGS_nns_empty" = "No NNS Identites";
 
 /* Title for Settings Menu */
 "SETTINGS_Settings_Title" = "設定";
