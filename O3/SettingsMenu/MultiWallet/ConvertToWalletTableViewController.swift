@@ -40,6 +40,7 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
         nep2DetectedVC.modalTransitionStyle = .crossDissolve
         nep2DetectedVC.delegate = self
         nep2DetectedVC.nep2EncryptedKey = keyTextView.text.trim()
+        encryptedKey = keyTextView.text.trim()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             self.presentFromEmbedded(nep2DetectedVC, animated: true, completion: nil)
         }
@@ -93,12 +94,13 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
     }
     
     func passwordEntered(account: Wallet?) {
-        if  account!.address != watchAddress {
+        if  account?.address ?? "" != watchAddress {
             //error this priate key unlocks a different wallet
             return
         }
         self.nep6.convertWatchAddrToWallet(addr: account!.address, key: encryptedKey)
         self.nep6.writeToFileSystem()
+        self.navigationController?.popViewController(animated: true)
     }
     
     func updateNep6(account: Wallet) {
@@ -125,6 +127,12 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
             let inputPass = alertController.textFields?[0].text!
             let inputVerifyPass = alertController.textFields?[1].text!
             var error: NSError?
+            if inputPass != inputVerifyPass {
+                OzoneAlert.alertDialog("Passwords do not match", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
+                return
+            }
+            
+            
             if inputPass == inputVerifyPass && inputPass!.count >= 8 {
                 var error: NSError?
                 let key = NeoutilsNEP2Encrypt(wif, inputPass, &error)
@@ -186,9 +194,13 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
         if supportedCodeTypes.contains(metadataObj.type) {
             if !alreadyScanned {
                 if let dataString = metadataObj.stringValue {
-                    keyTextView.text = dataString.trim()
-                    alreadyScanned = true
-                    attemptLoginWithKey(key: dataString)
+                    DispatchQueue.main.async {
+                        self.keyTextView.text = dataString.trim()
+                        self.convertButton.isEnabled = true
+                        self.convertButton.backgroundColor = Theme.light.accentColor
+                        self.alreadyScanned = true
+                        self.attemptLoginWithKey(key: dataString)
+                    }
                 }
             }
         }

@@ -20,7 +20,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var themeCell: UITableViewCell!
     @IBOutlet weak var currencyCell: UITableViewCell!
     @IBOutlet weak var contactCell: UITableViewCell!
-    @IBOutlet weak var logoutCell: UITableViewCell!
     @IBOutlet weak var supportCell: UITableViewCell!
     @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
     @IBOutlet weak var idCell: UITableViewCell!
@@ -31,7 +30,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var themeLabel: UILabel!
-    @IBOutlet weak var logoutLabel: UILabel!
     @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var supportLabel: UILabel!
     @IBOutlet weak var multiWalletLabel: UILabel!
@@ -292,20 +290,11 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     //properly implement cell did tap
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 6 {
-            OzoneAlert.confirmDialog(message: SettingsStrings.logoutWarning, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: SettingsStrings.logout, didCancel: {
-
-            }, didConfirm: {
-                self.performLogoutCleanup()
-                self.view.window!.rootViewController?.dismiss(animated: false)
-                UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()
-            })
-        }
     }
     
     func setThemedElements() {
-        let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, logoutLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel, idLabel]
-        let themedCells = [themeCell, currencyCell, contactCell, logoutCell, idCell]
+        let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel, idLabel]
+        let themedCells = [themeCell, currencyCell, contactCell, idCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
             cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -314,7 +303,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         for label in themedTitleLabels {
             label?.theme_textColor = O3Theme.titleColorPicker
         }
-        logoutLabel.theme_textColor = O3Theme.negativeLossColorPicker
         versionLabel?.theme_textColor = O3Theme.lightTextColorPicker
         tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -326,7 +314,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         themeLabel.text = SettingsStrings.themeTitle
         currencyLabel.text = SettingsStrings.currencyTitle + UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased()
         contactLabel.text = SettingsStrings.contactTitle
-        logoutLabel.text = SettingsStrings.logout
         supportLabel.text = SettingsStrings.supportTitle
         versionLabel.text = SettingsStrings.versionLabel
         idLabel.text = SettingsStrings.idLabel

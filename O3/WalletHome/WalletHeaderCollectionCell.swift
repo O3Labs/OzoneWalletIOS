@@ -119,16 +119,16 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
             walletUnlockHeaderArea.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(unlockTapped)))
             
             if (latestPrice.average - previousPrice.average == 0.0) {
-                portfolioValueLabel.theme_textColor = O3Theme.tableSeparatorColorPicker
-                percentChangeLabel.theme_textColor = O3Theme.tableSeparatorColorPicker
+                portfolioValueLabel.theme_textColor = O3Theme.lightTextColorPicker
+                percentChangeLabel.theme_textColor = O3Theme.lightTextColorPicker
                 portfolioValueLabel.text = Fiat(amount: Float(0.0)).formattedString()
             }
         }
     }
     
     override func prepareForReuse() {
-        portfolioValueLabel.theme_textColor = O3Theme.backgroundLightgrey
-        percentChangeLabel.theme_textColor = O3Theme.backgroundLightgrey
+        portfolioValueLabel.theme_textColor = O3Theme.lightTextColorPicker
+        percentChangeLabel.theme_textColor = O3Theme.lightTextColorPicker
         portfolioValueLabel.text = Fiat(amount: Float(0.0)).formattedString()
         super.prepareForReuse()
     }

@@ -42,21 +42,13 @@ class EncryptionCompletedViewController: UIViewController, MFMailComposeViewCont
             return
         }
         
-        let nep6 = NEP6.getFromFileSystem()!
-        var nep2String = ""
-        for wallet in nep6.accounts {
-            if wallet.isDefault {
-                nep2String = wallet.key!
-            }
-        }
-        
-        let image = UIImage(qrData: nep2String, width: 200, height: 200, qrLogoName: "ic_QRkey")
+        let image = UIImage(qrData: encryptedKey, width: 200, height: 200, qrLogoName: "ic_QRkey")
         let imageData = image.pngData() ?? nil
         let composeVC = MFMailComposeViewController()
         composeVC.mailComposeDelegate = self
         // Configure the fields of the interface.
         composeVC.setSubject(OnboardingStrings.emailSubject)
-        composeVC.setMessageBody(String.localizedStringWithFormat(String(OnboardingStrings.emailBody), nep2String), isHTML: false)
+        composeVC.setMessageBody(String.localizedStringWithFormat(String(OnboardingStrings.emailBody), encryptedKey), isHTML: false)
         
         composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
         composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")

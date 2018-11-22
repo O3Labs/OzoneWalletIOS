@@ -73,10 +73,10 @@
 "MULTIWALLET_backup_encrypted_key" = "Back it up";
 
 /* title to backup a saved wallet again */
-"MULTIWALLET_backup_wallet" = "MULTIWALLET_backup_wallet";
+"MULTIWALLET_backup_wallet" = "Backup Wallet";
 
 /* You cannot add the same wallet twice. */
-"MULTIWALLET_cannot_add_duplicate" = "MULTIWALLET_cannot_add_duplicate"; /* NEW */
+"MULTIWALLET_cannot_add_duplicate" = "You cannot add the same wallet twice";
 
 /* message stating that you cant delete primary key */
 "MULTIWALLET_cannot_delete_primary" = "You cannot delete your primary wallet. Please create a new wallet or unlock a different wallet and try again";
@@ -85,13 +85,16 @@
 "MULTIWALLET_continue" = "Next";
 
 /* message to display warning deleting encrypted cannot be undone */
-"MULTIWALLET_delete_encrypted_confirm" = "MULTIWALLET_delete_encrypted_confirm";
+"MULTIWALLET_delete_encrypted_confirm" = "Are you sure you want to delete this encrypted key? This action cannot be undone.";
 
 /* conforim title for when you want to delete your watch address */
-"MULTIWALLET_delete_watch_addr" = "MULTIWALLET_delete_watch_addr";
+"MULTIWALLET_delete_watch_addr" = "Are you sure you want to delete this watch address? This action cannot be undone.";
+
+/* title for when deleteing watcha ddres */
+"MULTIWALLET_delete_watch_addr_title" = "Delete %@"; /* NEW */
 
 /* encrypted key title */
-"MULTIWALLET_encrypted_key" = "MULTIWALLET_encrypted_key";
+"MULTIWALLET_encrypted_key" = "Encrypted Key";
 
 /* Description when an encrypted key is detected in multiwallet add */
 "MULTIWALLET_encrypted_key_detected" = "Encrypted key detected\n\nPlease enter your password to continue";
@@ -103,7 +106,7 @@
 "MULTIWALLET_encryption_finished_decription" = "We've encrypted this wallet for you. Please make sure to back it up and remember your password";
 
 /* Description when entering a new name */
-"MULTIWALLET_enter_new_name" = "Enter new name";
+"MULTIWALLET_enter_new_name" = "Enter a preferred name for this wallet";
 
 /* error alert after failing to decrrypt the encrypted key */
 "MULTIWALLET_failed_to_decrypt" = "Failed to decrypt key, please double check it";
@@ -224,6 +227,9 @@
 
 /* Title when reentering backup */
 "ONBOARDING_enter_private_key" = "秘密鍵の入力";
+
+/* Prompt asking the user to authenticate themselves to unlock the defauly nep6 address. */
+"ONBOARDING_Existing_NEP6_Authentication_Prompt" = "Login to %@";
 
 /* Prompt asking the user to authenticate themselves when they already have a wallet stored on device. */
 "ONBOARDING_Existing_Wallet_Authentication_Prompt" = "デバイスに保存された既存のウォレットにログイン";

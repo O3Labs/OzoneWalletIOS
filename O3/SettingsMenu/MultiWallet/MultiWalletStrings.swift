@@ -44,6 +44,7 @@ struct MultiWalletStrings {
     static let cannotDeletePrimary = NSLocalizedString("MULTIWALLET_cannot_delete_primary", comment: "message stating that you cant delete primary key")
     
     static let deleteWatchAddress = NSLocalizedString("MULTIWALLET_delete_watch_addr", comment: "conforim title for when you want to delete your watch address")
+    static let deleteWatchAddressTitle = NSLocalizedString("MULTIWALLET_delete_watch_addr_title", comment: "title for when deleteing watcha ddres")
     
     static let encryptedKey = NSLocalizedString("MULTIWALLET_encrypted_key", comment: "encrypted key title")
     static let addKeyDescription = NSLocalizedString("MULTIWALLET_add_key_description", comment: "description for adding key to a watch address")

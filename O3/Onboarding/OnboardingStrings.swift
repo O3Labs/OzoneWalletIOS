@@ -122,6 +122,7 @@ struct OnboardingStrings {
     static let loginWithExistingPasscode = NSLocalizedString("ONBOARDING Login_Button_Specifying_PassCode", comment: "On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using Passcode")
     static let loginWithExistingBiometric = NSLocalizedString("ONBOARDING Login_Button_Specifying_Biometric", comment: "On authentication screen, when wallet already exists. Ask them to login using the specific type of authentication they have, e.g Login using TouchID")
     static let authenticationPrompt = NSLocalizedString("ONBOARDING_Existing_Wallet_Authentication_Prompt", comment: "Prompt asking the user to authenticate themselves when they already have a wallet stored on device.")
+    static let nep6AuthenticationPrompt = NSLocalizedString("ONBOARDING_Existing_NEP6_Authentication_Prompt", comment: "Prompt asking the user to authenticate themselves to unlock the defauly nep6 address.")
     
     static let welcomeBackTitle = NSLocalizedString("ONBOARDING_welcome_back_title", comment: "Title for welcome back authentication")
     static let welcomeBackSubtitle = NSLocalizedString("ONBOARDING_welcome_back_subtitle", comment: "Subtitle for welcome back authentication")

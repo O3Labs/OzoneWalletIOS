@@ -229,6 +229,7 @@ public class NEP6: Codable {
             //save pirivate key to keychain
             try keychain
                 .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                .authenticationPrompt("Confirm this to be the default wallet on your device")
                 .set(pass, key: "ozoneActiveNep6Password")
             nep6.accounts[currentDefaultIndex!].isDefault = false
             nep6.accounts[newDefaultIndex!].isDefault = true

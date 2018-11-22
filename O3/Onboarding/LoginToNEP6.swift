@@ -46,15 +46,17 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
                 var nep6Pass: String? = nil
                 var key: String? = nil
                 if NEP6.getFromFileSystem() != nil  {
+                    let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
+                    
                     nep6Pass = try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .authenticationPrompt(OnboardingStrings.authenticationPrompt)
-                        .get(AppState.protectedKeyValue)
+                        .authenticationPrompt(authString)
+                        .get("ozoneActiveNep6Password")
                 } else {
-                    key = try! keychain
+                    key = try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .authenticationPrompt(OnboardingStrings.authenticationPrompt)
-                        .get(AppState.protectedKeyValue)
+                        .get("ozonePrivateKey")
                 }
                 
                 if key == nil && nep6Pass == nil {
@@ -117,8 +119,8 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         login()
     }
     
-    func inputPassword(encryptedKey: String) {
-        let alertController = UIAlertController(title: "Some title", message: "some message", preferredStyle: .alert)
+    func inputPassword(encryptedKey: String, name: String) {
+        let alertController = UIAlertController(title: String(format: "Login to %@", name), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)
 
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
             let inputPass = alertController.textFields?[0].text
@@ -127,7 +129,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
                     NEP6.makeNewDefault(key: encryptedKey, pass: inputPass!)
                     self.login()
                 } else {
-                    OzoneAlert.alertDialog(message: "Error", dismissTitle: "Ok") {}
+                    OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
             
             }
         }
@@ -135,7 +137,6 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
         
         alertController.addTextField { (textField) in
-            textField.placeholder = "Some placeholder"
             textField.isSecureTextEntry = true
         }
         
@@ -183,7 +184,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         if account.isDefault == true {
             login()
         } else {
-            inputPassword(encryptedKey: account.key!)
+            inputPassword(encryptedKey: account.key!, name: account.label)
         }
     }
     

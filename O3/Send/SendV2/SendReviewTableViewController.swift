@@ -177,10 +177,10 @@ class SendReviewTableViewController: UITableViewController {
                             self.transactionCompleted = completed ?? false
                             Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
                                                                                                "amount": amount])
-                            self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                             if self.transactionCompleted == true {
                                 self.txId = txID!
                                 self.savePendingTransaction(blockchain: "neo", txID: txID!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
+                                self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                             }
                         }
                 }

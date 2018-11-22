@@ -43,10 +43,10 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
     @IBAction func continueTapped(_ sender: Any) {
         var error: NSError?
         let wif = NeoutilsNEP2Decrypt(encryptedKey, passwordInputField.text!, &error)
-        address = Wallet(wif: wif!)!.address
         if error != nil {
             OzoneAlert.alertDialog(message: MultiWalletStrings.failedToDecrypt, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
         } else {
+            address = Wallet(wif: wif!)!.address
             performSegue(withIdentifier: "segueToAddNameForEncryptedKey", sender: nil)
         }
         

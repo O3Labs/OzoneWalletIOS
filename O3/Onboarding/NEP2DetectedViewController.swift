@@ -61,7 +61,7 @@ class NEP2DetectedViewController: UIViewController {
         var error: NSError?
         DispatchQueue.global().async {
             let wif = NeoutilsNEP2Decrypt(self.nep2EncryptedKey, self.password, &error)
-            if wif == nil {
+            if wif == nil || error != nil {
                 DispatchQueue.main.async {
                     HUD.hide()
                     OzoneAlert.alertDialog(message: OnboardingStrings.invalidKey, dismissTitle: OzoneAlert.okPositiveConfirmString) {
