@@ -72,6 +72,21 @@ class MarketplaceController: TabmanViewController, PageboyViewControllerDataSour
         self.bar.location = .top
         self.bar.style = .buttonBar
         self.dataSource = self
+        
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openBrowserV2(_:)))
+    }
+    
+    @IBAction func openBrowserV2(_ sender: Any) {
+        let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
+        if let vc = nav!.viewControllers.first as? dAppBrowserV2ViewController {
+            let viewModel = dAppBrowserViewModel()
+            viewModel.url = URL(string:"http://localhost:8080/o3cap/?111")
+            vc.viewModel = viewModel
+        }
+         let top = UIApplication.topViewController()
+        
+        top?.present(nav!, animated: true, completion: nil)
     }
 
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {

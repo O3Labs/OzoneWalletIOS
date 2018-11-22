@@ -170,6 +170,8 @@
 		6E5568EC214A4FD700BA805E /* AccountHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568EB214A4FD700BA805E /* AccountHeaderTableViewCell.swift */; };
 		6E5568EE214B5F1E00BA805E /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568ED214B5F1E00BA805E /* UIButton.swift */; };
 		6E5568F2214BA3EF00BA805E /* AssetIconsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568F1214BA3EF00BA805E /* AssetIconsTableViewCell.swift */; };
+		6E58720621A69C72007F1EC6 /* SendRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E58720521A69C72007F1EC6 /* SendRequestTableViewController.swift */; };
+		6E58720821A6A489007F1EC6 /* dAppMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E58720721A6A489007F1EC6 /* dAppMetadata.swift */; };
 		6E5B1074215DF9F600D076C6 /* Tokens.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E5B1073215DF9F600D076C6 /* Tokens.xcassets */; };
 		6E5FDFE72167233A00C1A6B5 /* FixedDecimalTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5FDFE62167233A00C1A6B5 /* FixedDecimalTextField.swift */; };
 		6E5FDFEB2167250600C1A6B5 /* ShadowedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5FDFEA2167250500C1A6B5 /* ShadowedButton.swift */; };
@@ -250,6 +252,14 @@
 		6EEE3DFC20E0C5E00030A4AB /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE3DFB20E0C5E00030A4AB /* Router.swift */; };
 		6EEE3DFE20E0D75F0030A4AB /* VerifiedAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE3DFD20E0D75F0030A4AB /* VerifiedAddress.swift */; };
 		6EEE3E0020E0DAC60030A4AB /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE3DFF20E0DAC60030A4AB /* UILabel.swift */; };
+		6EF59C8421A27CAD00087D72 /* dAppBrowserV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF59C8321A27CAD00087D72 /* dAppBrowserV2ViewController.swift */; };
+		6EF59C8621A27CBA00087D72 /* dAppBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EF59C8521A27CBA00087D72 /* dAppBrowser.storyboard */; };
+		6EF59C8821A28FAD00087D72 /* dAppBrowser.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6EF59C8721A28FAD00087D72 /* dAppBrowser.xcassets */; };
+		6EF59C8B21A2A25900087D72 /* dAppMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF59C8A21A2A25900087D72 /* dAppMessage.swift */; };
+		6EF59C9121A2B12300087D72 /* OpenGraph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF59C9021A2B12300087D72 /* OpenGraph.framework */; };
+		6EF59C9221A2B12300087D72 /* OpenGraph.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF59C9021A2B12300087D72 /* OpenGraph.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6EF59C9421A3994F00087D72 /* ConnectRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF59C9321A3994F00087D72 /* ConnectRequestTableViewController.swift */; };
+		6EF59C9621A3D25C00087D72 /* dAppProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF59C9521A3D25C00087D72 /* dAppProtocol.swift */; };
 		6EFF839A20148CD700BDBE52 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFF839920148CD700BDBE52 /* CardView.swift */; };
 		7501C0271F7BBFF400B4B2FF /* AddressEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501C0261F7BBFF400B4B2FF /* AddressEntryTableViewController.swift */; };
 		7501E8431F79536300123EA8 /* SettingsMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501E8421F79536300123EA8 /* SettingsMenuTableViewController.swift */; };
@@ -338,6 +348,7 @@
 				6E244EC120858AB8001B4B22 /* Lottie.framework in Embed Frameworks */,
 				35CE4A2E2175D81400F460ED /* ZendeskCoreSDK.framework in Embed Frameworks */,
 				6E6BD24C1FFC69330049098A /* PKHUD.framework in Embed Frameworks */,
+				6EF59C9221A2B12300087D72 /* OpenGraph.framework in Embed Frameworks */,
 				3549458C203FD02B00332E53 /* Cache.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -500,6 +511,8 @@
 		6E5568EB214A4FD700BA805E /* AccountHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		6E5568ED214B5F1E00BA805E /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		6E5568F1214BA3EF00BA805E /* AssetIconsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetIconsTableViewCell.swift; sourceTree = "<group>"; };
+		6E58720521A69C72007F1EC6 /* SendRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendRequestTableViewController.swift; sourceTree = "<group>"; };
+		6E58720721A6A489007F1EC6 /* dAppMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dAppMetadata.swift; sourceTree = "<group>"; };
 		6E5B1073215DF9F600D076C6 /* Tokens.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Tokens.xcassets; sourceTree = "<group>"; };
 		6E5FDFE62167233A00C1A6B5 /* FixedDecimalTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedDecimalTextField.swift; sourceTree = "<group>"; };
 		6E5FDFEA2167250500C1A6B5 /* ShadowedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowedButton.swift; sourceTree = "<group>"; };
@@ -577,6 +590,13 @@
 		6EEE3DFB20E0C5E00030A4AB /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		6EEE3DFD20E0D75F0030A4AB /* VerifiedAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAddress.swift; sourceTree = "<group>"; };
 		6EEE3DFF20E0DAC60030A4AB /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
+		6EF59C8321A27CAD00087D72 /* dAppBrowserV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dAppBrowserV2ViewController.swift; sourceTree = "<group>"; };
+		6EF59C8521A27CBA00087D72 /* dAppBrowser.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = dAppBrowser.storyboard; sourceTree = "<group>"; };
+		6EF59C8721A28FAD00087D72 /* dAppBrowser.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = dAppBrowser.xcassets; sourceTree = "<group>"; };
+		6EF59C8A21A2A25900087D72 /* dAppMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dAppMessage.swift; sourceTree = "<group>"; };
+		6EF59C9021A2B12300087D72 /* OpenGraph.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGraph.framework; path = Carthage/Build/iOS/OpenGraph.framework; sourceTree = "<group>"; };
+		6EF59C9321A3994F00087D72 /* ConnectRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectRequestTableViewController.swift; sourceTree = "<group>"; };
+		6EF59C9521A3D25C00087D72 /* dAppProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dAppProtocol.swift; sourceTree = "<group>"; };
 		6EFF839920148CD700BDBE52 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		7501C0261F7BBFF400B4B2FF /* AddressEntryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressEntryTableViewController.swift; sourceTree = "<group>"; };
 		7501E8421F79536300123EA8 /* SettingsMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuTableViewController.swift; sourceTree = "<group>"; };
@@ -642,6 +662,7 @@
 				6E0BECCA2063B47A00FA0A03 /* WebBrowser.framework in Frameworks */,
 				350100F4204541A6000F6648 /* SwiftTheme.framework in Frameworks */,
 				6E244EC020858AB8001B4B22 /* Lottie.framework in Frameworks */,
+				6EF59C9121A2B12300087D72 /* OpenGraph.framework in Frameworks */,
 				35494575203C030A00332E53 /* Tabman.framework in Frameworks */,
 				35CE4A2F2175D81400F460ED /* ZendeskSDK.framework in Frameworks */,
 				3549456D203BF1F700332E53 /* Pageboy.framework in Frameworks */,
@@ -1063,6 +1084,29 @@
 			path = dappbrowser;
 			sourceTree = "<group>";
 		};
+		6EF59C8221A27B6500087D72 /* dappbrowserv2 */ = {
+			isa = PBXGroup;
+			children = (
+				6EF59C8921A2A1FA00087D72 /* Models */,
+				6EF59C8321A27CAD00087D72 /* dAppBrowserV2ViewController.swift */,
+				6EF59C8521A27CBA00087D72 /* dAppBrowser.storyboard */,
+				6EF59C8721A28FAD00087D72 /* dAppBrowser.xcassets */,
+				6EF59C9321A3994F00087D72 /* ConnectRequestTableViewController.swift */,
+				6EF59C9521A3D25C00087D72 /* dAppProtocol.swift */,
+				6E58720521A69C72007F1EC6 /* SendRequestTableViewController.swift */,
+			);
+			path = dappbrowserv2;
+			sourceTree = "<group>";
+		};
+		6EF59C8921A2A1FA00087D72 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6EF59C8A21A2A25900087D72 /* dAppMessage.swift */,
+				6E58720721A6A489007F1EC6 /* dAppMetadata.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		7520067C1F7F686F00D19B5F /* HalfModal */ = {
 			isa = PBXGroup;
 			children = (
@@ -1144,6 +1188,7 @@
 		7575ADB91F6006AB0077007B = {
 			isa = PBXGroup;
 			children = (
+				6EF59C9021A2B12300087D72 /* OpenGraph.framework */,
 				35CE4A282175D81300F460ED /* ZendeskCoreSDK.framework */,
 				35CE4A272175D81300F460ED /* ZendeskProviderSDK.framework */,
 				35CE4A292175D81300F460ED /* ZendeskSDK.framework */,
@@ -1181,6 +1226,7 @@
 			children = (
 				6E4376A921463A170091367A /* Trading */,
 				6E43767621460CB90091367A /* SwitcheoSwift */,
+				6EF59C8221A27B6500087D72 /* dappbrowserv2 */,
 				6EEE3DE820D9E9680030A4AB /* dappbrowser */,
 				3527F8CB20C533F100C2FCB9 /* Marketplace */,
 				3557BA9920AA9C6C0034937C /* API */,
@@ -1482,6 +1528,7 @@
 				6E244EC52085BF71001B4B22 /* AssetInputToolbar.xib in Resources */,
 				6EEE3DEC20D9E99E0030A4AB /* Browser.storyboard in Resources */,
 				3522945921117790004A03A7 /* loader_portfolio.json in Resources */,
+				6EF59C8621A27CBA00087D72 /* dAppBrowser.storyboard in Resources */,
 				6E68B6B0206CB771008C25E8 /* TokenSale.storyboard in Resources */,
 				35B426BA20980CAE00957211 /* LaunchScreen.storyboard in Resources */,
 				6E2F263A2151F11400A3DEB1 /* Trading.xcassets in Resources */,
@@ -1509,6 +1556,7 @@
 				3557BAB220AA9CEE0034937C /* nodes.json in Resources */,
 				75D5BFC21F6D196200E64855 /* OnboardingAssets.xcassets in Resources */,
 				75BEB2681F8A068100DC20E9 /* HUD.xcassets in Resources */,
+				6EF59C8821A28FAD00087D72 /* dAppBrowser.xcassets in Resources */,
 				353E799A20C68CBE00B9AB1F /* WalletCreation.storyboard in Resources */,
 				35B426BF2098242600957211 /* TokenSelection.storyboard in Resources */,
 			);
@@ -1595,6 +1643,7 @@
 				6E64C0D12159CE19002B1366 /* Deposit.swift in Sources */,
 				752006901F7FD0FF00D19B5F /* AddressSelectTableViewController.swift in Sources */,
 				35AF806520CA543F00E48457 /* WalletGeneratedViewController.swift in Sources */,
+				6EF59C9621A3D25C00087D72 /* dAppProtocol.swift in Sources */,
 				6E40F6482119771300B2B633 /* PortfolioNotificationTableViewCell.swift in Sources */,
 				6E64C0D42159CE19002B1366 /* RequestOffer.swift in Sources */,
 				35CE4A3821772F4300F460ED /* SendReviewTableViewController.swift in Sources */,
@@ -1639,6 +1688,7 @@
 				353F364B200370D6002B4FE1 /* NewsFeedViewController.swift in Sources */,
 				6E40F64621192E7100B2B633 /* Asset.swift in Sources */,
 				6E73679B2084B3B900F4202B /* TokenSaleSuccessViewController.swift in Sources */,
+				6E58720621A69C72007F1EC6 /* SendRequestTableViewController.swift in Sources */,
 				6E60CC6A20CF73B00062F1CE /* URL.swift in Sources */,
 				7520068C1F7F8AC400D19B5F /* PrivateKeyViewController.swift in Sources */,
 				35B426C1209825D800957211 /* TokenSelectionTabViewController.swift in Sources */,
@@ -1664,6 +1714,7 @@
 				7520174B1F74071900090C4F /* QRScannerController.swift in Sources */,
 				3557BAC920AA9D180034937C /* NeoClient.swift in Sources */,
 				6E64C0CC2159CE19002B1366 /* Order.swift in Sources */,
+				6EF59C8421A27CAD00087D72 /* dAppBrowserV2ViewController.swift in Sources */,
 				75D5BFB61F6CF59C00E64855 /* LoginTableViewController.swift in Sources */,
 				6E64C0D32159CE19002B1366 /* RequestOrder.swift in Sources */,
 				6EC4838A21633A3B002CBF76 /* DappString.swift in Sources */,
@@ -1680,6 +1731,7 @@
 				353E79A220C7A7E700B9AB1F /* BackupTableViewController.swift in Sources */,
 				6E5568F2214BA3EF00BA805E /* AssetIconsTableViewCell.swift in Sources */,
 				6E5FDFED216725B300C1A6B5 /* NoActionUITextField.swift in Sources */,
+				6E58720821A6A489007F1EC6 /* dAppMetadata.swift in Sources */,
 				6E64C0D22159CE19002B1366 /* RequestCandlesticks.swift in Sources */,
 				6E7F3D8F20B6805200835963 /* Data.swift in Sources */,
 				7546DB451F765295001DF5A2 /* AssetDetailViewController.swift in Sources */,
@@ -1690,6 +1742,7 @@
 				353E11DD20C65CF800697359 /* MarketplaceStrings.swift in Sources */,
 				6E64C0CE2159CE19002B1366 /* Last24hour.swift in Sources */,
 				6E9129772164C287006826A0 /* ThemedUIView.swift in Sources */,
+				6EF59C8B21A2A25900087D72 /* dAppMessage.swift in Sources */,
 				751666B01F80C190009ACC07 /* TransactionWebViewController.swift in Sources */,
 				7550940D1F779EEE00127B4F /* WalletHeaderCollectionCell.swift in Sources */,
 				6E2F26412154845800A3DEB1 /* TradingOrder.swift in Sources */,
@@ -1729,6 +1782,7 @@
 				752586B11F77DD9800ED5312 /* OzoneGraphView.swift in Sources */,
 				6E97C4B51F7FBAA300526FF0 /* AssetView.swift in Sources */,
 				35AF806920CA6C0100E48457 /* LoginV2TableViewController.swift in Sources */,
+				6EF59C9421A3994F00087D72 /* ConnectRequestTableViewController.swift in Sources */,
 				35E5F6102029412900D65BEA /* PortfolioAssetCell.swift in Sources */,
 				6E72436420D0F0A5007D1201 /* LocalizableUILabel.swift in Sources */,
 				35CE4A362176CD1400F460ED /* SendWhatTableViewController.swift in Sources */,

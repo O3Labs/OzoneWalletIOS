@@ -16,26 +16,9 @@ class HalfModalPresentationController: UIPresentationController {
         if let dimmedView = dimmingViewOptional {
             return dimmedView
         }
-
         let view = UIView(frame: CGRect(x: 0, y: 0, width: containerView!.bounds.width, height: containerView!.bounds.height))
-
         view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-//        // Blur Effect
-//        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-//        blurEffectView.frame = view.bounds
-//        view.addSubview(blurEffectView)
-//
-//        // Vibrancy Effect
-//        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
-//        let vibrancyEffectView = UIVisualEffectView(effect: vibrancyEffect)
-//        vibrancyEffectView.frame = view.bounds
-//
-//        // Add the vibrancy view to the blur view
-//        blurEffectView.contentView.addSubview(vibrancyEffectView)
-
         dimmingViewOptional = view
-
         return view
     }
 
@@ -66,7 +49,9 @@ class HalfModalPresentationController: UIPresentationController {
     }
 
     override var frameOfPresentedViewInContainerView: CGRect {
-        return CGRect(x: 0, y: containerView!.bounds.height * 0.4, width: containerView!.bounds.width, height: containerView!.bounds.height * 0.6)
+        
+        //TODO make the height adjustable
+        return CGRect(x: 0, y: containerView!.bounds.height * 0.3, width: containerView!.bounds.width, height: containerView!.bounds.height * 0.7)
     }
 
     override func presentationTransitionWillBegin() {
