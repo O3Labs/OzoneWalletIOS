@@ -77,28 +77,29 @@ class O3Cache {
     }
     
     // MARK: Cache Setters for Read Only Balances
-    static func setReadOnlyNEOForSession(neoBalance: Int) {
+    static func setReadOnlyNEOForSession(neoBalance: Int, address: String) {
         
         let neoAsset = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
                                          decimals: 8, value: Double(neoBalance), assetType: .neoAsset)
-        try? storage?.setObject(neoAsset, forKey: keys.readOnlyNeo.rawValue)
+        try? storage?.setObject(neoAsset, forKey: address + "_" + keys.readOnlyNeo.rawValue)
         
     }
     
-    static func setReadOnlyGasForSession(gasBalance: Double) {
+    static func setReadOnlyGasForSession(gasBalance: Double, address: String) {
         let gasAsset = TransferableAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
                                          decimals: 8, value: gasBalance, assetType: .neoAsset)
-        try? storage?.setObject(gasAsset, forKey: keys.readOnlyGas.rawValue)
+        try? storage?.setObject(gasAsset, forKey: address + "_" + keys.readOnlyGas.rawValue)
         
     }
     
-    static func setReadOnlyTokensForSession(tokens: [TransferableAsset]) {
-        try? arrayStorage?.setObject(tokens, forKey: keys.readOnlyTokens.rawValue)
+    static func setReadOnlyTokensForSession(tokens: [TransferableAsset], address: String) {
+        try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.readOnlyTokens.rawValue)
     }
     
-    static func setReadOnlyOntologyAssetsForSession(tokens: [TransferableAsset]) {
-        try? arrayStorage?.setObject(tokens, forKey: keys.readOnlyOntologyAssets.rawValue)
+    static func setReadOnlyOntologyAssetsForSession(tokens: [TransferableAsset], address: String) {
+        try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.readOnlyOntologyAssets.rawValue)
     }
+
     
     // MARK: Cache Getters for Writable Balances
     static func gas() -> TransferableAsset {
@@ -148,42 +149,42 @@ class O3Cache {
     }
     
     // MARK: Cache Getters For Read Only Balances
-    static func readOnlyGas() -> TransferableAsset {
+    static func readOnlyGas(address: String) -> TransferableAsset {
         var cachedGASBalance = TransferableAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
                                                  decimals: 8, value: 0, assetType: .neoAsset )
         do {
-            cachedGASBalance = try storage?.object(forKey: keys.readOnlyGas.rawValue) ?? cachedGASBalance
+           cachedGASBalance = try storage?.object(forKey: address + "_" + keys.readOnlyGas.rawValue) ?? cachedGASBalance
         } catch {
             
         }
         return cachedGASBalance
     }
     
-    static func readOnlyNeo() -> TransferableAsset {
+    static func readOnlyNeo(address: String) -> TransferableAsset {
         var cachedNEOBalance = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
                                                  decimals: 8, value: 0, assetType: .neoAsset)
         do {
-            cachedNEOBalance = try storage?.object(forKey: keys.readOnlyNeo.rawValue) ?? cachedNEOBalance
+            cachedNEOBalance = try storage?.object(forKey: address + "_" + keys.readOnlyNeo.rawValue) ?? cachedNEOBalance
         } catch {
             
         }
         return cachedNEOBalance
     }
     
-    static func readOnlyTokens() -> [TransferableAsset] {
+    static func readOnlyTokens(address: String) -> [TransferableAsset] {
         var cachedTokens = [TransferableAsset]()
         do {
-            cachedTokens = try arrayStorage?.object(forKey: keys.readOnlyTokens.rawValue) ?? cachedTokens
+           cachedTokens = try arrayStorage?.object(forKey: address + "_" + keys.readOnlyTokens.rawValue) ?? cachedTokens
         } catch {
             
         }
         return cachedTokens
     }
     
-    static func readOnlyOntologyAssets() -> [TransferableAsset] {
+    static func readOnlyOntologyAssets(address: String) -> [TransferableAsset] {
         var cachedTokens = [TransferableAsset]()
         do {
-            cachedTokens = try arrayStorage?.object(forKey: keys.readOnlyOntologyAssets.rawValue) ?? cachedTokens
+            cachedTokens = try arrayStorage?.object(forKey: address + "_" + keys.readOnlyOntologyAssets.rawValue) ?? cachedTokens
         } catch {
             
         }

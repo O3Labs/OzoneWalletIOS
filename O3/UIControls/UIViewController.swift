@@ -40,4 +40,24 @@ extension UIViewController {
             self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
         }
     }
+    
+    @objc func dismissTapped() {
+        dismiss(animated: true)
+    }
+    
+    func applyBottomSheetNavBarTheme(title: String) {
+        DispatchQueue.main.async {
+            UIApplication.shared.theme_setStatusBarStyle(ThemeStatusBarStylePicker(styles: Theme.light.statusBarStyle, Theme.dark.statusBarStyle), animated: true)
+            self.setNeedsStatusBarAppearanceUpdate()
+            self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(self.dismissTapped))
+            self.navigationItem.rightBarButtonItem?.theme_tintColor = O3Theme.lightTextColorPicker
+            
+            let label = UILabel()
+            label.theme_textColor = O3Theme.titleColorPicker
+            label.text = title
+            label.font = UIFont(name: "Avenir-Heavy", size: 16)
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: label)
+        }
+    }
 }

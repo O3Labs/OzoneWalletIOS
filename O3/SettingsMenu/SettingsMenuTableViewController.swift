@@ -13,30 +13,103 @@ import SwiftTheme
 import KeychainAccess
 import WebBrowser
 import ZendeskSDK
+import Neoutils
 
 class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate {
-    @IBOutlet weak var showPrivateKeyView: UIView!
     @IBOutlet weak var contactView: UIView!
     @IBOutlet weak var themeCell: UITableViewCell!
-    @IBOutlet weak var privateKeyCell: UITableViewCell!
-    @IBOutlet weak var watchOnlyCell: UITableViewCell!
     @IBOutlet weak var currencyCell: UITableViewCell!
     @IBOutlet weak var contactCell: UITableViewCell!
-    @IBOutlet weak var logoutCell: UITableViewCell!
     @IBOutlet weak var supportCell: UITableViewCell!
-
+    @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
+    @IBOutlet weak var idCell: UITableViewCell!
+    
     @IBOutlet weak var supportView: UIView!
     @IBOutlet weak var currencyView: UIView!
     @IBOutlet weak var themeView: UIView!
-    @IBOutlet weak var privateKeyLabel: UILabel!
-    @IBOutlet weak var watchOnlyLabel: UILabel!
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var themeLabel: UILabel!
-    @IBOutlet weak var logoutLabel: UILabel!
     @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var supportLabel: UILabel!
+    @IBOutlet weak var multiWalletLabel: UILabel!
+    @IBOutlet weak var idLabel: UILabel!
+    
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var headerTitleLabel: UILabel!
+    @IBOutlet weak var qrView: UIImageView!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var walletNameLabel: UILabel!
 
+    @IBOutlet weak var congestionIcon: UIImageView!
+    
+    
+    // swiftlint:disable weak_delegate
+    var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
+    // swiftlint:enable weak_delegate
+
+    func saveQRCodeImage() {
+        let qrWithBranding = UIImage.imageWithView(view: self.qrView
+        )
+        UIImageWriteToSavedPhotosAlbum(qrWithBranding, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    func addWalletChangeObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletInfo(_:)), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
+    }
+    
+    func share() {
+        let shareURL = URL(string: "https://o3.app/" + (Authenticated.wallet?.address)!)
+        let qrWithBranding = UIImage.imageWithView(view: self.qrView)
+        let activityViewController = UIActivityViewController(activityItems: [shareURL as Any, qrWithBranding], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    @IBAction func showActionSheet() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let saveQR = UIAlertAction(title: AccountStrings.saveQRAction, style: .default) { _ in
+            self.saveQRCodeImage()
+        }
+        alert.addAction(saveQR)
+        let copyAddress = UIAlertAction(title: AccountStrings.copyAddressAction, style: .default) { _ in
+            UIPasteboard.general.string = Authenticated.wallet?.address
+            //maybe need some Toast style to notify that it's copied
+        }
+        alert.addAction(copyAddress)
+        let share = UIAlertAction(title: AccountStrings.shareAction, style: .default) { _ in
+            self.share()
+        }
+        alert.addAction(share)
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        alert.addAction(cancel)
+        alert.popoverPresentationController?.sourceView = addressLabel
+        present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            let alert = UIAlertController(title: OzoneAlert.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default))
+            present(alert, animated: true)
+        } else {
+            //change it to Toast style.
+            let alert = UIAlertController(title: AccountStrings.saved, message: AccountStrings.savedMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default))
+            present(alert, animated: true)
+        }
+    }
+    
+    
     var themeString = UserDefaultsManager.themeIndex == 0 ? SettingsStrings.classicTheme: SettingsStrings.darkTheme {
         didSet {
             self.setThemeLabel()
@@ -49,43 +122,87 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         }
         DispatchQueue.main.async { label.text = self.themeString }
     }
-
-    func setThemedElements() {
-        let themedTitleLabels = [privateKeyLabel, watchOnlyLabel, contactLabel, themeLabel, currencyLabel, logoutLabel, versionLabel, supportLabel]
-        let themedCells = [themeCell, privateKeyCell, watchOnlyCell, currencyCell, contactCell, logoutCell]
-        for cell in themedCells {
-            cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
-            cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
+    
+    func checkCongestion() {
+        NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight() { (result) in
+            switch result {
+            case .failure(let error):
+                return
+            case .success(let pending):
+                DispatchQueue.main.async {
+                    if pending > 1000 {
+                        self.congestionIcon.isHidden = false
+                        self.headerTitleLabel.text = String(format: SettingsStrings.congestionWarning, pending)
+                        self.headerTitleLabel.textColor = Theme.light.accentColor
+                    }
+                }
+            }
         }
-
-        for label in themedTitleLabels {
-            label?.theme_textColor = O3Theme.titleColorPicker
+    }
+    
+    @objc func updateWalletInfo(_ sender: Any?) {
+        qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: qrView.bounds.size.width, height: qrView.bounds.size.height)
+        addressLabel.text = (Authenticated.wallet?.address)!
+        if let nep6 = NEP6.getFromFileSystem() {
+            let defaultIndex = nep6.accounts.index { $0.isDefault == true }
+            self.navigationController?.navigationBar.topItem?.title = nep6.accounts[defaultIndex!].label
+        } else {
+            self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
         }
-        versionLabel?.theme_textColor = O3Theme.lightTextColorPicker
-        tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
-        tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        
+        if NEP6.getFromFileSystem() == nil {
+            multiWalletLabel.text = SettingsStrings.enableMultiWallet
+        } else {
+            multiWalletLabel.text = SettingsStrings.manageWallets
+        }
+        
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         setThemedElements()
         setLocalizedStrings()
         applyNavBarTheme()
-        super.viewDidLoad()
-        let rightBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "angle-up"), style: .plain, target: self, action: #selector(SettingsMenuTableViewController.maximize(_:)))
-        navigationItem.rightBarButtonItem = rightBarButton
-        showPrivateKeyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showPrivateKey)))
+        addWalletChangeObserver()
+        updateWalletInfo(nil)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
+        self.headerView.addGestureRecognizer(tap)
         contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
         supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
         themeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTheme)))
+        enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
+        idCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openIdentity)))
         setThemeLabel()
 
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.versionLabel.text = String(format: SettingsStrings.versionLabel, version)
         }
     }
+    
+    @objc func openIdentity() {
+        self.performSegue(withIdentifier: "segueToIdentitiesList", sender: nil)
+    }
+    
+    @objc func enableMultiWallet() {
+        if NEP6.getFromFileSystem()?.accounts == nil {
+            self.performSegue(withIdentifier: "segueToMultiWalletActivation", sender: nil)
+        } else {
+            self.performSegue(withIdentifier: "segueToManageWallets", sender: nil)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueToManageWallets" || segue.identifier == "segueToIdentitiesList" {
+            self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: segue.destination)
+            segue.destination.modalPresentationStyle = .custom
+            segue.destination.transitioningDelegate = self.halfModalTransitioningDelegate
+        }
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        checkCongestion()
         currencyLabel.text = String(format: SettingsStrings.currencyTitle, UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased())
     }
 
@@ -149,32 +266,14 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.dismiss(animated: true, completion: nil)
     }
 
-    @objc func showPrivateKey() {
-        let keychain = Keychain(service: "network.o3.neo.wallet")
-        DispatchQueue.global().async {
-            do {
-                _ = try keychain
-                    .authenticationPrompt(SettingsStrings.authenticate)
-                    .get("ozonePrivateKey")
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "segueToPrivateKey", sender: nil)
-                }
-            } catch {
-
-            }
-        }
-    }
-
-    func logoutTapped(_ sender: Any) {
-
-    }
-
     func performLogoutCleanup() {
         O3Cache.clear()
         SwiftTheme.ThemeManager.setTheme(index: 0)
         UserDefaultsManager.themeIndex = 0
         try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
-        Authenticated.account = nil
+        try? Keychain(service: "network.o3.neo.wallet").remove("ozoneActiveNep6Password")
+        NEP6.removeFromDevice()
+        Authenticated.wallet = nil
         UserDefaultsManager.o3WalletAddress = nil
         NotificationCenter.default.post(name: Notification.Name("loggedOut"), object: nil)
         self.dismiss(animated: false)
@@ -191,28 +290,38 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     //properly implement cell did tap
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 6 {
-            OzoneAlert.confirmDialog(message: SettingsStrings.logoutWarning, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: SettingsStrings.logout, didCancel: {
-
-            }, didConfirm: {
-                self.performLogoutCleanup()
-                self.view.window!.rootViewController?.dismiss(animated: false)
-                UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()
-
-            })
-
-        }
     }
+    
+    func setThemedElements() {
+        let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel, idLabel]
+        let themedCells = [themeCell, currencyCell, contactCell, idCell]
+        for cell in themedCells {
+            cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
+            cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        }
+        
+        for label in themedTitleLabels {
+            label?.theme_textColor = O3Theme.titleColorPicker
+        }
+        versionLabel?.theme_textColor = O3Theme.lightTextColorPicker
+        tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
+        tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        headerView.theme_backgroundColor = O3Theme.backgroundColorPicker
+    }
+    
 
     func setLocalizedStrings() {
-        self.title = SettingsStrings.settingsTitle
-        privateKeyLabel.text = SettingsStrings.privateKeyTitle
-        watchOnlyLabel.text = SettingsStrings.watchOnlyTitle
         themeLabel.text = SettingsStrings.themeTitle
         currencyLabel.text = SettingsStrings.currencyTitle + UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased()
         contactLabel.text = SettingsStrings.contactTitle
-        logoutLabel.text = SettingsStrings.logout
         supportLabel.text = SettingsStrings.supportTitle
         versionLabel.text = SettingsStrings.versionLabel
+        idLabel.text = SettingsStrings.idLabel
+        if NEP6.getFromFileSystem() == nil {
+            multiWalletLabel.text = SettingsStrings.enableMultiWallet
+        } else {
+            multiWalletLabel.text = SettingsStrings.manageWallets
+        }
+        headerTitleLabel.text = AccountStrings.myAddressInfo
     }
 }

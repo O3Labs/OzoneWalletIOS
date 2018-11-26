@@ -91,7 +91,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
     
     
     func loadTransactionHistory(appendPage: Bool, pageNo: Int) {
-        O3APIClient(network: AppState.network).getTxHistory(address: Authenticated.account!.address, pageIndex: pageNo) { result in
+        O3APIClient(network: AppState.network).getTxHistory(address: Authenticated.wallet!.address, pageIndex: pageNo) { result in
             switch result {
             case .failure:
                 DispatchQueue.main.async {
@@ -225,6 +225,22 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         
     }
     
+    func showPendingActionSheet(pendingIndex: IndexPath) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let removePending = UIAlertAction(title: "Remove From History", style: .destructive) { _ in
+            UIApplication.appDelegate.accountPersistentContainer.viewContext.delete(self.pendingTransactions[pendingIndex.row])
+            try? UIApplication.appDelegate.accountPersistentContainer.viewContext.save()
+            self.pendingTransactions.remove(at: pendingIndex.row)
+            self.tableView.deleteRows(at: [pendingIndex], with: .fade)
+        }
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in}
+        
+        alert.addAction(cancel)
+        alert.addAction(removePending)
+        alert.popoverPresentationController?.sourceView = self.tableView
+        present(alert, animated: true, completion: nil)
+    }
+    
     func showActionSheet(tx: TransactionHistoryItem) {
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -234,7 +250,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         alert.addAction(viewDetail)
         
         let addressToCheck: String?
-        if tx.to == Authenticated.account!.address {
+        if tx.to == Authenticated.wallet!.address {
             addressToCheck = tx.from
         } else {
             addressToCheck = tx.to
@@ -242,7 +258,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         
         var exists = getContacts().contains(where: {$0.address == addressToCheck})
         //if sending it to this account we don't offer add to contacts option
-        if tx.to == Authenticated.account!.address {
+        if tx.to == Authenticated.wallet!.address {
             exists = true
         }
         
@@ -274,6 +290,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         
         //we don't offer any option on pending transaction
         if indexPath.section == 0{
+            showPendingActionSheet(pendingIndex: indexPath)
             return
         }
         //offer action sheet

@@ -12,9 +12,12 @@ import Pageboy
 import DeckTransition
 import SwiftTheme
 
-class AccountTabViewController: TabmanViewController, PageboyViewControllerDataSource {
-
+class AccountTabViewController: TabmanViewController, PageboyViewControllerDataSource, HalfModalPresentable {
+    
     var viewControllers: [UIViewController] = []
+    // swiftlint:disable weak_delegate
+    var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
+    // swiftlint:enable weak_delegate
     
     func addThemeObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.changedTheme), name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
@@ -31,6 +34,8 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
             appearance.layout.edgeInset = 16
             appearance.text.font = O3Theme.topTabbarItemFont
             appearance.style.background = .solid(color: UserDefaultsManager.theme.backgroundColor)
+            appearance.indicator.useRoundedCorners = true
+            appearance.interaction.isScrollEnabled = false
         })
     }
 
@@ -55,11 +60,26 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
             appearance.text.font = O3Theme.topTabbarItemFont
             appearance.layout.edgeInset = 16
             appearance.style.background = .solid(color: UserDefaultsManager.theme.backgroundColor)
+            appearance.indicator.useRoundedCorners = true
+            appearance.interaction.isScrollEnabled = false
         })
         self.bar.location = .top
         self.bar.style = .buttonBar
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
+        
+        if let nep6 = NEP6.getFromFileSystem() {
+            var numAccount = 0
+            for account in nep6.accounts {
+                if account.isDefault == false && account.key != nil {
+                    numAccount += 1
+                }
+            }
+            if numAccount > 0 {
+                navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_wallet_swap.png"), style: .plain, target: self, action: #selector(self.swapWalletTapped))
+            }
+        }
+        
         
         #if TESTNET
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openDAppBrowser(_:)))
@@ -85,6 +105,17 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
 
     func defaultPage(for pageboyViewController: PageboyViewController) -> PageboyViewController.Page? {
         return nil
+    }
+    
+    @objc func swapWalletTapped() {
+        guard let modal = UIStoryboard(name: "AddNewMultiWallet", bundle: nil).instantiateViewController(withIdentifier: "UnlockMultiWalletTableViewController") as? UnlockMultiWalletTableViewController else {
+            fatalError("Presenting improper modal controller")
+        }
+        let modalWithNav = UINavigationController(rootViewController: modal)
+        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: modalWithNav)
+        modalWithNav.modalPresentationStyle = .custom
+        modalWithNav.transitioningDelegate = self.halfModalTransitioningDelegate
+        self.present(modalWithNav, animated: true)
     }
 
     @objc func rightBarButtonTapped(_ sender: Any) {
@@ -134,7 +165,7 @@ extension AccountTabViewController: QRScanDelegate {
     
     func postToChannel(channel: String) {
         let headers = ["content-type": "application/json"]
-        let parameters = ["address": Authenticated.account!.address,
+        let parameters = ["address": Authenticated.wallet!.address,
                           "device": "iOS" ] as [String: Any]
         
         let postData = try? JSONSerialization.data(withJSONObject: parameters, options: [])

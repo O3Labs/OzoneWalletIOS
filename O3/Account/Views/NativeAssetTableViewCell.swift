@@ -18,14 +18,14 @@ class NativeAssetTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         titleLabel.theme_textColor = O3Theme.titleColorPicker
         amountLabel.theme_textColor = O3Theme.titleColorPicker
-        cardView.theme_backgroundColor = O3Theme.backgroundColorPicker
-        contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
-        theme_backgroundColor = O3Theme.backgroundColorPicker
+        cardView.theme_backgroundColor = O3Theme.cardColorPicker
+        contentView.theme_backgroundColor = O3Theme.cardColorPicker
+        theme_backgroundColor = O3Theme.cardColorPicker
         super.awakeFromNib()
     }
 
     override func layoutSubviews() {
-        cardView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        cardView.theme_backgroundColor = O3Theme.cardColorPicker
         super.layoutSubviews()
     }
 

@@ -56,10 +56,10 @@ class MarketplaceController: TabmanViewController, PageboyViewControllerDataSour
         self.viewControllers.append(nep5tokensViewController)
         self.viewControllers.append(dappListViewController)
 
-        if O3Cache.gas().value != 0 || O3Cache.neo().value != 0 {
-            self.viewControllers.append(tokenSalesViewController)
-            self.bar.items?.append(Item(title: TokenSaleStrings.tokenSalesTitle.uppercased()))
-        }
+        //if O3Cache.gas().value != 0 || O3Cache.neo().value != 0 {
+        //    self.viewControllers.append(tokenSalesViewController)
+        //    self.bar.items?.append(Item(title: TokenSaleStrings.tokenSalesTitle.uppercased()))
+        //}
 
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.bar.appearance = TabmanBar.Appearance({ (appearance) in

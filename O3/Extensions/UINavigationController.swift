@@ -23,7 +23,7 @@ extension UINavigationController {
     func hideHairline() {
         findHairline(view: self.view)
     }
-
+    
 }
 
 extension UISearchBar {

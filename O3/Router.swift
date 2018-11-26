@@ -11,7 +11,7 @@ import UIKit
 class Router: NSObject {
 
     static func parseNEP9URL(url: URL) {
-        if Authenticated.account == nil {
+        if Authenticated.wallet == nil {
             return
         }
         var updatedURL: URL = url
@@ -23,7 +23,7 @@ class Router: NSObject {
         let asset = updatedURL.valueOf("asset")
         let amount = updatedURL.valueOf("amount")
         //Get account state
-        O3APIClient(network: AppState.network).getAccountState(address: Authenticated.account!.address) { result in
+        O3APIClient(network: AppState.network).getAccountState(address: Authenticated.wallet!.address) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .failure:
@@ -53,7 +53,7 @@ class Router: NSObject {
                     O3Cache.setGASForSession(gasBalance: gasBalance)
                     O3Cache.setNEOForSession(neoBalance: neoBalance)
                     O3Cache.setTokenAssetsForSession(tokens: tokenAssets)
-                    O3Cache.setReadOnlyOntologyAssetsForSession(tokens: accountState.ontology)
+                    O3Cache.setOntologyAssetsForSession(tokens: accountState.ontology)
 
                     if asset?.lowercased() == "neo" {
                         Controller().openSend(to: address!, selectedAsset: TransferableAsset.NEO(), amount: amount)

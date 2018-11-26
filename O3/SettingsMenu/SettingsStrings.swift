@@ -44,4 +44,13 @@ struct SettingsStrings {
     static let classicTheme = NSLocalizedString("SETTINGS_Theme_Classic", comment: "Label For Classic Theme")
     static let darkTheme = NSLocalizedString("SETTINGS_Theme_Dark", comment: "Label For Dark Theme")
     static let versionLabel = NSLocalizedString("SETTINGS_Version", comment: "Settings Menu Title For Version")
+    
+    static let enableMultiWallet = NSLocalizedString("SETTINGS_enable_multiwallet", comment: "settings item to enable multi wallet if not active")
+    static let manageWallets = NSLocalizedString("SETTINGS_manage_wallets", comment: "settings item to manage existing wallets")
+    static let addWallet = NSLocalizedString("SETTINGS_add_wallet", comment: "settings item to add another wallet to nep 6")
+    static let congestionWarning = NSLocalizedString("SETTINGS_congestion_warning", comment: "warning in settings when there is congestion in the neo blockchain")
+    
+    static let idLabel = NSLocalizedString("SETTINGS_id_label", comment: "label for identity page that user can use")
+    
+    static let nnsEmpty = NSLocalizedString("SETTINGS_nns_empty", comment: "description when no nns names currently listed")
 }

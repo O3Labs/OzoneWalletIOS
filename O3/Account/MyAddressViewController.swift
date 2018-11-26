@@ -20,8 +20,8 @@ class MyAddressViewController: UIViewController {
     func configureView() {
         applyNavBarTheme()
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
-        addressLabel.text = Authenticated.account?.address
-        qrImageView.image = UIImage.init(qrData: (Authenticated.account?.address)!, width: qrImageView.bounds.size.width, height: qrImageView.bounds.size.height)
+        addressLabel.text = Authenticated.wallet?.address
+        qrImageView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: qrImageView.bounds.size.width, height: qrImageView.bounds.size.height)
     }
 
     func saveQRCodeImage() {
@@ -45,7 +45,7 @@ class MyAddressViewController: UIViewController {
         }
         alert.addAction(saveQR)
         let copyAddress = UIAlertAction(title: AccountStrings.copyAddressAction, style: .default) { _ in
-            UIPasteboard.general.string = Authenticated.account?.address
+            UIPasteboard.general.string = Authenticated.wallet?.address
             //maybe need some Toast style to notify that it's copied
         }
         alert.addAction(copyAddress)
@@ -82,7 +82,7 @@ class MyAddressViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
         self.view.addGestureRecognizer(tap)
         
-        O3APIClient(network: AppState.network).reverseDomainLookup(address: (Authenticated.account?.address)!) { result in
+        O3APIClient(network: AppState.network).reverseDomainLookup(address: (Authenticated.wallet?.address)!) { result in
             switch result {
             case .failure (let error):
                 print(error)

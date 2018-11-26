@@ -33,11 +33,11 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
     }
 
     func loginToApp() {
-        guard let account = Account(wif: wif) else {
+        guard let account = Wallet(wif: wif) else {
             return
         }
         let keychain = Keychain(service: "network.o3.neo.wallet")
-        Authenticated.account = account
+        Authenticated.wallet = account
         Channel.pushNotificationEnabled(true)
 
         DispatchQueue.main.async {
@@ -55,6 +55,7 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
                     try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .set(account.wif, key: "ozonePrivateKey")
+                    NEP6.removeFromDevice()
                     SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
                     self.instantiateMainAsNewRoot()
                 } catch _ {
@@ -73,8 +74,6 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             maximizeToFullScreen(allowReverse: false)
-            Answers.logCustomEvent(withName: "Backup Selected", customAttributes: ["Option": 0])
-
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.performSegue(withIdentifier: "segueToEmailBackup", sender: nil)
             }
@@ -82,7 +81,6 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
 
         if indexPath.row == 1 {
             DispatchQueue.main.async {
-                Answers.logCustomEvent(withName: "Backup Selected", customAttributes: ["Option": 1])
                 OzoneAlert.confirmDialog(OnboardingStrings.screenShotTakenAlertTitle, message: OnboardingStrings.screenShotTakenAlertDescription, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
                     self.loginToApp()
                 }
@@ -90,14 +88,12 @@ class BackupTableViewController: UITableViewController, HalfModalPresentable {
 
         } else if indexPath.row == 2 {
             DispatchQueue.main.async {
-                Answers.logCustomEvent(withName: "Backup Selected", customAttributes: ["Option": 2])
                 OzoneAlert.confirmDialog(OnboardingStrings.copiedToClipboardAlertTitle, message: OnboardingStrings.copiedToClipboardAlertDescription, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
                     self.loginToApp()
                 }
             }
 
         } else if indexPath.row == 3 {
-            Answers.logCustomEvent(withName: "Backup Selected", customAttributes: ["Option": 3])
             maximizeToFullScreen(allowReverse: false)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.performSegue(withIdentifier: "segueToPaperBackup", sender: nil)

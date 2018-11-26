@@ -53,4 +53,6 @@ class AppState: NSObject {
         UserDefaults.standard.setValue(dismiss, forKey: "dismissedPortfolioNotification1.8.0")
         UserDefaults.standard.synchronize()
     }
+    
+    static let protectedKeyValue = NEP6.getFromFileSystem() != nil ?  "ozoneActiveNep6Password" :  "ozonePrivateKey"
 }

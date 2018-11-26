@@ -176,7 +176,6 @@ class CreateOrderViewModel {
         O3APIClient(network: AppState.network).loadPricing(symbol: symbol, currency: currency) { result in
             switch result {
             case .failure(_):
-                //TODO show error
                 self.delegate?.endLoading()
                 return
             case .success(let pairResponse):
@@ -185,7 +184,6 @@ class CreateOrderViewModel {
                 O3APIClient(network: AppState.network, useCache: true).loadPricing(symbol: self.offerAsset.symbol, currency: UserDefaultsManager.referenceFiatCurrency.rawValue) { result in
                     switch result {
                     case .failure(_):
-                        //TODO show error
                         self.delegate?.endLoading()
                         return
                     case .success(let fiatResponse):
@@ -233,7 +231,7 @@ class CreateOrderViewModel {
     
     func loadOpenOrders() {
         let pair = String(format:"%@_%@", wantAsset.symbol.uppercased(), offerAsset.symbol.uppercased())
-        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open, pair: pair) { result in
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.wallet!.address, status: SwitcheoOrderStatus.open, pair: pair) { result in
             switch result{
             case .failure(let error):
                 print(error)
@@ -277,7 +275,7 @@ class CreateOrderViewModel {
         
         let side = selectedAction == CreateOrderAction.Buy ? "buy" : "sell"
         let orderType = "limit"
-        let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.account!)
+        let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.wallet!)
         let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
         
         let want = selectedAction == CreateOrderAction.Buy ? wantAmount! : offerAmount!
@@ -367,7 +365,7 @@ class CreateOrderTableViewController: UITableViewController {
     
     var viewModel: CreateOrderViewModel!
     
-    @IBOutlet var targetPriceTextField: UITextField!
+    @IBOutlet var targetPriceTextField: FixedDecimalTextField!
     @IBOutlet var targetPriceTitle: UILabel!
     @IBOutlet var targetPriceSubtitle: UILabel!
     @IBOutlet var targetFiatPriceLabel: UILabel!
@@ -422,6 +420,8 @@ class CreateOrderTableViewController: UITableViewController {
     
     func setupInputToolbar() {
         inputToolbar.delegate = self
+        wantAmountTextField.decimals = viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision
+        offerAmountTextField.decimals = self.viewModel.defaultPrecision //always 8 decimals
         if viewModel.selectedAction == CreateOrderAction.Sell {
             wantAmountTextField.decimals = viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision
             wantAmountTextField.inputAccessoryView = inputToolbar.loadNib()
@@ -476,7 +476,7 @@ class CreateOrderTableViewController: UITableViewController {
         }
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = viewModel.offerAsset.precision ?? self.viewModel.defaultPrecision
+        formatter.maximumFractionDigits = self.viewModel.defaultPrecision //always 8 decimals
         formatter.numberStyle = .decimal
         let number = formatter.number(from: (sender.text?.trim())!)
         if number == nil {
@@ -795,6 +795,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
     func onPriceReceived(pairPrice: AssetPrice, fiatPrice: AssetPrice) {
         DispatchQueue.main.async {
             HUD.hide()
+            self.targetPriceTextField.decimals = self.viewModel.pairPrecision
             self.targetPriceSubtitle.text = self.viewModel.priceChangeDescription
             //assign default value to the toolbar
             self.targetFiatPriceLabel.text = Fiat(amount: Float(fiatPrice.price * pairPrice.price)).formattedStringWithDecimal(decimals: self.viewModel.defaultPrecision)
@@ -826,8 +827,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                 self.offerAmountTextField.text = ""
                 return
             }
-            self.offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.offerAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
-            
+            self.offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.defaultPrecision, removeTrailing: true)
             self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: self.viewModel.defaultPrecision)
         }
     }
@@ -872,7 +872,7 @@ extension CreateOrderTableViewController: AssetInputToolbarDelegate{
             wantAmountTextField.text = value.formattedStringWithoutSeparator(viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
         } else {
             viewModel.setOfferAmount(value: value)
-            offerAmountTextField.text = value.formattedStringWithoutSeparator(viewModel.offerAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
+            offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.defaultPrecision, removeTrailing: true)
         }
     }
     
@@ -882,7 +882,7 @@ extension CreateOrderTableViewController: AssetInputToolbarDelegate{
             wantAmountTextField.text = value.formattedStringWithoutSeparator(viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
         } else {
             viewModel.setOfferAmount(value: value)
-            offerAmountTextField.text = value.formattedStringWithoutSeparator(viewModel.offerAsset.precision ?? self.viewModel.defaultPrecision, removeTrailing: true)
+            offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.defaultPrecision, removeTrailing: true)
         }
     }
 }

@@ -211,8 +211,7 @@ class PrivateKeyCreationViewController: UIViewController, UICollectionViewDelega
     }
 
     @IBAction func learnMoreButtonTapped(_ sender: Any) {
-        Answers.logCustomEvent(withName: "Learn More About Private Key",
-                               customAttributes: [:])
+        
         swipedLeft(nil)
     }
 

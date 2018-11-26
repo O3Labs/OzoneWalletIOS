@@ -159,7 +159,6 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
             OzoneAlert.alertDialog(message: OnboardingStrings.createWalletNoPassCodeError, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
             return
         }
-        Answers.logCustomEvent(withName: "Wallet Created", customAttributes: [:])
         performSegue(withIdentifier: "segueToWelcome", sender: nil)
     }
 
@@ -176,7 +175,7 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
         guard let dest = segue.destination as? PrivateKeyCreationViewController else {
             return
         }
-        dest.wif = (Account()?.wif)!
+        dest.wif = (Wallet()?.wif)!
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {

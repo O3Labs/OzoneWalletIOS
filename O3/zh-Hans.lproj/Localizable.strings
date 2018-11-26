@@ -48,6 +48,111 @@
 /* Title for marketplace section in app */
 "MARKETPLACE_title" = "市场";
 
+/* additional info about what will happen when multiwallet is activated */
+"MULTIWALLET_activate_info" = "This password will be used to encrypt your private key";
+
+/* subtitle for activating multiwallet */
+"MULTIWALLET_activate_multiwallet_subtitle" = "Please enter a name and passphrase for this wallet";
+
+/* title for activating multiwallet page */
+"MULTIWALLET_activate_multiwallet_title" = "To ensure your funds are secure, O3 requires you to convert your private key to a safer encrypted key.";
+
+/* title to add key to a watch only address */
+"MULTIWALLET_add_key" = "MULTIWALLET_add_key";
+
+/* description for adding key to a watch address */
+"MULTIWALLET_add_key_description" = "Add an encrypted key to convert this watch address";
+
+/* Description text when adding more wallets to your multi wallet */
+"MULTIWALLET_add_wallet_description" = "Enter a NEO/Ontology encrypted key, private key or address to add wallet or watch address.";
+
+/* address title label */
+"MULTIWALLET_Address" = "MULTIWALLET_Address";
+
+/* Button title to backup up encrypted key and nep6 file */
+"MULTIWALLET_backup_encrypted_key" = "Back it up";
+
+/* title to backup a saved wallet again */
+"MULTIWALLET_backup_wallet" = "Backup Wallet";
+
+/* You cannot add the same wallet twice. */
+"MULTIWALLET_cannot_add_duplicate" = "This wallet has already been stored on this device. You cannot add a duplicate";
+
+/* message stating that you cant delete primary key */
+"MULTIWALLET_cannot_delete_primary" = "You cannot delete your primary wallet. Please create a new wallet or unlock a different wallet and try again";
+
+/* text for continue action */
+"MULTIWALLET_continue" = "Next";
+
+/* message to display warning deleting encrypted cannot be undone */
+"MULTIWALLET_delete_encrypted_confirm" = "Are you sure you want to delete this? This action cannot be undone.";
+
+/* conforim title for when you want to delete your watch address */
+"MULTIWALLET_delete_watch_addr" = "Remove";
+
+/* title for when deleteing watcha ddres */
+"MULTIWALLET_delete_watch_addr_title" = "Delete %@"; /* NEW */
+
+/* encrypted key title */
+"MULTIWALLET_encrypted_key" = "Encrypted Key";
+
+/* Description when an encrypted key is detected in multiwallet add */
+"MULTIWALLET_encrypted_key_detected" = "Encrypted key detected\n\nPlease enter your password to continue";
+
+/* Hint for entering encrypted key password in multiwallet setup */
+"MULTIWALLET_encrypted_password_hint" = "Encrypted key password";
+
+/* Description for when you have finished encrypting a private key and storing it in NEP5 */
+"MULTIWALLET_encryption_finished_decription" = "We've encrypted this wallet for you. Please make sure to back it up and remember your password";
+
+/* Description when entering a new name */
+"MULTIWALLET_enter_new_name" = "Enter a preferred name for this wallet";
+
+/* error alert after failing to decrrypt the encrypted key */
+"MULTIWALLET_failed_to_decrypt" = "Failed to decrypt key, please double check it";
+
+/* button title after finished multiwallet creation */
+"MULTIWALLET_finished" = "Done";
+
+/* Button title to generate an encrypted key when activating multiwallet */
+"MULTIWALLET_generate_encrypted_key" = "Generate Encrypted Key";
+
+/* description text after a multi wallet has been generated */
+"MULTIWALLET_generated_decription" = "All done. Here is your new encrypted key! Don't forget your password or else it won't work";
+
+/* error text when they enter text that can't be parsed as a key or address */
+"MULTIWALLET_invalid_wallet_entry" = "That key or address is invalid, please double check it";
+
+/* placeholder for when entering a new name for wallet */
+"MULTIWALLET_my_wallet_placeholder" = "My Awesome Wallet";
+
+/* button title to create a new wallet */
+"MULTIWALLET_new_wallet" = "Generate New Wallet";
+
+/* Input hint for when making password to generate encrypted ket */
+"MULTIWALLET_password_hint" = "Password";
+
+/* Input hint for when verifying password to generate encrypted key */
+"MULTIWALLET_password_verify_hint" = "Verify Password";
+
+/* title to remove wallet */
+"MULTIWALLET_remove_wallet" = "Remove Wallet";
+
+/* description of adding a name to a wallet title */
+"MULTIWALLET_set_wallet_title" = "Give this wallet a name";
+
+/* title to show the raw private key of a wallet */
+"MULTIWALLET_show_raw_key" = "Show Raw Key";
+
+/* title for manage wallets bottom sehet */
+"MULTIWALLET_wallets" = "Manage Wallets";
+
+/* A description to display after a watch address has been successfully added */
+"MULTIWALLET_watch_address_added" = "A watch address has been added. You can unlock this address at ay time via settings > manage wallet and entering a private or encrypted key";
+
+/* Title to edit name in multiwallet */
+"MUTLIWALLET_edit_name" = "Edit Name";
+
 /* Title of the news feed page */
 "NEWSFEED_News_Title" = "动态消息";
 
@@ -122,6 +227,9 @@
 
 /* Title when reentering backup */
 "ONBOARDING_enter_private_key" = "输入私钥";
+
+/* Prompt asking the user to authenticate themselves to unlock the defauly nep6 address. */
+"ONBOARDING_Existing_NEP6_Authentication_Prompt" = "Login to %@";
 
 /* Prompt asking the user to authenticate themselves when they already have a wallet stored on device. */
 "ONBOARDING_Existing_Wallet_Authentication_Prompt" = "使用已保存在该设备上的钱包登录";
@@ -306,8 +414,20 @@
 /* Title for wallet generated popup */
 "ONBOARDING_Wallet_Generated" = "钱包生成";
 
+/* Title to select a wall to login with */
+"ONBOARDING_wallet_select" = "Please select a wallet to log in with:";
+
 /* Title Welciming the user after successful wallet creation */
 "ONBOARDING_Welcome" = "欢迎使用O3钱包";
+
+/* Subtitle for welcome back authentication */
+"ONBOARDING_welcome_back_subtitle" = "Your gateway to the smart economy";
+
+/* Title for welcome back authentication */
+"ONBOARDING_welcome_back_title" = "Welcome back to O3";
+
+/* Action button to add watch address */
+"PORTFOLIO_Add_Watch_Address" = "Add Watch Address";
 
 /* A header title on the portfolio screen, show the displayed funds are inside cold storage */
 "PORTFOLIO_Cold_Storage_Header" = "冷储存";
@@ -315,8 +435,14 @@
 /* A header title on the portfolio screen, show the displayed funds are a combination of those store in O3 wallet and cold storage */
 "PORTFOLIO_Combined_Header" = "综合";
 
+/* Action Button to deposit tokens itno wallet */
+"PORTFOLIO_Deposit_Tokens" = "Deposit Tokens";
+
+/* Title of empty state when user has no balance in wallte */
+"PORTFOLIO_Empty_Balance" = "You currently have no tokens in your wallet";
+
 /* Portfolio Percentage Change String */
-"PORTFOLIO_Interval" = "%@（%.2f%@）自从%@";
+"PORTFOLIO_Interval" = "%.2f%@ (%@)";
 
 /* Interval Button on portfolio page, interval specifies 1 Month */
 "PORTFOLIO_Interval_Button_1M" = "1个月";
@@ -336,6 +462,9 @@
 /* Interval Button on portfolio page, interval specifies ALL of Time */
 "PORTFOLIO_Interval_Button_ALL" = "全部";
 
+/* Title of empty state when no watch addresses added */
+"PORTFOLIO_No_Watch_Addresses" = "You haven't added any watch addresses or additional wallets yet.";
+
 /* A header title on the portfolio screen, shows the displayed funds are located in the O3Wallet */
 "PORTFOLIO_O3_Wallet_Header" = "O3钱包";
 
@@ -344,6 +473,9 @@
 
 /* Error message to display when the price history of a token is not available */
 "PORTFOLIO_Price_History_Not_Available" = "该代币历史价格不可见，请稍后查看！";
+
+/* title for empty view watch addresses */
+"PORTFOLIO_Watch_Address" = "Watch Addresses";
 
 /* A title for the scan button in the send screen */
 "SCAN_Button_Title" = "浏览";
@@ -367,7 +499,7 @@
 "SEND_Confirmation_Prompt" = "确认发送%.8f %@到%@";
 
 /* Continue send flow prog */
-"SEND_continue" = "Continue"; /* NEW */
+"SEND_continue" = "Continue";
 
 /* Description to display when the transaction has failed to be submitted to the NEO blockchain */
 "SEND_Created_Transaction_Failed_Description" = "交易失败";
@@ -406,19 +538,19 @@
 "SEND_Paste_Button_Title" = "粘贴";
 
 /* Send flow review progress step */
-"SEND_review" = "Review"; /* NEW */
+"SEND_review" = "Review";
 
 /* Label for fee in secnd screen */
-"SEND_review_fee" = "Total Fee"; /* NEW */
+"SEND_review_fee" = "Total Fee";
 
 /* Title text on sending review screen */
-"SEND_review_title" = "Pleases carefully review your transaction details. Once sent, this transaction cannot be reversed."; /* NEW */
+"SEND_review_title" = "Pleases carefully review your transaction details. Once sent, this transaction cannot be reversed.";
 
 /* Error to display when the user is trying to send gas, but the amount they are sending is the max amount. The user can round down the gas amount a small amount to precent this error */
 "SEND_Rounding_Gas_Error" = "当发送所有GAS时，请从总金额中减去0.00000001，以避免化整误差，导致交易无法处理";
 
 /* Label for saving to contacts when */
-"SEND_save_to_contacts" = "Save To Contacts"; /* NEW */
+"SEND_save_to_contacts" = "Save To Contacts";
 
 /* A title for the Select Asset pull up menu */
 "SEND_Select_Asset_Title" = "选择资产";
@@ -436,16 +568,19 @@
 "SEND_To_Label" = "到";
 
 /* Label for generated transaction id */
-"SEND_transaction_id" = "Transaction Id: %@"; /* NEW */
+"SEND_transaction_id" = "Transaction Id: %@";
 
 /* Send flow what progress step */
-"SEND_what" = "What?"; /* NEW */
+"SEND_what" = "What?";
 
 /* Send flow where progress step */
-"SEND_where" = "Where?"; /* NEW */
+"SEND_where" = "Where?";
 
 /* A generic add button title */
 "SETTINGS_Add_Button" = "添加";
+
+/* settings item to add another wallet to nep 6 */
+"SETTINGS_add_wallet" = "Add Wallet";
 
 /* Title for add watch address button */
 "SETTINGS_Add_Watch_Address" = "添加观察地址";
@@ -462,6 +597,9 @@
 /* String to describe a close action */
 "SETTINGS_Close_Title" = "关闭";
 
+/* warning in settings when there is congestion in the neo blockchain */
+"SETTINGS_congestion_warning" = "%d unconfirmed transactions. Due to congestion, transactions may take some time to process";
+
 /* Settings Menu Title For Contact */
 "SETTINGS_Contact" = "联系人";
 
@@ -471,6 +609,12 @@
 /* Title for Currency Menu, but does not include the type like USD or BTC */
 "SETTINGS_Currency_Title_No_Type" = "货币";
 
+/* settings item to enable multi wallet if not active */
+"SETTINGS_enable_multiwallet" = "Enable MultiWallet";
+
+/* label for identity page that user can use */
+"SETTINGS_id_label" = "Identities";
+
 /* Error To display when user tries to add an invalid address */
 "SETTINGS_Invalid_Address" = "无效地址";
 
@@ -479,6 +623,9 @@
 
 /* Warning that appears when attempting to logout from settings */
 "SETTINGS_Logout_Warning" = "退出程序后，您的私钥将会从该设备上移除。请确认私钥已备份或记下。下次登入该应用程序，需要从备份中恢复私钥";
+
+/* settings item to manage existing wallets */
+"SETTINGS_manage_wallets" = "Manage Wallets";
 
 /* Settings Menu Title for Private Key */
 "SETTINGS_My_Private_Key" = "我的私钥";
@@ -491,6 +638,9 @@
 
 /* Lavel to describe a nickname input field */
 "SETTINGS_Nickname_LAbel" = "昵称";
+
+/* description when no nns names currently listed */
+"SETTINGS_nns_empty" = "No NNS Identites";
 
 /* Title for Settings Menu */
 "SETTINGS_Settings_Title" = "设置";

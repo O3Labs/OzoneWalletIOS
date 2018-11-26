@@ -44,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let userDefaultsDefaults: [String: Any] = [
             "networkKey": "main",
             "usedDefaultSeedKey": false,
+            "activatedMultiWalletKey": false,
             "selectedThemeKey": Theme.light.rawValue,
             "referenceCurrencyKey": Currency.usd.rawValue,
             "reviewClaimsKey": 0,
@@ -85,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return
         }
 
-        if Authenticated.account != nil {
+        if Authenticated.wallet != nil {
             parsePushLink(link: link)
         }
     }
@@ -138,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let walletExists =  UserDefaultsManager.o3WalletAddress != nil
         if walletExists {
             guard let login = UIStoryboard(name: "Onboarding", bundle: nil)
-                .instantiateViewController(withIdentifier: "LoginToCurrentWalletViewController") as? LoginToCurrentWalletViewController else {
+                .instantiateViewController(withIdentifier: "LoginToNep6ViewController") as? LoginToNep6ViewController else {
                     return false
             }
 
@@ -175,7 +176,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                  * The persistent store is not accessible, due to permissions or data protection when the device is locked.
                  * The device is out of space.
                  * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
+                 Check the error message to determine what the   actual problem was.
                  */
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
@@ -249,7 +250,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 }
 
-extension AppDelegate: LoginToCurrentWalletViewControllerDelegate {
+extension AppDelegate: LoginToNEP6ViewControllerDelegate {
     func parsePushLink(link: String) {
         UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {

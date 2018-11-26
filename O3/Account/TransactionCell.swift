@@ -57,7 +57,7 @@ class TransactionCell: UITableViewCell {
         if address == "AKJQMHma9MA8KK5M8iQg8ASeg3KZLsjwvB" {
             return "Switcheo"
         }
-        if address == Authenticated.account?.address ?? "" {
+        if address == Authenticated.wallet?.address ?? "" {
             return AccountStrings.o3Wallet
         } else if let contactIndex = delegate?.getContacts().index(where: {$0.address == address}) {
             return delegate?.getContacts()[contactIndex].nickName ?? address
@@ -74,7 +74,7 @@ class TransactionCell: UITableViewCell {
             if data == nil {
                 return
             }
-            if data!.toAddress == Authenticated.account!.address{
+            if data!.toAddress == Authenticated.wallet!.address{
                 amountLabel.theme_textColor = O3Theme.positiveGainColorPicker
                 typeLabel.text = "Received"
                 amountLabel.text = String(format:"+%@", (data?.amount)!)
@@ -97,7 +97,7 @@ class TransactionCell: UITableViewCell {
             
             transactionTimeLabel?.text = strDate
             
-            amountLabel.theme_textColor = (data?.toAddress ?? "" == Authenticated.account?.address ?? "" ) ? O3Theme.positiveGainColorPicker : O3Theme.negativeLossColorPicker
+            amountLabel.theme_textColor = (data?.toAddress ?? "" == Authenticated.wallet?.address ?? "" ) ? O3Theme.positiveGainColorPicker : O3Theme.negativeLossColorPicker
         }
     }
     

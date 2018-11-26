@@ -60,7 +60,7 @@ class DAppBrowserViewController: UIViewController {
     }
     
     @objc private func loadOpenOrders() {
-        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open) { result in
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.wallet!.address, status: SwitcheoOrderStatus.open) { result in
             switch result{
             case .failure(let error):
                 #if DEBUG
@@ -78,7 +78,7 @@ class DAppBrowserViewController: UIViewController {
     private var tradableAsset: TradableAsset?
     private var tradingAccount: TradingAccount?
     @objc private func loadTradingAccountBalances() {
-        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.account!.address) { result in
+        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.wallet!.address) { result in
             switch result {
             case .failure(let error):
                 print(error)
@@ -123,7 +123,7 @@ class DAppBrowserViewController: UIViewController {
         contentController.add(self, name: "sendMessageHandler")
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
-        self.webView = WKWebView( frame: self.view.bounds, configuration: config)
+        self.webView = WKWebView( frame: self.containerView!.bounds, configuration: config)
         self.containerView?.addSubview(self.webView!)
         
         if selectedAssetSymbol != nil {
@@ -146,6 +146,11 @@ class DAppBrowserViewController: UIViewController {
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.webView?.frame = self.containerView!.bounds
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -154,7 +159,7 @@ class DAppBrowserViewController: UIViewController {
         self.hidesBottomBarWhenPushed = true
         self.navigationController?.hideHairline()
         
-        if Authenticated.account == nil {
+        if Authenticated.wallet == nil {
             return
         }
         
@@ -182,9 +187,7 @@ class DAppBrowserViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: loadingView)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
+
     @objc func didTapLeft(_ sender: Any) {
         if self.loggedIn == true {
             let message = String(format: "You are connected to %@\nDisconnect and close O3 dapp browser?", self.currentURL!.host!)
@@ -241,7 +244,7 @@ class DAppBrowserViewController: UIViewController {
     }
     
     @objc func close() {
-        self.dismiss(animated: true, completion: nil)
+        self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func logout() {
@@ -338,8 +341,8 @@ extension DAppBrowserViewController {
 extension DAppBrowserViewController: WKScriptMessageHandler {
     
     func currentAccount() -> [String: Any] {
-        return ["address": Authenticated.account!.address,
-                "publicKey": Authenticated.account!.publicKeyString]
+        return ["address": Authenticated.wallet!.address,
+                "publicKey": Authenticated.wallet!.publicKeyString]
     }
 
     func parseAndAnalyzeTransaction(unsignedHex: String) {
@@ -374,7 +377,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
         }) {
             let data = unsignedRawTransaction.dataWithHexString()
             var error: NSError?
-            let signed = NeoutilsSign(data, Authenticated.account!.privateKey.fullHexString, &error)
+            let signed = NeoutilsSign(data, Authenticated.wallet!.privateKey.fullHexString, &error)
             if error != nil {
                 self.callback(command: "requestToSign", data: nil, errorMessage: error?.localizedDescription, withSession: true)
                 return
@@ -426,8 +429,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                 do {
                     _ = try keychain
                         .authenticationPrompt(String(format: "Connect with %@?", host!))
-                        .get("ozonePrivateKey")
-                    
+                        .get(AppState.protectedKeyValue)
                     DispatchQueue.main.async {
                         self.title = host?.firstUppercased
                         //generate session ID
@@ -480,7 +482,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
     }
     
     func getBalances() {
-        O3APIClient(network: Network.main).getAccountState(address: Authenticated.account!.address) { result in
+        O3APIClient(network: Network.main).getAccountState(address: Authenticated.wallet!.address) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .failure:

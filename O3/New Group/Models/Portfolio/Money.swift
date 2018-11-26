@@ -47,6 +47,9 @@ extension Money {
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: self.locale)
         formatter.numberStyle = .currency
+        if amountNumber.doubleValue <= 0.01  && amountNumber.doubleValue != 0.0 {
+            formatter.minimumFractionDigits = 4
+        }
         if let formattedTipAmount = formatter.string(from: amountNumber as NSNumber) {
             return formattedTipAmount
         }

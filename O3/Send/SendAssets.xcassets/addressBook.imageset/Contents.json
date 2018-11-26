@@ -2,22 +2,22 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "addressBook.png"
+      "filename" : "ic_address_book.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "addressBook@2x.png"
+      "filename" : "ic_address_book@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "addressBook@3x.png"
+      "filename" : "ic_address_book@3x.png",
+      "scale" : "3x"
     }
   ],
   "info" : {
-    "author" : "zeplin",
-    "version" : "1"
+    "version" : 1,
+    "author" : "xcode"
   }
 }

@@ -144,8 +144,6 @@ class ContactsTableViewController: UITableViewController, AddressAddDelegate {
             let textfield = alert.textFields?.first
             toUpdate.nickName = textfield?.text?.trim()
             try? UIApplication.appDelegate.persistentContainer.viewContext.save()
-            Answers.logCustomEvent(withName: "Contact Added",
-                                   customAttributes: ["Total Contacts": contacts.count + 1])
             self.tableView.reloadData()
         }
         alert.addAction(save)
