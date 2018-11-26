@@ -111,7 +111,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         if list.count == 0 {
             let fiat = Fiat(amount: 0.0)
             self.accountValues[account] = fiat.formattedString()
-             self.tableView.reloadData()
+            self.tableView.reloadData()
             return
         }
         
@@ -652,16 +652,29 @@ extension AccountAssetTableViewController {
     
     func openCreateOrder(action: CreateOrderAction, asset: TradableAsset) {
         let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "CreateOrderTableViewControllerNav") as! UINavigationController
-        if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
-            vc.viewModel = CreateOrderViewModel()
-            vc.viewModel.selectedAction = action
-            vc.viewModel.wantAsset = asset
-            vc.viewModel.offerAsset = self.tradingAccount?.switcheo.basePairs.filter({ t -> Bool in
-                return t.symbol != asset.symbol
-            }).first
-            vc.viewModel.tradingAccount = self.tradingAccount
-        }
-        self.present(nav, animated: true, completion: nil)
+        self.tradingAccount?.switcheo.loadSupportedTokens(completion: { tokens in
+            
+            DispatchQueue.main.async {
+                
+                
+                if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
+                    vc.viewModel = CreateOrderViewModel()
+                    vc.viewModel.selectedAction = action
+                    //override the precision here
+                    let wantToken = tokens.first(where: { t -> Bool in
+                        return t.id == asset.id
+                    })!
+                    
+                    vc.viewModel.wantAsset = asset
+                    vc.viewModel.wantAsset.precision = wantToken.precision
+                    vc.viewModel.offerAsset = self.tradingAccount?.switcheo.basePairs.filter({ t -> Bool in
+                        return t.symbol != asset.symbol
+                    }).first
+                    vc.viewModel.tradingAccount = self.tradingAccount
+                }
+                self.present(nav, animated: true, completion: nil)
+            }
+        })
     }
     
     func openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action, asset: TradableAsset?) {

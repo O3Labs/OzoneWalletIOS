@@ -359,6 +359,35 @@ class O3APIClient: NSObject {
         }
     }
     
+    func loadTradablePairsSwitcheo(completion: @escaping(O3APIClientResult<[TradablePair]>) -> Void) {
+        let cacheKey: NSString = "TRADABLE_PAIRS_SWITCHEO"
+        if let cached = cache.object(forKey: cacheKey) {
+            // use the cached version
+            let decoded = cached as! [TradablePair]
+            let w = O3APIClientResult.success(decoded)
+            completion(w)
+            return
+        }
+        
+        let url = String(format: "/v1/trading/%@/pairs", "switcheo")
+        sendRESTAPIRequest(url, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode([TradablePair].self, from: data) else {
+                        return
+                }
+                self.cache.setObject(decoded as AnyObject, forKey: cacheKey)
+                let success = O3APIClientResult.success(decoded)
+                completion(success)
+            }
+        }
+    }
+    
     func loadSwitcheoOrders(address: String, status: SwitcheoOrderStatus, pair: String? = nil, completion: @escaping(O3APIClientResult<TradingOrders>) -> Void) {
         
         let url = String(format: "/v1/trading/%@/orders", address)

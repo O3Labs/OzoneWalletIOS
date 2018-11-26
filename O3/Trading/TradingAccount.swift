@@ -45,9 +45,9 @@ extension SwitcheoBalance {
     
     var basePairs: [TradableAsset]! {
         var bases: [TradableAsset] = [
-            TradableAsset(id: "0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b", name: "NEO", symbol: "NEO", decimals: 8, value: "0"),
-            TradableAsset(id: "0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7", name: "GAS", symbol: "GAS", decimals: 8, value: "0"),
-            TradableAsset(id: "ab38352559b8b203bde5fddfa0b07d8b2525e132", name: "Switcheo", symbol: "SWTH", decimals: 8, value: "0"),
+            TradableAsset(id: "0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b", name: "NEO", symbol: "NEO", decimals: 8, value: "0", precision: 3),
+            TradableAsset(id: "0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7", name: "GAS", symbol: "GAS", decimals: 8, value: "0", precision: 2),
+            TradableAsset(id: "ab38352559b8b203bde5fddfa0b07d8b2525e132", name: "Switcheo", symbol: "SWTH", decimals: 8, value: "0", precision: 2),
         ]
         
         for i in bases.indices {
@@ -72,6 +72,27 @@ extension SwitcheoBalance {
             }
         }
     }
+    
+    func loadTradablePairs(completion: @escaping ([TradablePair]) -> Void) {
+        O3APIClient.shared.loadTradablePairsSwitcheo { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let response):
+                completion(response)
+            }
+        }
+    }
+    
+}
+
+struct TradablePair: Codable {
+    let name: String
+    var precision: Int
+    enum CodingKeys: String, CodingKey {
+        case name = "name"
+        case precision = "precision"
+    }
 }
 
 struct TradableAsset: Codable {
@@ -80,6 +101,7 @@ struct TradableAsset: Codable {
     let symbol: String
     let decimals: Int
     var value: String?
+    var precision: Int?
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -87,6 +109,7 @@ struct TradableAsset: Codable {
         case symbol = "symbol"
         case decimals = "decimals"
         case value = "value"
+        case precision = "precision"
     }
 }
 
@@ -130,7 +153,7 @@ extension TradableAsset {
 extension TransferableAsset {
     func toTradableAsset() -> TradableAsset {
         let valueDouble = round(NSDecimalNumber(decimal: Decimal(self.value * pow(10, Double(self.decimals)))).doubleValue)
-        return TradableAsset(id: self.id, name: self.name, symbol: self.symbol, decimals: self.decimals, value: String(format:"%0f",valueDouble))
+        return TradableAsset(id: self.id, name: self.name, symbol: self.symbol, decimals: self.decimals, value: String(format:"%0f",valueDouble), precision: self.decimals)
     }
 }
 
