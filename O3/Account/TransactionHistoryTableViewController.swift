@@ -225,6 +225,22 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         
     }
     
+    func showPendingActionSheet(pendingIndex: IndexPath) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let removePending = UIAlertAction(title: "Remove From History", style: .destructive) { _ in
+            UIApplication.appDelegate.accountPersistentContainer.viewContext.delete(self.pendingTransactions[pendingIndex.row])
+            try? UIApplication.appDelegate.accountPersistentContainer.viewContext.save()
+            self.pendingTransactions.remove(at: pendingIndex.row)
+            self.tableView.deleteRows(at: [pendingIndex], with: .fade)
+        }
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in}
+        
+        alert.addAction(cancel)
+        alert.addAction(removePending)
+        alert.popoverPresentationController?.sourceView = self.tableView
+        present(alert, animated: true, completion: nil)
+    }
+    
     func showActionSheet(tx: TransactionHistoryItem) {
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -274,6 +290,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         
         //we don't offer any option on pending transaction
         if indexPath.section == 0{
+            showPendingActionSheet(pendingIndex: indexPath)
             return
         }
         //offer action sheet
