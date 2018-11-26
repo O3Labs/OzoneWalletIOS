@@ -11,6 +11,7 @@ import UIKit
 import DeckTransition
 import MessageUI
 import Neoutils
+import Channel
 
 class ManageWalletTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
     @IBOutlet weak var addressTitleLabel: UILabel!
@@ -183,6 +184,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         let nep6 = NEP6.getFromFileSystem()!
         nep6.removeEncryptedKey(address: account.address)
         nep6.writeToFileSystem()
+        Channel.shared().unsubscribe(fromTopic: account.address, block: {})
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
     }
     
@@ -192,6 +194,8 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
                 let nep6 = NEP6.getFromFileSystem()!
                 nep6.removeEncryptedKey(address: self.account.address)
                 nep6.writeToFileSystem()
+                Channel.shared().unsubscribe(fromTopic: self.account.address, block: {})
+            
                 UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
         }
     }

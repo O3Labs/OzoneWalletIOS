@@ -10,6 +10,7 @@
 import Foundation
 import UIKit
 import Lottie
+import Channel
 
 class AddNameWatchAddressTableViewController: UITableViewController {
     
@@ -52,6 +53,7 @@ class AddNameWatchAddressTableViewController: UITableViewController {
         var updatedNep6 = NEP6.getFromFileSystem()!
         updatedNep6.addWatchAddress(address: address, name: nameInputField.text!)
         updatedNep6.writeToFileSystem()
+        Channel.shared().subscribe(toTopic: address)
         self.performSegue(withIdentifier: "segueToWatchAddressFinished", sender: nil)
         
 
