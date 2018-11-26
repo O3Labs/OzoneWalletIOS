@@ -16,30 +16,34 @@ protocol HomeViewModelDelegate: class {
     func hideLoadingIndicator()
 }
 
+struct WatchAddr: Hashable {
+    let name: String
+    let address: String
+}
+
 class HomeViewModel {
     weak var delegate: HomeViewModelDelegate?
-
     var writableTokens = O3Cache.tokenAssets()
-    var readOnlyTokens = O3Cache.readOnlyTokens()
-
+    var readOnlyAssets  = [WatchAddr: [TransferableAsset]]()
+    
+    var addressCount = 0
+    var currentIndex = 0
+    
     //Added for ontology
     var writableOntologyAssets = O3Cache.ontologyAssets()
-    var readOnlyOntologyAssets = O3Cache.readOnlyOntologyAssets()
 
     var neo = O3Cache.neo()
     var gas = O3Cache.gas()
-    var readOnlyNeo = O3Cache.readOnlyNeo()
-    var readOnlyGas = O3Cache.readOnlyGas()
 
-    var watchAddresses = [WatchAddress]()
+    var watchAddresses = [WatchAddr]()
     var group = DispatchGroup()
 
-    var portfolioType: PortfolioType = .writable
+    //var portfolioType: PortfolioType = .writable
     var referenceCurrency: Currency = .usd
     var selectedInterval: PriceInterval = .oneDay
 
-    func setPortfolioType(_ portfolioType: PortfolioType) {
-        self.portfolioType = portfolioType
+    func setCurrentIndex(_ currentIndex: Int) {
+        self.currentIndex = currentIndex
         self.delegate?.updateWithBalanceData(getTransferableAssets())
         loadPortfolioValue()
     }
@@ -54,12 +58,21 @@ class HomeViewModel {
     }
 
     func getCombinedReadOnlyAndWriteable() -> [TransferableAsset] {
-        var assets: [TransferableAsset] = getReadOnlyAssets()
-        for asset in getWritableAssets() {
-            if let index = assets.index(where: { (item) -> Bool in item.name == asset.name }) {
-                assets[index].value = assets[index].value + asset.value
-            } else {
-                assets.append(asset)
+        if watchAddresses.count == 0 {
+            return [TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
+                                      decimals: 0, value: 0, assetType: .neoAsset),
+                    TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "GAS", symbol: "GAS",
+                                      decimals: 0, value: 0, assetType: .neoAsset)]
+        }
+        
+        var assets: [TransferableAsset] = getWritableAssets()
+        for addr in watchAddresses {
+            for asset in readOnlyAssets[addr] ?? [] {
+                if let index = assets.index(where: { (item) -> Bool in item.name == asset.name }) {
+                    assets[index].value = assets[index].value + asset.value
+                } else {
+                    assets.append(asset)
+                }
             }
         }
         return assets
@@ -69,16 +82,16 @@ class HomeViewModel {
         return [neo, gas] + writableTokens + writableOntologyAssets
     }
 
-    func getReadOnlyAssets() -> [TransferableAsset] {
-        return [readOnlyNeo, readOnlyGas] + readOnlyTokens + readOnlyOntologyAssets
+    func getReadOnlyAssets(address: WatchAddr) -> [TransferableAsset] {
+        return readOnlyAssets[address] ?? []
     }
 
     func getTransferableAssets() -> [TransferableAsset] {
         var transferableAssetsToReturn: [TransferableAsset]  = []
-        switch self.portfolioType {
-        case .writable: transferableAssetsToReturn = getWritableAssets()
-        case .readOnlyAndWritable: transferableAssetsToReturn = getCombinedReadOnlyAndWriteable()
-        case .readOnly: transferableAssetsToReturn = getReadOnlyAssets()
+        switch currentIndex {
+        case 0: transferableAssetsToReturn = getWritableAssets()
+        case watchAddresses.count + 1: transferableAssetsToReturn = getCombinedReadOnlyAndWriteable()
+        default: transferableAssetsToReturn = readOnlyAssets[watchAddresses[currentIndex - 1]] ?? []
         }
 
         //Put NEO + GAS at the top
@@ -107,37 +120,38 @@ class HomeViewModel {
     }
 
     func resetReadOnlyBalances() {
-        readOnlyTokens = []
-        readOnlyGas = TransferableAsset.GAS()
-        readOnlyGas.value = 0
-        readOnlyNeo = TransferableAsset.NEO()
-        readOnlyNeo.value = 0
+        readOnlyAssets = [:]
     }
 
     func reloadBalances() {
-        guard let address = Authenticated.account?.address else {
+        guard let address = Authenticated.wallet?.address else {
             return
         }
-        do {
-            watchAddresses = try UIApplication.appDelegate.persistentContainer.viewContext.fetch(WatchAddress.fetchRequest())
-        } catch {
-
-        }
-
         loadAccountState(address: address, isReadOnly: false)
-
         resetReadOnlyBalances()
-
-        for watchAddress in watchAddresses {
-            if NEOValidator.validateNEOAddress(watchAddress.address ?? "") {
-                self.loadAccountState(address: (watchAddress.address)!, isReadOnly: true)
+        watchAddresses = []
+        if  NEP6.getFromFileSystem() == nil {
+            group.notify(queue: .main) {
+                self.loadPortfolioValue()
+                self.delegate?.updateWithBalanceData(self.getTransferableAssets())
+            }
+            return
+        }
+        
+        let accounts = NEP6.getFromFileSystem()!.accounts
+        for account in accounts {
+            if account.isDefault == false {
+                watchAddresses.append(WatchAddr(name: account.label, address: account.address))
             }
         }
+        
+        for watchAddress in watchAddresses {
+            if NEOValidator.validateNEOAddress(watchAddress.address ?? "") {
+                self.loadAccountState(address: (watchAddress.address), isReadOnly: true, watchAddress: watchAddress)
+            }
+        }
+    
         group.notify(queue: .main) {
-            O3Cache.setReadOnlyNEOForSession(neoBalance: Int(self.readOnlyNeo.value))
-            O3Cache.setReadOnlyGasForSession(gasBalance: self.readOnlyGas.value)
-            O3Cache.setReadOnlyTokensForSession(tokens: self.readOnlyTokens)
-            O3Cache.setReadOnlyOntologyAssetsForSession(tokens: self.readOnlyOntologyAssets)
             self.loadPortfolioValue()
             self.delegate?.updateWithBalanceData(self.getTransferableAssets())
         }
@@ -164,31 +178,33 @@ class HomeViewModel {
         O3Cache.setOntologyAssetsForSession(tokens: accountState.ontology)
     }
 
-    func addReadOnlyToken(_ token: TransferableAsset) {
-        if let index = readOnlyTokens.index(where: { (item) -> Bool in item.name == token.name }) {
-            readOnlyTokens[index].value += token.value
+    func addReadOnlyToken(_ token: TransferableAsset, address: WatchAddr) {
+        if readOnlyAssets[address] == nil {
+            readOnlyAssets[address] = []
+        }
+        
+        if let index = readOnlyAssets[address]!.index(where: { (item) -> Bool in item.name == token.name }) {
+            readOnlyAssets[address]![index].value += token.value
         } else {
-            readOnlyTokens.append(token)
+            readOnlyAssets[address]!.append(token)
         }
     }
 
-    func addReadOnlyAccountState(_ accountState: AccountState) {
+    func addReadOnlyAccountState(_ accountState: AccountState, address: WatchAddr) {
         for asset in accountState.assets {
-            if asset.id.contains(AssetId.neoAssetId.rawValue) {
-                readOnlyNeo.value += asset.value
-            } else {
-                readOnlyGas.value += asset.value
-            }
+            addReadOnlyToken(asset, address: address)
         }
 
         for token in accountState.nep5Tokens {
-            addReadOnlyToken(token)
+            addReadOnlyToken(token, address: address)
         }
-
-        readOnlyOntologyAssets = accountState.ontology
+        
+        for ontAsset in accountState.ontology {
+            addReadOnlyToken(ontAsset, address: address)
+        }
     }
 
-    func loadAccountState(address: String, isReadOnly: Bool) {
+    func loadAccountState(address: String, isReadOnly: Bool, watchAddress: WatchAddr? = nil) {
         self.group.enter()
 
         O3APIClient(network: AppState.network).getAccountState(address: address) { result in
@@ -199,7 +215,7 @@ class HomeViewModel {
                     return
                 case .success(let accountState):
                     if isReadOnly {
-                        self.addReadOnlyAccountState(accountState)
+                        self.addReadOnlyAccountState(accountState, address: watchAddress!)
                     } else {
                         self.addWritableAccountState(accountState)
                     }

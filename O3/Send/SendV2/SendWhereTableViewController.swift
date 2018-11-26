@@ -192,6 +192,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     func qrScanned(data: String) {
         if data.range(of: "neo:") == nil {
             addressTextField.text = data
+            enableContinueButton()
         } else {
             let nep9Data = NEP9.parse(data)
             let address = nep9Data?.to()
@@ -199,7 +200,8 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
             let amount = nep9Data?.amount()
             
             addressTextField.text = address
-            
+            enableContinueButton()
+
             if asset != "" {
                 var selected: TransferableAsset?
                 

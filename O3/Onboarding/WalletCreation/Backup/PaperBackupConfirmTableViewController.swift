@@ -66,11 +66,11 @@ class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDe
     }
 
     func loginToApp() {
-        guard let account = Account(wif: wif) else {
+        guard let account = Wallet(wif: wif) else {
             return
         }
         let keychain = Keychain(service: "network.o3.neo.wallet")
-        Authenticated.account = account
+        Authenticated.wallet = account
         Channel.pushNotificationEnabled(true)
 
         DispatchQueue.main.async {
@@ -89,6 +89,7 @@ class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDe
                     try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .set(account.wif, key: "ozonePrivateKey")
+                    NEP6.removeFromDevice()
                     SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
                     self.instantiateMainAsNewRoot()
                 } catch _ {
@@ -106,7 +107,6 @@ class PaperBackupConfirmTableViewController: UITableViewController, UITextViewDe
 
     @objc func continueButtonTapped(_ sender: Any?) {
         if wifTextView.text.trim() == wif {
-            Answers.logCustomEvent(withName: "Paper Backup Completed", customAttributes: [:])
             loginToApp()
         } else {
             DispatchQueue.main.async {

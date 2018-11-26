@@ -20,7 +20,7 @@ class TokenSaleSubmitViewController: UIViewController {
     func performContractBasedTransaction() {
         let fee = transactionInfo.priorityIncluded == true ? Float64(0.0011) : Float64(0)
         let remark = String(format: "O3X%@", transactionInfo.saleInfo.companyID)
-        Authenticated.account?.participateTokenSales(network: AppState.network, seedURL: AppState.bestSeedNodeURL, scriptHash: transactionInfo.tokenSaleContractHash, assetID: transactionInfo.assetIDUsedToPurchase, amount: transactionInfo.assetAmount, remark: remark, networkFee: fee) { success, txID, _ in
+        Authenticated.wallet?.participateTokenSales(network: AppState.network, seedURL: AppState.bestSeedNodeURL, scriptHash: transactionInfo.tokenSaleContractHash, assetID: transactionInfo.assetIDUsedToPurchase, amount: transactionInfo.assetAmount, remark: remark, networkFee: fee) { success, txID, _ in
 
             //make delay to 5 seconds in production
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
@@ -41,10 +41,10 @@ class TokenSaleSubmitViewController: UIViewController {
         encoder.outputFormatting = .sortedKeys
         let jsonData = try? encoder.encode(unsignedData)
         var error: NSError?
-        let signature = NeoutilsSign(jsonData, Authenticated.account!.privateKeyString, &error)?.fullHexString
+        let signature = NeoutilsSign(jsonData, Authenticated.wallet!.privateKeyString, &error)?.fullHexString
 
-        let tokenSaleLog = TokenSaleLog(data: unsignedData, signature: signature!, publicKey: Authenticated.account!.publicKeyString)
-        O3APIClient(network: AppState.network).postTokenSaleLog(address: (Authenticated.account?.address)!, companyID: transactionInfo.saleInfo.companyID, tokenSaleLog: tokenSaleLog) { result in
+        let tokenSaleLog = TokenSaleLog(data: unsignedData, signature: signature!, publicKey: Authenticated.wallet!.publicKeyString)
+        O3APIClient(network: AppState.network).postTokenSaleLog(address: (Authenticated.wallet?.address)!, companyID: transactionInfo.saleInfo.companyID, tokenSaleLog: tokenSaleLog) { result in
             switch result {
             case .failure:
                 return
@@ -65,7 +65,7 @@ class TokenSaleSubmitViewController: UIViewController {
 
         let descriptionAttribute = TransactionAttritbute(description: amountFormatter.string(for: acceptedAssetRate.basicRate)!)
         let remarkAttribute = TransactionAttritbute(remark: remark)
-        Authenticated.account?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId(rawValue: transactionInfo.assetIDUsedToPurchase)!, amount: transactionInfo.assetAmount, toAddress: transactionInfo.saleInfo.address, attributes: [remarkAttribute, descriptionAttribute]) { txid, _ in
+        Authenticated.wallet?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId(rawValue: transactionInfo.assetIDUsedToPurchase)!, amount: transactionInfo.assetAmount, toAddress: transactionInfo.saleInfo.address, attributes: [remarkAttribute, descriptionAttribute]) { txid, _ in
             //make delay to 5 seconds in production
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 if txid != nil {

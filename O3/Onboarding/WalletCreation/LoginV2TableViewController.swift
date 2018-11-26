@@ -92,18 +92,18 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
         }
     }
 
-    func passwordEntered(account: Account?) {
+    func passwordEntered(account: Wallet?) {
         self.alreadyScanned = false
         if account != nil {
             loginToApp(account: account!)
         }
     }
 
-    func loginToApp(account: Account) {
+    func loginToApp(account: Wallet) {
         dismissKeyboard()
 
         let keychain = Keychain(service: "network.o3.neo.wallet")
-        Authenticated.account = account
+        Authenticated.wallet = account
         Channel.pushNotificationEnabled(true)
         DispatchQueue.main.async {
             HUD.show(.labeledProgress(title: nil, subtitle: OnboardingStrings.selectingBestNodeTitle))
@@ -121,6 +121,7 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .set(account.wif, key: "ozonePrivateKey")
                     SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
+                    NEP6.removeFromDevice()
                     self.instantiateMainAsNewRoot()
                 } catch _ {
                     return
@@ -148,7 +149,7 @@ class LoginV2TableViewController: UITableViewController, AVCaptureMetadataOutput
             DispatchQueue.main.async {
                 self.presentNEP2Detected()
             }
-        } else if let account = Account(wif: key) {
+        } else if let account = Wallet(wif: key) {
             loginToApp(account: account)
         } else {
             invalidKeyDetected()

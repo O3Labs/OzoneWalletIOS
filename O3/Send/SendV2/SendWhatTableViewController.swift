@@ -39,10 +39,24 @@ class SendWhatTableViewController: UITableViewController {
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
     // swiftlint:enable weak_delegate
     
+    func setMempoolHeight() {
+        NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight() { (result) in
+            switch result {
+            case .failure(let error):
+                return
+            case .success(let pending):
+                DispatchQueue.main.async {
+                    self.mempoolHeightLabel.text = String(format:SendStrings.mempoolHeight, pending.description)
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let tap = UITapGestureRecognizer(target: self, action: #selector(selectAssetTapped(_:)))
         selectAssetContainer.addGestureRecognizer(tap)
+        setMempoolHeight()
         continueButton.addTarget(self, action: #selector(continueTapped(_:)), for: .touchUpInside)
         checkboxPriority.addTarget(self, action: #selector(priorityTapped(_:)), for: .touchUpInside)
         

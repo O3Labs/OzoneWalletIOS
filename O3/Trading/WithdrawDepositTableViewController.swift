@@ -202,7 +202,7 @@ class WithdrawDepositTableViewController: UITableViewController {
         let assetID = selectedAsset!.symbol
         let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
         let request = RequestTransaction(blockchain: blockchain, assetID: assetID, amount: amount, contractHash: switcheoHash.rawValue)
-        let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.account!)
+        let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.wallet!)
         switcheoAccount.withdrawal(requestTransaction: request!, completion: {result in
             switch result {
             case .failure(let error):
@@ -232,7 +232,7 @@ class WithdrawDepositTableViewController: UITableViewController {
         let assetID = selectedAsset!.symbol
         let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
         let request = RequestTransaction(blockchain: blockchain, assetID: assetID, amount: amount, contractHash: switcheoHash.rawValue)
-        let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.account!)
+        let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.wallet!)
         switcheoAccount.deposit(requestTransaction: request!) { result in
             switch result {
             case .failure(let error):

@@ -71,7 +71,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
             doneButton.isEnabled = true
         }
     }
-
+    
     @IBAction func continueButtonTapped(_ sender: Any) {
         if validatePassword() {
             if !MFMailComposeViewController.canSendMail() {
@@ -99,12 +99,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
             composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")
 
             // Present the view controller modally.
-            DispatchQueue.main.async {
-                let transitionDelegate = DeckTransitioningDelegate()
-                composeVC.transitioningDelegate = transitionDelegate
-                composeVC.modalPresentationStyle = .custom
-                self.present(composeVC, animated: true, completion: nil)
-            }
+            self.present(composeVC, animated: true, completion: nil)
         } else {
             OzoneAlert.alertDialog(message: OnboardingStrings.passwordMismatch, dismissTitle: OzoneAlert.okPositiveConfirmString) {
                 self.passwordField.text = ""
@@ -120,7 +115,6 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
                     return
                 }
             } else {
-                Answers.logCustomEvent(withName: "Email Backup Completed", customAttributes: [:])
                 self.loginToApp()
             }
         }
@@ -142,11 +136,11 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
 
     func loginToApp() {
         dismissKeyboard()
-        guard let account = Account(wif: wif) else {
+        guard let account = Wallet(wif: wif) else {
             return
         }
         let keychain = Keychain(service: "network.o3.neo.wallet")
-        Authenticated.account = account
+        Authenticated.wallet = account
         Channel.pushNotificationEnabled(true)
 
         DispatchQueue.main.async {
@@ -164,6 +158,7 @@ class NEP2PasswordConfirmViewController: UITableViewController, MFMailComposeVie
                     try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .set(account.wif, key: "ozonePrivateKey")
+                    NEP6.removeFromDevice()
                     SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
                     self.instantiateMainAsNewRoot()
                 } catch _ {

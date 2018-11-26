@@ -188,7 +188,7 @@ class Nep5SelectionCollectionViewController: UIViewController, UICollectionViewD
 extension Nep5SelectionCollectionViewController {
     func openTokenDetail(asset: Asset) {
         tradingEvent.shared.viewTokenDetail(asset: asset.symbol, source: TradingActionSource.marketplace)
-        let urlString = String(format: "%@?address=%@", asset.url!, Authenticated.account!.address)
+        let urlString = String(format: "%@?address=%@", asset.url!, Authenticated.wallet!.address)
         
         let nav = UIStoryboard(name: "Browser", bundle: nil).instantiateInitialViewController() as? UINavigationController
         if let vc = nav!.viewControllers.first as? DAppBrowserViewController {

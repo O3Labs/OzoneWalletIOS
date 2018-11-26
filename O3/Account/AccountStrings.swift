@@ -20,7 +20,7 @@ class AccountStrings: NSObject {
     static let successfulClaimPrompt = NSLocalizedString("WALLET_Claim_Succeeded_Prompt", comment: "A Message to display in the alert after the user hs successfully claimed their gas")
     static let claimingInProgressTitle = NSLocalizedString("WALLET_Claim_In_Progress_Title", comment: "A title to display while claiming is in progress")
     static let claimingInProgressSubtitle = NSLocalizedString("WALLET_Claim_In_Progress_Subtitle", comment: "A subtitle to display while claiming is in progress")
-    static let accountTitle = NSLocalizedString("WALLET_Account", comment: "A title for the account screen")
+    //static let accountTitle = NSLocalizedString("WALLET_Account", comment: "A title for the account screen")
 
     static let ontologySyncFee = NSLocalizedString("WALLET_Ontology_sync_requires_gas", comment: "A label to show that ontology requires a network fee in order to sync")
 

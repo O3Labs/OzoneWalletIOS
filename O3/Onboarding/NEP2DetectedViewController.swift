@@ -13,7 +13,7 @@ import PKHUD
 import Neoutils
 
 protocol Nep2PasswordDelegate: class {
-    func passwordEntered(account: Account?)
+    func passwordEntered(account: Wallet?)
 }
 
 class NEP2DetectedViewController: UIViewController {
@@ -61,7 +61,7 @@ class NEP2DetectedViewController: UIViewController {
         var error: NSError?
         DispatchQueue.global().async {
             let wif = NeoutilsNEP2Decrypt(self.nep2EncryptedKey, self.password, &error)
-            if wif == nil {
+            if wif == nil || error != nil {
                 DispatchQueue.main.async {
                     HUD.hide()
                     OzoneAlert.alertDialog(message: OnboardingStrings.invalidKey, dismissTitle: OzoneAlert.okPositiveConfirmString) {
@@ -74,7 +74,7 @@ class NEP2DetectedViewController: UIViewController {
                 return
             }
 
-            guard let account = Account(wif: wif!) else {
+            guard let account = Wallet(wif: wif!) else {
                 DispatchQueue.main.async {
                     HUD.hide()
                     OzoneAlert.alertDialog(message: OnboardingStrings.invalidKey, dismissTitle: OzoneAlert.okPositiveConfirmString) {

@@ -231,7 +231,7 @@ class CreateOrderViewModel {
     
     func loadOpenOrders() {
         let pair = String(format:"%@_%@", wantAsset.symbol.uppercased(), offerAsset.symbol.uppercased())
-        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open, pair: pair) { result in
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.wallet!.address, status: SwitcheoOrderStatus.open, pair: pair) { result in
             switch result{
             case .failure(let error):
                 print(error)
@@ -275,7 +275,7 @@ class CreateOrderViewModel {
         
         let side = selectedAction == CreateOrderAction.Buy ? "buy" : "sell"
         let orderType = "limit"
-        let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.account!)
+        let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.wallet!)
         let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
         
         let want = selectedAction == CreateOrderAction.Buy ? wantAmount! : offerAmount!

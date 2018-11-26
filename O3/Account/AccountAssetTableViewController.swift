@@ -49,11 +49,14 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     private var accountValues: [accounts: String] = [:]
     
+    var ongAmount = 0.0
+    
     @objc func reloadCells() {
         DispatchQueue.main.async { self.tableView.reloadData() }
     }
     
     func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadAllData), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAllData), name: NSNotification.Name(rawValue: "tokenSelectorDismissed"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadCells), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadTradingAccountBalances), name: NSNotification.Name(rawValue: "needsReloadTradingBalances"), object: nil)
@@ -62,15 +65,19 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "tokenSelectiorDismissed"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "needsReloadTradingBalances"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "viewTradingOrders"), object: nil)
     }
     
+    @objc func tappedWalletSwap() {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setLocalizedStrings()
         addObservers()
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.tableView.theme_backgroundColor = O3Theme.backgroundLightgrey
@@ -78,6 +85,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         applyNavBarTheme()
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
+                
         
         //first state of the section
         sectionHeaderCollapsedState[sections.neoAssets.rawValue] = true
@@ -85,6 +93,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         //load everything from cache first
         self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neo(), O3Cache.gas()] + O3Cache.ontologyAssets() + O3Cache.tokenAssets())
+        loadAccountState()
         
         self.loadInbox()
         self.loadTradingAccountBalances()
@@ -94,6 +103,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         super.viewDidAppear(animated)
         loadClaimableGAS()
         loadClaimableOng()
+        setLocalizedStrings()
     }
     
     private func loadAccountValue(account: accounts,  list: [TransferableAsset]) {
@@ -117,6 +127,11 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                 DispatchQueue.main.async {
                     let fiat = Fiat(amount: number?.floatValue ?? 0.0)
                     self.accountValues[account] = fiat.formattedString()
+                    let index = list.firstIndex{$0.symbol == "ONG"}
+                    if let index = index {
+                        self.ongAmount = list[index].value
+                    }
+                    
                     //somehow calling reloadSections makes the uitableview flickering
                     //using reloadData instead ¯\_(ツ)_/¯
                     self.tableView.reloadData()
@@ -126,7 +141,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     func loadInbox() {
-        O3APIClient(network: AppState.network).getInbox(address: Authenticated.account!.address) { result in
+        O3APIClient(network: AppState.network).getInbox(address: Authenticated.wallet!.address) { result in
             switch result {
             case .failure(let error):
                 print(error)
@@ -142,7 +157,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     var numberOfOpenOrders: Int = 0
     @objc func loadTradingAccountBalances() {
-        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.account!.address) { result in
+        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.wallet!.address) { result in
             switch result {
             case .failure(let error):
                 print(error)
@@ -178,6 +193,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             self.tableView.refreshControl?.endRefreshing()
             // self.tableView.reloadData()
         }
+        setLocalizedStrings()
     }
     
     func setIsClaimingNeo(_ isClaiming: Bool) {
@@ -189,7 +205,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     @objc func loadClaimableGAS() {
-        if Authenticated.account == nil {
+        if Authenticated.wallet == nil {
             return
         }
         
@@ -204,7 +220,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     @objc func loadClaimableOng() {
-        if Authenticated.account == nil {
+        if Authenticated.wallet == nil {
             return
         }
         
@@ -243,12 +259,16 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     }
     
     func loadAccountState() {
-        O3APIClient(network: AppState.network).getAccountState(address: Authenticated.account?.address ?? "") { result in
+        O3APIClient(network: AppState.network).getAccountState(address: Authenticated.wallet?.address ?? "") { result in
             DispatchQueue.main.async {
                 switch result {
                 case .failure:
                     return
                 case .success(let accountState):
+                    let index = accountState.ontology.firstIndex{$0.symbol == "ONG"}
+                    if let index = index {
+                        self.ongAmount = accountState.ontology[index].value
+                    }
                     self.updateCacheAndLocalBalance(accountState: accountState)
                 }
             }
@@ -308,6 +328,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
+            cell.ongBalance = ongAmount
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
             cell.delegate = self
             return cell
@@ -339,7 +360,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nativeasset") as? NativeAssetTableViewCell else {
                 let cell =  UITableViewCell(frame: CGRect.zero)
-                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                cell.theme_backgroundColor = O3Theme.backgroundLightgrey
                 return cell
             }
             
@@ -363,7 +384,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         if indexPath.section == sections.nep5tokens.rawValue {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
                 let cell =  UITableViewCell(frame: CGRect.zero)
-                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                cell.theme_backgroundColor = O3Theme.backgroundLightgrey
                 return cell
             }
             let list = tokenAssets
@@ -380,7 +401,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
                 let cell =  UITableViewCell(frame: CGRect.zero)
-                cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+                cell.theme_backgroundColor = O3Theme.backgroundLightgrey
                 return cell
             }
             let list = self.tradingAccount?.switcheo.confirmed
@@ -402,7 +423,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         //ontology asset using the same nep5 token cell
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-nep5token") as? NEP5TokenTableViewCell else {
             let cell =  UITableViewCell(frame: CGRect.zero)
-            cell.theme_backgroundColor = O3Theme.backgroundColorPicker
+            cell.theme_backgroundColor = O3Theme.backgroundLightgrey
             return cell
         }
         let list = ontologyAssets
@@ -441,9 +462,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         
         if section == sections.neoAssets.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "o3-account-header") as! AccountHeaderTableViewCell
-            if let topbarView = cell.viewWithTag(9) {
-                topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
-            }
+        
             cell.totalAmountLabel?.text = accountValues[accounts.o3Account]
             cell.assetCountTitleLabel?.isHidden = self.tokenAssets.count == 0
             cell.assetCountTitleLabel?.text = String(format: "+%d more", self.tokenAssets.count)
@@ -472,9 +491,6 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "trading-account-header") as! AccountHeaderTableViewCell
             
-            if let topbarView = cell.viewWithTag(9) {
-                topbarView.theme_backgroundColor = O3Theme.backgroundLightgrey
-            }
             cell.totalAmountLabel?.text = accountValues[accounts.tradingAccount]
             cell.sectionIndex = section
             cell.toggleStateButton?.tag = section
@@ -557,13 +573,17 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
         
         tradingEvent.shared.viewTokenDetail(asset: symbol, source: TradingActionSource.o3Account)
-        let urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.account!.address)
+        let urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.wallet!.address)
         Controller().openDappBrowser(url: URL(string: urlString)!, modal: true, assetSymbol: symbol )
     }
     
     //MARK: -
     func setLocalizedStrings() {
-        self.navigationController?.navigationBar.topItem?.title = AccountStrings.accountTitle
+        if NEP6.getFromFileSystem()?.accounts.count ?? 0 > 0 {
+            self.navigationController?.navigationBar.topItem?.title = NEP6.getFromFileSystem()?.accounts[0].label
+        } else {
+            self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
+        }
     }
     
     @IBAction func tappedLeftBarButtonItem(_ sender: UIBarButtonItem) {
@@ -750,7 +770,7 @@ extension AccountAssetTableViewController {
 
 extension AccountAssetTableViewController {
     func loadOpenOrders(completion: @escaping(Int)->Void) {
-        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.account!.address, status: SwitcheoOrderStatus.open) { result in
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.wallet!.address, status: SwitcheoOrderStatus.open) { result in
             switch result{
             case .failure(let error):
                 #if DEBUG
@@ -769,7 +789,7 @@ extension AccountAssetTableViewController: QRScanDelegate {
     
     func postToChannel(channel: String) {
         let headers = ["content-type": "application/json"]
-        let parameters = ["address": Authenticated.account!.address,
+        let parameters = ["address": Authenticated.wallet!.address,
                           "device": "iOS" ] as [String: Any]
         
         let postData = try? JSONSerialization.data(withJSONObject: parameters, options: [])

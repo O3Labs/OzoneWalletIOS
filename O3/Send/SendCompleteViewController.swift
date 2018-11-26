@@ -64,19 +64,28 @@ class SendCompleteViewController: UIViewController, AddressAddDelegate {
     
     @IBAction func closeTapped(_ sender: Any) {
         if addToContactsCheckbox.isSelected {
-            if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddressEntryTableViewController") as? AddressEntryTableViewController {
-                vc.delegate = self
-                self.present(vc, animated: true, completion: {
-                    vc.addressTextView.text = self.toSendAddress
-                    vc.nicknameField.becomeFirstResponder()
-                })
+            DispatchQueue.main.async {
+                if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddressEntryTableViewController") as? AddressEntryTableViewController {
+                    vc.delegate = self
+                    self.present(vc, animated: true, completion: {
+                        vc.addressTextView.text = self.toSendAddress
+                        vc.nicknameField.becomeFirstResponder()
+                    })
+                }
             }
         } else {
-            self.dismiss(animated: true)
+            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
         }
     }
     
     func addressAdded(_ address: String, nickName: String) {
-        self.dismiss(animated: true)
+        DispatchQueue.main.async {
+            let context = UIApplication.appDelegate.persistentContainer.viewContext
+            let contact = Contact(context: context)
+            contact.address = address
+            contact.nickName = nickName
+            UIApplication.appDelegate.saveContext()
+            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+        }
     }
 }

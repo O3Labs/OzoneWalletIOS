@@ -42,8 +42,8 @@ class AddressEntryTableViewController: UITableViewController, AVCaptureMetadataO
             }
         } else {
             DispatchQueue.main.async {
-                self.delegate?.addressAdded(self.addressTextView.text.trim(), nickName: self.nicknameField.text?.trim() ?? "")
                 DispatchQueue.main.async { self.dismiss(animated: true) }
+                self.delegate?.addressAdded(self.addressTextView.text.trim(), nickName: self.nicknameField.text?.trim() ?? "")
             }
         }
     }

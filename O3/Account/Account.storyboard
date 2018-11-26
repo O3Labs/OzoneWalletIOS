@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="n0F-4W-k6A">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="n0F-4W-k6A">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Account-->
+        <!--Account Tab View Controller-->
         <scene sceneID="0mf-aI-nXn">
             <objects>
                 <viewController id="YsC-9q-XLc" customClass="AccountTabViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
@@ -23,7 +23,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="Account" id="CF2-GG-EfP"/>
+                    <navigationItem key="navigationItem" id="CF2-GG-EfP"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j83-yg-OTC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -109,12 +109,12 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2D7-oy-zeH">
-                                                            <rect key="frame" x="263" y="11" width="119" height="32"/>
+                                                            <rect key="frame" x="250" y="11" width="132" height="32"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="32" id="7VX-FO-WA7"/>
                                                             </constraints>
                                                             <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
-                                                            <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
                                                             <state key="normal" title="Sync Now" image="ic_sync">
                                                                 <color key="titleColor" name="textColor"/>
                                                             </state>
@@ -127,6 +127,9 @@
                                                                 </userDefinedRuntimeAttribute>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                     <real key="value" value="16"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="imageView.contentMode">
+                                                                    <integer key="value" value="1"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                         </button>
@@ -226,12 +229,12 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a0o-XX-y10">
-                                                            <rect key="frame" x="263" y="11" width="119" height="32"/>
+                                                            <rect key="frame" x="250" y="11" width="132" height="32"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="32" id="mxZ-Hm-zUI"/>
                                                             </constraints>
                                                             <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
-                                                            <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
                                                             <state key="normal" title="Sync Now" image="ic_sync">
                                                                 <color key="titleColor" name="textColor"/>
                                                             </state>
@@ -244,6 +247,9 @@
                                                                 </userDefinedRuntimeAttribute>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                     <real key="value" value="16"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="imageView.contentMode">
+                                                                    <integer key="value" value="1"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                         </button>
@@ -363,10 +369,15 @@
                                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                                             <color key="tintColor" name="lightThemePrimary"/>
                                                             <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="12" maxX="8" maxY="12"/>
                                                             <state key="normal" title="Send" image="ic_send">
                                                                 <color key="titleColor" name="lightThemePrimary"/>
                                                             </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="imageView.contentMode">
+                                                                    <integer key="value" value="1"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                             <connections>
                                                                 <action selector="didTapSend:" destination="sEU-p8-l0I" eventType="touchUpInside" id="aGn-kW-7er"/>
                                                             </connections>
@@ -387,10 +398,15 @@
                                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                                                     <color key="tintColor" name="lightThemePrimary"/>
                                                                     <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="12" maxX="8" maxY="12"/>
                                                                     <state key="normal" title="Request" image="qrCode-button">
                                                                         <color key="titleColor" name="lightThemePrimary"/>
                                                                     </state>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="number" keyPath="imageView.contentMode">
+                                                                            <integer key="value" value="1"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                    </userDefinedRuntimeAttributes>
                                                                     <connections>
                                                                         <action selector="didTapRequest:" destination="sEU-p8-l0I" eventType="touchUpInside" id="BpU-gv-Ooy"/>
                                                                     </connections>
@@ -423,10 +439,15 @@
                                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                                             <color key="tintColor" name="lightThemePrimary"/>
                                                             <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="12" maxX="8" maxY="12"/>
                                                             <state key="normal" title="Scan" image="ic_scan">
                                                                 <color key="titleColor" name="lightThemePrimary"/>
                                                             </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="imageView.contentMode">
+                                                                    <integer key="value" value="1"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                             <connections>
                                                                 <action selector="didTapScan:" destination="sEU-p8-l0I" eventType="touchUpInside" id="rIs-zZ-bEj"/>
                                                             </connections>
@@ -591,6 +612,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="assetCountTitleLabel" destination="ovo-9t-abd" id="Ehd-Op-SIz"/>
+                                    <outlet property="dividerView" destination="Dkp-9s-zcA" id="kXC-kR-eGN"/>
                                     <outlet property="horizontalStackView" destination="yWT-xY-wuW" id="9cn-Ft-crQ"/>
                                     <outlet property="moreButton" destination="irq-3O-iPn" id="UVD-21-GRG"/>
                                     <outlet property="titleLabel" destination="Qdd-ZG-LC3" id="EM2-68-Sf1"/>
@@ -607,7 +629,6 @@
                                     <subviews>
                                         <view tag="9" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p5u-ls-l6T">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="8"/>
-                                            <color key="backgroundColor" name="superLightGrey"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="8" id="4x5-MQ-Dy3"/>
                                             </constraints>
@@ -702,6 +723,7 @@
                                             </constraints>
                                         </view>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="p5u-ls-l6T" firstAttribute="top" secondItem="yha-9w-R3H" secondAttribute="top" id="CDt-s6-EwE"/>
                                         <constraint firstAttribute="trailing" secondItem="p5u-ls-l6T" secondAttribute="trailing" id="NMC-zH-ToU"/>
@@ -714,6 +736,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
+                                    <outlet property="dividerView" destination="p5u-ls-l6T" id="DYV-pN-7rl"/>
                                     <outlet property="horizontalStackView" destination="mVX-cK-A4p" id="fVM-FP-qht"/>
                                     <outlet property="moreButton" destination="BZ7-9q-1dR" id="DpH-6H-q8T"/>
                                     <outlet property="titleLabel" destination="KeA-lh-LZC" id="6rj-P6-mBN"/>
@@ -765,6 +788,11 @@ Get started by depositing some tokens from your wallet!</string>
                                                     <state key="normal" title="Deposit" image="arrow-to-bottom">
                                                         <color key="titleColor" name="lightThemePrimary"/>
                                                     </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="imageView.contentMode">
+                                                            <integer key="value" value="1"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="didTapDeposit:" destination="sEU-p8-l0I" eventType="touchUpInside" id="qsV-il-bCy"/>
                                                     </connections>
@@ -809,6 +837,7 @@ Get started by depositing some tokens from your wallet!</string>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
+                                    <outlet property="dividerView" destination="8RT-f9-aST" id="eHV-e2-SFC"/>
                                     <outlet property="moreButton" destination="vdi-bM-6Ph" id="Dne-JV-XMG"/>
                                     <outlet property="titleLabel" destination="6Ra-Re-b5Q" id="etJ-0V-cY2"/>
                                 </connections>
@@ -1126,13 +1155,13 @@ Get started by depositing some tokens from your wallet!</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ONT (mainnet)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUy-Pq-TVB">
-                                            <rect key="frame" x="54.000000000000007" y="37.333333333333336" width="105.66666666666669" height="22"/>
+                                            <rect key="frame" x="54.000000000000007" y="36.666666666666664" width="105.66666666666669" height="22"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+0.00000001" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sqB-J8-pMB">
-                                            <rect key="frame" x="302" y="37.333333333333336" width="96" height="22"/>
+                                            <rect key="frame" x="302" y="36.666666666666664" width="96" height="22"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -1249,7 +1278,7 @@ Get started by depositing some tokens from your wallet!</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aMh-L3-48g">
-                                <rect key="frame" x="20" y="167.00000000000003" width="374" height="448.66666666666674"/>
+                                <rect key="frame" x="20" y="150.66666666666666" width="374" height="448.66666666666674"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bEW-sc-cCW">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="374"/>
@@ -1292,8 +1321,8 @@ Get started by depositing some tokens from your wallet!</string>
                                     <constraint firstAttribute="trailing" secondItem="bEW-sc-cCW" secondAttribute="trailing" id="zL8-q3-At0"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can use this address to receive NEO, GAS or any NEP5 Token from an exchange or another wallet." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3cP-Pl-93O">
-                                <rect key="frame" x="20" y="126" width="374" height="33"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This address accepts NEO, Ontology &amp; NEP-5 tokens" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3cP-Pl-93O">
+                                <rect key="frame" x="20" y="126.00000000000001" width="374" height="16.666666666666671"/>
                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                 <color key="textColor" name="grey"/>
                                 <nil key="highlightedColor"/>
@@ -1357,7 +1386,7 @@ Get started by depositing some tokens from your wallet!</string>
                         <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <color key="tintColor" red="0.0" green="0.41176470590000003" blue="0.85098039219999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" name="lightThemePrimary"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -1511,15 +1540,15 @@ Get started by depositing some tokens from your wallet!</string>
         <image name="ONG" width="90" height="90"/>
         <image name="ONT" width="66.847198486328125" height="66.847198486328125"/>
         <image name="angle-down-small" width="10" height="6"/>
-        <image name="arrow-to-bottom" width="18" height="20"/>
-        <image name="ellipsis-vertical" width="4" height="16"/>
+        <image name="arrow-to-bottom" width="78" height="78"/>
+        <image name="ellipsis-vertical" width="26" height="26"/>
         <image name="ic_Claim" width="14" height="14"/>
         <image name="ic_ONG" width="21" height="21"/>
-        <image name="ic_scan" width="19" height="19"/>
-        <image name="ic_send" width="17" height="17"/>
-        <image name="ic_sync" width="13" height="13"/>
+        <image name="ic_scan" width="78" height="78"/>
+        <image name="ic_send" width="24" height="24"/>
+        <image name="ic_sync" width="26" height="26"/>
         <image name="plus" width="24" height="24"/>
-        <image name="qrCode-button" width="20" height="20"/>
+        <image name="qrCode-button" width="24" height="24"/>
         <image name="times" width="20" height="20"/>
         <image name="wallet" width="30" height="30"/>
         <namedColor name="grey">
@@ -1532,7 +1561,7 @@ Get started by depositing some tokens from your wallet!</string>
             <color red="0.96078431372549022" green="0.65098039215686276" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="lightThemePrimary">
-            <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.12941176470588237" green="0.5607843137254902" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="superLightGrey">
             <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

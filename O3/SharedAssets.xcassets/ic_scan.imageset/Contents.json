@@ -7,12 +7,12 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_scan@2x.png",
+      "filename" : "ic_scan2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_scan@3x.png",
+      "filename" : "ic_scan3x.png",
       "scale" : "3x"
     }
   ],

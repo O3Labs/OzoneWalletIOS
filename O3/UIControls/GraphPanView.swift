@@ -64,10 +64,8 @@ class GraphPanView: UIView {
     @objc func graphPanned(_ gesture: UIPanGestureRecognizer) {
         if let homeViewController = delegate as? HomeViewController {
             dateMargin = (homeViewController.homeviewModel?.selectedInterval.minuteValue())! < 60 ? 25 : 55
-        } else if let detailViewController = delegate as? AssetDetailViewController {
-            dateMargin = detailViewController.selectedInterval.minuteValue() < 60 ? 25 : 55
         }
-
+        
         switch gesture.state {
         case .began:
             delegate?.panBegan?()

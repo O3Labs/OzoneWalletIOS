@@ -13,12 +13,14 @@ class PrivateKeyViewController: UIViewController {
     @IBOutlet weak var qrView: UIImageView!
     @IBOutlet weak var privateKeyLabel: UILabel!
 
+    var privateKey: String!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        applyBottomSheetNavBarTheme(title: "Private Key")
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
-        privateKeyLabel.text = Authenticated.account?.wif
-        qrView.image = UIImage(qrData: Authenticated.account?.wif ?? "", width: qrView.frame.width, height: qrView.frame.height, qrLogoName: "ic_QRkey")
-        title = SettingsStrings.privateKeyTitle
+        privateKeyLabel.text = privateKey
+        qrView.image = UIImage(qrData: privateKey, width: qrView.frame.width, height: qrView.frame.height, qrLogoName: "ic_QRkey")
     }
 
     @IBAction func shareTapped(_ sender: Any) {
