@@ -12,10 +12,8 @@ import Cache
 import OpenGraph
 
 protocol dAppBrowserDelegate {
-    func onConnectRequest(url: URL, message: dAppMessage)
-    func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest)
-    func didApproveConnectRequest(message: dAppMessage)
-    func didRejectConnectRequest(message: dAppMessage, error: String)
+    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage) -> Void)
+    func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void)
     
     func error(message: dAppMessage, error: String)
     func didFinishMessage(message: dAppMessage, response: Any)
@@ -38,22 +36,19 @@ class dAppBrowserViewModel: NSObject {
         }
     }
     
-    func requestToConnect(message: dAppMessage) {
-        self.delegate?.onConnectRequest(url: self.url, message: message)
+    func requestToConnect(message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage) -> Void) {
+
+        self.delegate?.onConnectRequest(url: self.url, message: message, didCancel: { m in
+            didCancel(m)
+        }, didConfirm: { m in
+            self.isConnected = true
+            self.connectedTime = Date()
+            didConfirm(m)
+        })
     }
     
-    func requestToSend(message: dAppMessage, requset: dAppProtocol.SendRequest) {
-            self.delegate?.onSendRequest(message: message, request: requset)
-    }
-    
-    func approvedConnectRequest(message: dAppMessage) {
-        self.isConnected = true
-        self.connectedTime = Date()
-        self.delegate?.didApproveConnectRequest(message: message)
-    }
-    
-    func cancelledConnectRequest(message: dAppMessage) {
-        self.delegate?.didRejectConnectRequest(message: message, error: "CONNECTION_DENIED")
+    func requestToSend(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage,_ request: dAppProtocol.SendRequest) -> Void, didConfirm:@escaping (_ message: dAppMessage,_  request: dAppProtocol.SendRequest) -> Void) {
+        self.delegate?.onSendRequest(message: message, request: request, didCancel: didCancel, didConfirm: didConfirm)
     }
     
     func responseWithError(message: dAppMessage, error: String) {
@@ -143,11 +138,13 @@ class dAppBrowserViewModel: NSObject {
                     return
             }
             
-            //show dialog
-            self.requestToSend(message: message, requset: request)
+            self.requestToSend(message: message, request: request, didCancel: { m,r in
+                self.delegate?.error(message: message, error: "USER_CANCELLED_SEND")
+            }, didConfirm: { m, r in
+                let response = O3DappAPI().send(request: request)
+                self.delegate?.didFinishMessage(message: message, response: response.dictionary)
+            })
             
-//            let response = O3DappAPI().send(request: request)
-//            self.delegate?.didFinishMessage(message: message, response: response.dictionary)
             return
         }
     }
@@ -293,7 +290,7 @@ extension dAppBrowserV2ViewController: WKScriptMessageHandler{
         #if DEBUG
         print(message.body)
         #endif
-    
+        
         let jsonDataTemp = try? JSONSerialization.data(withJSONObject:  message.body as! JSONDictionary, options: [])
         let jsonString = String(data: jsonDataTemp!, encoding: String.Encoding.utf8)!
         print(jsonString)
@@ -311,7 +308,13 @@ extension dAppBrowserV2ViewController: WKScriptMessageHandler{
         }
         
         if dAppProtocol.needAuthorizationCommands.contains(message.command) && self.viewModel.isConnected == false {
-            self.viewModel.requestToConnect(message: message)
+            self.viewModel.requestToConnect(message: message, didCancel: { m in
+                //cancel
+                 self.viewModel.responseWithError(message: message, error: "CONNECTION_DENIED")
+            }) { m in
+                //confirm
+                self.viewModel.proceedMessage(message: message)
+            }
             return
         }
         
@@ -360,16 +363,24 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
 }
 
 extension dAppBrowserV2ViewController: dAppBrowserDelegate {
-
     
-    func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest) {
+    func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void) {
+        
+        
         let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "SendRequestTableViewControllerNav")
         self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
         nav.modalPresentationStyle = .custom
         nav.transitioningDelegate = self.halfModalTransitioningDelegate
         if let vc = nav.children.first as? SendRequestTableViewController {
             vc.message = message
-//            vc.delegate = self
+            vc.onConfirm = { m, r in
+                didConfirm(m,r)
+            }
+            
+            vc.onCancel = { m, r in
+                didCancel(m,r)
+            }
+            
             vc.dappMetadata = self.viewModel.dappMetadata
             vc.request = request
         }
@@ -402,19 +413,7 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         self.callback(jsonString: jsonString)
     }
     
-    func didRejectConnectRequest(message: dAppMessage, error: String) {
-        var dic = message.dictionary
-        dic["error"] = error
-        let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
-        let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
-        self.callback(jsonString: jsonString)
-    }
-    
-    func didApproveConnectRequest(message: dAppMessage) {
-        self.viewModel.proceedMessage(message: message)
-    }
-    
-    func onConnectRequest(url: URL, message: dAppMessage) {
+    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (dAppMessage) -> Void, didConfirm: @escaping (dAppMessage) -> Void) {
         let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "ConnectRequestTableViewControllerNav")
         self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
         nav.modalPresentationStyle = .custom
@@ -422,21 +421,16 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         if let vc = nav.children.first as? ConnectRequestTableViewController {
             vc.url = url
             vc.message = message
-            vc.delegate = self
+            vc.onConfirm = { m in
+                didConfirm(m)
+            }
+            
+            vc.onCancel = { m in
+                didCancel(m)
+            }
+            
             vc.dappMetadata = self.viewModel.dappMetadata
         }
         self.present(nav, animated: true, completion: nil)
     }
-}
-
-
-extension dAppBrowserV2ViewController: ConnectRequestDelegate{
-    func didCancel(message: dAppMessage) {
-        self.viewModel.cancelledConnectRequest(message: message)
-    }
-    
-    func didConnect(message: dAppMessage) {
-        self.viewModel.approvedConnectRequest(message: message)
-    }
-    
 }

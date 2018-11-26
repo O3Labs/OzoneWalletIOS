@@ -228,6 +228,7 @@
 		6EA09E4E212B942900BBD04A /* Transaction.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6EA09E4C212B942900BBD04A /* Transaction.xcdatamodeld */; };
 		6EA7F9281F6E2F7F00E31B78 /* O3Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA7F9271F6E2F7F00E31B78 /* O3Client.swift */; };
 		6EA7F9291F6E32B600E31B78 /* PriceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA7F9261F6E2F4E00E31B78 /* PriceData.swift */; };
+		6EB311AE21AB8323008EACD9 /* dAppMetaDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB311AD21AB8323008EACD9 /* dAppMetaDataTableViewCell.swift */; };
 		6EC483812163347D002CBF76 /* DappListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC483802163347D002CBF76 /* DappListTableViewController.swift */; };
 		6EC48384216334F4002CBF76 /* Dapp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC48383216334F4002CBF76 /* Dapp.swift */; };
 		6EC4838621633564002CBF76 /* Dapp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EC4838521633564002CBF76 /* Dapp.storyboard */; };
@@ -567,6 +568,7 @@
 		6EA09E4D212B942900BBD04A /* Account.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Account.xcdatamodel; sourceTree = "<group>"; };
 		6EA7F9261F6E2F4E00E31B78 /* PriceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceData.swift; sourceTree = "<group>"; };
 		6EA7F9271F6E2F7F00E31B78 /* O3Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = O3Client.swift; sourceTree = "<group>"; };
+		6EB311AD21AB8323008EACD9 /* dAppMetaDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dAppMetaDataTableViewCell.swift; sourceTree = "<group>"; };
 		6EC483802163347D002CBF76 /* DappListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappListTableViewController.swift; sourceTree = "<group>"; };
 		6EC48383216334F4002CBF76 /* Dapp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dapp.swift; sourceTree = "<group>"; };
 		6EC4838521633564002CBF76 /* Dapp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dapp.storyboard; sourceTree = "<group>"; };
@@ -1054,6 +1056,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		6EB311AC21AB8306008EACD9 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				6EB311AD21AB8323008EACD9 /* dAppMetaDataTableViewCell.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
 		6EC4837F21633393002CBF76 /* Dapp */ = {
 			isa = PBXGroup;
 			children = (
@@ -1087,6 +1097,7 @@
 		6EF59C8221A27B6500087D72 /* dappbrowserv2 */ = {
 			isa = PBXGroup;
 			children = (
+				6EB311AC21AB8306008EACD9 /* views */,
 				6EF59C8921A2A1FA00087D72 /* Models */,
 				6EF59C8321A27CAD00087D72 /* dAppBrowserV2ViewController.swift */,
 				6EF59C8521A27CBA00087D72 /* dAppBrowser.storyboard */,
@@ -1733,6 +1744,7 @@
 				6E5FDFED216725B300C1A6B5 /* NoActionUITextField.swift in Sources */,
 				6E58720821A6A489007F1EC6 /* dAppMetadata.swift in Sources */,
 				6E64C0D22159CE19002B1366 /* RequestCandlesticks.swift in Sources */,
+				6EB311AE21AB8323008EACD9 /* dAppMetaDataTableViewCell.swift in Sources */,
 				6E7F3D8F20B6805200835963 /* Data.swift in Sources */,
 				7546DB451F765295001DF5A2 /* AssetDetailViewController.swift in Sources */,
 				7501C0271F7BBFF400B4B2FF /* AddressEntryTableViewController.swift in Sources */,

@@ -8,16 +8,10 @@
 
 import UIKit
 
-protocol ConnectRequestDelegate {
-    func didCancel(message: dAppMessage)
-    func didConnect(message: dAppMessage)
-}
-
 class ConnectRequestTableViewController: UITableViewController {
     
     var url: URL?
     var message: dAppMessage!
-    var delegate: ConnectRequestDelegate?
     var dappMetadata: dAppMetadata?
     
     @IBOutlet var iconImageView: UIImageView?
@@ -26,9 +20,8 @@ class ConnectRequestTableViewController: UITableViewController {
     @IBOutlet var permissionLabel: UILabel?
     @IBOutlet var explainationLabel: UILabel?
     
-    deinit {
-        delegate = nil
-    }
+    var onConfirm: ((_ message: dAppMessage)->())?
+    var onCancel: ((_ message: dAppMessage)->())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,12 +38,12 @@ class ConnectRequestTableViewController: UITableViewController {
     }
     
     @IBAction func didTapCancel(_ sender: Any) {
-        self.delegate?.didCancel(message: message)
+        onCancel?(message)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func didTapConnect(_ sender: Any) {
-        self.delegate?.didConnect(message: message)
+        onConfirm?(message)
         self.dismiss(animated: true, completion: nil)
     }
     
