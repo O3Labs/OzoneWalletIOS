@@ -226,30 +226,76 @@ class dAppProtocol: NSObject {
         }
     }
     
+    struct errorResponse: Codable {
+        let error: String
+    }
+    
     
 }
 
 
 class O3DappAPI {
     
-    
-    
     func getStorage(request: dAppProtocol.GetStorageRequest) -> dAppProtocol.GetStorageResponse {
-        //TODO finish this
-        return "00cdf4d0bed758" as dAppProtocol.GetStorageResponse
+        let network = request.network!.lowercased().contains("test") ? Network.test : Network.main
+        var node = AppState.bestSeedNodeURL
+        if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: network) {
+            node = bestNode
+        }
+        
+        var response = ""
+        let requestGroup = DispatchGroup()
+        requestGroup.enter()
+        NeoClient(seed: node).getStorage(scriptHash: request.scriptHash, key: request.key) { result in
+            switch result {
+            case .failure(_):
+                response = ""
+                requestGroup.leave()
+            case .success(let storageValue):
+                response = storageValue
+                requestGroup.leave()
+            }
+        }
+        requestGroup.wait()
+        return response as dAppProtocol.GetStorageResponse
     }
     
-    func invokeRead(request: dAppProtocol.InvokeReadRequest) -> dAppProtocol.InvokeReadResponse {
-        //TODO finish this
-        return ["stack":["type":"ByteArray","value":"implement this"]]
+    func invokeRead(request: dAppProtocol.InvokeReadRequest) -> dAppProtocol.InvokeReadResponse? {
+        
+        let network = request.network.lowercased().contains("test") ? Network.test : Network.main
+        var node = AppState.bestSeedNodeURL
+        if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: network) {
+            node = bestNode
+        }
+        
+        var response: NeoClient.InvokeFunctionResult?
+
+        var args: [[String: String]] = []
+        for a in request.args {
+            args.append(["type": a.type, "value": a.value])
+        }
+        let requestGroup = DispatchGroup()
+        requestGroup.enter()
+        NeoClient(seed: node).invokeFunction(scriptHash: request.scriptHash, operation: request.operation, arguments: args) { result in
+            switch result {
+            case .failure(_):
+                requestGroup.leave()
+            case .success(let requestResult):
+                response = requestResult
+                requestGroup.leave()
+            }
+        }
+        requestGroup.wait()
+        return response.dictionary as JSONDictionary
     }
     
     func invoke(request: dAppProtocol.InvokeRequest) -> dAppProtocol.InvokeResponse {
         return dAppProtocol.InvokeResponse(txid: "implement this", nodeUrl: "https://o3.network")
     }
     
-    func send(request: dAppProtocol.SendRequest) -> dAppProtocol.SendResponse {
-        return dAppProtocol.SendResponse(txid: "implement this", nodeUrl: "https://o3.network")
+    func send(request: dAppProtocol.SendRequest) -> (dAppProtocol.SendResponse?, dAppProtocol.errorResponse?) {
+        
+        return (dAppProtocol.SendResponse(txid: "implement this", nodeUrl: "https://o3.network"), nil)
     }
     
     
@@ -297,7 +343,6 @@ class O3DappAPI {
             }
         }
         fetchUTXOgroup.wait()
-        
         
         for a in addressList{
             fetchBalanceGroup.enter()
@@ -349,6 +394,4 @@ class O3DappAPI {
         fetchBalanceGroup.wait()
         return response
     }
-    
-    
 }

@@ -141,8 +141,12 @@ class dAppBrowserViewModel: NSObject {
             self.requestToSend(message: message, request: request, didCancel: { m,r in
                 self.delegate?.error(message: message, error: "USER_CANCELLED_SEND")
             }, didConfirm: { m, r in
-                let response = O3DappAPI().send(request: request)
-                self.delegate?.didFinishMessage(message: message, response: response.dictionary)
+                let (response, err) = O3DappAPI().send(request: request)
+                if err != nil {
+                    self.delegate?.error(message: message, error: err!.error)
+                    return
+                }
+                self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
             })
             
             return
