@@ -52,7 +52,7 @@ class SendRequestTableViewController: UITableViewController {
     }
     
     func buildData() {
-        data.append(info(key: dataKey.asset.rawValue, value: String(format: "%@ %@", request.amount, request.asset)))
+        data.append(info(key: dataKey.asset.rawValue, value: String(format: "%@ %@", request.amount, request.asset.uppercased())))
         data.append(info(key: dataKey.from.rawValue, value: String(format: "%@", request.fromAddress)))
         data.append(info(key: dataKey.to.rawValue, value: String(format: "%@", request.toAddress)))
         
@@ -109,7 +109,7 @@ class SendRequestTableViewController: UITableViewController {
         
         let info = data[indexPath.row]
         cell.keyLabel.text = String(format:"%@", info.title.uppercased())
-        cell.valueLabel.text = String(format:"%@", info.value.uppercased())
+        cell.valueLabel.text = String(format:"%@", info.value)
         return cell
     }
     

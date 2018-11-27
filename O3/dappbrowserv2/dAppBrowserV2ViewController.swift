@@ -146,11 +146,11 @@ class dAppBrowserViewModel: NSObject {
             let decoder = JSONDecoder()
             guard let dictionary =  message.data?.value as? JSONDictionary,
                 let data = try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted),
-                let request = try? decoder.decode(dAppProtocol.SendRequest.self, from: data) else {
+                var request = try? decoder.decode(dAppProtocol.SendRequest.self, from: data) else {
                     self.delegate?.error(message: message, error: "Unable to parse the request")
                     return
             }
-            
+            request.fromAddress = unlockedWallet!.address
             self.requestToSend(message: message, request: request, didCancel: { m,r in
                 self.delegate?.error(message: message, error: "USER_CANCELLED_SEND")
             }, didConfirm: { m, r in
@@ -333,7 +333,9 @@ extension dAppBrowserV2ViewController: WKScriptMessageHandler{
                 self.viewModel.responseWithError(message: message, error: "CONNECTION_DENIED")
             }) { m, account in
                 //confirm
-                self.viewModel.proceedMessage(message: message)
+                DispatchQueue.main.async {
+                    self.viewModel.proceedMessage(message: message)
+                }
             }
             return
         }
