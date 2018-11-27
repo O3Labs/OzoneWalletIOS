@@ -393,6 +393,7 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
     
 }
 
+
 extension dAppBrowserV2ViewController: dAppBrowserDelegate {
     
     func beginLoading() {
@@ -435,10 +436,13 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
     
     
     func callback(jsonString: String) {
+        //make sure this is called from Main Thread
+        DispatchQueue.main.async {
         self.webView!.evaluateJavaScript("_o3dapi.receiveMessage(\(jsonString))") { _, error in
             guard error == nil else {
                 return
             }
+        }
         }
     }
     

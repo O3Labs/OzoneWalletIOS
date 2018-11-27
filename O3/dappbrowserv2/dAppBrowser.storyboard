@@ -327,14 +327,13 @@
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="info-cell" rowHeight="40" id="2Fj-VY-mPg" customClass="SendRequestTableViewCell" customModule="O3" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="207" width="375" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2Fj-VY-mPg" id="0Bn-N1-eyb">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2Fj-VY-mPg" id="0Bn-N1-eyb">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KEY" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yfs-ZS-DiZ">
-                                            <rect key="frame" x="16" y="0.0" width="60" height="40.5"/>
+                                            <rect key="frame" x="16" y="0.0" width="60" height="39.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="JGZ-aP-vN8"/>
                                                 <constraint firstAttribute="width" constant="60" id="M7d-OJ-psC"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
@@ -342,7 +341,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[info value]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHl-Bf-W4P">
-                                            <rect key="frame" x="100" y="0.0" width="259" height="40.5"/>
+                                            <rect key="frame" x="100" y="0.0" width="259" height="39.5"/>
                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                                             <color key="textColor" name="textColor"/>
                                             <nil key="highlightedColor"/>
