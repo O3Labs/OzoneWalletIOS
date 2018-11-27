@@ -24,10 +24,8 @@ class dAppMetaDataTableViewCell: UITableViewCell {
     
     
     func setupView() {
-        self.nameLabel?.text = dappMetadata?.title
+        self.nameLabel?.text = dappMetadata?.title ?? "App"
         self.iconImageView?.kf.setImage(with: URL(string: dappMetadata?.iconURL ?? "https://cdn.o3.network/img/neo/NEO.png"))
-        self.permissionLabel?.text = String(format: "%@ is requesting you to send", dappMetadata?.title ?? "App")
-        
     }
 
 }

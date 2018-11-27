@@ -100,6 +100,8 @@ class SendRequestTableViewController: UITableViewController {
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "dapp-metadata-cell") as! dAppMetaDataTableViewCell
             cell.dappMetadata = self.dappMetadata
+            cell.permissionLabel?.text = String(format: "%@ is requesting you to send", dappMetadata?.title ?? "App")
+            
             return cell
         }
         

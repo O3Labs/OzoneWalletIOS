@@ -10,13 +10,16 @@ import UIKit
 import WebKit
 import Cache
 import OpenGraph
+import PKHUD
 
 protocol dAppBrowserDelegate {
-    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage) -> Void)
+    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ wallet: Wallet) -> Void)
     func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void)
     
     func error(message: dAppMessage, error: String)
     func didFinishMessage(message: dAppMessage, response: Any)
+    
+    func beginLoading()
 }
 
 class dAppBrowserViewModel: NSObject {
@@ -25,8 +28,9 @@ class dAppBrowserViewModel: NSObject {
     var connectedTime: Date?
     var url: URL!
     var delegate: dAppBrowserDelegate?
-    
     var dappMetadata: dAppMetadata? = dAppMetadata()
+    var selectedAccount: NEP6.Account!
+    var unlockedWallet: Wallet?
     
     func loadMetadata(){
         OpenGraph.fetch(url: url!) { og, error in
@@ -36,14 +40,15 @@ class dAppBrowserViewModel: NSObject {
         }
     }
     
-    func requestToConnect(message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage) -> Void) {
-
+    func requestToConnect(message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet) -> Void) {
+        
         self.delegate?.onConnectRequest(url: self.url, message: message, didCancel: { m in
             didCancel(m)
-        }, didConfirm: { m in
+        }, didConfirm: { m, wallet in
             self.isConnected = true
             self.connectedTime = Date()
-            didConfirm(m)
+            self.unlockedWallet = wallet
+            didConfirm(m, wallet)
         })
     }
     
@@ -58,7 +63,11 @@ class dAppBrowserViewModel: NSObject {
     func proceedMessage(message: dAppMessage) {
         
         if message.command.lowercased() == "getAccount".lowercased() {
-            let response = dAppProtocol.GetAccountResponse(address: Authenticated.account!.address, publicKey: Authenticated.account!.publicKeyString)
+            if unlockedWallet == nil {
+                
+                return
+            }
+            let response = dAppProtocol.GetAccountResponse(address: unlockedWallet!.address, publicKey: unlockedWallet!.publicKeyString)
             self.delegate?.didFinishMessage(message: message, response: response.dictionary)
             return
         }
@@ -84,9 +93,13 @@ class dAppBrowserViewModel: NSObject {
                     self.delegate?.error(message: message, error: "Unable to parse the request")
                     return
             }
+             self.delegate?.beginLoading()
+            DispatchQueue.global().async {
             let response = O3DappAPI().getBalance(request: request)
             //it is very important to make the struct to dictionary otherwise JSONDecoder will throw and error invalid SwiftValue when trying to decode it
             self.delegate?.didFinishMessage(message: message, response: response.dictionary)
+            
+            }
             return
         }
         
@@ -141,12 +154,15 @@ class dAppBrowserViewModel: NSObject {
             self.requestToSend(message: message, request: request, didCancel: { m,r in
                 self.delegate?.error(message: message, error: "USER_CANCELLED_SEND")
             }, didConfirm: { m, r in
-                let (response, err) = O3DappAPI().send(request: request)
-                if err != nil {
-                    self.delegate?.error(message: message, error: err!.error)
-                    return
+                self.delegate?.beginLoading()
+                DispatchQueue.global().async {
+                    let (response, err) = O3DappAPI().send(wallet: self.unlockedWallet! ,request: request)
+                    if err != nil {
+                        self.delegate?.error(message: message, error: err!.error)
+                        return
+                    }
+                    self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
                 }
-                self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
             })
             
             return
@@ -314,15 +330,13 @@ extension dAppBrowserV2ViewController: WKScriptMessageHandler{
         if dAppProtocol.needAuthorizationCommands.contains(message.command) && self.viewModel.isConnected == false {
             self.viewModel.requestToConnect(message: message, didCancel: { m in
                 //cancel
-                 self.viewModel.responseWithError(message: message, error: "CONNECTION_DENIED")
-            }) { m in
+                self.viewModel.responseWithError(message: message, error: "CONNECTION_DENIED")
+            }) { m, account in
                 //confirm
                 self.viewModel.proceedMessage(message: message)
             }
             return
         }
-        
-        //invoke and send command need to show authentication dialog because they need user to sign with a private key.
         
         //proceed message that doesn't need authentication
         self.viewModel.proceedMessage(message: message)
@@ -348,6 +362,17 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
         self.webView?.frame = self.containerView!.bounds
     }
     
+    func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
+        
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            completionHandler()
+        }))
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         textFieldURL.text = webView.url?.host
     }
@@ -367,6 +392,12 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
 }
 
 extension dAppBrowserV2ViewController: dAppBrowserDelegate {
+    
+    func beginLoading() {
+        DispatchQueue.main.async {
+            HUD.show(.progress)
+        }
+    }
     
     func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void) {
         
@@ -410,14 +441,18 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
     }
     
     func didFinishMessage(message: dAppMessage, response: Any) {
-        var dic = message.dictionary
-        dic["data"] = response
-        let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
-        let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
-        self.callback(jsonString: jsonString)
+        DispatchQueue.main.async {
+            HUD.hide()
+            
+            var dic = message.dictionary
+            dic["data"] = response
+            let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
+            let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
+            self.callback(jsonString: jsonString)
+        }
     }
     
-    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (dAppMessage) -> Void, didConfirm: @escaping (dAppMessage) -> Void) {
+    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet) -> Void) {
         let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "ConnectRequestTableViewControllerNav")
         self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
         nav.modalPresentationStyle = .custom
@@ -425,8 +460,8 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         if let vc = nav.children.first as? ConnectRequestTableViewController {
             vc.url = url
             vc.message = message
-            vc.onConfirm = { m in
-                didConfirm(m)
+            vc.onConfirm = { m, wallet in
+                didConfirm(m, wallet)
             }
             
             vc.onCancel = { m in

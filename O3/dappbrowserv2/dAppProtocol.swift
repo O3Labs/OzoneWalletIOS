@@ -293,9 +293,43 @@ class O3DappAPI {
         return dAppProtocol.InvokeResponse(txid: "implement this", nodeUrl: "https://o3.network")
     }
     
-    func send(request: dAppProtocol.SendRequest) -> (dAppProtocol.SendResponse?, dAppProtocol.errorResponse?) {
+    func send(wallet: Wallet, request: dAppProtocol.SendRequest) -> (dAppProtocol.SendResponse?, dAppProtocol.errorResponse?) {
+        let isNative = request.asset.lowercased() == "neo" || request.asset.lowercased() == "gas"
+        let network = request.network.lowercased().contains("test") ? Network.test : Network.main
+        var node = AppState.bestSeedNodeURL
+        if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: network) {
+            node = bestNode
+        }
+        let requestGroup = DispatchGroup()
+        requestGroup.enter()
         
-        return (dAppProtocol.SendResponse(txid: "implement this", nodeUrl: "https://o3.network"), nil)
+        var response: dAppProtocol.SendResponse?
+        var error: dAppProtocol.errorResponse?
+        if isNative {
+            let assetID = request.asset.lowercased() == "neo" ? AssetId.neoAssetId : AssetId.gasAssetId
+            let fm = NumberFormatter()
+            let amountNumber = fm.number(from: request.amount)
+            let feeNumber = fm.number(from: request.fee ?? "0")
+            //TODO validation
+            //check balance
+            var attributes:[TransactionAttritbute] = []
+            if request.remark != nil {
+                attributes.append(TransactionAttritbute(remark: request.remark!))
+            }
+            wallet.sendAssetTransaction(network: network, seedURL: node, asset: assetID, amount: amountNumber!.doubleValue, toAddress: request.toAddress, attributes: attributes, fee: feeNumber!.doubleValue) { txID, err in
+                if err != nil {
+                    error = dAppProtocol.errorResponse(error: err.debugDescription)
+                    requestGroup.leave()
+                    return
+                }
+                response = dAppProtocol.SendResponse(txid: txID!, nodeUrl: node)
+                requestGroup.leave()
+                return
+            }
+        }
+        
+        requestGroup.wait()
+        return (response, error)
     }
     
     
