@@ -210,7 +210,8 @@ class dAppProtocol: NSObject {
     }
     
     struct SendRequest: Codable {
-        var amount, fromAddress, toAddress: String
+        let amount, toAddress: String
+        var fromAddress: String?
         let network, asset: String
         let remark: String?
         let fee: String?
