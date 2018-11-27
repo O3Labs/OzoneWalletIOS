@@ -55,8 +55,6 @@ class SendRequestTableViewController: UITableViewController {
         data.append(info(key: dataKey.asset.rawValue, value: String(format: "%@ %@", request.amount, request.asset.uppercased())))
         data.append(info(key: dataKey.from.rawValue, value: String(format: "%@", request.fromAddress!)))
         data.append(info(key: dataKey.to.rawValue, value: String(format: "%@", request.toAddress)))
-        
-        
         if request.remark != nil {
             data.append(info(key: dataKey.remark.rawValue, value: String(format: "%@", request.remark!)))
         }

@@ -9,6 +9,7 @@
 import UIKit
 import Neoutils
 import PKHUD
+import KeychainAccess
 
 class ConnectRequestTableViewController: UITableViewController {
     
@@ -36,7 +37,45 @@ class ConnectRequestTableViewController: UITableViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func inputPassword(encryptedKey: String, name: String, didCancel: @escaping () -> Void, didConfirm:@escaping (_ wif: String) -> Void) {
+    func inputPassword(account: NEP6.Account, didCancel: @escaping () -> Void, didConfirm:@escaping (_ wif: String) -> Void) {
+        let encryptedKey = account.key
+        let name = account.label
+        
+        //default selected account is the main active one so if user hasn't change
+        if account.isDefault == true {
+            DispatchQueue.main.async {
+                HUD.show(.progress)
+            }
+            DispatchQueue.global().async {
+                //we could pull the password from the keychain
+                let keychain = Keychain(service: "network.o3.neo.wallet")
+                do {
+                    var nep6Pass: String? = nil
+                    
+                    let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
+                    
+                    nep6Pass = try keychain
+                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                        .authenticationPrompt(authString)
+                        .get("ozoneActiveNep6Password")
+                    
+                    var error: NSError?
+                    let wif = NeoutilsNEP2Decrypt(encryptedKey, nep6Pass, &error)
+                    if error == nil {
+                        DispatchQueue.main.async {
+                            didConfirm(wif!)
+                        }
+                    }
+                } catch _ {
+                    
+                }
+            }
+            return
+        }
+        
+        
+        
+        
         let alertController = UIAlertController(title: String(format: "Unlock %@", name), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)
         
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
@@ -79,13 +118,11 @@ class ConnectRequestTableViewController: UITableViewController {
     }
     
     @IBAction func didTapConnect(_ sender: Any) {
-        inputPassword(encryptedKey: selectedAccount.key!, name: selectedAccount!.label, didCancel: {
+        inputPassword(account: selectedAccount, didCancel: {
             
         }) { wif in
             DispatchQueue.main.async {
-                
                 HUD.hide()
-                
                 let wallet = Wallet(wif: wif)
                 self.onConfirm?(self.message, wallet!)
                 self.dismiss(animated: true, completion: nil)
@@ -95,7 +132,6 @@ class ConnectRequestTableViewController: UITableViewController {
     
     //mark:-
     
-    // segue ViewControllerB -> ViewController
     @IBAction func unwindToConnectRequest(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? ConnectWalletSelectorTableViewController {
             DispatchQueue.main.async {
