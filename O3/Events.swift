@@ -78,6 +78,11 @@ class MultiwalletEvent: NSObject {
         log(event: multiwalletEventName.multiwalletActivated.rawValue,
             data: [:])
     }
+    
+    func walletUnlocked() {
+        log(event: multiwalletEventName.walletUnlocked.rawValue,
+            data: [:])
+    }
 }
 
 class tradingEvent: NSObject {

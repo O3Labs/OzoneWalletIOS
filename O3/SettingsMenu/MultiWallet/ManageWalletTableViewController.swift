@@ -216,6 +216,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
                 if error == nil {
                     NEP6.makeNewDefault(address: self.account.address, pass: inputPass!)
                     OzoneAlert.alertDialog("Success", message: "This is now your new default wallet", dismissTitle: "Ok") {}
+                    MultiwalletEvent.shared.walletUnlocked()
                 } else {
                     OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
             }

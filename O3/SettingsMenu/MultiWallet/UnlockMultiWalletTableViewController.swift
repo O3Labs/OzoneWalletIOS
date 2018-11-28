@@ -55,6 +55,7 @@ class UnlockMultiWalletTableViewController: UITableViewController {
                // self.navigationController?.popViewController(animated: true)
                 if error == nil {
                     NEP6.makeNewDefault(key: key, pass: inputPass!)
+                    MultiwalletEvent.shared.walletUnlocked()
                     self.dismiss(animated: true)
                 } else {
                     OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
