@@ -173,6 +173,17 @@ public class NEP6: Codable {
         return walletAccounts
     }
     
+    public func getWatchAccounts() -> [Account] {
+        var watchAccounts = [Account]()
+        for account in accounts {
+            if account.key == nil {
+                watchAccounts.append(account)
+            }
+        }
+        return watchAccounts
+    }
+    
+    
     public func convertWatchAddrToWallet(addr: String, key: String) {
         let index = accounts.firstIndex { $0.address == addr }
         accounts[index!].key = key

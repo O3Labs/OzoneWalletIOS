@@ -85,6 +85,13 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
                 return CGFloat(0)
             }
         }
+        
+        if account.isDefault {
+            if indexPath.row == 0 {
+                return CGFloat(0)
+            }
+        }
+        
         return CGFloat(44)
     }
     

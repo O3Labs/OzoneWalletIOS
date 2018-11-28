@@ -104,6 +104,7 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
             
             try updatedNep6.addEncryptedKey(name: self.nameEntryTextField.text!, address: self.nep2!.address(), key: self.nep2!.encryptedKey())
             updatedNep6.writeToFileSystem()
+            MultiwalletEvent.shared.walletAdded(numWallets: NEP6.getFromFileSystem()!.getWalletAccounts().count)
             Channel.shared().subscribe(toTopic: self.nep2!.address())
             self.performSegue(withIdentifier: "segueToFinishedEncryption", sender: nil)
         } catch {

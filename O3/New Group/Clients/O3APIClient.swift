@@ -276,8 +276,8 @@ class O3APIClient: NSObject {
                 let decoder = JSONDecoder()
                 guard let dictionary = response["result"] as? JSONDictionary,
                     let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
-
                     let decoded = try? decoder.decode(TransactionHistory.self, from: data) else {
+                        completion(.failure(O3APIClientError.invalidData))
                         return
                 }
                 let success = O3APIClientResult.success(decoded)
