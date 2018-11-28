@@ -46,7 +46,10 @@ class ConnectRequestTableViewController: UITableViewController {
             DispatchQueue.main.async {
                 HUD.show(.progress)
             }
-            DispatchQueue.global().async {
+            
+            
+            
+            DispatchQueue.global(qos: .userInitiated).async {
                 //we could pull the password from the keychain
                 let keychain = Keychain(service: "network.o3.neo.wallet")
                 do {
@@ -58,9 +61,13 @@ class ConnectRequestTableViewController: UITableViewController {
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .authenticationPrompt(authString)
                         .get("ozoneActiveNep6Password")
-                    
+                    let start = NSDate()
                     var error: NSError?
                     let wif = NeoutilsNEP2Decrypt(encryptedKey, nep6Pass, &error)
+                    let end = NSDate()
+                    
+                    let timeInterval: Double = end.timeIntervalSince(start as Date)
+                    print("Time to evaluate problem \(timeInterval) seconds")
                     if error == nil {
                         DispatchQueue.main.async {
                             didConfirm(wif!)
@@ -83,9 +90,14 @@ class ConnectRequestTableViewController: UITableViewController {
                 HUD.show(.progress)
             }
             let inputPass = alertController.textFields?[0].text
-            DispatchQueue.global().async {
+            DispatchQueue.global(qos: .userInitiated).async {
+                let start = NSDate() // <<<<<<<<<< Start time
                 var error: NSError?
                 let wif = NeoutilsNEP2Decrypt(encryptedKey, inputPass, &error)
+                let end = NSDate()
+                
+                let timeInterval: Double = end.timeIntervalSince(start as Date)
+                print("Time to evaluate problem \(timeInterval) seconds")
                 if error == nil {
                     DispatchQueue.main.async {
                         didConfirm(wif!)
@@ -163,7 +175,7 @@ class ConnectRequestTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
-            return 179.0
+            return 159.0
         }
         return 60.0
     }
