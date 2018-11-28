@@ -163,11 +163,13 @@ class SendRequestTableViewController: UITableViewController {
                 
                 if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
                     //insufficient balance
+                    cell.accessoryView = nil
                     cell.accessoryType = .detailButton
                     cell.accessoryView?.tintColor = UIColor.red
                     cell.theme_tintColor = O3Theme.negativeLossColorPicker
                 } else {
                     cell.accessoryType = .none
+                    cell.accessoryView = nil
                 }
             } else {
                 let v = UIActivityIndicatorView(style: .gray)
