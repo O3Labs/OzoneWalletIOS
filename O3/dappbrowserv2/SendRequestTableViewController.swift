@@ -107,9 +107,9 @@ class SendRequestTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.fetchBalance(address: self.request.fromAddress!)
-        }
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            self.fetchBalance(address: self.request.fromAddress!)
+//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -155,28 +155,28 @@ class SendRequestTableViewController: UITableViewController {
         cell.keyLabel.text = String(format:"%@", info.title.uppercased())
         cell.valueLabel.text = String(format:"%@", info.value)
         
-        if info.key.lowercased() == dataKey.asset.rawValue.lowercased()  {
-            
-            if self.requestedAsset != nil {
-                let fm = NumberFormatter()
-                let amountNumber = fm.number(from: self.request.amount)
-                
-                if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
-                    //insufficient balance
-                    cell.accessoryView = nil
-                    cell.accessoryType = .detailButton
-                    cell.accessoryView?.tintColor = UIColor.red
-                    cell.theme_tintColor = O3Theme.negativeLossColorPicker
-                } else {
-                    cell.accessoryType = .none
-                    cell.accessoryView = nil
-                }
-            } else {
-                let v = UIActivityIndicatorView(style: .gray)
-                v.startAnimating()
-                cell.accessoryView = v
-            }
-        }
+//        if info.key.lowercased() == dataKey.asset.rawValue.lowercased()  {
+//            
+//            if self.requestedAsset != nil {
+//                let fm = NumberFormatter()
+//                let amountNumber = fm.number(from: self.request.amount)
+//                
+//                if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
+//                    //insufficient balance
+//                    cell.accessoryView = nil
+//                    cell.accessoryType = .detailButton
+//                    cell.accessoryView?.tintColor = UIColor.red
+//                    cell.theme_tintColor = O3Theme.negativeLossColorPicker
+//                } else {
+//                    cell.accessoryType = .none
+//                    cell.accessoryView = nil
+//                }
+//            } else {
+//                let v = UIActivityIndicatorView(style: .gray)
+//                v.startAnimating()
+//                cell.accessoryView = v
+//            }
+//        }
         return cell
     }
     
@@ -208,11 +208,11 @@ class SendRequestTableViewController: UITableViewController {
         let fm = NumberFormatter()
         let amountNumber = fm.number(from: self.request.amount)
         
-        if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
-            //insufficient balance
-            self.showInsufficientBalancePopup()
-            return
-        }
+//        if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
+//            //insufficient balance
+//            self.showInsufficientBalancePopup()
+//            return
+//        }
         
         onConfirm?(message, request)
         self.dismiss(animated: true, completion: nil)

@@ -57,7 +57,17 @@ class dAppProtocol: NSObject {
         }
     }
     
-    typealias GetNetworksResponse = [String]
+//    typealias GetNetworksResponse = [String]
+    struct GetNetworksResponse: Codable {
+        let networks: [String]
+        enum CodingKeys: String, CodingKey {
+            case networks = "networks"
+        }
+        
+        init(networks: [String]) {
+            self.networks = networks
+        }
+    }
     
     struct GetAccountResponse: Codable {
         let address: String
@@ -74,9 +84,16 @@ class dAppProtocol: NSObject {
         }
     }
     
-    typealias GetBalanceRequest = [GetBalanceRequestElement]
-    struct GetBalanceRequestElement: Codable {
-        let address, asset: String
+    struct GetBalanceRequest: Codable {
+        let address: String
+        let assets: [String]?
+        let fetchUTXO: Bool? = false
+        
+        enum CodingKeys: String, CodingKey {
+            case address = "address"
+            case assets = "assets"
+            case fetchUTXO = "fetchUTXO"
+        }
     }
     
     typealias GetBalanceResponse = [String: [GetBalanceResponseElement]]
@@ -111,8 +128,13 @@ class dAppProtocol: NSObject {
         let network: String?
         
     }
-    typealias GetStorageResponse = String
     
+    struct GetStorageResponse: Codable {
+        let result: String
+        enum CodingKeys: String, CodingKey {
+            case result = "result"
+        }
+    }
     
     struct InvokeReadRequest: Codable {
         let operation, scriptHash: String
@@ -258,7 +280,7 @@ class O3DappAPI {
             }
         }
         requestGroup.wait()
-        return response as dAppProtocol.GetStorageResponse
+        return dAppProtocol.GetStorageResponse(result: response)
     }
     
     func invokeRead(request: dAppProtocol.InvokeReadRequest) -> dAppProtocol.InvokeReadResponse? {
@@ -334,15 +356,14 @@ class O3DappAPI {
     }
     
     
-    func getBalance(request: dAppProtocol.RequestData<dAppProtocol.GetBalanceRequest>) -> dAppProtocol.GetBalanceResponse {
+    func getBalance(request: dAppProtocol.RequestData<[dAppProtocol.GetBalanceRequest]>) -> dAppProtocol.GetBalanceResponse {
+        
         
         var addressList: [String: [String]] = [:]
-        for  v in request.params! {
-            if addressList[v.address] == nil {
-                addressList[v.address] = []
-            }
-            addressList[v.address]?.append(v.asset)
+        for p in request.params! {
+            addressList[p.address] = p.assets
         }
+        
         var response: dAppProtocol.GetBalanceResponse = [:]
         
         let fetchBalanceGroup = DispatchGroup()

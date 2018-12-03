@@ -79,8 +79,8 @@ class dAppBrowserViewModel: NSObject {
         }
         
         if message.command.lowercased() == "getNetworks".lowercased() {
-            let response = dAppProtocol.GetNetworksResponse(arrayLiteral: "MainNet", "TestNet", "PrivateNet")
-            self.delegate?.didFinishMessage(message: message, response: response)
+            let response = dAppProtocol.GetNetworksResponse(networks: ["MainNet", "TestNet", "PrivateNet"])
+            self.delegate?.didFinishMessage(message: message, response: response.dictionary)
             return
         }
         
@@ -89,7 +89,7 @@ class dAppBrowserViewModel: NSObject {
             let decoder = JSONDecoder()
             guard let dictionary =  message.data?.value as? JSONDictionary,
                 let data = try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted),
-                let request = try? decoder.decode(dAppProtocol.RequestData<dAppProtocol.GetBalanceRequest>.self, from: data) else {
+                let request = try? decoder.decode(dAppProtocol.RequestData<[dAppProtocol.GetBalanceRequest]>.self, from: data) else {
                     self.delegate?.error(message: message, error: "Unable to parse the request")
                     return
             }
@@ -112,7 +112,7 @@ class dAppBrowserViewModel: NSObject {
                     return
             }
             let response = O3DappAPI().getStorage(request: request)
-            self.delegate?.didFinishMessage(message: message, response: response)
+            self.delegate?.didFinishMessage(message: message, response: response.dictionary)
             return
         }
         
