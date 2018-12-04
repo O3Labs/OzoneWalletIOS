@@ -51,7 +51,7 @@ class HalfModalPresentationController: UIPresentationController {
     override var frameOfPresentedViewInContainerView: CGRect {
         
         //TODO make the height adjustable
-        return CGRect(x: 0, y: containerView!.bounds.height * 0.3, width: containerView!.bounds.width, height: containerView!.bounds.height * 0.7)
+        return CGRect(x: 0, y: containerView!.bounds.height * 0.25, width: containerView!.bounds.width, height: containerView!.bounds.height * 0.75)
     }
 
     override func presentationTransitionWillBegin() {

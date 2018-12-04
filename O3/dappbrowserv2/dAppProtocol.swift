@@ -236,7 +236,7 @@ class dAppProtocol: NSObject {
         var fromAddress: String?
         let network, asset: String
         let remark: String?
-        let fee: String?
+        var fee: String? //allow override from the user side
     }
 
     struct SendResponse: Codable {

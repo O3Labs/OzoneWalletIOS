@@ -8,10 +8,11 @@
 
 import UIKit
 
-
 class SendRequestTableViewCell: UITableViewCell {
     @IBOutlet var keyLabel: UILabel!
     @IBOutlet var valueLabel: UILabel!
+    @IBOutlet var iconImageView: UIImageView?
+    @IBOutlet var actionButton: UIButton?
 }
 
 class SendRequestTableViewController: UITableViewController {
@@ -24,21 +25,21 @@ class SendRequestTableViewController: UITableViewController {
     var onConfirm: ((_ message: dAppMessage, _ request: dAppProtocol.SendRequest)->())?
     var onCancel: ((_ message: dAppMessage, _ request: dAppProtocol.SendRequest)->())?
     
+    var usePriority: Bool! = false
+    
     struct info {
         var key: String
         var title: String {
-            if key == "fee" {
-                return "Network fee"
-            }
-            return key
+            return key.capitalized
         }
         var value: String
+        var data: Any?
     }
     
     var data: [info]! = []
     
     enum dataKey: String{
-        case asset = "asset"
+        case total = "total"
         case from = "from"
         case to = "to"
         case remark = "remark"
@@ -91,15 +92,35 @@ class SendRequestTableViewController: UITableViewController {
     }
     
     func buildData() {
-        data.append(info(key: dataKey.asset.rawValue, value: String(format: "%@ %@", request.amount, request.asset.uppercased())))
-        data.append(info(key: dataKey.from.rawValue, value: String(format: "%@", request.fromAddress!)))
-        data.append(info(key: dataKey.to.rawValue, value: String(format: "%@", request.toAddress)))
+        
+        //get wallet label from the address
+        //this should never be error
+        let account = NEP6.getFromFileSystem()?.accounts.first(where: { n -> Bool in
+            return n.address == request.fromAddress
+        })
+        data.append(info(key: dataKey.from.rawValue, value: String(format: "%@", account!.label), data: nil))
+        data.append(info(key: dataKey.to.rawValue, value: String(format: "%@", request.toAddress), data: nil))
         if request.remark != nil {
-            data.append(info(key: dataKey.remark.rawValue, value: String(format: "%@", request.remark!)))
+            data.append(info(key: dataKey.remark.rawValue, value: String(format: "%@", request.remark!), data: nil))
         }
+        
         if request.fee != nil {
-            data.append(info(key: dataKey.fee.rawValue, value: String(format: "%@ GAS", request.fee!)))
+            let fm = NumberFormatter()
+            let feeNumber = fm.number(from: request.fee ?? "0")?.doubleValue
+            if feeNumber!.isZero {
+                data.append(info(key: dataKey.fee.rawValue, value: "", data: Double(0)))
+            } else {
+                data.append(info(key: dataKey.fee.rawValue, value: String(format: "%@ GAS", request.fee!), data: feeNumber))
+            }
+            
+        } else {
+            data.append(info(key: dataKey.fee.rawValue, value: "", data: Double(0)))
         }
+        
+        data.append(info(key: dataKey.total.rawValue,
+                         value: String(format: "%@ %@", request.amount, request.asset.uppercased()),
+                         data: request))
+        
         
         self.tableView.reloadData()
     }
@@ -121,7 +142,7 @@ class SendRequestTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -129,14 +150,20 @@ class SendRequestTableViewController: UITableViewController {
         if section == 0 {
             return 1
         }
-        return data.count
+        if section == 1 {
+            return data.count
+        }
+        return 1 //empty cell to make it show separator
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
-            return 159.0
+            return 80.0
         }
-        return 40.0
+        if indexPath.section == 1 {
+            return 44.0
+        }
+        return 0.0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -144,47 +171,93 @@ class SendRequestTableViewController: UITableViewController {
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "dapp-metadata-cell") as! dAppMetaDataTableViewCell
             cell.dappMetadata = self.dappMetadata
-            cell.permissionLabel?.text = String(format: "%@ is requesting you to send", dappMetadata?.title ?? "App")
-            
+            cell.permissionLabel?.text = String(format: "is requesting to send %@", self.request.asset.uppercased())
             return cell
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "info-cell") as! SendRequestTableViewCell
-        
-        let info = data[indexPath.row]
-        cell.keyLabel.text = String(format:"%@", info.title.uppercased())
-        cell.valueLabel.text = String(format:"%@", info.value)
-        
-        if info.key.lowercased() == dataKey.asset.rawValue.lowercased()  {
-            
-            if self.requestedAsset != nil {
-                let fm = NumberFormatter()
-                let amountNumber = fm.number(from: self.request.amount)
-                
-                if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
-                    //insufficient balance
-                    cell.accessoryView = nil
-                    cell.accessoryType = .detailButton
-                    cell.accessoryView?.tintColor = UIColor.red
-                    cell.theme_tintColor = O3Theme.negativeLossColorPicker
-                } else {
-                    cell.accessoryType = .none
-                    cell.accessoryView = nil
+        if indexPath.section == 1{
+            let info = data[indexPath.row]
+            if info.key.lowercased() == dataKey.total.rawValue.lowercased()  {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "total-cell") as! SendRequestTableViewCell
+                cell.keyLabel.text = String(format:"%@", "Total")
+                cell.valueLabel.text = String(format:"%@", info.value)
+                if let r = info.data as? dAppProtocol.SendRequest {
+                    let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", r.asset.uppercased())
+                    cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
                 }
-            } else {
-                let v = UIActivityIndicatorView(style: .gray)
-                v.startAnimating()
-                cell.accessoryView = v
+                return cell
             }
+            
+            if info.key.lowercased() == dataKey.fee.rawValue.lowercased()  {
+                //if fee is set by the app and is more than zero we just show the fee here
+                if let fee = info.data as? Double {
+                    if fee > 0 {
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "info-cell") as! SendRequestTableViewCell
+                        cell.keyLabel.text = String(format:"%@", info.title)
+                        cell.valueLabel.text = String(format:"%@ GAS", fee.string(8, removeTrailing: true))
+                        return cell
+                    }
+                }
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "fee-cell") as! SendRequestTableViewCell
+                
+                cell.actionButton!.isSelected = self.usePriority!
+                cell.actionButton!.tintColor = self.usePriority! ? Theme.light.accentColor : Theme.light.lightTextColor
+                
+                return cell
+            }
+            
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "info-cell") as! SendRequestTableViewCell
+            cell.keyLabel.text = String(format:"%@", info.title)
+            cell.valueLabel.text = String(format:"%@", info.value)
+            
+            //        if info.key.lowercased() == dataKey.total.rawValue.lowercased()  {
+            //
+            //            if self.requestedAsset != nil {
+            //                let fm = NumberFormatter()
+            //                let amountNumber = fm.number(from: self.request.amount)
+            //
+            //                if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
+            //                    //insufficient balance
+            //                    cell.accessoryView = nil
+            //                    cell.accessoryType = .detailButton
+            //                    cell.accessoryView?.tintColor = UIColor.red
+            //                    cell.theme_tintColor = O3Theme.negativeLossColorPicker
+            //                } else {
+            //                    cell.accessoryType = .none
+            //                    cell.accessoryView = nil
+            //                }
+            //            } else {
+            //                let v = UIActivityIndicatorView(style: .gray)
+            //                v.startAnimating()
+            //                cell.accessoryView = v
+            //            }
+            //        }
+            return cell
         }
-        return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        return cell!
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         let info = data[indexPath.row]
-        if info.key.lowercased() == dataKey.asset.rawValue.lowercased() && self.requestedAsset != nil {
+        if info.key.lowercased() == dataKey.total.rawValue.lowercased() && self.requestedAsset != nil {
             self.showInsufficientBalancePopup()
-            
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let info = data[indexPath.row]
+        if info.key.lowercased() == dataKey.fee.rawValue.lowercased() {
+            if let fee = info.data as? Double {
+                if fee == 0 {
+                    usePriority = !usePriority
+                    DispatchQueue.main.async {
+                        tableView.reloadRows(at: [indexPath], with: .automatic)
+                    }
+                }
+            }
         }
     }
     
@@ -208,12 +281,17 @@ class SendRequestTableViewController: UITableViewController {
         let fm = NumberFormatter()
         let amountNumber = fm.number(from: self.request.amount)
         
-//        if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
-//            //insufficient balance
-//            self.showInsufficientBalancePopup()
-//            return
-//        }
+        //        if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
+        //            //insufficient balance
+        //            self.showInsufficientBalancePopup()
+        //            return
+        //        }
         
+        //override it if dapp doesn't specify the fee
+        if request.fee == nil || fm.number(from: request.fee ?? "0") == 0  {
+            request.fee = self.usePriority! ? "0.0011" : "0"
+        }
+        print(request.fee)
         onConfirm?(message, request)
         self.dismiss(animated: true, completion: nil)
     }
