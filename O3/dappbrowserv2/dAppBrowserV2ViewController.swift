@@ -19,6 +19,8 @@ protocol dAppBrowserDelegate {
     func error(message: dAppMessage, error: String)
     func didFinishMessage(message: dAppMessage, response: Any)
     
+    func onWalletChanged(newWallet: Wallet)
+    
     func beginLoading()
 }
 
@@ -412,6 +414,11 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
 
 
 extension dAppBrowserV2ViewController: dAppBrowserDelegate {
+    func onWalletChanged(newWallet: Wallet) {
+        let response = dAppProtocol.GetAccountResponse(address: newWallet.address, publicKey: newWallet.publicKeyString)
+        self.event(eventName: "ACCOUNT_CHANGED", data: response.dictionary)
+    }
+    
     
     func beginLoading() {
         DispatchQueue.main.async {
@@ -451,15 +458,27 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         self.callback(jsonString: jsonString)
     }
     
+    func event(eventName: String, data: [String: Any]) {
+        var dic:[String: Any] = [:]
+        dic["command"] = "event"
+        dic["eventName"] = eventName
+        for v in data{
+            dic[v.key] = v.value
+        }
+        
+        let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
+        let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
+        self.callback(jsonString: jsonString)
+    }
     
     func callback(jsonString: String) {
         //make sure this is called from Main Thread
         DispatchQueue.main.async {
-        self.webView!.evaluateJavaScript("_o3dapi.receiveMessage(\(jsonString))") { _, error in
-            guard error == nil else {
-                return
+            self.webView!.evaluateJavaScript("_o3dapi.receiveMessage(\(jsonString))") { _, error in
+                guard error == nil else {
+                    return
+                }
             }
-        }
         }
     }
     
