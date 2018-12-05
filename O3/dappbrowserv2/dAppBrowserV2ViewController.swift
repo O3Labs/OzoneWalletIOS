@@ -13,7 +13,7 @@ import OpenGraph
 import PKHUD
 
 protocol dAppBrowserDelegate {
-    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ wallet: Wallet) -> Void)
+    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account) -> Void)
     func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void)
     
     func error(message: dAppMessage, error: String)
@@ -40,15 +40,16 @@ class dAppBrowserViewModel: NSObject {
         }
     }
     
-    func requestToConnect(message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet) -> Void) {
+    func requestToConnect(message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account) -> Void) {
         
         self.delegate?.onConnectRequest(url: self.url, message: message, didCancel: { m in
             didCancel(m)
-        }, didConfirm: { m, wallet in
+        }, didConfirm: { m, wallet, account in
             self.isConnected = true
             self.connectedTime = Date()
             self.unlockedWallet = wallet
-            didConfirm(m, wallet)
+            self.selectedAccount = account
+            didConfirm(m, wallet, account)
         })
     }
     
@@ -222,6 +223,22 @@ class dAppBrowserV2ViewController: UIViewController {
         textFieldURL.leftViewMode = .always
     }
     
+    @IBAction func didTapWallet(_ sender: UIBarButtonItem) {
+        let vc = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "ConnectWalletSelectorTableViewController") as! ConnectWalletSelectorTableViewController
+        
+         vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.7, height: UIScreen.main.bounds.height * 0.5)
+        vc.modalPresentationStyle = .popover
+        vc.selectedAccount = self.viewModel.selectedAccount
+        
+        let presentationController = vc.presentationController as! UIPopoverPresentationController
+        presentationController.barButtonItem = sender
+        presentationController.delegate = self
+        presentationController.sourceRect = CGRect(x: 0, y: 0, width: 25, height: 25)
+        presentationController.permittedArrowDirections = [.any]
+        self.present(vc, animated: true, completion: nil)
+    }
+
+    
     @IBAction func didTapBack(_ sender: Any) {
         if self.webView.canGoBack {
             print("Can go back")
@@ -331,7 +348,7 @@ extension dAppBrowserV2ViewController: WKScriptMessageHandler{
             self.viewModel.requestToConnect(message: message, didCancel: { m in
                 //cancel
                 self.viewModel.responseWithError(message: message, error: "CONNECTION_DENIED")
-            }) { m, account in
+            }) { m, wallet, account in
                 //confirm
                 DispatchQueue.main.async {
                     self.viewModel.proceedMessage(message: message)
@@ -458,7 +475,7 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         }
     }
     
-    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet) -> Void) {
+    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account) -> Void) {
         let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "ConnectRequestTableViewControllerNav")
         self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
         nav.modalPresentationStyle = .custom
@@ -466,8 +483,8 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         if let vc = nav.children.first as? ConnectRequestTableViewController {
             vc.url = url
             vc.message = message
-            vc.onConfirm = { m, wallet in
-                didConfirm(m, wallet)
+            vc.onConfirm = { m, wallet, account in
+                didConfirm(m, wallet, account)
             }
             
             vc.onCancel = { m in
@@ -477,5 +494,14 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
             vc.dappMetadata = self.viewModel.dappMetadata
         }
         self.present(nav, animated: true, completion: nil)
+    }
+}
+
+extension dAppBrowserV2ViewController: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate{
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle{
+        return .none
     }
 }

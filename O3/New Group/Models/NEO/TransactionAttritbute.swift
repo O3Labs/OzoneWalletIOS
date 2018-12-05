@@ -81,6 +81,14 @@ public class TransactionAttritbute {
         attribute += byteArray
         self.data = attribute
     }
+    
+    public init(remark1: String) {
+        let byteArray: [UInt8] = Array(remark1.utf8)
+        let length = UInt8(byteArray.count)
+        var attribute: [UInt8] = [Usage.Remark1.rawValue, length]
+        attribute += byteArray
+        self.data = attribute
+    }
 
     public init(script: String) {
         var attribute: [UInt8] = [Usage.Script.rawValue]

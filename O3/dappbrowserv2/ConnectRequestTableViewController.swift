@@ -18,7 +18,7 @@ class ConnectRequestTableViewController: UITableViewController {
     var dappMetadata: dAppMetadata?
     var selectedAccount: NEP6.Account!
     
-    var onConfirm: ((_ message: dAppMessage, _ wallet: Wallet)->())?
+    var onConfirm: ((_ message: dAppMessage, _ wallet: Wallet, _ account: NEP6.Account)->())?
     var onCancel: ((_ message: dAppMessage)->())?
     
     override func viewDidLoad() {
@@ -136,7 +136,7 @@ class ConnectRequestTableViewController: UITableViewController {
             DispatchQueue.main.async {
                 HUD.hide()
                 let wallet = Wallet(wif: wif)
-                self.onConfirm?(self.message, wallet!)
+                self.onConfirm?(self.message, wallet!, self.selectedAccount)
                 self.dismiss(animated: true, completion: nil)
             }
         }
@@ -147,7 +147,7 @@ class ConnectRequestTableViewController: UITableViewController {
     @IBAction func unwindToConnectRequest(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? ConnectWalletSelectorTableViewController {
             DispatchQueue.main.async {
-                self.selectedAccount = sourceViewController.selectedWallet
+                self.selectedAccount = sourceViewController.selectedAccount
                 self.tableView.reloadData()
             }
         }
@@ -156,7 +156,7 @@ class ConnectRequestTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectWallet" {
             let vc = segue.destination as! ConnectWalletSelectorTableViewController
-            vc.selectedWallet = selectedAccount
+            vc.selectedAccount = selectedAccount
         }
     }
     

@@ -337,7 +337,8 @@ class O3DappAPI {
             //check balance
             var attributes:[TransactionAttritbute] = []
             if request.remark != nil {
-                attributes.append(TransactionAttritbute(remark: request.remark!))
+                attributes.append(TransactionAttritbute(remark1: request.remark!))
+                attributes.append(TransactionAttritbute(remark: "O3XDAPI")) //TODO discuss what we should put in
             }
             wallet.sendAssetTransaction(network: network, seedURL: node, asset: assetID, amount: amountNumber!.doubleValue, toAddress: request.toAddress, attributes: attributes, fee: feeNumber!.doubleValue) { txID, err in
                 if err != nil {

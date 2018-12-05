@@ -181,6 +181,8 @@
 		6E43769A21460CB90091367A /* Dictionary+Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768121460CB90091367A /* Dictionary+Sort.swift */; };
 		6E43769B21460CB90091367A /* Dictionary+SWTHEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43768221460CB90091367A /* Dictionary+SWTHEncoding.swift */; };
 		6E4376AB21463BAA0091367A /* TradingAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4376AA21463BAA0091367A /* TradingAccount.swift */; };
+		6E4BB74E21B75CC10003C9DD /* dAppActivityView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E4BB74D21B75CC10003C9DD /* dAppActivityView.xib */; };
+		6E4BB75021B75CD10003C9DD /* dAppActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4BB74F21B75CD10003C9DD /* dAppActivityView.swift */; };
 		6E4C4FA92165E650001B7114 /* SAConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C4FA82165E64F001B7114 /* SAConfettiView.swift */; };
 		6E4E6F7F20146086001A5844 /* AccountTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F7E20146086001A5844 /* AccountTabViewController.swift */; };
 		6E4E6F812014611E001A5844 /* AccountAssetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F802014611E001A5844 /* AccountAssetTableViewController.swift */; };
@@ -548,6 +550,8 @@
 		6E43768121460CB90091367A /* Dictionary+Sort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Sort.swift"; sourceTree = "<group>"; };
 		6E43768221460CB90091367A /* Dictionary+SWTHEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+SWTHEncoding.swift"; sourceTree = "<group>"; };
 		6E4376AA21463BAA0091367A /* TradingAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingAccount.swift; sourceTree = "<group>"; };
+		6E4BB74D21B75CC10003C9DD /* dAppActivityView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = dAppActivityView.xib; sourceTree = "<group>"; };
+		6E4BB74F21B75CD10003C9DD /* dAppActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dAppActivityView.swift; sourceTree = "<group>"; };
 		6E4C4FA82165E64F001B7114 /* SAConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAConfettiView.swift; sourceTree = "<group>"; };
 		6E4E6F7E20146086001A5844 /* AccountTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTabViewController.swift; sourceTree = "<group>"; };
 		6E4E6F802014611E001A5844 /* AccountAssetTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAssetTableViewController.swift; sourceTree = "<group>"; };
@@ -1090,6 +1094,15 @@
 			path = Trading;
 			sourceTree = "<group>";
 		};
+		6E4BB74C21B75BB20003C9DD /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				6E4BB74D21B75CC10003C9DD /* dAppActivityView.xib */,
+				6E4BB74F21B75CD10003C9DD /* dAppActivityView.swift */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
 		6E4E6F8520146514001A5844 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1211,6 +1224,7 @@
 		6EF59C8221A27B6500087D72 /* dappbrowserv2 */ = {
 			isa = PBXGroup;
 			children = (
+				6E4BB74C21B75BB20003C9DD /* Controls */,
 				6EB311AC21AB8306008EACD9 /* views */,
 				6EF59C8921A2A1FA00087D72 /* Models */,
 				6EF59C8321A27CAD00087D72 /* dAppBrowserV2ViewController.swift */,
@@ -1668,6 +1682,7 @@
 				75BEB2641F89FB8A00DC20E9 /* O3HUD.storyboard in Resources */,
 				353E11E320C676E000697359 /* Landing.json in Resources */,
 				6ED6001C1F76506B006760E6 /* SharedAssets.xcassets in Resources */,
+				6E4BB74E21B75CC10003C9DD /* dAppActivityView.xib in Resources */,
 				75D5BFC41F6D1A4F00E64855 /* AppAssets.xcassets in Resources */,
 				353F364920037062002B4FE1 /* NewsFeed.storyboard in Resources */,
 				75D5BFAF1F6CE8AB00E64855 /* Onboarding.storyboard in Resources */,
@@ -1774,6 +1789,7 @@
 				756AC1941F7FD1B1003BF8F7 /* AddressSelectionCell.swift in Sources */,
 				353E799C20C6905B00B9AB1F /* PrivateKeyCreationViewController.swift in Sources */,
 				3552DE1120A025D900836341 /* AccountState.swift in Sources */,
+				6E4BB75021B75CD10003C9DD /* dAppActivityView.swift in Sources */,
 				35061E47205F5CFE004E89EB /* FeaturedCollectionCell.swift in Sources */,
 				35061E49205F6306004E89EB /* FeatureFeed.swift in Sources */,
 				6E64C0D52159CE19002B1366 /* RequestTrade.swift in Sources */,

@@ -16,7 +16,7 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
             return n.key != nil
         })
     }
-    var selectedWallet: NEP6.Account!
+    var selectedAccount: NEP6.Account!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,7 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
         cell.titleLabel.text = wallet.label
         cell.addressLabel.text = wallet.address
         
-        if wallet.address.isEqual(to: selectedWallet.address) {
+        if wallet.address.isEqual(to: selectedAccount.address) {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -56,7 +56,7 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let wallet = accounts?[indexPath.row]
-        selectedWallet = wallet
+        selectedAccount = wallet
     }
     
     

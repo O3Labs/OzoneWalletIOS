@@ -17,6 +17,10 @@ class SendRequestTableViewCell: UITableViewCell {
 
 class SendRequestTableViewController: UITableViewController {
     
+    @IBOutlet var containerView: UIView?
+    @IBOutlet var actionContainerView: UIView?
+    let activityView = dAppActivityView(frame: CGRect.zero)
+    
     var request: dAppProtocol.SendRequest!
     var message: dAppMessage!
     var dappMetadata: dAppMetadata?
@@ -64,6 +68,19 @@ class SendRequestTableViewController: UITableViewController {
                 self.checkBalance(accountState: accountstate)
             }
         }
+    }
+    
+    
+    func loadActivityView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.activityView.frame = self.actionContainerView!.bounds
+            self.actionContainerView?.alpha = 0
+            self.containerView?.addSubview(self.activityView)
+            self.activityView.beginLoading()
+        }) { completed in
+            
+        }
+        
     }
     
     func checkBalance(accountState: AccountState) {
@@ -185,6 +202,33 @@ class SendRequestTableViewController: UITableViewController {
                     let imageURL = String(format: "https://cdn.o3.network/img/neo/%@.png", r.asset.uppercased())
                     cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
                 }
+                
+              
+    
+                if self.requestedAsset != nil {
+                    let fm = NumberFormatter()
+                    let amountNumber = fm.number(from: self.request.amount)
+    
+                    if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
+                        //insufficient balance
+                        if let label = cell.viewWithTag(1) as? UILabel {
+                            label.isHidden = false
+                            cell.selectionStyle = .default
+                        }
+                    } else {
+                        if let label = cell.viewWithTag(1) as? UILabel {
+                            label.isHidden = true
+                            cell.selectionStyle = .none
+                        }
+                    }
+                } else {
+                    if let label = cell.viewWithTag(1) as? UILabel {
+                        label.isHidden = true
+                        cell.selectionStyle = .none
+                    }
+                }
+                
+                
                 return cell
             }
             
@@ -212,42 +256,15 @@ class SendRequestTableViewController: UITableViewController {
             cell.keyLabel.text = String(format:"%@", info.title)
             cell.valueLabel.text = String(format:"%@", info.value)
             
-            //        if info.key.lowercased() == dataKey.total.rawValue.lowercased()  {
-            //
-            //            if self.requestedAsset != nil {
-            //                let fm = NumberFormatter()
-            //                let amountNumber = fm.number(from: self.request.amount)
-            //
-            //                if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
-            //                    //insufficient balance
-            //                    cell.accessoryView = nil
-            //                    cell.accessoryType = .detailButton
-            //                    cell.accessoryView?.tintColor = UIColor.red
-            //                    cell.theme_tintColor = O3Theme.negativeLossColorPicker
-            //                } else {
-            //                    cell.accessoryType = .none
-            //                    cell.accessoryView = nil
-            //                }
-            //            } else {
-            //                let v = UIActivityIndicatorView(style: .gray)
-            //                v.startAnimating()
-            //                cell.accessoryView = v
-            //            }
-            //        }
+           
             return cell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         return cell!
     }
     
-    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        let info = data[indexPath.row]
-        if info.key.lowercased() == dataKey.total.rawValue.lowercased() && self.requestedAsset != nil {
-            self.showInsufficientBalancePopup()
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let info = data[indexPath.row]
         if info.key.lowercased() == dataKey.fee.rawValue.lowercased() {
             if let fee = info.data as? Double {
@@ -258,6 +275,12 @@ class SendRequestTableViewController: UITableViewController {
                     }
                 }
             }
+            return
+        }
+        
+        if info.key.lowercased() == dataKey.total.rawValue.lowercased() && self.requestedAsset != nil {
+            self.showInsufficientBalancePopup()
+            return
         }
     }
     
@@ -277,21 +300,30 @@ class SendRequestTableViewController: UITableViewController {
     }
     
     @IBAction func didTapConfirm(_ sender: Any) {
+        //add loading view
+//        self.loadActivityView()
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//             self.activityView.success()
+//        }
+//
+//        return
+        
         //check balance here
         let fm = NumberFormatter()
         let amountNumber = fm.number(from: self.request.amount)
         
-        //        if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
-        //            //insufficient balance
-        //            self.showInsufficientBalancePopup()
-        //            return
-        //        }
+        if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
+            //insufficient balance
+            self.showInsufficientBalancePopup()
+            return
+        }
         
         //override it if dapp doesn't specify the fee
         if request.fee == nil || fm.number(from: request.fee ?? "0") == 0  {
             request.fee = self.usePriority! ? "0.0011" : "0"
         }
-        print(request.fee)
+        
         onConfirm?(message, request)
         self.dismiss(animated: true, completion: nil)
     }
