@@ -196,7 +196,7 @@ class dAppBrowserV2ViewController: UIViewController {
         self.progressView = UIProgressView(frame: CGRect(x: 0.0, y: (self.navigationController?.navigationBar.frame.size.height)! - 3.0, width: self.view.frame.size.width, height: 3.0))
         self.progressView.progressViewStyle = .bar
         self.navigationController?.navigationBar.addSubview(self.progressView)
-        
+        self.webView?.frame = self.containerView!.bounds
         self.webView.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
         self.webView.addObserver(self, forKeyPath: "loading", options: .new, context: nil)
         self.webView.allowsBackForwardNavigationGestures = true
