@@ -14,7 +14,8 @@ import PKHUD
 
 protocol dAppBrowserDelegate {
     func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account) -> Void)
-    func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void)
+   
+    func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.SendResponse?, _ error: dAppProtocol.errorResponse?) -> Void)
     
     func error(message: dAppMessage, error: String)
     func didFinishMessage(message: dAppMessage, response: Any)
@@ -55,8 +56,8 @@ class dAppBrowserViewModel: NSObject {
         })
     }
     
-    func requestToSend(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage,_ request: dAppProtocol.SendRequest) -> Void, didConfirm:@escaping (_ message: dAppMessage,_  request: dAppProtocol.SendRequest) -> Void) {
-        self.delegate?.onSendRequest(message: message, request: request, didCancel: didCancel, didConfirm: didConfirm)
+    func requestToSend(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage,_ request: dAppProtocol.SendRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.SendResponse?, _ error: dAppProtocol.errorResponse?) -> Void) {
+        self.delegate?.onSendRequest(message: message, request: request, didCancel: didCancel, onCompleted: onCompleted)
     }
     
     func responseWithError(message: dAppMessage, error: String) {
@@ -156,14 +157,9 @@ class dAppBrowserViewModel: NSObject {
             request.fromAddress = unlockedWallet!.address
             self.requestToSend(message: message, request: request, didCancel: { m,r in
                 self.delegate?.error(message: message, error: "USER_CANCELLED_SEND")
-            }, didConfirm: { m, r in
+            }, onCompleted: { response, err in
                 self.delegate?.beginLoading()
                 DispatchQueue.global().async {
-                    let (response, err) = O3DappAPI().send(wallet: self.unlockedWallet! ,request: request)
-                    if err != nil {
-                        self.delegate?.error(message: message, error: err!.error)
-                        return
-                    }
                     self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
                 }
             })
@@ -426,7 +422,7 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         }
     }
     
-    func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void) {
+    func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, onCompleted: @escaping (_ response: dAppProtocol.SendResponse?, _ error: dAppProtocol.errorResponse?) -> Void) {
         
         
         let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "SendRequestTableViewControllerNav")
@@ -435,8 +431,10 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         nav.transitioningDelegate = self.halfModalTransitioningDelegate
         if let vc = nav.children.first as? SendRequestTableViewController {
             vc.message = message
-            vc.onConfirm = { m, r in
-                didConfirm(m,r)
+            vc.selectedWallet = self.viewModel.unlockedWallet
+
+            vc.onCompleted = { response, err in
+                onCompleted(response,err)
             }
             
             vc.onCancel = { m, r in

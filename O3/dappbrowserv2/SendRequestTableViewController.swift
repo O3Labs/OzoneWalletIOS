@@ -22,12 +22,14 @@ class SendRequestTableViewController: UITableViewController {
     let activityView = dAppActivityView(frame: CGRect.zero)
     
     var request: dAppProtocol.SendRequest!
+    var selectedWallet: Wallet!
     var message: dAppMessage!
     var dappMetadata: dAppMetadata?
     var accountState: AccountState?
     var requestedAsset: TransferableAsset?
-    var onConfirm: ((_ message: dAppMessage, _ request: dAppProtocol.SendRequest)->())?
+
     var onCancel: ((_ message: dAppMessage, _ request: dAppProtocol.SendRequest)->())?
+    var onCompleted: ((_ response: dAppProtocol.SendResponse?, _ error: dAppProtocol.errorResponse?)->())?
     
     var usePriority: Bool! = false
     
@@ -299,16 +301,45 @@ class SendRequestTableViewController: UITableViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didTapConfirm(_ sender: Any) {
-        //add loading view
-//        self.loadActivityView()
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//             self.activityView.success()
-//        }
-//
-//        return
+    func send(wallet: Wallet, request: dAppProtocol.SendRequest) -> (dAppProtocol.SendResponse?, dAppProtocol.errorResponse?) {
+        let isNative = request.asset.lowercased() == "neo" || request.asset.lowercased() == "gas"
+        let network = request.network.lowercased().contains("test") ? Network.test : Network.main
+        var node = AppState.bestSeedNodeURL
+        if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: network) {
+            node = bestNode
+        }
+        let requestGroup = DispatchGroup()
+        requestGroup.enter()
         
+        var response: dAppProtocol.SendResponse?
+        var error: dAppProtocol.errorResponse?
+        if isNative {
+            let assetID = request.asset.lowercased() == "neo" ? AssetId.neoAssetId : AssetId.gasAssetId
+            let fm = NumberFormatter()
+            let amountNumber = fm.number(from: request.amount)
+            let feeNumber = fm.number(from: request.fee ?? "0")
+            var attributes:[TransactionAttritbute] = []
+            attributes.append(TransactionAttritbute(remark: "O3XDAPI")) //TODO discuss what we should put in
+            if request.remark != nil {
+                attributes.append(TransactionAttritbute(remark1: request.remark!))
+            }
+            wallet.sendAssetTransaction(network: network, seedURL: node, asset: assetID, amount: amountNumber!.doubleValue, toAddress: request.toAddress, attributes: attributes, fee: feeNumber!.doubleValue) { txID, err in
+                if err != nil {
+                    error = dAppProtocol.errorResponse(error: err.debugDescription)
+                    requestGroup.leave()
+                    return
+                }
+                response = dAppProtocol.SendResponse(txid: txID!, nodeUrl: node)
+                requestGroup.leave()
+                return
+            }
+        }
+        
+        requestGroup.wait()
+        return (response, error)
+    }
+    
+    @IBAction func didTapConfirm(_ sender: Any) {
         //check balance here
         let fm = NumberFormatter()
         let amountNumber = fm.number(from: self.request.amount)
@@ -318,14 +349,28 @@ class SendRequestTableViewController: UITableViewController {
             self.showInsufficientBalancePopup()
             return
         }
+        DispatchQueue.main.async {
+            self.loadActivityView()
+        }
         
         //override it if dapp doesn't specify the fee
         if request.fee == nil || fm.number(from: request.fee ?? "0") == 0  {
             request.fee = self.usePriority! ? "0.0011" : "0"
         }
         
-        onConfirm?(message, request)
-        self.dismiss(animated: true, completion: nil)
+        //perform send here
+        DispatchQueue.global(qos: .userInitiated).async {
+            let (response,err) = self.send(wallet: self.selectedWallet, request: self.request)
+            DispatchQueue.main.async {
+                //breifly show the success then close the modal after 0.5 second
+                self.activityView.success()
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.5, execute: {
+                    self.onCompleted?(response,err)
+                    self.dismiss(animated: true, completion: nil)
+                })
+            }
+        }
+        
     }
 }
 
