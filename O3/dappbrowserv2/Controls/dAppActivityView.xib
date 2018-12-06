@@ -26,7 +26,7 @@
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Edb-PD-SuJ">
                             <rect key="frame" x="0.0" y="7" width="30" height="30"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="30" id="Irj-jl-lI3"/>
                                 <constraint firstAttribute="height" constant="30" id="SIU-vD-mMd"/>
@@ -39,7 +39,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="auy-nO-vgy" firstAttribute="leading" secondItem="Edb-PD-SuJ" secondAttribute="trailing" constant="8" id="2ZR-vO-AtN"/>
                         <constraint firstItem="auy-nO-vgy" firstAttribute="centerY" secondItem="Edb-PD-SuJ" secondAttribute="centerY" id="Dlb-ax-rdh"/>
@@ -49,7 +49,7 @@
                     <viewLayoutGuide key="safeArea" id="86f-Qf-WVg"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="top" secondItem="GhJ-Oz-qYg" secondAttribute="top" id="Qgh-2l-alE"/>
                 <constraint firstItem="GhJ-Oz-qYg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Wcj-ad-fkY"/>
