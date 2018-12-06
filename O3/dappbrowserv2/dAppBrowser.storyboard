@@ -67,7 +67,7 @@
         <scene sceneID="8SM-Pq-zID">
             <objects>
                 <tableViewController storyboardIdentifier="ConnectRequestTableViewController" id="JxT-Qi-2p9" customClass="ConnectRequestTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="qEW-vU-sUN">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="qEW-vU-sUN" customClass="ThemedUITableView" customModule="O3" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -132,7 +132,7 @@
                                     </constraints>
                                 </stackView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="z6s-rR-jiV" firstAttribute="top" secondItem="ocI-Wd-zVL" secondAttribute="top" constant="20" id="2AA-Uh-KTx"/>
                                 <constraint firstItem="ANl-9U-bWu" firstAttribute="top" secondItem="z6s-rR-jiV" secondAttribute="bottom" constant="20" id="7CE-Ne-3aF"/>
@@ -157,19 +157,20 @@
                                                 <constraint firstAttribute="width" constant="40" id="ndA-aU-70P"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Name]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9AU-GJ-hFj">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Name]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9AU-GJ-hFj" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                             <rect key="frame" x="76" y="20" width="283" height="22"/>
                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
-                                            <color key="textColor" name="textColor"/>
+                                            <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Name] is requesting you to send" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7j-Av-364">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Name] is requesting you to send" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7j-Av-364" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                             <rect key="frame" x="76" y="42" width="283" height="19.5"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
-                                            <color key="textColor" name="textColor"/>
+                                            <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="9AU-GJ-hFj" firstAttribute="top" secondItem="Wxv-JK-5jM" secondAttribute="top" id="5xe-NS-SLd"/>
                                         <constraint firstItem="z7j-Av-364" firstAttribute="top" secondItem="9AU-GJ-hFj" secondAttribute="bottom" id="B4i-o4-b6J"/>
@@ -181,6 +182,7 @@
                                         <constraint firstItem="Wxv-JK-5jM" firstAttribute="leading" secondItem="DG1-NV-Zpz" secondAttribute="leading" constant="20" id="uTu-aL-706"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="iconImageView" destination="Wxv-JK-5jM" id="5D3-hI-mBC"/>
                                     <outlet property="nameLabel" destination="9AU-GJ-hFj" id="iGz-tK-Wn6"/>
@@ -194,7 +196,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qf7-fj-135">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qf7-fj-135" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                             <rect key="frame" x="20" y="10" width="335" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="MsM-MY-ee3"/>
@@ -203,7 +205,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ASpjU7toLZ9V2wNnvqmYuE4gXvWay1mwvf" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ux8-CZ-wd7">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ASpjU7toLZ9V2wNnvqmYuE4gXvWay1mwvf" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ux8-CZ-wd7" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                             <rect key="frame" x="20" y="31" width="255" height="17"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                             <nil key="textColor"/>
@@ -218,6 +220,7 @@
                                             <state key="normal" title="CHANGE"/>
                                         </button>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="qf7-fj-135" firstAttribute="top" secondItem="gBu-H7-OyS" secondAttribute="top" constant="10" id="5Zg-vF-HDj"/>
                                         <constraint firstAttribute="bottom" secondItem="DYa-pe-9JW" secondAttribute="bottom" id="802-p2-3zs"/>
@@ -230,6 +233,7 @@
                                         <constraint firstAttribute="trailing" secondItem="qf7-fj-135" secondAttribute="trailing" constant="20" id="odm-15-cdI"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="addressLabel" destination="ux8-CZ-wd7" id="Ebl-VE-Zhh"/>
                                     <outlet property="titleLabel" destination="qf7-fj-135" id="BFJ-gF-LK2"/>
@@ -259,7 +263,7 @@
         <scene sceneID="hX9-Oa-9rN">
             <objects>
                 <tableViewController id="ik8-Wh-rcu" customClass="SendRequestTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="4S3-ao-7D3">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="4S3-ao-7D3" customClass="ThemedUITableView" customModule="O3" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -321,7 +325,7 @@
                                     </constraints>
                                 </stackView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="bA4-8R-plW" firstAttribute="height" secondItem="ujl-9K-asx" secondAttribute="height" id="0Kx-WL-Mvh"/>
                                 <constraint firstItem="ujl-9K-asx" firstAttribute="top" secondItem="VNb-qh-SDN" secondAttribute="top" constant="20" id="5HE-HU-sO9"/>
@@ -347,19 +351,20 @@
                                                 <constraint firstAttribute="height" constant="40" id="b1p-5O-oYW"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Name]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Zj-pO-woi">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Name]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Zj-pO-woi" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                             <rect key="frame" x="76" y="20" width="283" height="22"/>
                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
-                                            <color key="textColor" name="textColor"/>
+                                            <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Name] is requesting you to send" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aLY-ms-5hk">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Name] is requesting you to send" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aLY-ms-5hk" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                             <rect key="frame" x="76" y="42" width="283" height="19.5"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
-                                            <color key="textColor" name="textColor"/>
+                                            <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="aLY-ms-5hk" firstAttribute="top" secondItem="2Zj-pO-woi" secondAttribute="bottom" id="2JY-08-9IK"/>
                                         <constraint firstItem="2Zj-pO-woi" firstAttribute="leading" secondItem="xXq-MC-uJm" secondAttribute="trailing" constant="16" id="5u9-aa-24k"/>
@@ -371,6 +376,7 @@
                                         <constraint firstItem="aLY-ms-5hk" firstAttribute="width" secondItem="2Zj-pO-woi" secondAttribute="width" id="zmX-QD-hjI"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="iconImageView" destination="xXq-MC-uJm" id="pB6-bb-zTf"/>
                                     <outlet property="nameLabel" destination="2Zj-pO-woi" id="ELE-61-ygd"/>
@@ -393,13 +399,14 @@
                                             <color key="textColor" name="grey"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[info value]" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHl-Bf-W4P">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[info value]" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHl-Bf-W4P" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                             <rect key="frame" x="104" y="0.0" width="251" height="39.5"/>
                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
-                                            <color key="textColor" name="textColor"/>
+                                            <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="HHl-Bf-W4P" firstAttribute="height" secondItem="Yfs-ZS-DiZ" secondAttribute="height" id="PBG-38-vIj"/>
                                         <constraint firstItem="Yfs-ZS-DiZ" firstAttribute="leading" secondItem="0Bn-N1-eyb" secondAttribute="leading" constant="20" id="Rb3-AJ-ZaQ"/>
@@ -410,6 +417,7 @@
                                         <constraint firstItem="HHl-Bf-W4P" firstAttribute="leading" secondItem="Yfs-ZS-DiZ" secondAttribute="trailing" constant="24" id="qaX-9Z-clC"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="keyLabel" destination="Yfs-ZS-DiZ" id="Snm-o5-D1D"/>
                                     <outlet property="valueLabel" destination="HHl-Bf-W4P" id="l0R-FQ-Eco"/>
@@ -431,10 +439,10 @@
                                             <color key="textColor" name="grey"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[info value]" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JqG-5s-eQi">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[info value]" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JqG-5s-eQi" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                             <rect key="frame" x="266" y="0.0" width="89" height="39.5"/>
                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
-                                            <color key="textColor" name="textColor"/>
+                                            <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GAS" translatesAutoresizingMaskIntoConstraints="NO" id="nD0-sy-ArT">
@@ -451,6 +459,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="bWt-J7-r1P" firstAttribute="leading" secondItem="7Ha-UZ-D5e" secondAttribute="leading" constant="20" id="4Sq-UJ-Pzi"/>
                                         <constraint firstItem="bWt-J7-r1P" firstAttribute="top" secondItem="7Ha-UZ-D5e" secondAttribute="top" id="I2r-hq-X8R"/>
@@ -464,6 +473,7 @@
                                         <constraint firstAttribute="trailing" secondItem="JqG-5s-eQi" secondAttribute="trailing" constant="20" id="tiF-lq-fNn"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="iconImageView" destination="nD0-sy-ArT" id="yf1-b2-Ldw"/>
                                     <outlet property="keyLabel" destination="bWt-J7-r1P" id="air-4y-Wg6"/>
@@ -493,6 +503,7 @@
                                             <state key="selected" image="check-square"/>
                                         </button>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="y62-Qw-kox" secondAttribute="bottom" id="APY-oI-jNr"/>
                                         <constraint firstItem="4lN-FC-acu" firstAttribute="centerY" secondItem="V9h-sN-wHg" secondAttribute="centerY" id="GH5-4L-8wO"/>
@@ -501,6 +512,7 @@
                                         <constraint firstItem="y62-Qw-kox" firstAttribute="top" secondItem="V9h-sN-wHg" secondAttribute="top" id="ZGV-c9-HRx"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="actionButton" destination="4lN-FC-acu" id="KYG-mv-EnY"/>
                                     <outlet property="keyLabel" destination="y62-Qw-kox" id="vXJ-T0-WwW"/>
@@ -577,7 +589,7 @@
         <scene sceneID="Lpu-af-6ER">
             <objects>
                 <tableViewController storyboardIdentifier="ConnectWalletSelectorTableViewController" id="djJ-yp-hoG" customClass="ConnectWalletSelectorTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="62v-Mu-4zc">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="62v-Mu-4zc" customClass="ThemedUITableView" customModule="O3" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -590,16 +602,16 @@
                                     <rect key="frame" x="0.0" y="0.0" width="335" height="59.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F4n-G3-dda">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F4n-G3-dda" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                             <rect key="frame" x="50" y="10" width="265" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="drn-jA-eYj"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
-                                            <color key="textColor" name="textColor"/>
+                                            <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ASpjU7toLZ9V2wNnvqmYuE4gXvWay1mwvf" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mix-H0-4je">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ASpjU7toLZ9V2wNnvqmYuE4gXvWay1mwvf" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mix-H0-4je" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
                                             <rect key="frame" x="50" y="31" width="265" height="17"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                             <nil key="textColor"/>
@@ -613,6 +625,7 @@
                                             </constraints>
                                         </imageView>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="mix-H0-4je" secondAttribute="trailing" constant="20" id="Csm-FR-dIa"/>
                                         <constraint firstItem="36Y-eT-x6l" firstAttribute="leading" secondItem="gta-QJ-8uj" secondAttribute="leading" constant="20" id="Drw-TP-h34"/>
@@ -624,6 +637,7 @@
                                         <constraint firstItem="36Y-eT-x6l" firstAttribute="centerY" secondItem="gta-QJ-8uj" secondAttribute="centerY" id="nfM-tF-7oV"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="addressLabel" destination="mix-H0-4je" id="tXK-u7-2eA"/>
                                     <outlet property="titleLabel" destination="F4n-G3-dda" id="2yw-Hk-MQ1"/>
@@ -684,9 +698,6 @@
         </namedColor>
         <namedColor name="lightThemeRed">
             <color red="0.81568627450980391" green="0.0078431372549019607" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textColor">
-            <color red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

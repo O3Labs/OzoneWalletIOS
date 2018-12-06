@@ -290,6 +290,7 @@ class dAppBrowserV2ViewController: UIViewController {
         textFieldURL.borderStyle  = .roundedRect
         textFieldURL.font = UIFont(name: "Avenir-Medium", size: 14)
         textFieldURL.theme_backgroundColor = O3Theme.backgroundLightgrey
+        textFieldURL.theme_textColor = O3Theme.textFieldTextColorPicker
         let refreshButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         refreshButton.setTitle("↻", for: .normal)
         refreshButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 4)
