@@ -340,20 +340,24 @@ class SendRequestTableViewController: UITableViewController {
     }
     
     @IBAction func didTapConfirm(_ sender: Any) {
-        //check balance here
-        let fm = NumberFormatter()
-        let amountNumber = fm.number(from: self.request.amount)
         
-        if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
-            //insufficient balance
-            self.showInsufficientBalancePopup()
-            return
+        //check balance here
+        if self.requestedAsset != nil {
+            
+            let amountNumber = fm.number(from: self.request.amount)
+            if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
+                //insufficient balance
+                self.showInsufficientBalancePopup()
+                return
+            }
         }
+        
         DispatchQueue.main.async {
             self.loadActivityView()
         }
         
-        //override it if dapp doesn't specify the fee
+        //override it if dapp doesn't set the fee and user checked the priority
+        let fm = NumberFormatter()
         if request.fee == nil || fm.number(from: request.fee ?? "0") == 0  {
             request.fee = self.usePriority! ? "0.0011" : "0"
         }
