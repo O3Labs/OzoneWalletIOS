@@ -46,14 +46,16 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "wallet-cell", for: indexPath) as! ConnectRequestWalletUITableViewCell
 
-        let wallet = accounts[indexPath.row]
-        cell.titleLabel.text = wallet.label
-        cell.addressLabel.text = wallet.address
+        let account = accounts[indexPath.row]
+        cell.titleLabel.text = account.label
+        cell.addressLabel.text = account.address
         
-        if wallet.address.isEqual(to: selectedAccount.address) {
+        if account.address.isEqual(to: selectedAccount.address) {
             cell.accessoryType = .checkmark
+            cell.selectionStyle = .none
         } else {
             cell.accessoryType = .none
+            cell.selectionStyle = .default
         }
 
         return cell
@@ -62,6 +64,13 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let account = accounts?[indexPath.row]
+        //don't do anything if user selected the same one
+        if account!.address.isEqual(to: selectedAccount.address) {
+            if self.navigationController?.viewControllers == nil {
+                self.dismiss(animated: true, completion: nil)
+            }
+            return
+        }
         selectedAccount = account
         if self.navigationController?.viewControllers == nil {
             inputPassword(account: account!, didCancel: {
