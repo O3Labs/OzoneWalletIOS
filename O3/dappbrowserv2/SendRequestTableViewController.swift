@@ -343,7 +343,7 @@ class SendRequestTableViewController: UITableViewController {
         
         //check balance here
         if self.requestedAsset != nil {
-            
+            let fm = NumberFormatter()
             let amountNumber = fm.number(from: self.request.amount)
             if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
                 //insufficient balance
