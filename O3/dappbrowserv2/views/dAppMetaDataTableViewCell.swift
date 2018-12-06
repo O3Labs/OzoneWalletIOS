@@ -24,8 +24,12 @@ class dAppMetaDataTableViewCell: UITableViewCell {
     
     
     func setupView() {
-        self.nameLabel?.text = dappMetadata?.title ?? "App"
-        self.iconImageView?.kf.setImage(with: URL(string: dappMetadata?.iconURL ?? "https://cdn.o3.network/img/neo/NEO.png"))
+        self.nameLabel?.text = dappMetadata?.title ?? dappMetadata?.url.host
+        if dappMetadata?.iconURL != nil {
+            self.iconImageView?.kf.setImage(with: URL(string: dappMetadata!.iconURL!))
+        } else {
+            self.iconImageView?.image = UIImage(named: "unknown_app")
+        }
     }
 
 }

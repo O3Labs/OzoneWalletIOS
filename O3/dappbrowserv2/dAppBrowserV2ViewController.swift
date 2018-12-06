@@ -37,6 +37,7 @@ class dAppBrowserViewModel: NSObject {
     
     func loadMetadata(){
         OpenGraph.fetch(url: url!) { og, error in
+            self.dappMetadata?.url = self.url!
             self.dappMetadata?.title = og?[.title]
             self.dappMetadata?.iconURL = og?[.image]
             self.dappMetadata?.description = og?[.description]
@@ -167,6 +168,12 @@ class dAppBrowserViewModel: NSObject {
             return
         }
     }
+    
+    func changeActiveAccount(account: NEP6.Account ,wallet: Wallet) {
+        self.unlockedWallet = wallet
+        self.selectedAccount = account
+        self.delegate?.onWalletChanged(newWallet: wallet)
+    }
 }
 
 class dAppBrowserV2ViewController: UIViewController {
@@ -174,6 +181,7 @@ class dAppBrowserV2ViewController: UIViewController {
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var backButton: UIBarButtonItem!
+    @IBOutlet weak var walletSwitcherButton: UIBarButtonItem!
     
     var webView: WKWebView!
     var progressView: UIProgressView!
@@ -222,9 +230,21 @@ class dAppBrowserV2ViewController: UIViewController {
     }
     
     @IBAction func didTapWallet(_ sender: UIBarButtonItem) {
+        
+        if self.viewModel.unlockedWallet == nil {
+            return
+        }
+        
         let vc = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "ConnectWalletSelectorTableViewController") as! ConnectWalletSelectorTableViewController
         
-         vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.7, height: UIScreen.main.bounds.height * 0.5)
+        let accounts = NEP6.getFromFileSystem()?.accounts.filter({ n -> Bool in
+            return n.key != nil
+        })
+        
+        //calculate the height by how many accounts are there
+        var height = CGFloat(accounts!.count * 60)
+        height = min(height, (CGFloat)(UIScreen.main.bounds.height * 0.5))
+         vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.7, height: height)
         vc.modalPresentationStyle = .popover
         vc.selectedAccount = self.viewModel.selectedAccount
         
@@ -396,6 +416,7 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         checkBackButton()
+        self.event(eventName: "READY", data: [:])
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -460,9 +481,10 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         var dic:[String: Any] = [:]
         dic["command"] = "event"
         dic["eventName"] = eventName
-        for v in data{
-            dic[v.key] = v.value
-        }
+        dic["data"] = data
+        dic["blockchain"] = "NEO"
+        dic["platform"] = "o3-dapi"
+        dic["version"] = "1"
         
         let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
         let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
@@ -501,6 +523,9 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
             vc.url = url
             vc.message = message
             vc.onConfirm = { m, wallet, account in
+                DispatchQueue.main.async {
+                    self.walletSwitcherButton.theme_tintColor = O3Theme.positiveGainColorPicker
+                }
                 didConfirm(m, wallet, account)
             }
             
@@ -518,7 +543,22 @@ extension dAppBrowserV2ViewController: UIPopoverPresentationControllerDelegate, 
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
+    
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle{
         return .none
+    }
+}
+
+
+extension dAppBrowserV2ViewController {
+    @IBAction func unwindToDappBrowser(sender: UIStoryboardSegue) {
+        if let source = sender.source as? ConnectWalletSelectorTableViewController {
+            DispatchQueue.main.async {
+                if source.selectedWallet == nil {
+                    return
+                }
+                 self.viewModel.changeActiveAccount(account: source.selectedAccount, wallet: source.selectedWallet!)
+            }
+        }
     }
 }

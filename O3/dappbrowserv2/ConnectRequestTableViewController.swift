@@ -46,9 +46,6 @@ class ConnectRequestTableViewController: UITableViewController {
             DispatchQueue.main.async {
                 HUD.show(.progress)
             }
-            
-            
-            
             DispatchQueue.global(qos: .userInitiated).async {
                 //we could pull the password from the keychain
                 let keychain = Keychain(service: "network.o3.neo.wallet")
@@ -80,18 +77,14 @@ class ConnectRequestTableViewController: UITableViewController {
             return
         }
         
-        
-        
-        
         let alertController = UIAlertController(title: String(format: "Unlock %@", name), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)
-        
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
             DispatchQueue.main.async {
                 HUD.show(.progress)
             }
             let inputPass = alertController.textFields?[0].text
             DispatchQueue.global(qos: .userInitiated).async {
-                let start = NSDate() // <<<<<<<<<< Start time
+                let start = NSDate()
                 var error: NSError?
                 let wif = NeoutilsNEP2Decrypt(encryptedKey, inputPass, &error)
                 let end = NSDate()
@@ -162,7 +155,7 @@ class ConnectRequestTableViewController: UITableViewController {
     
     //mark: - 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -170,14 +163,20 @@ class ConnectRequestTableViewController: UITableViewController {
         if section == 0 {
             return 1
         }
-        return 1
+        if section == 1 {
+            return 1
+        }
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
-            return 159.0
+            return 80.0
         }
-        return 60.0
+        if indexPath.section == 1 {
+            return 60.0
+        }
+        return 0.0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -185,7 +184,7 @@ class ConnectRequestTableViewController: UITableViewController {
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "dapp-metadata-cell") as! dAppMetaDataTableViewCell
             cell.dappMetadata = self.dappMetadata
-            cell.permissionLabel?.text = String(format: "%@ will be able to see your public address", dappMetadata?.title ?? "App")
+            cell.permissionLabel?.text = String(format: "is requesting to connect to your wallet")
             return cell
         }
         

@@ -13,5 +13,6 @@ struct dAppMetadata {
     var title: String?
     var iconURL: String?
     var description: String?
+    var url: URL!
     
 }
