@@ -40,15 +40,15 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
+                            <barButtonItem title="Item" image="ellipsis-v" id="J3Y-Fu-kcf">
+                                <connections>
+                                    <action selector="didTapMore:" destination="NCT-dG-wsd" id="KYd-z1-YOG"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem image="ic_wallet_disconnected" landscapeImage="ic_wallet_disconnected" largeContentSizeImage="ic_wallet_disconnected" style="plain" id="XeQ-ck-nG5">
                                 <color key="tintColor" name="grey"/>
                                 <connections>
                                     <action selector="didTapWallet:" destination="NCT-dG-wsd" id="1dT-bG-6bp"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Item" image="ellipsis-v" id="J3Y-Fu-kcf">
-                                <connections>
-                                    <action selector="didTapClose:" destination="NCT-dG-wsd" id="U3M-z2-QOO"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -62,6 +62,95 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w36-hd-dJ6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="708" y="-64.31784107946028"/>
+        </scene>
+        <!--App Browser Menu Table View Controller-->
+        <scene sceneID="2CQ-oK-I3K">
+            <objects>
+                <tableViewController storyboardIdentifier="dAppBrowserMenuTableViewController" id="ylF-yy-TGo" customClass="dAppBrowserMenuTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Slt-Ib-lsx">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <sections>
+                            <tableViewSection id="Vwe-oK-LAp">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="kEF-Zb-9dO">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kEF-Zb-9dO" id="vPu-4k-BgZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="redo" translatesAutoresizingMaskIntoConstraints="NO" id="b35-mU-H14">
+                                                    <rect key="frame" x="20" y="14" width="16" height="16"/>
+                                                    <color key="tintColor" name="grey"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="16" id="Rlk-Lx-XYj"/>
+                                                        <constraint firstAttribute="width" constant="16" id="aFX-Dx-AXa"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refresh" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Egt-Nf-znC" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
+                                                    <rect key="frame" x="52" y="12" width="48" height="19.5"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="Egt-Nf-znC" firstAttribute="leading" secondItem="b35-mU-H14" secondAttribute="trailing" constant="16" id="D8v-mW-ODa"/>
+                                                <constraint firstItem="b35-mU-H14" firstAttribute="centerY" secondItem="vPu-4k-BgZ" secondAttribute="centerY" id="RgV-QN-vvK"/>
+                                                <constraint firstItem="Egt-Nf-znC" firstAttribute="centerY" secondItem="b35-mU-H14" secondAttribute="centerY" id="T6M-xT-ylS"/>
+                                                <constraint firstItem="b35-mU-H14" firstAttribute="leading" secondItem="vPu-4k-BgZ" secondAttribute="leading" constant="20" id="qFa-2w-BGj"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="qkP-92-tRN">
+                                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qkP-92-tRN" id="y1O-el-y5b">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home" translatesAutoresizingMaskIntoConstraints="NO" id="kZ6-yb-Jn4">
+                                                    <rect key="frame" x="20" y="14" width="16" height="16"/>
+                                                    <color key="tintColor" name="grey"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="16" id="hAu-c4-d5a"/>
+                                                        <constraint firstAttribute="height" constant="16" id="l5p-tU-Lp8"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disconnect &amp; return to O3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xRW-Sm-yYq" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
+                                                    <rect key="frame" x="52" y="12" width="168" height="19.5"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="xRW-Sm-yYq" firstAttribute="leading" secondItem="kZ6-yb-Jn4" secondAttribute="trailing" constant="16" id="DPA-tW-Ndh"/>
+                                                <constraint firstItem="kZ6-yb-Jn4" firstAttribute="centerY" secondItem="y1O-el-y5b" secondAttribute="centerY" id="DcV-88-kRx"/>
+                                                <constraint firstItem="xRW-Sm-yYq" firstAttribute="centerY" secondItem="kZ6-yb-Jn4" secondAttribute="centerY" id="Iug-e0-RGO"/>
+                                                <constraint firstItem="kZ6-yb-Jn4" firstAttribute="leading" secondItem="y1O-el-y5b" secondAttribute="leading" constant="20" id="gUT-Vw-LBa"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="ylF-yy-TGo" id="gQr-Ri-7pV"/>
+                            <outlet property="delegate" destination="ylF-yy-TGo" id="bUB-ab-7NP"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TwZ-be-F2B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1412" y="-64"/>
         </scene>
         <!--Connect Request Table View Controller-->
         <scene sceneID="8SM-Pq-zID">
@@ -684,8 +773,10 @@
         <image name="chevron-left" width="10" height="18"/>
         <image name="close-x" width="15" height="15"/>
         <image name="ellipsis-v" width="4" height="15"/>
+        <image name="home" width="23" height="20"/>
         <image name="ic_wallet_active" width="30" height="30"/>
         <image name="ic_wallet_disconnected" width="24" height="24"/>
+        <image name="redo" width="20" height="20"/>
         <image name="square" width="448" height="448"/>
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -306,14 +306,28 @@ class dAppBrowserV2ViewController: UIViewController {
         checkBackButton()
     }
     
-    @IBAction func didTapRefresh(_ sender: Any) {
-        webView.reload()
+    @IBAction func didTapMore(_ sender: UIBarButtonItem) {
+        
+        let vc = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "dAppBrowserMenuTableViewController") as! dAppBrowserMenuTableViewController
+        //number of menus x cell height
+        let height = CGFloat(2 * 49.0)
+        vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.6, height: height)
+        vc.modalPresentationStyle = .popover
+        vc.onClose = {
+            self.dismiss(animated: true, completion: nil)
+        }
+        vc.onRefresh = {
+            self.webView.reload()
+        }
+        
+        let presentationController = vc.presentationController as! UIPopoverPresentationController
+        presentationController.barButtonItem = sender
+        presentationController.delegate = self
+        presentationController.sourceRect = CGRect(x: 0, y: 0, width: 25, height: 25)
+        presentationController.permittedArrowDirections = [.any]
+        self.present(vc, animated: true, completion: nil)
     }
-    
-    @IBAction func didTapClose(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
+
 }
 extension dAppBrowserV2ViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
