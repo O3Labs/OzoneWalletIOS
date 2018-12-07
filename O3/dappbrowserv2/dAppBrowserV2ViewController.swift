@@ -222,10 +222,18 @@ class dAppBrowserV2ViewController: UIViewController {
     }
     
     func showURLHost(url: URL) {
-        let lockButton = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 12))
-        lockButton.setImage(UIImage(named: "lock-solid.png"), for: .normal)
-        lockButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
-        textFieldURL.leftView = lockButton
+        let secureInfo = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 16))
+        if url.scheme == "http"{
+            secureInfo.frame = CGRect(x: 0, y: 0, width: 24, height: 16)
+            secureInfo.tintColor = UIColor.lightGray
+            secureInfo.setImage(UIImage(named: "info-circle.png"), for: .normal)
+        } else {
+            secureInfo.frame = CGRect(x: 0, y: 0, width: 18, height: 12)
+            secureInfo.theme_tintColor = O3Theme.positiveGainColorPicker
+            secureInfo.setImage(UIImage(named: "lock-solid.png"), for: .normal)
+        }
+        secureInfo.imageEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+        textFieldURL.leftView = secureInfo
         textFieldURL.leftViewMode = .always
     }
     
@@ -250,6 +258,7 @@ class dAppBrowserV2ViewController: UIViewController {
         
         let presentationController = vc.presentationController as! UIPopoverPresentationController
         presentationController.barButtonItem = sender
+        presentationController.theme_backgroundColor = O3Theme.backgroundColorPicker
         presentationController.delegate = self
         presentationController.sourceRect = CGRect(x: 0, y: 0, width: 25, height: 25)
         presentationController.permittedArrowDirections = [.any]
@@ -321,6 +330,7 @@ class dAppBrowserV2ViewController: UIViewController {
         }
         
         let presentationController = vc.presentationController as! UIPopoverPresentationController
+        presentationController.theme_backgroundColor = O3Theme.backgroundColorPicker
         presentationController.barButtonItem = sender
         presentationController.delegate = self
         presentationController.sourceRect = CGRect(x: 0, y: 0, width: 25, height: 25)
