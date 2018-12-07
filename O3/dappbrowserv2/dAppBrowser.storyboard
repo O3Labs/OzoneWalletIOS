@@ -391,7 +391,7 @@
                                                 <action selector="didTapCancel:" destination="ik8-Wh-rcu" eventType="touchUpInside" id="6a6-OI-Mnp"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gX6-tL-hpT">
+                                        <button opaque="NO" clipsSubviews="YES" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gX6-tL-hpT">
                                             <rect key="frame" x="177.5" y="0.0" width="157.5" height="44"/>
                                             <color key="backgroundColor" name="lightThemeGreen"/>
                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
@@ -632,6 +632,7 @@
                     <connections>
                         <outlet property="actionContainerView" destination="ujl-9K-asx" id="veg-pr-fZI"/>
                         <outlet property="containerView" destination="bA4-8R-plW" id="dZN-lB-Wjd"/>
+                        <outlet property="sendButton" destination="gX6-tL-hpT" id="w9m-39-qwA"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tIt-yf-u5t" userLabel="First Responder" sceneMemberID="firstResponder"/>

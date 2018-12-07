@@ -64,14 +64,21 @@ class ConnectRequestTableViewController: UITableViewController {
                     let end = NSDate()
                     
                     let timeInterval: Double = end.timeIntervalSince(start as Date)
+                    #if DEBUG
                     print("Time to evaluate problem \(timeInterval) seconds")
+                    #endif
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
                     if error == nil {
                         DispatchQueue.main.async {
                             didConfirm(wif!)
                         }
                     }
                 } catch _ {
-                    
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
                 }
             }
             return
@@ -105,7 +112,10 @@ class ConnectRequestTableViewController: UITableViewController {
         }
         
         let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in
-            didCancel()
+            DispatchQueue.main.async {
+                HUD.hide()
+                didCancel()
+            }
         }
         
         alertController.addTextField { (textField) in

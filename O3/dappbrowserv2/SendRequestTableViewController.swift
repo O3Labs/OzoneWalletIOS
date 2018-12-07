@@ -18,6 +18,7 @@ class SendRequestTableViewCell: UITableViewCell {
 class SendRequestTableViewController: UITableViewController {
     
     @IBOutlet var containerView: UIView?
+    @IBOutlet var sendButton: UIButton?
     @IBOutlet var actionContainerView: UIView?
     let activityView = dAppActivityView(frame: CGRect.zero)
     
@@ -27,6 +28,7 @@ class SendRequestTableViewController: UITableViewController {
     var dappMetadata: dAppMetadata?
     var accountState: AccountState?
     var requestedAsset: TransferableAsset?
+    var isCheckingBalance: Bool! = false
 
     var onCancel: ((_ message: dAppMessage, _ request: dAppProtocol.SendRequest)->())?
     var onCompleted: ((_ response: dAppProtocol.SendResponse?, _ error: dAppProtocol.errorResponse?)->())?
@@ -60,12 +62,23 @@ class SendRequestTableViewController: UITableViewController {
     }
     
     func fetchBalance(address: String) {
+        isCheckingBalance = true
         let network = request.network.lowercased().contains("test") ? Network.test : Network.main
         O3APIClient(network: network).getAccountState(address: address) { result in
             switch result {
             case .failure(let error):
+                self.isCheckingBalance = false
+                DispatchQueue.main.async {
+                    self.sendButton?.isEnabled = true
+                    self.sendButton?.alpha = 1.0
+                }
                 print(error)
             case .success(let accountstate):
+                self.isCheckingBalance = false
+                DispatchQueue.main.async {
+                    self.sendButton?.isEnabled = true
+                    self.sendButton?.alpha = 1.0
+                }
                 self.accountState = accountstate
                 self.checkBalance(accountState: accountstate)
             }
@@ -147,7 +160,7 @@ class SendRequestTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .background).async {
             self.fetchBalance(address: self.request.fromAddress!)
         }
     }
