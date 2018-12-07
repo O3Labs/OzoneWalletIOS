@@ -319,14 +319,18 @@ class dAppBrowserV2ViewController: UIViewController {
         
         let vc = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "dAppBrowserMenuTableViewController") as! dAppBrowserMenuTableViewController
         //number of menus x cell height
-        let height = CGFloat(2 * 49.0)
-        vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.6, height: height)
+        let height = CGFloat(2 * 44.0)
+        vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8, height: height)
         vc.modalPresentationStyle = .popover
         vc.onClose = {
-            self.dismiss(animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
         }
         vc.onRefresh = {
-            self.webView.reload()
+            DispatchQueue.main.async {
+                self.webView.reload()
+            }
         }
         
         let presentationController = vc.presentationController as! UIPopoverPresentationController
