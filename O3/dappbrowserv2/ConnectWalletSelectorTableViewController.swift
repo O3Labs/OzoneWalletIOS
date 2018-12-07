@@ -110,15 +110,21 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
                     let end = NSDate()
                     
                     let timeInterval: Double = end.timeIntervalSince(start as Date)
+                    #if DEBUG
                     print("Time to evaluate problem \(timeInterval) seconds")
+                    #endif
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
                     if error == nil {
                         DispatchQueue.main.async {
-                            HUD.hide()
                             didConfirm(wif!)
                         }
                     }
                 } catch _ {
-                    
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
                 }
             }
             return
