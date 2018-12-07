@@ -366,6 +366,14 @@ class SendRequestTableViewController: UITableViewController {
         DispatchQueue.global(qos: .userInitiated).async {
             let (response,err) = self.send(wallet: self.selectedWallet, request: self.request)
             DispatchQueue.main.async {
+                let generator = UINotificationFeedbackGenerator()
+                if err == nil {
+                    generator.notificationOccurred(.success)
+                } else {
+                    generator.notificationOccurred(.error)
+                }
+                
+                
                 //breifly show the success then close the modal after 0.5 second
                 self.activityView.success()
                 DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.5, execute: {

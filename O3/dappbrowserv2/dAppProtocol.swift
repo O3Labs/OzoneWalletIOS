@@ -359,11 +359,6 @@ class O3DappAPI {
     func getBalance(request: dAppProtocol.RequestData<[dAppProtocol.GetBalanceRequest]>) -> dAppProtocol.GetBalanceResponse {
         
         
-        var addressList: [String: [String]] = [:]
-        for p in request.params! {
-            addressList[p.address] = p.assets
-        }
-        
         var response: dAppProtocol.GetBalanceResponse = [:]
         
         let fetchBalanceGroup = DispatchGroup()
@@ -371,52 +366,57 @@ class O3DappAPI {
         
         //prepare utxo first
         var addressUTXO: [String:Assets] = [:]
-        for a in addressList{
+        
+        for p in request.params! {
             fetchUTXOgroup.enter()
+            if p.fetchUTXO == false {
+                fetchUTXOgroup.leave()
+                continue
+            }
             
             //try to get cache object here
-            let cacheKey = (a.key + request.network + "utxo") as NSString
+            let cacheKey = (p.address + request.network + "utxo") as NSString
             let cachedBalanced = O3Cache.memoryCache.object(forKey:cacheKey)
             if cachedBalanced != nil { //if we found cache then asset to it and leave the group then tell the loop to continue
-                addressUTXO[a.key] = cachedBalanced as! Assets
+                addressUTXO[p.address] = cachedBalanced as! Assets
                 fetchUTXOgroup.leave()
                 continue
             }
             
             let o3client = O3APIClient(network: request.network.lowercased().contains("test") ? Network.test : Network.main)
             DispatchQueue.global().async {
-                o3client.getUTXO(for: a.key, completion: { result in
+                o3client.getUTXO(for: p.address, completion: { result in
                     switch result {
                     case .failure:
                         fetchUTXOgroup.leave()
                         return
                     case .success(let utxo):
-                        addressUTXO[a.key] = utxo
+                        addressUTXO[p.address] = utxo
                         fetchUTXOgroup.leave()
-                        O3Cache.memoryCache.setObject(addressUTXO[a.key]! as AnyObject, forKey: cacheKey)
+                        O3Cache.memoryCache.setObject(addressUTXO[p.address]! as AnyObject, forKey: cacheKey)
                     }
                 })
             }
         }
         fetchUTXOgroup.wait()
         
-        for a in addressList{
+        for p in request.params! {
             fetchBalanceGroup.enter()
             //try to get cache object here
-            let cacheKey = (a.key + request.network) as NSString
+            let cacheKey = (p.address + request.network) as NSString
             let cachedBalanced = O3Cache.memoryCache.object(forKey:cacheKey)
             if cachedBalanced != nil {
                 //if we found cache then asset to it and leave the group then tell the loop to continue
-                response[a.key] = cachedBalanced as! [dAppProtocol.GetBalanceResponseElement]
+                response[p.address] = cachedBalanced as! [dAppProtocol.GetBalanceResponseElement]
                 fetchBalanceGroup.leave()
                 continue
             }
             
-            response[a.key] = []
+            response[p.address] = []
             let o3client = O3APIClient(network: request.network.lowercased().contains("test") ? Network.test : Network.main, useCache: false)
             DispatchQueue.global().async {
                 
-                o3client.getAccountState(address: a.key) { result in
+                o3client.getAccountState(address: p.address) { result in
                     switch result {
                     case .failure:
                         fetchBalanceGroup.leave()
@@ -424,7 +424,7 @@ class O3DappAPI {
                     case .success(let accountState):
                         for t in accountState.assets {
                             var unspent: [dAppProtocol.Unspent] = []
-                            let utxo = t.symbol.lowercased() == "neo" ? addressUTXO[a.key]?.getSortedNEOUTXOs() : addressUTXO[a.key]?.getSortedGASUTXOs()
+                            let utxo = t.symbol.lowercased() == "neo" ? addressUTXO[p.address]?.getSortedNEOUTXOs() : addressUTXO[p.address]?.getSortedGASUTXOs()
                             if utxo != nil {
                                 for u in utxo! {
                                     let unspentTx = dAppProtocol.Unspent(n: u.index, txid: u.txid, value: NSDecimalNumber(decimal: u.value).stringValue)
@@ -433,14 +433,14 @@ class O3DappAPI {
                             }
                             let amount = t.value.formattedStringWithoutSeparator(t.decimals, removeTrailing: true)
                             let element = dAppProtocol.GetBalanceResponseElement(amount: amount, scriptHash: t.id, symbol: t.symbol, unspent: unspent)
-                            response[a.key]?.append(element)
+                            response[p.address]?.append(element)
                         }
                         for t in accountState.nep5Tokens {
                             let amount = t.value.formattedStringWithoutSeparator(t.decimals, removeTrailing: true)
                             let element = dAppProtocol.GetBalanceResponseElement(amount: amount, scriptHash: t.id, symbol: t.symbol, unspent: nil)
-                            response[a.key]?.append(element)
+                            response[p.address]?.append(element)
                         }
-                        O3Cache.memoryCache.setObject(response[a.key]! as AnyObject, forKey: cacheKey)
+                        O3Cache.memoryCache.setObject(response[p.address]! as AnyObject, forKey: cacheKey)
                         fetchBalanceGroup.leave()
                     }
                 }

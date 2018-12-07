@@ -128,6 +128,8 @@ class ConnectRequestTableViewController: UITableViewController {
         }) { wif in
             DispatchQueue.main.async {
                 HUD.hide()
+                let generator = UINotificationFeedbackGenerator()
+                  generator.notificationOccurred(.success)
                 let wallet = Wallet(wif: wif)
                 self.onConfirm?(self.message, wallet!, self.selectedAccount)
                 self.dismiss(animated: true, completion: nil)

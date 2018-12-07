@@ -40,13 +40,13 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" image="ic_wallet_disconnected" id="XeQ-ck-nG5">
+                            <barButtonItem image="ic_wallet_disconnected" landscapeImage="ic_wallet_disconnected" largeContentSizeImage="ic_wallet_disconnected" style="plain" id="XeQ-ck-nG5">
                                 <color key="tintColor" name="grey"/>
                                 <connections>
                                     <action selector="didTapWallet:" destination="NCT-dG-wsd" id="1dT-bG-6bp"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Item" image="home" id="J3Y-Fu-kcf">
+                            <barButtonItem title="Item" image="ellipsis-v" id="J3Y-Fu-kcf">
                                 <connections>
                                     <action selector="didTapClose:" destination="NCT-dG-wsd" id="U3M-z2-QOO"/>
                                 </connections>
@@ -683,7 +683,7 @@
         <image name="check-square" width="448" height="448"/>
         <image name="chevron-left" width="10" height="18"/>
         <image name="close-x" width="15" height="15"/>
-        <image name="home" width="23" height="20"/>
+        <image name="ellipsis-v" width="4" height="15"/>
         <image name="ic_wallet_active" width="30" height="30"/>
         <image name="ic_wallet_disconnected" width="24" height="24"/>
         <image name="square" width="448" height="448"/>

@@ -291,13 +291,14 @@ class dAppBrowserV2ViewController: UIViewController {
         textFieldURL.font = UIFont(name: "Avenir-Medium", size: 14)
         textFieldURL.theme_backgroundColor = O3Theme.backgroundLightgrey
         textFieldURL.theme_textColor = O3Theme.textFieldTextColorPicker
-        let refreshButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-        refreshButton.setTitle("↻", for: .normal)
-        refreshButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 4)
-        refreshButton.addTarget(self, action: #selector(didTapRefresh(_:)), for: .touchUpInside)
-        refreshButton.theme_setTitleColor(O3Theme.textFieldTextColorPicker, forState: .normal)
-        textFieldURL.rightView = refreshButton
-        textFieldURL.rightViewMode = .always
+        textFieldURL.isEnabled = false
+//        let refreshButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+//        refreshButton.setTitle("↻", for: .normal)
+//        refreshButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 4)
+//        refreshButton.addTarget(self, action: #selector(didTapRefresh(_:)), for: .touchUpInside)
+//        refreshButton.theme_setTitleColor(O3Theme.textFieldTextColorPicker, forState: .normal)
+//        textFieldURL.rightView = refreshButton
+//        textFieldURL.rightViewMode = .always
         textFieldURL.delegate = self
         showURLHost(url: self.viewModel.url)
         self.navigationItem.titleView = textFieldURL
