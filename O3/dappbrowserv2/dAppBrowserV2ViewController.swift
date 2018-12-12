@@ -191,11 +191,14 @@ class dAppBrowserV2ViewController: UIViewController {
     var viewModel: dAppBrowserViewModel!
     
     func setupView() {
+        self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.containerView.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.hidesBottomBarWhenPushed = true
         self.navigationController?.hideHairline()
         self.progressView = UIProgressView(frame: CGRect(x: 0.0, y: (self.navigationController?.navigationBar.frame.size.height)! - 3.0, width: self.view.frame.size.width, height: 3.0))
         self.progressView.progressViewStyle = .bar
         self.navigationController?.navigationBar.addSubview(self.progressView)
+        
         self.webView?.frame = self.containerView!.bounds
         self.webView.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
         self.webView.addObserver(self, forKeyPath: "loading", options: .new, context: nil)
@@ -287,8 +290,6 @@ class dAppBrowserV2ViewController: UIViewController {
         
         let req = URLRequest(url: self.viewModel.url)
         self.viewModel.loadMetadata()
-        
-        self.webView.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.webView.load(req)
         self.webView.navigationDelegate = self
         self.webView.uiDelegate = self
@@ -414,6 +415,7 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
         self.webView = WKWebView( frame: self.containerView!.bounds, configuration: config)
+        self.webView.backgroundColor = UIColor.clear
         self.containerView?.addSubview(self.webView!)
     }
     

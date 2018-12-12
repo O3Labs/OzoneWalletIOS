@@ -21,9 +21,10 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CqK-y7-n6I">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" name="darkThemeBackground"/>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="C7R-pa-eav" firstAttribute="trailing" secondItem="CqK-y7-n6I" secondAttribute="trailing" id="O9R-eI-Pcj"/>
                             <constraint firstItem="CqK-y7-n6I" firstAttribute="leading" secondItem="C7R-pa-eav" secondAttribute="leading" id="Sfy-jq-wwf"/>
@@ -779,6 +780,9 @@
         <image name="ic_wallet_disconnected" width="24" height="24"/>
         <image name="redo" width="20" height="20"/>
         <image name="square" width="448" height="448"/>
+        <namedColor name="darkThemeBackground">
+            <color red="0.015686274509803921" green="0.050980392156862744" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

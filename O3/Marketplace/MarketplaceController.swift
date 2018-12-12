@@ -73,16 +73,16 @@ class MarketplaceController: TabmanViewController, PageboyViewControllerDataSour
         self.bar.style = .buttonBar
         self.dataSource = self
         
-        
+        #if DEBUG
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openBrowserV2(_:)))
+        #endif
     }
     
     @IBAction func openBrowserV2(_ sender: Any) {
         let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
         if let vc = nav!.viewControllers.first as? dAppBrowserV2ViewController {
             let viewModel = dAppBrowserViewModel()
-            viewModel.url = URL(string:"https://s3-ap-northeast-1.amazonaws.com/network.o3.apps/testsend/index.html")
-//            viewModel.url = URL(string:"http://localhost:8000/send")
+            viewModel.url = URL(string:"http://localhost:8000/o3cap/")
             vc.viewModel = viewModel
         }
          let top = UIApplication.topViewController()

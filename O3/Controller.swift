@@ -15,6 +15,7 @@ class Controller: NSObject {
         let url = URL(string: "http://analytics.o3.network/redirect/?url=https://switcheo.exchange/?ref=o3")
         openDappBrowser(url: url!, modal: true, moreButton: true)
     }
+    
     let transitionDelegate = DeckTransitioningDelegate()
     func openDappBrowser(url: URL, modal: Bool, moreButton: Bool = false, deck: Bool = false, assetSymbol: String? = nil) {
 
@@ -45,6 +46,22 @@ class Controller: NSObject {
             }
 
         }
+    }
+    
+    func openDappBrowserV2(url: URL) {
+        let top = UIApplication.topViewController()
+        if  top == nil {
+            return
+        }
+        
+        let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
+        if let vc = nav!.viewControllers.first as? dAppBrowserV2ViewController {
+            let viewModel = dAppBrowserViewModel()
+            viewModel.url = url
+            vc.viewModel = viewModel
+        }
+        
+        top!.present(nav!, animated: true, completion: nil)
     }
 
     func openSend(to: String, selectedAsset: TransferableAsset, amount: String?) {
