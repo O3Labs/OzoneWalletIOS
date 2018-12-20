@@ -175,7 +175,7 @@ class DAppBrowserViewController: UIViewController {
              req = URLRequest(url: urlComps.url!)
         }
        
-        self.webView?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.webView?.backgroundColor = UIColor.clear
         self.webView!.load(req)
         self.webView?.navigationDelegate = self
         

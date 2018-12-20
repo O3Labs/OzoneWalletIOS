@@ -190,4 +190,31 @@ class O3Cache {
         }
         return cachedTokens
     }
+    
+    
+    static var memoryCache = NSCache<NSString, AnyObject>()
+    
+    static var memoryStorage: Storage<[dAppProtocol.GetBalanceResponseElement]>? {
+        let expiry = Date().addingTimeInterval(TimeInterval(30))
+        //memory only cache
+        let memoryConfig = MemoryConfig(
+            // Expiry date that will be applied by default for every added object
+            // if it's not overridden in the `setObject(forKey:expiry:)` method
+            expiry: .date(expiry), //30seconds
+            countLimit: 50,
+            totalCostLimit: 0
+        )
+        
+        let diskConfig = DiskConfig(
+            name: "O3DAPPCACHE",
+            expiry: .date(expiry)
+        )
+        let storage = try? Storage(
+            diskConfig: diskConfig,
+            memoryConfig: memoryConfig,
+            transformer: TransformerFactory.forCodable(ofType: [dAppProtocol.GetBalanceResponseElement].self)
+        )
+        return storage
+    }
+    
 }

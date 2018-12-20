@@ -13,6 +13,8 @@ struct Dapp: Codable {
     let description: String
     let iconURL: String
     let blockchain: String
+    let legacy: Bool
+    let isDapp: Bool
     let url: String
     
     enum CodingKeys: String, CodingKey {
@@ -21,5 +23,7 @@ struct Dapp: Codable {
         case iconURL = "iconURL"
         case blockchain = "blockchain"
         case url = "url"
+        case legacy = "legacy"
+        case isDapp = "isDapp"
     }
 }

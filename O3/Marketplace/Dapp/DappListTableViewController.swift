@@ -50,10 +50,13 @@ class DappListTableViewController: UITableViewController {
         return cell
     }
     
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let dapp = list[indexPath.row]
-        Controller().openDappBrowser(url: URL(string: dapp.url)!, modal: true)
+        if dapp.legacy == true {
+            Controller().openDappBrowser(url: URL(string: dapp.url)!, modal: true)
+        } else {
+            Controller().openDappBrowserV2(url: URL(string: dapp.url)!)
+        }
     }
 }

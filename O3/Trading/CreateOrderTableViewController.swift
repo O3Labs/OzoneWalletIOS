@@ -423,9 +423,11 @@ class CreateOrderTableViewController: UITableViewController {
         wantAmountTextField.decimals = viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision
         offerAmountTextField.decimals = self.viewModel.defaultPrecision //always 8 decimals
         if viewModel.selectedAction == CreateOrderAction.Sell {
+            wantAmountTextField.decimals = viewModel.wantAsset.precision ?? self.viewModel.defaultPrecision
             wantAmountTextField.inputAccessoryView = inputToolbar.loadNib()
             wantAmountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
         } else {
+            offerAmountTextField.decimals = viewModel.offerAsset.precision ?? self.viewModel.defaultPrecision
             offerAmountTextField.inputAccessoryView = inputToolbar.loadNib()
             offerAmountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
         }
@@ -545,6 +547,12 @@ class CreateOrderTableViewController: UITableViewController {
         if viewModel.selectedAction == CreateOrderAction.Sell {
             selectWantAssetButton.isEnabled = false
             wantAssetSelector.isHidden = true
+            offerAssetSelector.isHidden = true  //since there is only one base pair we don't need to show it
+            selectWantAssetButton.isEnabled = false
+            selectOfferAssetButton.isEnabled = false
+        } else {
+            selectWantAssetButton.isEnabled = false
+            wantAssetSelector.isHidden = true  //since there is only one base pair we don't need to show it
         }
     }
     
@@ -826,7 +834,6 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                 return
             }
             self.offerAmountTextField.text = value.formattedStringWithoutSeparator(self.viewModel.defaultPrecision, removeTrailing: true)
-            
             self.offerTotalFiatPriceLabel.text = totalInFiat.formattedStringWithDecimal(decimals: self.viewModel.defaultPrecision)
         }
     }
