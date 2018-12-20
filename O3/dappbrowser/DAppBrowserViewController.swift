@@ -134,6 +134,10 @@ class DAppBrowserViewController: UIViewController {
                 })
                 DispatchQueue.main.async {
                     if tradableAsset != nil {
+                        //TODO: READD THIS WHEN SDUSD IS A BASE PAIR
+                        if tradableAsset?.symbol.uppercased() != "NEO" {
+                            self.toolbar?.isHidden = false
+                        }
                         self.tradableAsset = tradableAsset
                         self.toolbar?.isHidden = false
                         self.loadTradingAccountBalances()
@@ -350,13 +354,15 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
         if unsignedHexVar.hasSuffix("0000") {
             unsignedHexVar.removeLast(4)
             let jsonStart = unsignedHexVar.index(of: "7b")
-            let unsignedJson = unsignedHexVar.substring(from: jsonStart!)
-            let unsignedJsonData = unsignedJson.dataWithHexString()
-            do {
-                let dict = try JSONSerialization.jsonObject(with: unsignedJsonData, options: []) as? [String: Any]
-                Amplitude.instance().logEvent("Switcheo_Signed_JSON", withEventProperties: dict)
-            } catch {
-                return
+            if jsonStart != nil {
+                let unsignedJson = unsignedHexVar.substring(from: jsonStart!)
+                let unsignedJsonData = unsignedJson.dataWithHexString()
+                do {
+                    let dict = try JSONSerialization.jsonObject(with: unsignedJsonData, options: []) as? [String: Any]
+                    Amplitude.instance().logEvent("Switcheo_Signed_JSON", withEventProperties: dict)
+                } catch {
+                    return
+                }
             }
         } else {
             Amplitude.instance().logEvent("Switcheo_Signed_Raw_TX")
