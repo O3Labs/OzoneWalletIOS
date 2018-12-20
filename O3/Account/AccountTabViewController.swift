@@ -60,8 +60,6 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
             appearance.text.font = O3Theme.topTabbarItemFont
             appearance.layout.edgeInset = 16
             appearance.style.background = .solid(color: UserDefaultsManager.theme.backgroundColor)
-            appearance.indicator.useRoundedCorners = true
-            appearance.interaction.isScrollEnabled = false
         })
         self.bar.location = .top
         self.bar.style = .buttonBar

@@ -132,7 +132,6 @@ class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetada
                 return
             }
             
-            
             if inputPass == inputVerifyPass && inputPass!.count >= 8 {
                 var error: NSError?
                 let key = NeoutilsNEP2Encrypt(wif, inputPass, &error)

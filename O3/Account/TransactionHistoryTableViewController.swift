@@ -96,6 +96,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
             case .failure:
                 DispatchQueue.main.async {
                     self.tableView.refreshControl?.endRefreshing()
+                    self.transactionHistory = []
                 }
                 return
             case .success(let txHistory):

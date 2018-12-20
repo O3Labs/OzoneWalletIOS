@@ -44,6 +44,47 @@ enum tradingEventField: String {
     case priceSelection = "price_selection"
 }
 
+enum multiwalletEventName: String {
+    case walletAdded = "wallet_added"
+    case watchAddressAdded = "watch_address_added"
+    case multiwalletActivated = "multiwallet_activated"
+    case walletUnlocked = "wallet_unlocked"
+}
+
+enum multiWalletEventField: String {
+    case numWallets = "total_num_wallets"
+    case numWatchAddresses = "total_num_watch_addresses"
+}
+
+class MultiwalletEvent: NSObject {
+    private var amplitude: Amplitude! = Amplitude.instance()
+    static let shared: MultiwalletEvent! = MultiwalletEvent()
+    
+    func log(event: String, data: [String: Any]) {
+        amplitude.logEvent(event, withEventProperties: data)
+    }
+    
+    func walletAdded(numWallets: Int) {
+        log(event: multiwalletEventName.walletAdded.rawValue,
+            data: [multiWalletEventField.numWallets.rawValue: numWallets])
+    }
+    
+    func watchAddressAdded(numWatchAddresses: Int) {
+        log(event: multiwalletEventName.watchAddressAdded.rawValue,
+            data: [multiWalletEventField.numWatchAddresses.rawValue: numWatchAddresses])
+    }
+    
+    func multiwalletActivated() {
+        log(event: multiwalletEventName.multiwalletActivated.rawValue,
+            data: [:])
+    }
+    
+    func walletUnlocked() {
+        log(event: multiwalletEventName.walletUnlocked.rawValue,
+            data: [:])
+    }
+}
+
 class tradingEvent: NSObject {
     
     private var amplitude: Amplitude! = Amplitude.instance()

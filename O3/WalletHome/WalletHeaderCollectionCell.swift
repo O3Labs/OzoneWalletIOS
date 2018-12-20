@@ -147,6 +147,7 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
                     let _ = NeoutilsNEP2Decrypt(key, inputPass, &error)
                     if error == nil {
                         NEP6.makeNewDefault(key: key, pass: inputPass!)
+                        MultiwalletEvent.shared.walletUnlocked()
                     } else {
                         OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
                     }

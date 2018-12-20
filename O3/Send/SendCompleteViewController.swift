@@ -85,7 +85,7 @@ class SendCompleteViewController: UIViewController, AddressAddDelegate {
             contact.address = address
             contact.nickName = nickName
             UIApplication.appDelegate.saveContext()
-            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+            UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false, completion: nil)
         }
     }
 }

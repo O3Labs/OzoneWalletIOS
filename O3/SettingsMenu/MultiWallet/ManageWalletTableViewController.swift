@@ -11,6 +11,7 @@ import UIKit
 import DeckTransition
 import MessageUI
 import Neoutils
+import Channel
 
 class ManageWalletTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
     @IBOutlet weak var addressTitleLabel: UILabel!
@@ -84,6 +85,13 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
                 return CGFloat(0)
             }
         }
+        
+        if account.isDefault {
+            if indexPath.row == 0 {
+                return CGFloat(0)
+            }
+        }
+        
         return CGFloat(44)
     }
     
@@ -183,6 +191,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         let nep6 = NEP6.getFromFileSystem()!
         nep6.removeEncryptedKey(address: account.address)
         nep6.writeToFileSystem()
+        Channel.shared().unsubscribe(fromTopic: account.address, block: {})
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
     }
     
@@ -192,6 +201,8 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
                 let nep6 = NEP6.getFromFileSystem()!
                 nep6.removeEncryptedKey(address: self.account.address)
                 nep6.writeToFileSystem()
+                Channel.shared().unsubscribe(fromTopic: self.account.address, block: {})
+            
                 UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
         }
     }
@@ -205,6 +216,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
                 if error == nil {
                     NEP6.makeNewDefault(address: self.account.address, pass: inputPass!)
                     OzoneAlert.alertDialog("Success", message: "This is now your new default wallet", dismissTitle: "Ok") {}
+                    MultiwalletEvent.shared.walletUnlocked()
                 } else {
                     OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
             }

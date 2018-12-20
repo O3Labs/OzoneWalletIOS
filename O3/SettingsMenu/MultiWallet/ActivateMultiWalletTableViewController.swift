@@ -121,7 +121,6 @@ class ActivateMultiWalletTableViewController: UITableViewController {
                                           label: "My O3 Wallet", isDefault: true, lock: false,
                                           key: nep2!.encryptedKey())
         let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
-        nep6.writeToFileSystem()
         
         let keychain = Keychain(service: "network.o3.neo.wallet")
         do {
@@ -129,6 +128,7 @@ class ActivateMultiWalletTableViewController: UITableViewController {
             try keychain
                 .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                 .set(self.passwordInputField.text!, key: "ozoneActiveNep6Password")
+                nep6.writeToFileSystem()
                 do {
                     // remove private key from settings
                     try keychain
