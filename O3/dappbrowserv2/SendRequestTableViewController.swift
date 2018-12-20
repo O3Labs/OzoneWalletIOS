@@ -130,7 +130,7 @@ class SendRequestTableViewController: UITableViewController {
         let account = NEP6.getFromFileSystem()?.accounts.first(where: { n -> Bool in
             return n.address == request.fromAddress
         })
-        data.append(info(key: dataKey.from.rawValue, value: String(format: "%@", account!.label), data: nil))
+        data.append(info(key: dataKey.from.rawValue, value: String(format: "%@", account?.label ?? "My O3 Wallet"), data: nil))
         data.append(info(key: dataKey.to.rawValue, value: String(format: "%@", request.toAddress), data: nil))
         if request.remark != nil {
             data.append(info(key: dataKey.remark.rawValue, value: String(format: "%@", request.remark!), data: nil))

@@ -16,9 +16,9 @@ class ConnectRequestTableViewController: UITableViewController {
     var url: URL?
     var message: dAppMessage!
     var dappMetadata: dAppMetadata?
-    var selectedAccount: NEP6.Account!
+    var selectedAccount: NEP6.Account?
     
-    var onConfirm: ((_ message: dAppMessage, _ wallet: Wallet, _ account: NEP6.Account)->())?
+    var onConfirm: ((_ message: dAppMessage, _ wallet: Wallet, _ account: NEP6.Account?)->())?
     var onCancel: ((_ message: dAppMessage)->())?
     
     override func viewDidLoad() {
@@ -37,12 +37,40 @@ class ConnectRequestTableViewController: UITableViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func inputPassword(account: NEP6.Account, didCancel: @escaping () -> Void, didConfirm:@escaping (_ wif: String) -> Void) {
-        let encryptedKey = account.key
-        let name = account.label
+    func inputPassword(account: NEP6.Account?, didCancel: @escaping () -> Void, didConfirm:@escaping (_ wif: String) -> Void) {
+        if (account == nil) {
+            DispatchQueue.main.async {
+                HUD.show(.progress)
+            }
+            DispatchQueue.global(qos: .userInitiated).async {
+                //we could pull the password from the keychain
+                let keychain = Keychain(service: "network.o3.neo.wallet")
+                do {
+                    let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, "My O3 Wallet")
+                    
+                    let key = try keychain
+                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                        .authenticationPrompt(OnboardingStrings.authenticationPrompt)
+                        .get("ozonePrivateKey")
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                    didConfirm(key!)
+                } catch _ {
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                }
+            }
+            return
+        }
         
+        
+        
+        let encryptedKey = account!.key
+        let name = account!.label
         //default selected account is the main active one so if user hasn't change
-        if account.isDefault == true {
+        if account?.isDefault == true {
             DispatchQueue.main.async {
                 HUD.show(.progress)
             }
@@ -201,8 +229,8 @@ class ConnectRequestTableViewController: UITableViewController {
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "wallet-cell") as! ConnectRequestWalletUITableViewCell
-        cell.titleLabel.text = selectedAccount.label
-        cell.addressLabel.text = selectedAccount.address
+        cell.titleLabel.text = selectedAccount?.label ?? "My O3 Wallet"
+        cell.addressLabel.text = selectedAccount?.address ?? Authenticated.wallet?.address
         return cell
     }
 }

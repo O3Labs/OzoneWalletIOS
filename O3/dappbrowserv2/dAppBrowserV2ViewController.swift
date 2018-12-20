@@ -13,7 +13,7 @@ import OpenGraph
 import PKHUD
 
 protocol dAppBrowserDelegate {
-    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account) -> Void)
+    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account?) -> Void)
    
     func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.SendResponse?, _ error: dAppProtocol.errorResponse?) -> Void)
     
@@ -32,7 +32,7 @@ class dAppBrowserViewModel: NSObject {
     var url: URL!
     var delegate: dAppBrowserDelegate?
     var dappMetadata: dAppMetadata? = dAppMetadata()
-    var selectedAccount: NEP6.Account!
+    var selectedAccount: NEP6.Account?
     var unlockedWallet: Wallet?
     
     func loadMetadata(){
@@ -44,7 +44,7 @@ class dAppBrowserViewModel: NSObject {
         }
     }
     
-    func requestToConnect(message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account) -> Void) {
+    func requestToConnect(message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account?) -> Void) {
         
         self.delegate?.onConnectRequest(url: self.url, message: message, didCancel: { m in
             didCancel(m)
@@ -169,7 +169,7 @@ class dAppBrowserViewModel: NSObject {
         }
     }
     
-    func changeActiveAccount(account: NEP6.Account ,wallet: Wallet) {
+    func changeActiveAccount(account: NEP6.Account? ,wallet: Wallet) {
         self.unlockedWallet = wallet
         self.selectedAccount = account
         self.delegate?.onWalletChanged(newWallet: wallet)
@@ -539,7 +539,7 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         }
     }
     
-    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account) -> Void) {
+    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account?) -> Void) {
         let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "ConnectRequestTableViewControllerNav")
         self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
         nav.modalPresentationStyle = .custom

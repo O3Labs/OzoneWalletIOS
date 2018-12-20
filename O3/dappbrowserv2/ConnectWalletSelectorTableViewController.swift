@@ -19,7 +19,7 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
             return n.key != nil
         })
     }
-    var selectedAccount: NEP6.Account!
+    var selectedAccount: NEP6.Account?
     
     //this one is used for wallet switching in dapp browser
     var selectedWallet: Wallet?
@@ -50,7 +50,7 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
         cell.titleLabel.text = account.label
         cell.addressLabel.text = account.address
         
-        if account.address.isEqual(to: selectedAccount.address) {
+        if account.address.isEqual(to: selectedAccount?.address) {
             cell.accessoryType = .checkmark
             cell.selectionStyle = .none
         } else {
@@ -65,7 +65,7 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         let account = accounts?[indexPath.row]
         //don't do anything if user selected the same one
-        if account!.address.isEqual(to: selectedAccount.address) {
+        if account!.address.isEqual(to: selectedAccount?.address) {
             if self.navigationController?.viewControllers == nil {
                 self.dismiss(animated: true, completion: nil)
             }
