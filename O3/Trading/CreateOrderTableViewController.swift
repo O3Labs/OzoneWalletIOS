@@ -547,6 +547,12 @@ class CreateOrderTableViewController: UITableViewController {
         if viewModel.selectedAction == CreateOrderAction.Sell {
             selectWantAssetButton.isEnabled = false
             wantAssetSelector.isHidden = true
+            offerAssetSelector.isHidden = true  //since there is only one base pair we don't need to show it
+            selectWantAssetButton.isEnabled = false
+            selectOfferAssetButton.isEnabled = false
+        } else {
+            selectWantAssetButton.isEnabled = false
+            wantAssetSelector.isHidden = true  //since there is only one base pair we don't need to show it
         }
     }
     
