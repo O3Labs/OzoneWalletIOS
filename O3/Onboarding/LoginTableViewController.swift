@@ -18,6 +18,7 @@ class LoginTableViewController: UITableViewController, QRScanDelegate {
     @IBOutlet weak var wifTextFieldInfoLabel: UILabel!
     @IBOutlet weak var loginButton: ShadowedButton!
     @IBOutlet weak var pkeyTitleLabel: UILabel!
+    
     var watchAddresses = [WatchAddress]()
 
     func loadWatchAddresses() {
@@ -33,6 +34,7 @@ class LoginTableViewController: UITableViewController, QRScanDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         setLocalizedStrings()
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.hideHairline()
