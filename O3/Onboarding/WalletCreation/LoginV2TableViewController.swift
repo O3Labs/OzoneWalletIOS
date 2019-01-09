@@ -16,7 +16,7 @@ import PKHUD
 import SkyFloatingLabelTextField
 import DeckTransition
 
-class LoginV2TableViewController: UITableViewController, Nep2PasswordDelegate, UITextFieldDelegate, QRScanDelegate {
+class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QRScanDelegate {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     
@@ -74,44 +74,6 @@ class LoginV2TableViewController: UITableViewController, Nep2PasswordDelegate, U
     func instantiateMainAsNewRoot() {
         DispatchQueue.main.async {
             UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
-        }
-    }
-
-    func passwordEntered(account: Wallet?) {
-        self.alreadyScanned = false
-        if account != nil {
-            loginToApp(account: account!)
-        }
-    }
-
-    func loginToApp(account: Wallet) {
-        dismissKeyboard()
-
-        let keychain = Keychain(service: "network.o3.neo.wallet")
-        Authenticated.wallet = account
-        Channel.pushNotificationEnabled(true)
-        DispatchQueue.main.async {
-            HUD.show(.labeledProgress(title: nil, subtitle: OnboardingStrings.selectingBestNodeTitle))
-        }
-
-        DispatchQueue.global(qos: .background).async {
-            if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
-                AppState.bestSeedNodeURL = bestNode
-            }
-            DispatchQueue.main.async {
-                HUD.hide()
-                do {
-                    //save pirivate key to keychain
-                    try keychain
-                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .set(account.wif, key: "ozonePrivateKey")
-                    SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
-                    NEP6.removeFromDevice()
-                    self.instantiateMainAsNewRoot()
-                } catch _ {
-                    return
-                }
-            }
         }
     }
 
@@ -244,7 +206,7 @@ class LoginV2TableViewController: UITableViewController, Nep2PasswordDelegate, U
     
     
     @objc func keyFieldChanged(_ textfield: SkyFloatingLabelTextField) {
-        var key = textfield.text!
+        let key = textfield.text!
         if key.count == 52 {
             let wallet = Wallet(wif: key)
             if (wallet != nil) {                enteredWif()
@@ -258,7 +220,7 @@ class LoginV2TableViewController: UITableViewController, Nep2PasswordDelegate, U
 
     
     @objc func passwordFieldChanged(_ textfield: UITextField) {
-        var key = keyField.text!
+        let key = keyField.text!
         if key.count == 52 {
             if (passwordField.text!.count > 5 && passwordField.text!.count < 8) {
                 passwordField.errorMessage = "Your password must be at least 8 characters"
