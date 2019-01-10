@@ -41,16 +41,38 @@ class AppState: NSObject {
         UserDefaults.standard.setValue(claimingState.rawValue, forKey: address + "_claimingState")
         UserDefaults.standard.synchronize()
     }
-
-    static func dismissPortfolioNotification() -> Bool {
-        if UserDefaults.standard.value(forKey: "dismissedPortfolioNotification1.8.0") == nil {
+    
+    static func dismissBackupNotification() -> Bool {
+        if UserDefaults.standard.value(forKey: "dismissedBackupNotification_1.0") == nil {
             return false
         }
-        return UserDefaults.standard.bool(forKey: "dismissedPortfolioNotification1.8.0")
+        return UserDefaults.standard.bool(forKey: "dismissedBackupNotification_1.0")
+    }
+    
+    static func setDismissBackupNotification(dismiss: Bool) {
+        UserDefaults.standard.setValue(dismiss, forKey: "dismissedBackupNotification_1.0")
+        UserDefaults.standard.synchronize()
     }
 
-    static func setDismissPortfolioNotification(dismiss: Bool) {
-        UserDefaults.standard.setValue(dismiss, forKey: "dismissedPortfolioNotification1.8.0")
+    enum verificationType: Int {
+        case none = -1
+        case screenshot = 0
+        case byHand = 1
+        case other = 2
+    }
+    
+    static func getManualVerifyType(address: String) -> verificationType {
+        if UserDefaults.standard.value(forKey: address + "_manualVerifyType") == nil {
+            return .none
+        } else {
+            var intType = UserDefaults.standard.integer(forKey: address + "_manualVerifyType")
+            return verificationType(rawValue: intType)!
+        }
+    }
+    
+    static func setManualVerifyType(address: String, type: verificationType) {
+        var intType = type.rawValue
+        UserDefaults.standard.setValue(intType, forKey: address + "_manualVerifyType")
         UserDefaults.standard.synchronize()
     }
     

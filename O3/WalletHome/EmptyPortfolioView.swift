@@ -10,12 +10,16 @@ import Foundation
 import UIKit
 
 protocol EmptyPortfolioDelegate: AnyObject {
-    func emptyPortfolioButtonTapped()
+    func emptyPortfolioRightButtonTapped()
+    func emptyPortfolioLeftButtonTapped()
 }
 
 class EmptyPortfolioView: UIView {
     @IBOutlet weak var emptyLabel: UILabel!
-    @IBOutlet weak var emptyActionButton: ShadowedButton!
+    @IBOutlet weak var leftActionButton: UIButton!
+    @IBOutlet weak var rightActionButton: UIButton!
+    
+    
     weak var emptyDelegate: EmptyPortfolioDelegate?
     
     
@@ -37,7 +41,11 @@ class EmptyPortfolioView: UIView {
         super.init(coder: aDecoder)
     }
     
-    @IBAction func buttonTapped(_ sender: Any) {
-        emptyDelegate?.emptyPortfolioButtonTapped()
+    @IBAction func leftButtonTapped(_ sender: Any) {
+        emptyDelegate?.emptyPortfolioLeftButtonTapped()
+    }
+    
+    @IBAction func rightButtonTapped(_ sender: Any) {
+        emptyDelegate?.emptyPortfolioRightButtonTapped()
     }
 }

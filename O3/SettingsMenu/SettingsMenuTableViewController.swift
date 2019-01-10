@@ -174,9 +174,35 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
         idCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openIdentity)))
         setThemeLabel()
+        
+        if (AppState.network == .test) {
+            versionLabel.isUserInteractionEnabled = true
+            versionLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(deleteAllAppData)))
+        }
+        
 
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.versionLabel.text = String(format: SettingsStrings.versionLabel, version)
+        }
+    }
+    
+    @objc func deleteAllAppData() {
+        OzoneAlert.confirmDialog(message: "Are you sure oyu want to clear all app data from this device", cancelTitle: "cancel", confirmTitle: "confirm", didCancel: {}) {
+            O3Cache.clear()
+            SwiftTheme.ThemeManager.setTheme(index: 0)
+            UserDefaultsManager.themeIndex = 0
+            try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
+            try? Keychain(service: "network.o3.neo.wallet").remove("ozoneActiveNep6Password")
+            if let bundleID = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: bundleID)
+            }
+            NEP6.removeFromDevice()
+            Authenticated.wallet = nil
+            UserDefaultsManager.o3WalletAddress = nil
+            NotificationCenter.default.post(name: Notification.Name("loggedOut"), object: nil)
+            self.dismiss(animated: false)
+            let login = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()!
+            UIApplication.shared.keyWindow?.rootViewController = login
         }
     }
     

@@ -436,7 +436,7 @@
 "PORTFOLIO_Combined_Header" = "COMBINED";
 
 /* Action Button to deposit tokens itno wallet */
-"PORTFOLIO_Deposit_Tokens" = "Deposit Tokens";
+"PORTFOLIO_Deposit_Tokens" = "Deposit";
 
 /* Title of empty state when user has no balance in wallte */
 "PORTFOLIO_Empty_Balance" = "You currently have no tokens in your wallet";

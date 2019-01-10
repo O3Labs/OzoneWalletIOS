@@ -12,7 +12,7 @@ import Lottie
 import Neoutils
 import KeychainAccess
 
-class CreateWalletTableViewController: UITableViewController {
+class CreateWalletTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var lottieContainer: UIView!
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -23,6 +23,10 @@ class CreateWalletTableViewController: UITableViewController {
     
     @IBOutlet weak var createButton: UIButton!
     
+    @IBOutlet weak var passwordButton: UIButton!
+    @IBOutlet weak var confirmPasswordButton: UIButton!
+    
+    
     let lottieView = LOTAnimationView(name: "an_create_wallet")
 
     override func viewDidLoad() {
@@ -30,6 +34,13 @@ class CreateWalletTableViewController: UITableViewController {
         lottieContainer.embed(lottieView)
         lottieView.loopAnimation = true
         lottieView.play()
+        
+        enterPasswordField.delegate = self
+        enterPasswordField.addTarget(self, action: #selector(passwordFieldChanged(_:)), for: .editingChanged)
+        
+        confirmPasswordField.delegate = self
+        confirmPasswordField.addTarget(self, action: #selector(confirmPasswordFieldChanged(_:)), for: .editingChanged)
+        
         setLocalizedStrings()
     }
     
@@ -57,11 +68,25 @@ class CreateWalletTableViewController: UITableViewController {
         }
     }
     
-    func instantiateMainAsNewRoot() {
-        DispatchQueue.main.async {
-            UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+    @IBAction func revealPasswordTapped(_ sender: Any) {
+        if enterPasswordField.isSecureTextEntry {
+            passwordButton.alpha = 1.0
+        } else {
+            passwordButton.alpha = 0.3
         }
+        enterPasswordField.isSecureTextEntry = !enterPasswordField.isSecureTextEntry
     }
+    
+    @IBAction func revealConfirmPasswordTapped(_ sender: Any) {
+        if confirmPasswordField.isSecureTextEntry {
+            confirmPasswordButton.alpha = 1.0
+        } else {
+            confirmPasswordButton.alpha = 0.3
+        }
+        
+        confirmPasswordField.isSecureTextEntry = !confirmPasswordField.isSecureTextEntry
+    }
+    
     
     @IBAction func createButtonTapped(_ sender: Any) {
         let wallet = Wallet()
@@ -80,7 +105,7 @@ class CreateWalletTableViewController: UITableViewController {
                 .set(self.enterPasswordField.text!, key: "ozoneActiveNep6Password")
             nep6.writeToFileSystem()
             Authenticated.wallet = wallet
-            instantiateMainAsNewRoot()
+            self.performSegue(withIdentifier: "segueToWelcome", sender: nil)
         } catch _ {
             fatalError("Something went terribly wrong")
         }

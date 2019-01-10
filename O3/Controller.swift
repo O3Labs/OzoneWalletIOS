@@ -93,4 +93,15 @@ class Controller: NSObject {
             })
         }
     }
+    
+    func openWalletInfoPage() {
+        guard let walletInfoModal = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "manageWalletTableViewController") as? ManageWalletTableViewController else {
+            fatalError("Presenting improper view controller")
+        }
+        
+        walletInfoModal.account = NEP6.getFromFileSystem()?.accounts.first { $0.isDefault }!
+        let nav = UINavigationController()
+        nav.viewControllers = [walletInfoModal]
+        UIApplication.topViewController()!.present(nav, animated: true)
+    }
 }

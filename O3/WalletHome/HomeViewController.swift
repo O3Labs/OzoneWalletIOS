@@ -15,7 +15,7 @@ import SwiftTheme
 import DeckTransition
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, GraphPanDelegate, ScrollableGraphViewDataSource, HomeViewModelDelegate, EmptyPortfolioDelegate, AddressAddDelegate {
-    
+
     @IBOutlet weak var walletHeaderCollectionView: UICollectionView!
     @IBOutlet weak var graphLoadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var assetsTable: UITableView!
@@ -325,18 +325,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            //check balance to show the banner
-            if O3Cache.neo().value <= 0 && O3Cache.gas().value <= 0 {
-                return 0
+            var addressHasBalance = false
+            for asset in self.displayedAssets {
+                if asset.value > 0 {
+                    addressHasBalance = true
+                }
             }
-            return AppState.dismissPortfolioNotification() == true ? 0 : 1
+            return AppState.dismissBackupNotification() == false && addressHasBalance ? 1 : 0
         }
         return self.displayedAssets.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 160.0
+            return 116.0
         }
         return 60.0
     }
@@ -492,10 +494,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
         if homeviewModel.currentIndex != 0 {
             (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.noWatchAddresses
-            (emptyGraphView as! EmptyPortfolioView).emptyActionButton.setTitle(PortfolioStrings.addWatchAddress, for: UIControl.State())
+            (emptyGraphView as! EmptyPortfolioView).rightActionButton.setTitle(PortfolioStrings.addWatchAddress, for: UIControl.State())
+            (emptyGraphView as! EmptyPortfolioView).leftActionButton.isHidden = true
         } else {
             (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.emptyBalance
-            (emptyGraphView as! EmptyPortfolioView).emptyActionButton.setTitle(PortfolioStrings.depositTokens, for: UIControl.State())
+            (emptyGraphView as! EmptyPortfolioView).rightActionButton.setTitle(PortfolioStrings.depositTokens, for: UIControl.State())
+            (emptyGraphView as! EmptyPortfolioView).leftActionButton.setTitle("Buy NEO", for: UIControl.State())
+            (emptyGraphView as! EmptyPortfolioView).leftActionButton.isHidden = false
         }
         
         emptyGraphView?.isHidden = false
@@ -525,14 +530,32 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func displayDepositTokens() {
         let modal = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "MyAddressNavigationController")
-        
         let transitionDelegate = DeckTransitioningDelegate()
         modal.transitioningDelegate = transitionDelegate
         modal.modalPresentationStyle = .custom
         present(modal, animated: true, completion: nil)
     }
     
-    func emptyPortfolioButtonTapped() {
+    func emptyPortfolioLeftButtonTapped()  {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
+            Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/")!)
+        }
+        actionSheet.addAction(buyWithFiat)
+        
+        let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
+            Controller().openDappBrowserV2(url: URL(string: "https://o3.network/swap/")!)
+        }
+        actionSheet.addAction(buyWithCrypto)
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        actionSheet.addAction(cancel)
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func emptyPortfolioRightButtonTapped() {
         if homeviewModel.currentIndex != 0 {
             displayEnableMultiWallet()
         } else {
@@ -587,7 +610,7 @@ extension HomeViewController: PortfolioNotificationTableViewCellDelegate {
 
     func didDismiss() {
         DispatchQueue.main.async {
-            AppState.setDismissPortfolioNotification(dismiss: true)
+            AppState.setDismissBackupNotification(dismiss: true)
             self.assetsTable.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         }
     }

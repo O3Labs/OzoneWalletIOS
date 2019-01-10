@@ -23,12 +23,17 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
     
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var keyField: O3FloatingTextField!
+    
+    
+
     @IBOutlet weak var passwordField: O3FloatingTextField!
     @IBOutlet weak var passwordFieldHeight: NSLayoutConstraint!
+    @IBOutlet weak var passwordRevealButton: UIButton!
+    
     
     @IBOutlet weak var confirmPassWordField: O3FloatingTextField!
     @IBOutlet weak var confirmPasswordFieldHeight: NSLayoutConstraint!
-    
+    @IBOutlet weak var confirmPasswordRevealButton: UIButton!
     
     var alreadyScanned = false
     var qrView: UIView!
@@ -60,6 +65,26 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
         tableView.tableHeaderView?.embed(qrView)
         
     }
+    
+    @IBAction func revealPasswordTapped(_ sender: Any) {
+        if passwordField.isSecureTextEntry {
+            passwordRevealButton.alpha = 1.0
+        } else {
+            passwordRevealButton.alpha = 0.3
+        }
+        passwordField.isSecureTextEntry = !passwordField.isSecureTextEntry
+    }
+    
+    @IBAction func revealConfirmPasswordTapped(_ sender: Any) {
+        if confirmPassWordField.isSecureTextEntry {
+            confirmPasswordRevealButton.alpha = 1.0
+        } else {
+            confirmPasswordRevealButton.alpha = 0.3
+        }
+        
+        confirmPassWordField.isSecureTextEntry = !confirmPassWordField.isSecureTextEntry
+    }
+    
 
     func textViewDidChange(_ textView: UITextView) {
         if textView.text.trim() == "" {
@@ -174,15 +199,18 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
     func enteredEncryptedKey() {
         self.passwordField.isHidden = false
         self.passwordFieldHeight.constant = CGFloat(44.0)
+        self.passwordRevealButton.isHidden = false
         keyField.errorMessage = nil
     }
     
     func enteredWif() {
         self.passwordField.isHidden = false
         self.passwordFieldHeight.constant = CGFloat(44.0)
+        self.passwordRevealButton.isHidden = false
         
         self.confirmPassWordField.isHidden = false
         self.confirmPasswordFieldHeight.constant = CGFloat(44.0)
+        self.confirmPasswordRevealButton.isHidden = false
         
         keyField.errorMessage = nil
     }
@@ -190,8 +218,10 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
     func enteredInvalidKey() {
         self.passwordField.isHidden = true
         self.passwordFieldHeight.constant = CGFloat(0.0)
+        self.passwordRevealButton.isHidden = true
         
         self.confirmPassWordField.isHidden = true
+        self.confirmPasswordRevealButton.isHidden = true
         self.confirmPasswordFieldHeight.constant = CGFloat(0.0)
         
         if (keyField.text!.count >= 52 || invalidateFromQr) {
