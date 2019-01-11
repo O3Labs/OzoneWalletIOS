@@ -55,24 +55,23 @@ class AppState: NSObject {
     }
 
     enum verificationType: Int {
-        case none = -1
         case screenshot = 0
         case byHand = 1
         case other = 2
     }
     
-    static func getManualVerifyType(address: String) -> verificationType {
-        if UserDefaults.standard.value(forKey: address + "_manualVerifyType") == nil {
-            return .none
+    static func getManualVerifyType(address: String) -> [verificationType] {
+        if UserDefaults.standard.value(forKey: address + "_manualVerifyTypeArray") == nil {
+            return []
         } else {
-            var intType = UserDefaults.standard.integer(forKey: address + "_manualVerifyType")
-            return verificationType(rawValue: intType)!
+            let listType = UserDefaults.standard.array(forKey: address + "_manualVerifyTypeArray")
+            return (listType as! [Int]).map { verificationType(rawValue: $0)! }
         }
     }
     
-    static func setManualVerifyType(address: String, type: verificationType) {
-        var intType = type.rawValue
-        UserDefaults.standard.setValue(intType, forKey: address + "_manualVerifyType")
+    static func setManualVerifyType(address: String, types: [verificationType]) {
+        let typesRaw = types.map{ $0.rawValue }
+        UserDefaults.standard.setValue(typesRaw, forKey: address + "_manualVerifyTypeArray")
         UserDefaults.standard.synchronize()
     }
     

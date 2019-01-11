@@ -11,6 +11,7 @@ import UIKit
 import Lottie
 import Neoutils
 import KeychainAccess
+import PKHUD
 
 class CreateWalletTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var lottieContainer: UIView!
@@ -89,25 +90,32 @@ class CreateWalletTableViewController: UITableViewController, UITextFieldDelegat
     
     
     @IBAction func createButtonTapped(_ sender: Any) {
-        let wallet = Wallet()
-        var error: NSError?
-        let nep2 = NeoutilsNEP2Encrypt(wallet?.wif, enterPasswordField.text!, &error)!
-        
-        let newAccount = NEP6.Account(address: nep2.address(),
-                                      label: "My O3 Wallet", isDefault: true, lock: false,
-                                      key: nep2.encryptedKey())
-        let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
-        let keychain = Keychain(service: "network.o3.neo.wallet")
-        do {
-            //save pirivate key to keychain
-            try keychain
-                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                .set(self.enterPasswordField.text!, key: "ozoneActiveNep6Password")
-            nep6.writeToFileSystem()
-            Authenticated.wallet = wallet
-            self.performSegue(withIdentifier: "segueToWelcome", sender: nil)
-        } catch _ {
-            fatalError("Something went terribly wrong")
+        DispatchQueue.main.async { HUD.show(.progress) }
+        let password = self.enterPasswordField.text!
+        DispatchQueue.global(qos: .userInitiated).async {
+            let wallet = Wallet()
+            var error: NSError?
+                let nep2 = NeoutilsNEP2Encrypt(wallet?.wif, password, &error)!
+            
+            let newAccount = NEP6.Account(address: nep2.address(),
+                                          label: "My O3 Wallet", isDefault: true, lock: false,
+                                          key: nep2.encryptedKey())
+            let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
+            let keychain = Keychain(service: "network.o3.neo.wallet")
+            do {
+                //save pirivate key to keychain
+                try keychain
+                    .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                    .set(password, key: "ozoneActiveNep6Password")
+                nep6.writeToFileSystem()
+                Authenticated.wallet = wallet
+                DispatchQueue.main.async {
+                    HUD.hide()
+                    self.performSegue(withIdentifier: "segueToWelcome", sender: nil)
+                }
+            } catch _ {
+                fatalError("Something went terribly wrong")
+            }
         }
     }
     

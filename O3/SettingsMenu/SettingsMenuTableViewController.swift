@@ -200,6 +200,14 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
             Authenticated.wallet = nil
             UserDefaultsManager.o3WalletAddress = nil
             NotificationCenter.default.post(name: Notification.Name("loggedOut"), object: nil)
+            let o3tab =  UIApplication.shared.keyWindow?.rootViewController as? O3TabBarController
+            
+            //Chance these aren't nil yet which leads to reference cycke
+            o3tab?.halfModalTransitioningDelegate?.viewController = nil
+            o3tab?.halfModalTransitioningDelegate?.presentingViewController = nil
+            o3tab?.halfModalTransitioningDelegate?.interactionController = nil
+            o3tab?.halfModalTransitioningDelegate = nil
+            
             self.dismiss(animated: false)
             let login = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()!
             UIApplication.shared.keyWindow?.rootViewController = login
@@ -290,27 +298,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
 
     @IBAction func closeTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
-    }
-
-    func performLogoutCleanup() {
-        O3Cache.clear()
-        SwiftTheme.ThemeManager.setTheme(index: 0)
-        UserDefaultsManager.themeIndex = 0
-        try? Keychain(service: "network.o3.neo.wallet").remove("ozonePrivateKey")
-        try? Keychain(service: "network.o3.neo.wallet").remove("ozoneActiveNep6Password")
-        NEP6.removeFromDevice()
-        Authenticated.wallet = nil
-        UserDefaultsManager.o3WalletAddress = nil
-        NotificationCenter.default.post(name: Notification.Name("loggedOut"), object: nil)
-        self.dismiss(animated: false)
-        let o3tab =  UIApplication.shared.keyWindow?.rootViewController as? O3TabBarController
-
-        //Chance these aren't nil yet which leads to reference cycke
-        o3tab?.halfModalTransitioningDelegate?.viewController = nil
-        o3tab?.halfModalTransitioningDelegate?.presentingViewController = nil
-        o3tab?.halfModalTransitioningDelegate?.interactionController = nil
-        o3tab?.halfModalTransitioningDelegate = nil
-
     }
 
     //properly implement cell did tap

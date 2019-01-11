@@ -32,46 +32,48 @@ class VerifyManualBackupViewController: UIViewController {
         byHandCheckbox.addTarget(self, action: #selector(checkboxValueChanged(_:)), for: .valueChanged)
         otherCheckbox.addTarget(self, action: #selector(checkboxValueChanged(_:)), for: .valueChanged)
         
-        switch AppState.getManualVerifyType(address: address) {
-        case .screenshot: screenshotCheckbox.setCheckState(.checked, animated: true)
-        case .byHand: byHandCheckbox.setCheckState(.checked, animated: true)
-        case .other: otherCheckbox.setCheckState(.checked, animated: true)
-        default: break
+        for state in AppState.getManualVerifyType(address: address) {
+            switch state {
+                case .screenshot: screenshotCheckbox.setCheckState(.checked, animated: true)
+                case .byHand: byHandCheckbox.setCheckState(.checked, animated: true)
+                case .other: otherCheckbox.setCheckState(.checked, animated: true)
+                default: break
+            }
         }
         
         setThemedElements()
+        setButtonEnableState()
         setLocalizedStrings()
 
     }
     
-    @objc func checkboxValueChanged(_ sender: M13Checkbox) {
-        if sender.checkState == .checked {
-            for checkbox in [screenshotCheckbox, byHandCheckbox, otherCheckbox] {
-                if sender != checkbox {
-                    DispatchQueue.main.async {
-                            checkbox?.setCheckState(.unchecked, animated: true)
-                    }
-
-                }
-            }
-        }
-        
+    func setButtonEnableState() {
         if screenshotCheckbox.checkState == .checked || byHandCheckbox.checkState == .checked || otherCheckbox.checkState == .checked {
             verifyButton.isEnabled = true
+            verifyButton.theme_setTitleColor(O3Theme.primaryColorPicker, forState: UIControl.State())
         } else {
             verifyButton.isEnabled = false
+            verifyButton.theme_setTitleColor(O3Theme.lightTextColorPicker, forState: UIControl.State())
         }
+    }
+    
+    @objc func checkboxValueChanged(_ sender: M13Checkbox) {
+        setButtonEnableState()
     }
     
     @IBAction func verifyTapped(_ sender: Any) {
         AppState.setDismissBackupNotification(dismiss: true)
+        var types = [AppState.verificationType]()
         if screenshotCheckbox.checkState == .checked {
-            AppState.setManualVerifyType(address: address, type: .screenshot)
-        } else if byHandCheckbox.checkState == .checked {
-            AppState.setManualVerifyType(address: address, type: .byHand)
-        } else if otherCheckbox.checkState == .checked {
-            AppState.setManualVerifyType(address: address, type: .other)
+            types.append(AppState.verificationType.screenshot)
         }
+        if byHandCheckbox.checkState == .checked {
+            types.append(AppState.verificationType.byHand)
+        }
+        if otherCheckbox.checkState == .checked {
+            types.append(AppState.verificationType.other)
+        }
+        AppState.setManualVerifyType(address: address, types: types)
         
         self.dismiss(animated: true)
     }
@@ -84,10 +86,15 @@ class VerifyManualBackupViewController: UIViewController {
         cancelButton.setTitle("Cancel", for: UIControl.State())
         verifyButton.setTitle("Verify Backup", for: UIControl.State())
         
-        titleLabel.text = "A manual backup can be performed by saving your key, in another secure place. Please verify that you've saved the key using one of the options below. If you lose your private key it cannot be recovered"
+        titleLabel.text = "You can manually back up your wallet by taking a screen shot of the QR key or copying down the text key. Please be sure it is saved in a very safe place. If you lose your key, your funds cannot be recovered."
     }
     
     func setThemedElements() {
         applyBottomSheetNavBarTheme(title: "Verify Backup")
+        titleLabel.theme_textColor = O3Theme.titleColorPicker
+        screenshotLabel.theme_textColor = O3Theme.titleColorPicker
+        byHandLabel.theme_textColor = O3Theme.titleColorPicker
+        otherLabel.theme_textColor = O3Theme.titleColorPicker
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
 }

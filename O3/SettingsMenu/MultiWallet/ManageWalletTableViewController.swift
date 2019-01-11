@@ -330,7 +330,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         encryptedTitleLabel.text = MultiWalletStrings.encryptedKey
         unlockWatchAddressDescription.text = MultiWalletStrings.addKeyDescription
         unlockWatchAddressButton.setTitle(MultiWalletStrings.addKey, for: UIControl.State())
-        manualBackupLabel.text = "Perform Manual Backup"
+        manualBackupLabel.text = "Verify Manual Backup"
     }
     
     func setThemedElements() {

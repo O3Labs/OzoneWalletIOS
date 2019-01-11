@@ -65,10 +65,10 @@ class O3FloatingTextField: SkyFloatingLabelTextField {
         let superRect = super.titleLabelRectForBounds(bounds, editing: editing)
         let size = titleLabel.text?.size(withAttributes: [.font: titleLabel.font]) ?? .zero
         if editing {
-            let newRect = CGRect(x: superRect.minX + 6, y: superRect.minY - 10, width: size.width.rounded() + 4, height: superRect.height)
+            let newRect = CGRect(x: superRect.minX + 6, y: superRect.minY - 10, width: size.width.rounded() + 4, height: superRect.height.rounded())
             return newRect
         } else {
-            let newRect = CGRect(x: superRect.minX + 6, y: superRect.minY - 10, width: size.width.rounded() + 4, height: superRect.height)
+            let newRect = CGRect(x: superRect.minX + 6, y: superRect.minY - 10, width: size.width.rounded() + 4, height: superRect.height.rounded())
             return newRect
         }
     }

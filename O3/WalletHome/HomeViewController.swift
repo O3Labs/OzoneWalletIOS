@@ -204,6 +204,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         //control the size of the graph area here
         self.assetsTable.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height * 0.45)
         setupGraphView()
+        
+        //Force update users to NEP6
+        if NEP6.getFromFileSystem() == nil {
+            if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "activateMultiWalletTableViewController") as? ActivateMultiWalletTableViewController {
+                let vcWithNav = (UINavigationController(rootViewController: vc))
+                self.present(vcWithNav, animated: true, completion: {})
+            }
+        }
 
         super.viewDidLoad()
 
@@ -496,11 +504,15 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.noWatchAddresses
             (emptyGraphView as! EmptyPortfolioView).rightActionButton.setTitle(PortfolioStrings.addWatchAddress, for: UIControl.State())
             (emptyGraphView as! EmptyPortfolioView).leftActionButton.isHidden = true
+            (emptyGraphView as! EmptyPortfolioView).rightActionButton.isHidden = true
+            (emptyGraphView as! EmptyPortfolioView).dividerLine.isHidden = true
         } else {
             (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.emptyBalance
             (emptyGraphView as! EmptyPortfolioView).rightActionButton.setTitle(PortfolioStrings.depositTokens, for: UIControl.State())
             (emptyGraphView as! EmptyPortfolioView).leftActionButton.setTitle("Buy NEO", for: UIControl.State())
             (emptyGraphView as! EmptyPortfolioView).leftActionButton.isHidden = false
+            (emptyGraphView as! EmptyPortfolioView).rightActionButton.isHidden = false
+            (emptyGraphView as! EmptyPortfolioView).dividerLine.isHidden = false
         }
         
         emptyGraphView?.isHidden = false

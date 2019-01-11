@@ -15,6 +15,7 @@ import Channel
 import PKHUD
 import SkyFloatingLabelTextField
 import DeckTransition
+import Lottie
 
 class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QRScanDelegate {
     @IBOutlet weak var titleLabel: UILabel!
@@ -35,6 +36,9 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
     @IBOutlet weak var confirmPasswordFieldHeight: NSLayoutConstraint!
     @IBOutlet weak var confirmPasswordRevealButton: UIButton!
     
+    @IBOutlet weak var containerView: UIView!
+    let lottieAnimation = LOTAnimationView(name: "an_create_wallet")
+    
     var alreadyScanned = false
     var qrView: UIView!
     var invalidateFromQr = false
@@ -42,6 +46,9 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
+        lottieAnimation.play()
+        lottieAnimation.loopAnimation = true
+        containerView.embed(lottieAnimation)
     
         navigationController!.hideHairline()
         keyField.delegate = self
@@ -98,6 +105,8 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
 
     func instantiateMainAsNewRoot() {
         DispatchQueue.main.async {
+            HUD.hide()
+            self.view.endEditing(true)
             UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         }
     }
@@ -126,54 +135,66 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
         }
     }
     
-    func saveNEP6AndContinue(address: String, encryptedKey: String, wallet: Wallet!) {
-        let newAccount = NEP6.Account(address: address,
-                                      label: "My O3 Wallet", isDefault: true, lock: false,
-                                      key: encryptedKey)
-        let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
-        let keychain = Keychain(service: "network.o3.neo.wallet")
-        do {
-            //save pirivate key to keychain
-            try keychain
-                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                .set(self.passwordField.text!, key: "ozoneActiveNep6Password")
-            nep6.writeToFileSystem()
-            Authenticated.wallet = wallet
-            instantiateMainAsNewRoot()
-        } catch _ {
-            fatalError("Something went terribly wrong")
+    func saveNEP6AndContinue(address: String, encryptedKey: String, wallet: Wallet!, password: String) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let newAccount = NEP6.Account(address: address,
+                                          label: "My O3 Wallet", isDefault: true, lock: false,
+                                          key: encryptedKey)
+            let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
+            let keychain = Keychain(service: "network.o3.neo.wallet")
+            do {
+                //save pirivate key to keychain
+                try keychain
+                    .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                    .set(password, key: "ozoneActiveNep6Password")
+                nep6.writeToFileSystem()
+                Authenticated.wallet = wallet
+                self.instantiateMainAsNewRoot()
+            } catch _ {
+                fatalError("Something went terribly wrong")
+            }
         }
     }
 
     @IBAction func loginTapped(_ sender: Any) {
+        DispatchQueue.main.async { HUD.show(.progress)}
         var error: NSError?
         var wallet: Wallet?
         var encryptedKey: String?
         var address: String?
-        
-        if keyField.text!.starts(with: "6P") {
-            let wif = NeoutilsNEP2Decrypt(keyField.text!, passwordField.text!, &error)
-            if error != nil {
-                OzoneAlert.alertDialog("Failed to decrypt key", message: "Either the password or key is incorrect, please double check it", dismissTitle: OzoneAlert.okPositiveConfirmString) {}
-                return
-            }
-            
-            wallet = Wallet(wif: wif!)
-            address = wallet!.address
-            encryptedKey = keyField.text
+        let key = keyField.text!
+        let password = passwordField.text!
+        DispatchQueue.global(qos: .userInitiated).async {
+            if key.starts(with: "6P") {
+                let wif = NeoutilsNEP2Decrypt(key, password, &error)
+                if error != nil {
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                        OzoneAlert.alertDialog("Failed to decrypt key", message: "Either the password or key is incorrect, please double check it", dismissTitle: OzoneAlert.okPositiveConfirmString) {}
+                        return
+                    }
+                }
+                
+                wallet = Wallet(wif: wif!)
+                address = wallet!.address
+                encryptedKey = key
 
-        } else {
-            var nep2 = NeoutilsNEP2Encrypt(keyField.text!, passwordField.text!, &error)
-            if error != nil {
-                OzoneAlert.alertDialog("Failed to encrypt key", message: "Please use alphanumeric characters for your password", dismissTitle: OzoneAlert.okPositiveConfirmString) {}
-                return
+            } else {
+                var nep2 = NeoutilsNEP2Encrypt(key, password, &error)
+                if error != nil {
+                    DispatchQueue.main.async {
+                        OzoneAlert.alertDialog("Failed to encrypt key", message: "Please use alphanumeric characters for your password", dismissTitle: OzoneAlert.okPositiveConfirmString) {}
+                        HUD.hide()
+                        return
+                    }
+                }
+                
+                wallet = Wallet(wif: key)
+                address = nep2!.address()
+                encryptedKey = nep2!.encryptedKey()
             }
-            
-            wallet = Wallet(wif: keyField.text!)
-            address = nep2!.address()
-            encryptedKey = nep2!.encryptedKey()
+            self.saveNEP6AndContinue(address: address!, encryptedKey: encryptedKey!, wallet: wallet!, password: password)
         }
-        saveNEP6AndContinue(address: address!, encryptedKey: encryptedKey!, wallet: wallet!)
     }
 
     
@@ -193,6 +214,7 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
     
     func qrScanned(data: String) {
         keyField.text = data
+        keyFieldChanged(nil)
         invalidateFromQr = true
     }
     
@@ -235,11 +257,12 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
     
     
     
-    @objc func keyFieldChanged(_ textfield: SkyFloatingLabelTextField) {
-        let key = textfield.text!
+    @objc func keyFieldChanged(_ textfield: SkyFloatingLabelTextField?) {
+        let key = keyField.text!
         if key.count == 52 {
             let wallet = Wallet(wif: key)
-            if (wallet != nil) {                enteredWif()
+            if (wallet != nil) {
+                enteredWif()
             }
         } else if key.count == 58 && key.starts(with: "6P") {
             enteredEncryptedKey()

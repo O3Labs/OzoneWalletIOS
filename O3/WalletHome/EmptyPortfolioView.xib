@@ -79,6 +79,7 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="dividerLine" destination="S0H-7b-ORW" id="GYY-1O-YRg"/>
                 <outlet property="emptyLabel" destination="dl1-Vp-gyP" id="SWO-Yt-8G4"/>
                 <outlet property="leftActionButton" destination="Yi5-j5-Ua0" id="EKG-aU-TMW"/>
                 <outlet property="rightActionButton" destination="RFk-QK-Jqx" id="ONz-NK-wpM"/>

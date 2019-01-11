@@ -354,7 +354,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
         if unsignedHexVar.hasSuffix("0000") {
             unsignedHexVar.removeLast(4)
             let jsonStart = unsignedHexVar.index(of: "7b")
-            if jsonStart != nil {
+            if jsonStart != nil && (jsonStart?.encodedOffset)! % 2 == 0  {
                 let unsignedJson = unsignedHexVar.substring(from: jsonStart!)
                 let unsignedJsonData = unsignedJson.dataWithHexString()
                 do {

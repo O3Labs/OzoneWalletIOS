@@ -18,13 +18,14 @@ class EmptyPortfolioView: UIView {
     @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var leftActionButton: UIButton!
     @IBOutlet weak var rightActionButton: UIButton!
+    @IBOutlet weak var dividerLine: UIView!
     
     
     weak var emptyDelegate: EmptyPortfolioDelegate?
     
     
     func setThemedElements() {
-        emptyLabel.theme_textColor = O3Theme.titleColorPicker
+        emptyLabel.theme_textColor = O3Theme.lightTextColorPicker
         self.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
     

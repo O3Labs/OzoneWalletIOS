@@ -463,7 +463,7 @@
 "PORTFOLIO_Interval_Button_ALL" = "ALL";
 
 /* Title of empty state when no watch addresses added */
-"PORTFOLIO_No_Watch_Addresses" = "You haven't added any watch addresses or additional wallets yet.";
+"PORTFOLIO_No_Watch_Addresses" = "You haven't added any watch addresses or additional wallets. Add a new one in the settings menu.";
 
 /* A header title on the portfolio screen, shows the displayed funds are located in the O3Wallet */
 "PORTFOLIO_O3_Wallet_Header" = "O3ウォレット";
