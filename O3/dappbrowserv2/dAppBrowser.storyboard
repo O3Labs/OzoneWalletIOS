@@ -140,6 +140,38 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Hpe-qJ-4zT">
+                                        <rect key="frame" x="0.0" y="88" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hpe-qJ-4zT" id="Z2e-PY-vmU">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shareAltSetting" translatesAutoresizingMaskIntoConstraints="NO" id="Tu0-Ll-3on">
+                                                    <rect key="frame" x="20" y="14" width="16" height="16"/>
+                                                    <color key="tintColor" name="grey"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="16" id="SiR-5T-f68"/>
+                                                        <constraint firstAttribute="width" constant="16" id="uZS-Va-2Kf"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyU-f9-Dbb" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
+                                                    <rect key="frame" x="52" y="12" width="36" height="20"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="gyU-f9-Dbb" firstAttribute="leading" secondItem="Tu0-Ll-3on" secondAttribute="trailing" constant="16" id="3Po-kf-XEF"/>
+                                                <constraint firstItem="Tu0-Ll-3on" firstAttribute="centerY" secondItem="Z2e-PY-vmU" secondAttribute="centerY" id="Pgh-YJ-SNu"/>
+                                                <constraint firstItem="gyU-f9-Dbb" firstAttribute="centerY" secondItem="Tu0-Ll-3on" secondAttribute="centerY" id="W3g-yd-VKs"/>
+                                                <constraint firstItem="Tu0-Ll-3on" firstAttribute="leading" secondItem="Z2e-PY-vmU" secondAttribute="leading" constant="20" id="zlg-Gu-k9n"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -779,6 +811,7 @@
         <image name="ic_wallet_active" width="30" height="30"/>
         <image name="ic_wallet_disconnected" width="24" height="24"/>
         <image name="redo" width="20" height="20"/>
+        <image name="shareAltSetting" width="17" height="20"/>
         <image name="square" width="448" height="448"/>
         <namedColor name="darkThemeBackground">
             <color red="0.015686274509803921" green="0.050980392156862744" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
