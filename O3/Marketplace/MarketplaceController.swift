@@ -45,7 +45,7 @@ class MarketplaceController: TabmanViewController, PageboyViewControllerDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         addThemeObserver()
-        self.bar.items = [Item(title: TokenSelectionStrings.NEP5.uppercased()), Item(title: "Apps".uppercased())]
+        self.bar.items = [Item(title: "Apps".uppercased()), Item(title: TokenSelectionStrings.NEP5.uppercased())]
 
         self.navigationController?.navigationBar.topItem?.title = MarketplaceStrings.Marketplace
         let tokenSalesViewController = UIStoryboard(name: "TokenSale", bundle: nil).instantiateInitialViewController()!
@@ -53,9 +53,9 @@ class MarketplaceController: TabmanViewController, PageboyViewControllerDataSour
         
         let dappListViewController = UIStoryboard(name: "Dapp", bundle: nil).instantiateInitialViewController()!
 
-        self.viewControllers.append(nep5tokensViewController)
         self.viewControllers.append(dappListViewController)
-
+        self.viewControllers.append(nep5tokensViewController)
+        
         //if O3Cache.gas().value != 0 || O3Cache.neo().value != 0 {
         //    self.viewControllers.append(tokenSalesViewController)
         //    self.bar.items?.append(Item(title: TokenSaleStrings.tokenSalesTitle.uppercased()))

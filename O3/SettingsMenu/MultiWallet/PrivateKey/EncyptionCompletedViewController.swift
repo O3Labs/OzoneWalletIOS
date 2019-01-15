@@ -50,7 +50,7 @@ class EncryptionCompletedViewController: UIViewController, MFMailComposeViewCont
         composeVC.setSubject(OnboardingStrings.emailSubject)
         composeVC.setMessageBody(String.localizedStringWithFormat(String(OnboardingStrings.emailBody), encryptedKey), isHTML: false)
         
-        composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
+        //composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
         composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")
         
         // Present the view controller modally.
