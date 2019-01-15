@@ -184,7 +184,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         composeVC.setSubject(OnboardingStrings.emailSubject)
         composeVC.setMessageBody(String.localizedStringWithFormat(String(OnboardingStrings.emailBody), account.key!), isHTML: false)
         
-        composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
+        //composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
         composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")
         
         self.present(composeVC, animated: true, completion: nil)
@@ -269,12 +269,9 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         guard let verifyVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "verifyManualBackupViewController") as? VerifyManualBackupViewController else {
             fatalError("Something went terribly wrong")
         }
-        verifyVC.address = account.address
+        verifyVC.account = account
         let nav = UINavigationController()
         nav.viewControllers = [verifyVC]
-        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
-        nav.modalPresentationStyle = .custom
-        nav.transitioningDelegate = self.halfModalTransitioningDelegate
         self.present(nav, animated: true, completion: nil)
 
     }

@@ -551,7 +551,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func emptyPortfolioLeftButtonTapped()  {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
-            Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/")!)
+            Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
         }
         actionSheet.addAction(buyWithFiat)
         

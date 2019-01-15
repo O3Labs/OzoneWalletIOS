@@ -55,7 +55,7 @@
 "MULTIWALLET_activate_multiwallet_subtitle" = "Please enter a name and passphrase for this wallet";
 
 /* title for activating multiwallet page */
-"MULTIWALLET_activate_multiwallet_title" = "To ensure your funds are secure, O3 requires you to convert your private key to a safer encrypted key.";
+"MULTIWALLET_activate_multiwallet_title" = "O3 has recently improved its security and added multiple wallet functionality. To continue using the app, all wallets now require a safer encrypted private key with a passphrase.";
 
 /* title to add key to a watch only address */
 "MULTIWALLET_add_key" = "Unlock Watch Address";

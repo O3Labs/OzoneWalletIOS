@@ -14,7 +14,6 @@ import Lottie
 
 class ActivateMultiWalletTableViewController: UITableViewController {
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var passwordInputField: UITextField!
     @IBOutlet weak var verifyPasswordInputField: UITextField!
     @IBOutlet weak var infoLabel: UILabel!
@@ -29,7 +28,7 @@ class ActivateMultiWalletTableViewController: UITableViewController {
     var passwordInputIsSecure = true
     var passwordVerifyIsSecure = true
     
-    var allowedCharacters = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~`!@#$%^&*()+=-/;:\"\'{}[]<>^?,")
+    var allowedCharacters = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~`!@#$%^&*()+=-/;:\"\'{}[]<>^?, ")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,17 +157,15 @@ class ActivateMultiWalletTableViewController: UITableViewController {
     
     func setLocalizedStrings() {
         titleLabel.text = MultiWalletStrings.activateMultiWalletTitle
-        subtitleLabel.text = MultiWalletStrings.activateMultiWalletSubtitle
-        passwordInputField.placeholder = MultiWalletStrings.passwordInputHint
+        passwordInputField.placeholder = "Enter New Password"
         verifyPasswordInputField.placeholder = MultiWalletStrings.verifyPasswordInputHint
         infoLabel.text = MultiWalletStrings.activateMultiWalletInfo
         generateNEP6Button.setTitle(MultiWalletStrings.generateEncryptedKey, for: UIControl.State())
-        self.title = SettingsStrings.enableMultiWallet
+        self.title = "O3 Security Update"
     }
     
     func setThemedElements() {
         titleLabel.theme_textColor = O3Theme.titleColorPicker
-        subtitleLabel.theme_textColor = O3Theme.titleColorPicker
         infoLabel.theme_textColor = O3Theme.lightTextColorPicker
         passwordInputField.theme_placeholderAttributes = O3Theme.placeholderAttributesPicker
         passwordInputField.theme_textColor = O3Theme.textFieldTextColorPicker

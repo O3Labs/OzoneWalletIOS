@@ -67,7 +67,7 @@ class PortfolioNotificationTableViewCell: UITableViewCell, MFMailComposeViewCont
         composeVC.setSubject(OnboardingStrings.emailSubject)
         composeVC.setMessageBody(String.localizedStringWithFormat(String(OnboardingStrings.emailBody), nep2String), isHTML: false)
         
-        composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
+        //composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
         composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")
         
         // Present the view controller modally.

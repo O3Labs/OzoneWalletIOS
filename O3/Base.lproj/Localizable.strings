@@ -55,7 +55,7 @@
 "MULTIWALLET_activate_multiwallet_subtitle" = "Please enter a passphrase for this wallet";
 
 /* title for activating multiwallet page */
-"MULTIWALLET_activate_multiwallet_title" = "To ensure your funds are secure, O3 requires you to convert your private key to a safer encrypted key.";
+"MULTIWALLET_activate_multiwallet_title" = "O3 has recently improved its security and added multiple wallet functionality. To continue using the app, all wallets now require a safer encrypted private key with a passphrase.";
 
 /* title to add key to a watch only address */
 "MULTIWALLET_add_key" = "Unlock";
@@ -217,7 +217,7 @@
 "ONBOARDING_Create_Wallet_No_Passcode_Error" = "In order to create a new wallet you have to have a passcode set on your device. This ensures that your funds are always secure";
 
 /* Email body when sending Nep-2 backup */
-"ONBOARDING_email_body" = "Thank you for choosing the O3 Wallet!\n\n Here is the encrypted Private Key that you just created!\n\n You can use this key, along with the password that you created in O3 in the event that you are locked out of your wallet.\n\n%@\n\n To login follow these steps:\n\n1) Open the O3 App\n2) Select Login\n3) Either enter the text key or scan the attached QR Code\n4) Enter your password\n\nAnd you're in!\nThanks again for using O3!";
+"ONBOARDING_email_body" = "Thank you for choosing the O3 Wallet!\n\n Here is the encrypted Private Key that you just created!\n\n You can use this key, along with the password that you created in O3 in the event that you are locked out of your wallet.\n\n%@\n\n To login follow these steps:\n\n1) Open the O3 App\n2) Select Login\n3) Either enter the text key or scan the attached QR Code\n4) Enter your password\n\nAnd you're in!\n\n WARNING: If you do not know the password that you used to encrypt this key, please export the RAW key directly from the settings in the O3 application.\n\nThanks again for using O3!";
 
 /* Email subject when sending NEP-2 backup */
 "ONBOARDING_email_subject" = "O3 Wallet Encrypted Key Backup";

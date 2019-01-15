@@ -103,12 +103,7 @@ class NewsFeedViewController: UIViewController, UITableViewDelegate, UITableView
         if item?.link == nil {
             return
         }
-    
-        let webBrowserViewController = WebBrowserViewController()
-        webBrowserViewController.hidesBottomBarWhenPushed = true
-        applyTheme(webViewController: webBrowserViewController)
-        webBrowserViewController.loadURLString((item?.link)!)
-        self.navigationController?.pushViewController(webBrowserViewController, animated: true)
+        Controller().openDappBrowserV2(url: URL(string: (item?.link)!)!)
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -122,11 +117,7 @@ class NewsFeedViewController: UIViewController, UITableViewDelegate, UITableView
     
         let withAddressURLString = featureItem.actionURL.replacingOccurrences(of: "{address}", with: Authenticated.wallet!.address)
         if let link = URL(string: withAddressURLString) {
-            let webBrowserViewController = WebBrowserViewController()
-            applyTheme(webViewController: webBrowserViewController)
-            webBrowserViewController.loadURL(link)
-            let navigationWebBrowser = WebBrowserViewController.rootNavigationWebBrowser(webBrowser: webBrowserViewController)
-            present(navigationWebBrowser, animated: true)
+            Controller().openDappBrowserV2(url: link)
         }
     }
 

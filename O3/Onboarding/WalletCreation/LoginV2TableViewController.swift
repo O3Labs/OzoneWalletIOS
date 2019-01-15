@@ -107,6 +107,7 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
         DispatchQueue.main.async {
             HUD.hide()
             self.view.endEditing(true)
+            AppState.setDismissBackupNotification(dismiss: true)
             UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         }
     }

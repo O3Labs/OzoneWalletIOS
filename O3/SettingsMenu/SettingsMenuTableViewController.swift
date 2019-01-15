@@ -23,10 +23,13 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var supportCell: UITableViewCell!
     @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
     @IBOutlet weak var idCell: UITableViewCell!
+    @IBOutlet weak var buyCell: UITableViewCell!
     
     @IBOutlet weak var supportView: UIView!
     @IBOutlet weak var currencyView: UIView!
     @IBOutlet weak var themeView: UIView!
+    @IBOutlet weak var buyView: UITableViewCell!
+    
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var themeLabel: UILabel!
@@ -34,6 +37,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var supportLabel: UILabel!
     @IBOutlet weak var multiWalletLabel: UILabel!
     @IBOutlet weak var idLabel: UILabel!
+    @IBOutlet weak var buyLabel: UILabel!
     
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
@@ -169,6 +173,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
         self.headerView.addGestureRecognizer(tap)
         contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
+        buyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buyNeo)))
         supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
         themeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTheme)))
         enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
@@ -212,6 +217,25 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
             let login = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()!
             UIApplication.shared.keyWindow?.rootViewController = login
         }
+    }
+    
+    @objc func buyNeo() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
+            Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
+        }
+        actionSheet.addAction(buyWithFiat)
+        
+        let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
+            Controller().openDappBrowserV2(url: URL(string: "https://o3.network/swap/")!)
+        }
+        actionSheet.addAction(buyWithCrypto)
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        actionSheet.addAction(cancel)
+        present(actionSheet, animated: true, completion: nil)
     }
     
     @objc func openIdentity() {
@@ -307,7 +331,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     
     func setThemedElements() {
         let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel, idLabel]
-        let themedCells = [themeCell, currencyCell, contactCell, idCell]
+        let themedCells = [themeCell, currencyCell, contactCell, idCell, buyCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
             cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -316,6 +340,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         for label in themedTitleLabels {
             label?.theme_textColor = O3Theme.titleColorPicker
         }
+        buyLabel.theme_textColor = O3Theme.positiveGainColorPicker
         versionLabel?.theme_textColor = O3Theme.lightTextColorPicker
         tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -329,6 +354,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         contactLabel.text = SettingsStrings.contactTitle
         supportLabel.text = SettingsStrings.supportTitle
         versionLabel.text = SettingsStrings.versionLabel
+        buyLabel.text = "Get NEO Today"
         idLabel.text = SettingsStrings.idLabel
         if NEP6.getFromFileSystem() == nil {
             multiWalletLabel.text = SettingsStrings.enableMultiWallet
