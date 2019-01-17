@@ -108,7 +108,7 @@ class VerifyManualBackupViewController: UIViewController {
                         .authenticationPrompt(authString)
                         .get("ozoneActiveNep6Password")
                     keyLabel.text = (Authenticated.wallet?.wif)!
-                    keyQR.image = UIImage(qrData: (Authenticated.wallet?.wif)!, width: 200, height: 200, qrLogoName: "ic_QRKey")
+                    keyQR.image = UIImage(qrData: (Authenticated.wallet?.wif)!, width: 200, height: 200, qrLogoName: "ic_QRkey")
                     titleLabel.text = wifKeyDescriptionText
                 } catch {
                     sender.isOn = false
