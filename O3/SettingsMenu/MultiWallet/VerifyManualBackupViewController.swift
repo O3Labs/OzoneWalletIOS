@@ -9,6 +9,7 @@
 import Foundation
 import M13Checkbox
 import KeychainAccess
+import Neoutils
 
 class VerifyManualBackupViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
@@ -21,6 +22,7 @@ class VerifyManualBackupViewController: UIViewController {
     @IBOutlet weak var keyQR: UIImageView!
     
     
+    @IBOutlet weak var rawSwitch: UISwitch!
     @IBOutlet weak var screenshotCheckbox: M13Checkbox!
     @IBOutlet weak var byHandCheckbox: M13Checkbox!
     @IBOutlet weak var otherCheckbox: M13Checkbox!
@@ -64,22 +66,55 @@ class VerifyManualBackupViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    func attemptUnlockPassword() {
+        let alertController = UIAlertController(title: "Show key for " + self.account.label, message: "Please enter the password for this wallet", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
+            let inputPass = alertController.textFields?[0].text!
+            var error: NSError?
+            let decryptedKey = NeoutilsNEP2Decrypt(self.account.key, inputPass, &error)
+            if error == nil {
+                self.keyLabel.text = decryptedKey!
+                self.keyQR.image = UIImage(qrData: decryptedKey!, width: 200, height: 200, qrLogoName: "ic_QRencryptedKey")
+                self.titleLabel.text = self.wifKeyDescriptionText
+            } else {
+                OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
+                self.rawSwitch.isOn = false
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Password"
+            textField.isSecureTextEntry = true
+        }
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
+    }
+    
     
     @IBAction func switchValueChanged(_ sender: UISwitch) {
         if sender.isOn {
-            let keychain = Keychain(service: "network.o3.neo.wallet")
-            do {
-                let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
-                
-                _ = try keychain
-                    .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                    .authenticationPrompt(authString)
-                    .get("ozoneActiveNep6Password")
-                keyLabel.text = (Authenticated.wallet?.wif)!
-                keyQR.image = UIImage(qrData: (Authenticated.wallet?.wif)!, width: 200, height: 200, qrLogoName: "ic_QRencryptedKey")
-                titleLabel.text = wifKeyDescriptionText
-            } catch {
-                sender.isOn = false
+            if account.isDefault {
+                let keychain = Keychain(service: "network.o3.neo.wallet")
+                do {
+                    let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
+                    
+                    _ = try keychain
+                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                        .authenticationPrompt(authString)
+                        .get("ozoneActiveNep6Password")
+                    keyLabel.text = (Authenticated.wallet?.wif)!
+                    keyQR.image = UIImage(qrData: (Authenticated.wallet?.wif)!, width: 200, height: 200, qrLogoName: "ic_QRencryptedKey")
+                    titleLabel.text = wifKeyDescriptionText
+                } catch {
+                    sender.isOn = false
+                }
+            } else {
+                attemptUnlockPassword()
             }
         } else {
             titleLabel.text = encryptedKeyDescriptionText

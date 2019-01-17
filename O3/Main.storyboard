@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3yr-Aq-3ZN">
-                                <rect key="frame" x="0.0" y="111" width="320" height="408"/>
+                                <rect key="frame" x="0.0" y="112" width="320" height="407"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="jYl-dS-zJf">
@@ -1035,11 +1035,11 @@
                                         <rect key="frame" x="0.0" y="514" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="283-pc-Ro7" id="wZZ-Zg-S0l">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JnV-5q-g4u">
-                                                    <rect key="frame" x="46" y="0.0" width="234" height="44"/>
+                                                    <rect key="frame" x="46" y="0.0" width="234" height="43.5"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2397,6 +2397,7 @@ Your raw private key is not password protected, anyone with access to this priva
                         <outlet property="keyQR" destination="0KQ-gG-iLe" id="iTX-l2-RfG"/>
                         <outlet property="otherCheckbox" destination="w45-Eu-IG0" id="aAp-hn-0Br"/>
                         <outlet property="otherLabel" destination="cTy-h1-2FC" id="jHw-pO-oHg"/>
+                        <outlet property="rawSwitch" destination="aZv-bg-1DF" id="dLC-x6-hgV"/>
                         <outlet property="screenshotCheckbox" destination="yM0-Hk-0wT" id="Jpf-Pp-Ype"/>
                         <outlet property="screenshotLabel" destination="qci-Ok-Pf8" id="pxG-lf-EhI"/>
                         <outlet property="titleLabel" destination="0S3-5p-qTm" id="AYX-yf-lEC"/>
