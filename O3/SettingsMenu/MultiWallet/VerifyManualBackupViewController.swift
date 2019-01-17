@@ -53,7 +53,7 @@ class VerifyManualBackupViewController: UIViewController {
         }
         
         keyLabel.text = account.key!
-        keyQR.image = UIImage(qrData: account.key!, width: 125, height: 125, qrLogoName: "ic_QRkey")
+        keyQR.image = UIImage(qrData: account.key!, width: 125, height: 125, qrLogoName: "ic_QRencryptedKey")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismissPage(_:)))
         self.navigationItem.leftBarButtonItem?.tintColor = Theme.light.primaryColor
         setThemedElements()
@@ -74,7 +74,7 @@ class VerifyManualBackupViewController: UIViewController {
             let decryptedKey = NeoutilsNEP2Decrypt(self.account.key, inputPass, &error)
             if error == nil {
                 self.keyLabel.text = decryptedKey!
-                self.keyQR.image = UIImage(qrData: decryptedKey!, width: 200, height: 200, qrLogoName: "ic_QRencryptedKey")
+                self.keyQR.image = UIImage(qrData: decryptedKey!, width: 200, height: 200, qrLogoName: "ic_QRkey")
                 self.titleLabel.text = self.wifKeyDescriptionText
             } else {
                 OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
@@ -108,7 +108,7 @@ class VerifyManualBackupViewController: UIViewController {
                         .authenticationPrompt(authString)
                         .get("ozoneActiveNep6Password")
                     keyLabel.text = (Authenticated.wallet?.wif)!
-                    keyQR.image = UIImage(qrData: (Authenticated.wallet?.wif)!, width: 200, height: 200, qrLogoName: "ic_QRencryptedKey")
+                    keyQR.image = UIImage(qrData: (Authenticated.wallet?.wif)!, width: 200, height: 200, qrLogoName: "ic_QRKey")
                     titleLabel.text = wifKeyDescriptionText
                 } catch {
                     sender.isOn = false
@@ -119,7 +119,7 @@ class VerifyManualBackupViewController: UIViewController {
         } else {
             titleLabel.text = encryptedKeyDescriptionText
             keyLabel.text = account.key!
-            keyQR.image = UIImage(qrData: account.key!, width: 200, height: 200, qrLogoName: "ic_QRkey")
+            keyQR.image = UIImage(qrData: account.key!, width: 200, height: 200, qrLogoName: "ic_QRencryptedKey")
         }
     }
     
