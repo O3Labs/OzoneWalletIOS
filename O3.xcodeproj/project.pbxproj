@@ -84,6 +84,8 @@
 		3557BAD420AA9D310034937C /* Array+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACE20AA9D300034937C /* Array+Util.swift */; };
 		3557BAD520AA9D310034937C /* NEP9.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACF20AA9D300034937C /* NEP9.swift */; };
 		3557BAD720AA9D310034937C /* Data+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAD120AA9D310034937C /* Data+Util.swift */; };
+		35585F8D21F59E4600BA39C6 /* dAppBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35585F8C21F59E4600BA39C6 /* dAppBrowserViewModel.swift */; };
+		35585F8F21F59F3100BA39C6 /* dAppBrowserTrading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35585F8E21F59F3100BA39C6 /* dAppBrowserTrading.swift */; };
 		356F1B05218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */; };
 		356F1B07218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */; };
 		356F1B0921901AA30004C088 /* EncryptPasswordEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */; };
@@ -459,6 +461,8 @@
 		3557BACF20AA9D300034937C /* NEP9.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEP9.swift; sourceTree = "<group>"; };
 		3557BAD120AA9D310034937C /* Data+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Util.swift"; sourceTree = "<group>"; };
 		3557BADD20AAA0940034937C /* O3-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "O3-Bridging-Header.h"; sourceTree = "<group>"; };
+		35585F8C21F59E4600BA39C6 /* dAppBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dAppBrowserViewModel.swift; sourceTree = "<group>"; };
+		35585F8E21F59F3100BA39C6 /* dAppBrowserTrading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dAppBrowserTrading.swift; sourceTree = "<group>"; };
 		356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewController.swift; sourceTree = "<group>"; };
 		356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewCell.swift; sourceTree = "<group>"; };
 		356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptPasswordEntryTableViewController.swift; sourceTree = "<group>"; };
@@ -1228,6 +1232,7 @@
 				6E58720521A69C72007F1EC6 /* SendRequestTableViewController.swift */,
 				6E79A31F21ABE46A002284D7 /* ConnectWalletSelectorTableViewController.swift */,
 				6E1ACFE521BA365A0079E752 /* dAppBrowserMenuTableViewController.swift */,
+				35585F8E21F59F3100BA39C6 /* dAppBrowserTrading.swift */,
 			);
 			path = dappbrowserv2;
 			sourceTree = "<group>";
@@ -1237,6 +1242,7 @@
 			children = (
 				6EF59C8A21A2A25900087D72 /* dAppMessage.swift */,
 				6E58720721A6A489007F1EC6 /* dAppMetadata.swift */,
+				35585F8C21F59E4600BA39C6 /* dAppBrowserViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1829,6 +1835,7 @@
 				6E58720621A69C72007F1EC6 /* SendRequestTableViewController.swift in Sources */,
 				6E60CC6A20CF73B00062F1CE /* URL.swift in Sources */,
 				354AF80E217EC6E100B82408 /* EmptyPortfolioView.swift in Sources */,
+				35585F8D21F59E4600BA39C6 /* dAppBrowserViewModel.swift in Sources */,
 				7520068C1F7F8AC400D19B5F /* PrivateKeyViewController.swift in Sources */,
 				35B426C1209825D800957211 /* TokenSelectionTabViewController.swift in Sources */,
 				6EEE3E0020E0DAC60030A4AB /* UILabel.swift in Sources */,
@@ -1905,6 +1912,7 @@
 				75E28F311F9B3B34006C6E37 /* ThemeManager.swift in Sources */,
 				6E64C0D62159CE19002B1366 /* RequestTransaction.swift in Sources */,
 				35AD2B6C2093087C0024A900 /* SendStrings.swift in Sources */,
+				35585F8F21F59F3100BA39C6 /* dAppBrowserTrading.swift in Sources */,
 				35C370B02181ABD40023AABC /* NewMultiWalletViewController.swift in Sources */,
 				354394D3218979AE000C1D8C /* ConvertToWalletTableViewController.swift in Sources */,
 				6E60CC6C20CF884E0062F1CE /* Controller.swift in Sources */,
