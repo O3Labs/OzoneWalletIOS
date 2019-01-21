@@ -48,16 +48,20 @@ class Controller: NSObject {
         }
     }
     
-    func openDappBrowserV2(url: URL) {
+    func openDappBrowserV2(url: URL, assetSymbol: String? = nil) {
         let top = UIApplication.topViewController()
         if  top == nil {
             return
         }
         
         let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
-        if let vc = nav!.viewControllers.first as? dAppBrowserV2ViewController {
+        if let vc = nav!.viewControllers.first as?
+            dAppBrowserV2ViewController {
             let viewModel = dAppBrowserViewModel()
             viewModel.url = url
+            if assetSymbol != nil {
+                viewModel.assetSymbol = assetSymbol
+            }
             vc.viewModel = viewModel
         }
         

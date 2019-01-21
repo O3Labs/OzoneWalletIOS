@@ -11,6 +11,7 @@ import WebKit
 import Cache
 import OpenGraph
 import PKHUD
+import DeckTransition
 
 protocol dAppBrowserDelegate {
     func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm:@escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account?) -> Void)
@@ -34,6 +35,9 @@ class dAppBrowserViewModel: NSObject {
     var dappMetadata: dAppMetadata? = dAppMetadata()
     var selectedAccount: NEP6.Account?
     var unlockedWallet: Wallet?
+    var assetSymbol: String? = nil
+    var tradingAccount: TradingAccount? = nil
+    var tradableAsset: TradableAsset? = nil
     
     func loadMetadata(){
         OpenGraph.fetch(url: url!) { og, error in
@@ -182,7 +186,8 @@ class dAppBrowserV2ViewController: UIViewController {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var walletSwitcherButton: UIBarButtonItem!
-    
+    @IBOutlet weak var toolbar: UIView!
+    @IBOutlet weak var openOrderButton: BadgeUIButton!
     var webView: WKWebView!
     var progressView: UIProgressView!
     var textFieldURL: UITextField!
@@ -190,8 +195,45 @@ class dAppBrowserV2ViewController: UIViewController {
     
     var viewModel: dAppBrowserViewModel!
     
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadOpenOrders), name: NSNotification.Name(rawValue: "needsReloadOpenOrders"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(viewOpenOrders(_:)), name: NSNotification.Name(rawValue: "viewTradingOrders"), object: nil)
+    
+    }
+    
+    
+    @objc private func loadOpenOrders() {
+        O3APIClient(network: AppState.network).loadSwitcheoOrders(address: Authenticated.wallet!.address, status: SwitcheoOrderStatus.open) { result in
+            switch result{
+            case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.openOrderButton?.isHidden =  response.switcheo.count == 0
+                    self.openOrderButton?.badgeValue = String(format: "%d",response.switcheo.count)
+                }
+            }
+        }
+    }
+    
+    @objc @IBAction func viewOpenOrders(_ sender: Any) {
+        guard let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "OrdersTabsViewControllerNav") as? UINavigationController else {
+            return
+        }
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    
     func setupView() {
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.webView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.webView.scrollView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.webView.isOpaque = false
         self.containerView.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.hidesBottomBarWhenPushed = true
         self.navigationController?.hideHairline()
@@ -203,11 +245,132 @@ class dAppBrowserV2ViewController: UIViewController {
         self.webView.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
         self.webView.addObserver(self, forKeyPath: "loading", options: .new, context: nil)
         self.webView.allowsBackForwardNavigationGestures = true
+        self.toolbar.isHidden = true
+        toolbar?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        
+        
+        if viewModel.assetSymbol != nil {
+            addObservers()
+            loadTradableAssets { list in
+                let tradableAsset = list.first(where: { t -> Bool in
+                    return t.symbol.uppercased() == self.viewModel.assetSymbol!.uppercased()
+                })
+                DispatchQueue.main.async {
+                    if tradableAsset != nil {
+                        self.viewModel.tradableAsset = tradableAsset
+                        self.toolbar?.isHidden = false
+                        self.loadTradingAccountBalances()
+                        DispatchQueue.global(qos: .background).async {
+                            self.loadOpenOrders()
+                        }
+                    }
+                }
+            }
+        }
     }
+    
+    @objc private func loadTradingAccountBalances() {
+        O3APIClient(network: AppState.network).tradingBalances(address: Authenticated.wallet!.address) { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+                return
+            case .success(let tradingAccount):
+                DispatchQueue.main.async {
+                    self.viewModel.tradingAccount = tradingAccount
+                }
+            }
+        }
+    }
+    
+    private  func loadTradableAssets(completion: @escaping ([TradableAsset]) -> Void) {
+        O3APIClient.shared.loadSupportedTokenSwitcheo { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let response):
+                completion(response)
+            }
+        }
+    }
+    
+    @IBAction func tradeTapped(_ sender: Any) {
+        if (viewModel.assetSymbol?.lowercased() != "neo") {
+            self.showActionSheetAssetInTradingAccount(asset: self.viewModel.tradableAsset!)
+        } else {
+            showBuyOptionsNEO()
+        }
+    }
+    
+    func openCreateOrder(action: CreateOrderAction, asset: TradableAsset) {
+        let nav = UIStoryboard(name: "Trading", bundle: nil).instantiateViewController(withIdentifier: "CreateOrderTableViewControllerNav") as! UINavigationController
+        if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
+            vc.viewModel = CreateOrderViewModel()
+            vc.viewModel.selectedAction = action
+            let inTradingAccount = viewModel.tradingAccount?.switcheo.confirmed.first(where: { t -> Bool in
+                return t.symbol.uppercased() == asset.symbol.uppercased()
+            })
+            vc.viewModel.wantAsset = inTradingAccount != nil ? inTradingAccount : asset
+            vc.viewModel.offerAsset = viewModel?.tradingAccount?.switcheo.basePairs.filter({ t -> Bool in
+                return t.symbol != asset.symbol
+            }).first
+            vc.viewModel.tradingAccount = viewModel.tradingAccount
+        }
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    func showActionSheetAssetInTradingAccount(asset: TradableAsset) {
+        
+        let alert = UIAlertController(title: asset.name, message: nil, preferredStyle: .actionSheet)
+        
+        let buyButton = UIAlertAction(title: "Buy", style: .default) { _ in
+            tradingEvent.shared.startBuy(asset: asset.symbol, source: TradingActionSource.tokenDetail)
+            self.openCreateOrder(action: CreateOrderAction.Buy, asset: asset)
+        }
+        alert.addAction(buyButton)
+        
+        //we can't actually sell NEO but rather use NEO to buy other asset
+        if asset.symbol != "NEO" {
+            let sellButton = UIAlertAction(title: "Sell", style: .default) { _ in
+                tradingEvent.shared.startSell(asset: asset.symbol, source: TradingActionSource.tokenDetail)
+                self.openCreateOrder(action: CreateOrderAction.Sell, asset: asset)
+            }
+            alert.addAction(sellButton)
+        }
+        
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func showBuyOptionsNEO() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
+            Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
+        }
+        actionSheet.addAction(buyWithFiat)
+        
+        let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
+            Controller().openDappBrowserV2(url: URL(string: "https://o3.network/swap/")!)
+        }
+        actionSheet.addAction(buyWithCrypto)
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        actionSheet.addAction(cancel)
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
     
     deinit {
         self.webView.removeObserver(self, forKeyPath: "estimatedProgress", context: nil)
         self.webView.removeObserver(self, forKeyPath: "loading", context: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "needsReloadOpenOrders"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "viewTradingOrders"), object: nil)
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -288,7 +451,14 @@ class dAppBrowserV2ViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         
-        let req = URLRequest(url: self.viewModel.url)
+        var req = URLRequest(url: self.viewModel.url)
+        if (viewModel.url?.absoluteString.hasPrefix("https://public.o3.network")) == true {
+            let queryItems = [NSURLQueryItem(name: "theme", value: UserDefaultsManager.themeIndex == 0 ? "light" : "dark")]
+            let urlComps = NSURLComponents(url: viewModel.url!, resolvingAgainstBaseURL: false)!
+            urlComps.queryItems = queryItems as [URLQueryItem]
+            req = URLRequest(url: urlComps.url!)
+        }
+        
         self.viewModel.loadMetadata()
         self.webView.load(req)
         self.webView.navigationDelegate = self
