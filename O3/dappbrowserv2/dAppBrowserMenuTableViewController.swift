@@ -24,9 +24,10 @@ class dAppBrowserMenuTableViewController: UITableViewController {
         if indexPath.row == 0 {
             onRefresh()
         } else if indexPath.row == 1 {
-            onClose()
-        } else if indexPath.row == 2 {
             onShare()
+        } else if indexPath.row == 2 {
+            onClose()
+        
         }
          self.dismiss(animated: true, completion: nil)
     }
