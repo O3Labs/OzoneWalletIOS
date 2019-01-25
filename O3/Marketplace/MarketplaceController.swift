@@ -82,7 +82,7 @@ class MarketplaceController: TabmanViewController, PageboyViewControllerDataSour
         let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
         if let vc = nav!.viewControllers.first as? dAppBrowserV2ViewController {
             let viewModel = dAppBrowserViewModel()
-            viewModel.url = URL(string:"http://localhost:8000/o3cap/")
+            viewModel.url = URL(string:"http://dapp.neoeconomy.io")
             vc.viewModel = viewModel
         }
          let top = UIApplication.topViewController()

@@ -194,10 +194,26 @@ extension AccountTabViewController: QRScanDelegate {
             let channel = URL(string: data)?.lastPathComponent
             postToChannel(channel: channel!)
             return
-        }
-        DispatchQueue.main.async {
-            self.sendTapped(qrData: data)
+        } else if data.hasPrefix("neo") {
+            DispatchQueue.main.async {
+                self.sendTapped(qrData: data)
+            }
+        } else if (URL(string: data) != nil) {
+            //dont present from top
+            let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
+            if let vc = nav!.viewControllers.first as?
+                dAppBrowserV2ViewController {
+                let viewModel = dAppBrowserViewModel()
+                viewModel.url = URL(string: data)
+                vc.viewModel = viewModel
+                DispatchQueue.main.async {
+                    self.present(nav!, animated: true)
+                }
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.sendTapped(qrData: data)
+            }
         }
     }
-    
 }
