@@ -27,6 +27,7 @@ class dAppProtocol: NSObject {
                                               "getStorage",
                                               "invokeRead",
                                               "invoke",
+                                              "disconnect",
                                               "send"]
     
     static let needAuthorizationCommands: [String] = ["getAccount", "getAddress", "invoke", "send"]
@@ -41,19 +42,22 @@ class dAppProtocol: NSObject {
         let name: String
         let version: String
         let website: String
+        let extra: [String: String]
         
         enum CodingKeys: String, CodingKey {
             case compatibility = "platform"
             case name = "name"
             case version = "version"
             case website = "website"
+            case extra = "extra"
         }
         
-        init(name: String, version: String, website: String, compatibility: [String]) {
+        init(name: String, version: String, website: String, compatibility: [String], theme: String) {
             self.name = name
             self.version = version
             self.website = website
             self.compatibility = compatibility
+            self.extra = ["theme": theme]
         }
     }
     

@@ -19,7 +19,7 @@ protocol dAppBrowserDelegate {
     
     func error(message: dAppMessage, error: String)
     func didFinishMessage(message: dAppMessage, response: Any)
-    
+    func didFireEvent(name: String)
     func onWalletChanged(newWallet: Wallet)
     
     func beginLoading()
@@ -78,7 +78,11 @@ class dAppBrowserViewModel: NSObject {
         }
         
         if message.command.lowercased() == "getProvider".lowercased() {
-            let response = dAppProtocol.GetProviderResponse(name: "o3", version: "v1", website: "https://o3.network", compatibility: ["NEP-dapi"])
+            var theme = "Light Mode"
+            if UserDefaultsManager.theme == .dark {
+                theme = "Dark Mode"
+            }
+            let response = dAppProtocol.GetProviderResponse(name: "o3", version: "v1", website: "https://o3.network", compatibility: ["NEP-dapi"], theme: theme)
             self.delegate?.didFinishMessage(message: message, response: response.dictionary)
             return
         }
@@ -166,6 +170,16 @@ class dAppBrowserViewModel: NSObject {
             })
             
             return
+        }
+        
+        if message.command == "disconnect".lowercased() {
+            unlockedWallet = nil
+            selectedAccount = nil
+            isConnected = false
+            DispatchQueue.global().async {
+                self.delegate?.didFireEvent(name: "DISCONNECT")
+                self.delegate?.didFinishMessage(message: message, response: JSONDictionary())
+            }
         }
     }
     
@@ -284,6 +298,7 @@ class dAppBrowserV2ViewController: UIViewController {
         }
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -313,7 +328,7 @@ class dAppBrowserV2ViewController: UIViewController {
         
         let vc = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "dAppBrowserMenuTableViewController") as! dAppBrowserMenuTableViewController
         //number of menus x cell height
-        let height = CGFloat(3 * 44.0)
+        let height = CGFloat(4 * 44.0)
         vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8, height: height)
         vc.modalPresentationStyle = .popover
         vc.onClose = {
@@ -331,6 +346,15 @@ class dAppBrowserV2ViewController: UIViewController {
             DispatchQueue.main.async {
                 let vc = UIActivityViewController(activityItems: [self.viewModel.url.absoluteString], applicationActivities: [])
                 self.present(vc, animated: true, completion: nil)
+            }
+        }
+        
+        vc.onDisconnect = {
+            DispatchQueue.main.async {
+                self.viewModel.unlockedWallet = nil
+                self.viewModel.selectedAccount = nil
+                self.viewModel.isConnected = false
+                self.walletSwitcherButton.tintColor = UIColor.gray
             }
         }
         
@@ -544,6 +568,13 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
             let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
             self.callback(jsonString: jsonString)
         }
+    }
+    
+    func didFireEvent(name: String) {
+        if name.lowercased() == "disconnect" {
+            self.walletSwitcherButton.tintColor = UIColor.gray
+        }
+        self.event(eventName: name, data: [:])
     }
     
     func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account?) -> Void) {
