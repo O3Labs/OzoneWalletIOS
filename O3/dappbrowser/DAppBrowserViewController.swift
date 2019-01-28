@@ -180,6 +180,7 @@ class DAppBrowserViewController: UIViewController {
         }
        
         self.webView?.backgroundColor = UIColor.clear
+        self.webView?.isOpaque = false
         self.webView!.load(req)
         self.webView?.navigationDelegate = self
         
@@ -294,7 +295,11 @@ class DAppBrowserViewController: UIViewController {
 extension DAppBrowserViewController {
     
     @IBAction func tradeTapped(_ sender: Any) {
-        showActionSheetAssetInTradingAccount(asset: self.tradableAsset!)
+        if (self.tradableAsset?.symbol.lowercased() != "neo") {
+            showActionSheetAssetInTradingAccount(asset: self.tradableAsset!)
+        } else {
+            showBuyOptionsNEO()
+        }
     }
     
     func openCreateOrder(action: CreateOrderAction, asset: TradableAsset) {
@@ -312,6 +317,25 @@ extension DAppBrowserViewController {
             vc.viewModel.tradingAccount = self.tradingAccount
         }
         self.present(nav, animated: true, completion: nil)
+    }
+    
+    func showBuyOptionsNEO() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
+            Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
+        }
+        actionSheet.addAction(buyWithFiat)
+        
+        let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
+            Controller().openDappBrowserV2(url: URL(string: "https://o3.network/swap/")!)
+        }
+        actionSheet.addAction(buyWithCrypto)
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        actionSheet.addAction(cancel)
+        present(actionSheet, animated: true, completion: nil)
     }
     
     func showActionSheetAssetInTradingAccount(asset: TradableAsset) {
@@ -535,12 +559,13 @@ extension DAppBrowserViewController: WKNavigationDelegate {
             button.titleLabel?.font = UIFont(name: "Avenir-Medium", size: 16)
             button.frame.size.width = 200
             self.navigationItem.titleView = button
-            
+
         } else {
             self.title = webView.title
         }
         self.navigationItem.rightBarButtonItem = nil
     }
+    
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if navigationAction.navigationType == .linkActivated {

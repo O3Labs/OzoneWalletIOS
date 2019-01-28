@@ -23,12 +23,61 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" name="darkThemeBackground"/>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uh-6y-pWc">
+                                <rect key="frame" x="0.0" y="615" width="375" height="52"/>
+                                <subviews>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ey0-Dw-dot">
+                                        <rect key="frame" x="267" y="10" width="100" height="32"/>
+                                        <color key="backgroundColor" name="lightThemePrimary"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="t6e-2k-7MD"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                        <state key="normal" title="Trade">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="6"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="tradeTapped:" destination="NCT-dG-wsd" eventType="touchUpInside" id="ic7-6u-COY"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s7C-5t-1bH" customClass="BadgeUIButton" customModule="O3" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="10" width="140" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="Ktb-Jr-loa"/>
+                                            <constraint firstAttribute="width" constant="140" id="wKz-Jy-DY0"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                        <inset key="titleEdgeInsets" minX="24" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Open orders" image="receipt">
+                                            <color key="titleColor" name="lightThemePrimary"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="52" id="0mS-bP-CHJ"/>
+                                    <constraint firstItem="s7C-5t-1bH" firstAttribute="centerY" secondItem="9uh-6y-pWc" secondAttribute="centerY" id="EIu-bK-DcL"/>
+                                    <constraint firstItem="s7C-5t-1bH" firstAttribute="leading" secondItem="9uh-6y-pWc" secondAttribute="leading" id="dbk-oZ-6nE"/>
+                                    <constraint firstItem="ey0-Dw-dot" firstAttribute="centerY" secondItem="9uh-6y-pWc" secondAttribute="centerY" id="trf-ES-Wxw"/>
+                                    <constraint firstAttribute="trailing" secondItem="ey0-Dw-dot" secondAttribute="trailing" constant="8" id="vkq-AL-Ipw"/>
+                                </constraints>
+                                <viewLayoutGuide key="safeArea" id="neJ-ek-XQO"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="9uh-6y-pWc" firstAttribute="bottom" secondItem="C7R-pa-eav" secondAttribute="bottom" id="9ci-CB-nmw"/>
                             <constraint firstItem="C7R-pa-eav" firstAttribute="trailing" secondItem="CqK-y7-n6I" secondAttribute="trailing" id="O9R-eI-Pcj"/>
                             <constraint firstItem="CqK-y7-n6I" firstAttribute="leading" secondItem="C7R-pa-eav" secondAttribute="leading" id="Sfy-jq-wwf"/>
+                            <constraint firstItem="9uh-6y-pWc" firstAttribute="leading" secondItem="C7R-pa-eav" secondAttribute="leading" id="daI-da-BL9"/>
                             <constraint firstItem="C7R-pa-eav" firstAttribute="bottom" secondItem="CqK-y7-n6I" secondAttribute="bottom" id="eke-EF-gWB"/>
+                            <constraint firstItem="9uh-6y-pWc" firstAttribute="trailing" secondItem="C7R-pa-eav" secondAttribute="trailing" id="fQN-gt-AAs"/>
                             <constraint firstItem="CqK-y7-n6I" firstAttribute="top" secondItem="C7R-pa-eav" secondAttribute="top" id="s0v-Ld-ny5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="C7R-pa-eav"/>
@@ -57,6 +106,8 @@
                     <connections>
                         <outlet property="backButton" destination="wFX-ca-CNK" id="VwR-6N-29r"/>
                         <outlet property="containerView" destination="CqK-y7-n6I" id="ibU-Vq-GCk"/>
+                        <outlet property="openOrderButton" destination="s7C-5t-1bH" id="cMX-hH-WVm"/>
+                        <outlet property="toolbar" destination="9uh-6y-pWc" id="de3-3M-5Ku"/>
                         <outlet property="walletSwitcherButton" destination="XeQ-ck-nG5" id="vfs-Ea-phK"/>
                     </connections>
                 </viewController>
