@@ -69,7 +69,7 @@ class dAppBrowserViewModel: NSObject {
             if UserDefaultsManager.theme == .dark {
                 theme = "Dark Mode"
             }
-            let response = dAppProtocol.GetProviderResponse(name: "o3", version: "v1", website: "https://o3.network", compatibility: ["NEP-dapi"], theme: theme)
+            let response = dAppProtocol.GetProviderResponse(name: "o3", version: "v2", website: "https://o3.network", compatibility: ["NEP-dapi"], theme: theme)
             self.delegate?.didFinishMessage(message: message, response: response.dictionary)
             return
         }
@@ -165,7 +165,7 @@ class dAppBrowserViewModel: NSObject {
             selectedAccount = nil
             isConnected = false
             DispatchQueue.global().async {
-                self.delegate?.didFireEvent(name: "DISCONNECT")
+                self.delegate?.didFireEvent(name: "DISCONNECTED")
                 self.delegate?.didFinishMessage(message: message, response: JSONDictionary())
             }
         }
