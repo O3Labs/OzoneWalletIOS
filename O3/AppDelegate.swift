@@ -291,4 +291,13 @@ extension AppDelegate: LoginToNEP6ViewControllerDelegate {
             }
         }
     }
+    // allow universal link to open the app
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        print("Continue User Activity called: ")
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+            let url = userActivity.webpageURL!
+            print(url.absoluteString)
+        }
+        return true
+    }
 }
