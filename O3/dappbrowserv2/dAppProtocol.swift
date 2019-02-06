@@ -431,7 +431,7 @@ class O3DappAPI {
                             let utxo = t.symbol.lowercased() == "neo" ? addressUTXO[p.address]?.getSortedNEOUTXOs() : addressUTXO[p.address]?.getSortedGASUTXOs()
                             if utxo != nil {
                                 for u in utxo! {
-                                    let unspentTx = dAppProtocol.Unspent(n: u.index, txid: u.txid, value: NSDecimalNumber(decimal: u.value).stringValue)
+                                    let unspentTx = dAppProtocol.Unspent(n: u.index, txid: u.txid, value: NSDecimalNumber(decimal: u.value).description(withLocale: Locale(identifier: "en_us")))
                                     unspent.append(unspentTx)
                                 }
                             }
