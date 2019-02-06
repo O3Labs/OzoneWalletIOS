@@ -79,7 +79,5 @@ class TradableAssetSelectorTableViewController: UITableViewController {
             self.delegate?.assetSelected(selected: self.filteredAssets[indexPath.row], data: self.data)
             self.dismiss(animated: true, completion: nil)
         }
-        
     }
-    
 }

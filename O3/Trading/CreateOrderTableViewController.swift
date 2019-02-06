@@ -269,9 +269,9 @@ class CreateOrderViewModel {
         var pair = String(format:"%@_%@", wantAsset.symbol.uppercased(), offerAsset.symbol.uppercased())
         //TODO fix this
         //incase the want asset is NEO meaning selling NEO for something
-        if wantAsset.symbol.uppercased() == "NEO" {
+        /*if wantAsset.symbol.uppercased() == "NEO" {
             pair = String(format:"%@_%@", offerAsset.symbol.uppercased(), wantAsset.symbol.uppercased())
-        }
+        }*/
         
         let side = selectedAction == CreateOrderAction.Buy ? "buy" : "sell"
         let orderType = "limit"
@@ -617,12 +617,8 @@ class CreateOrderTableViewController: UITableViewController {
         
         if viewModel.selectedAction == CreateOrderAction.Sell {
             
-            //if wantAsset is one of the base pairs then we offers everything
-            
-            let oneOftheBasePairs = viewModel.tradingAccount!.switcheo.basePairs.contains { a -> Bool in
-                return a.symbol.uppercased() == viewModel.wantAsset.symbol.uppercased()
-            }
-            if oneOftheBasePairs == true {
+            //Only NEO base pair allows all token
+            if viewModel.offerAsset.symbol.uppercased() == "NEO"{
                 viewModel.tradingAccount!.switcheo.loadSupportedTokens { list in
                     DispatchQueue.main.async {
                         self.showAssetSelector(list: list, target: self.viewModel.offerAsset)

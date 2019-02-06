@@ -522,14 +522,11 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         alert.addAction(buyButton)
         
         //we can't actually sell NEO but rather use NEO to buy other asset
-        if asset.symbol != "NEO" {
-            let sellButton = UIAlertAction(title: "Sell", style: .default) { _ in
-                tradingEvent.shared.startSell(asset: asset.symbol, source: TradingActionSource.asset)
-                self.openCreateOrder(action: CreateOrderAction.Sell, asset: asset)
-            }
-            alert.addAction(sellButton)
+        let sellButton = UIAlertAction(title: "Sell", style: .default) { _ in
+            tradingEvent.shared.startSell(asset: asset.symbol, source: TradingActionSource.asset)
+            self.openCreateOrder(action: CreateOrderAction.Sell, asset: asset)
         }
-        
+        alert.addAction(sellButton)
         
         let withdrawButton = UIAlertAction(title: "Withdraw", style: .default) { _ in
             tradingEvent.shared.startWithdraw(asset: asset.symbol, source: TradingActionSource.asset)

@@ -24,12 +24,13 @@ class dAppMetaDataTableViewCell: UITableViewCell {
     
     
     func setupView() {
-        self.nameLabel?.text = dappMetadata?.title ?? dappMetadata?.url.host
-        if dappMetadata?.iconURL != nil {
-            self.iconImageView?.kf.setImage(with: URL(string: dappMetadata!.iconURL!))
-        } else {
-            self.iconImageView?.image = UIImage(named: "unknown_app")
+        DispatchQueue.main.async {
+            self.nameLabel?.text = self.dappMetadata?.title ?? self.dappMetadata?.url.host
+            if self.dappMetadata?.iconURL != nil {
+                self.iconImageView?.kf.setImage(with: URL(string: self.dappMetadata!.iconURL!))
+            } else {
+                self.iconImageView?.image = UIImage(named: "unknown_app")
+            }
         }
     }
-
 }

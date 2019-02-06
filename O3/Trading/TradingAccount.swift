@@ -46,6 +46,7 @@ extension SwitcheoBalance {
     var basePairs: [TradableAsset]! {
         var bases: [TradableAsset] = [
             TradableAsset(id: "0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b", name: "NEO", symbol: "NEO", decimals: 8, value: "0", precision: 3),
+            TradableAsset(id: "7146278a76c33fc6bb870fcaa428e3cdb16809ac", name: "SDUSD", symbol: "SDUSD", decimals: 8, value: "0", precision: 2),
         ]
         
         for i in bases.indices {
