@@ -190,12 +190,12 @@ class dAppProtocol: NSObject {
             let scriptHash: String = try container.decode(String.self, forKey: .scriptHash)
             let assetIntentOverrides: AssetIntentOverrides? = try? container.decode(AssetIntentOverrides.self, forKey: .assetIntentOverrides)
             let attachedAssets: AttachedAssets? = try? container.decode(AttachedAssets.self, forKey: .attachedAssets)
-            let triggerContractVerification: Bool = try container.decode(Bool.self, forKey: .triggerContractVerification)
+            let triggerContractVerification: Bool? = try? container.decode(Bool.self, forKey: .triggerContractVerification)
             let fee: String = try container.decode(String.self, forKey: .fee)
             let args: [Arg]? = try? container.decode([Arg].self, forKey: .args)
             let network: String = try container.decode(String.self, forKey: .network)
             
-            self.init(operation: operation, scriptHash: scriptHash, assetIntentOverrides: assetIntentOverrides, attachedAssets: attachedAssets, triggerContractVerification: triggerContractVerification, fee: fee, args: args, network: network)
+            self.init(operation: operation, scriptHash: scriptHash, assetIntentOverrides: assetIntentOverrides, attachedAssets: attachedAssets, triggerContractVerification: triggerContractVerification ?? false, fee: fee, args: args, network: network)
         }
         
         struct AssetIntentOverrides: Codable {
@@ -319,46 +319,6 @@ class O3DappAPI {
     func invoke(request: dAppProtocol.InvokeRequest) -> dAppProtocol.InvokeResponse {
         return dAppProtocol.InvokeResponse(txid: "implement this", nodeUrl: "https://o3.network")
     }
-    
-    //this function has been moved to SendRequestTableViewController
-//    func send(wallet: Wallet, request: dAppProtocol.SendRequest) -> (dAppProtocol.SendResponse?, dAppProtocol.errorResponse?) {
-//        let isNative = request.asset.lowercased() == "neo" || request.asset.lowercased() == "gas"
-//        let network = request.network.lowercased().contains("test") ? Network.test : Network.main
-//        var node = AppState.bestSeedNodeURL
-//        if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: network) {
-//            node = bestNode
-//        }
-//        let requestGroup = DispatchGroup()
-//        requestGroup.enter()
-//
-//        var response: dAppProtocol.SendResponse?
-//        var error: dAppProtocol.errorResponse?
-//        if isNative {
-//            let assetID = request.asset.lowercased() == "neo" ? AssetId.neoAssetId : AssetId.gasAssetId
-//            let fm = NumberFormatter()
-//            let amountNumber = fm.number(from: request.amount)
-//            let feeNumber = fm.number(from: request.fee ?? "0")
-//            var attributes:[TransactionAttritbute] = []
-//            if request.remark != nil {
-//                attributes.append(TransactionAttritbute(remark1: request.remark!))
-//                attributes.append(TransactionAttritbute(remark: "O3XDAPI")) //TODO discuss what we should put in
-//            }
-//            wallet.sendAssetTransaction(network: network, seedURL: node, asset: assetID, amount: amountNumber!.doubleValue, toAddress: request.toAddress, attributes: attributes, fee: feeNumber!.doubleValue) { txID, err in
-//                if err != nil {
-//                    error = dAppProtocol.errorResponse(error: err.debugDescription)
-//                    requestGroup.leave()
-//                    return
-//                }
-//                response = dAppProtocol.SendResponse(txid: txID!, nodeUrl: node)
-//                requestGroup.leave()
-//                return
-//            }
-//        }
-//
-//        requestGroup.wait()
-//        return (response, error)
-//    }
-    
     
     func getBalance(request: dAppProtocol.RequestData<[dAppProtocol.GetBalanceRequest]>) -> dAppProtocol.GetBalanceResponse {
         

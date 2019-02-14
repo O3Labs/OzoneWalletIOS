@@ -48,6 +48,10 @@ class dAppBrowserViewModel: NSObject {
         self.delegate?.onSendRequest(message: message, request: request, didCancel: didCancel, onCompleted: onCompleted)
     }
     
+    func requestToInvoke(message: dAppMessage, request: dAppProtocol.InvokeRequest, didCancel: @escaping (_ message: dAppMessage,_ request: dAppProtocol.InvokeRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.InvokeResponse?, _ error: dAppProtocol.errorResponse?) -> Void) {
+        self.delegate?.onInvokeRequest(message: message, request: request, didCancel: didCancel, onCompleted: onCompleted)
+    }
+    
     func responseWithError(message: dAppMessage, error: String) {
         self.delegate?.error(message: message, error: error)
     }
@@ -134,8 +138,14 @@ class dAppBrowserViewModel: NSObject {
                     self.delegate?.error(message: message, error: "Unable to parse the request")
                     return
             }
-            let response = O3DappAPI().invoke(request: request)
-            self.delegate?.didFinishMessage(message: message, response: response.dictionary)
+            self.requestToInvoke(message: message, request: request, didCancel: { m,r in
+                self.delegate?.error(message: message, error: "USER_CANCELLED_INVOKE")
+            }, onCompleted: { response, err in
+                self.delegate?.beginLoading()
+                DispatchQueue.global().async {
+                    self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
+                }
+            })
             return
         }
         

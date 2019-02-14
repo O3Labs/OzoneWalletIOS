@@ -207,7 +207,7 @@ class SendRequestTableViewController: UITableViewController {
             return cell
         }
         
-        if indexPath.section == 1{
+        if indexPath.section == 1 {
             let info = data[indexPath.row]
             if info.key.lowercased() == dataKey.total.rawValue.lowercased()  {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "total-cell") as! SendRequestTableViewCell
@@ -218,7 +218,6 @@ class SendRequestTableViewController: UITableViewController {
                     cell.iconImageView?.kf.setImage(with: URL(string: imageURL))
                 }
                 
-              
     
                 if self.requestedAsset != nil {
                     let fm = NumberFormatter()
@@ -247,7 +246,7 @@ class SendRequestTableViewController: UITableViewController {
                 return cell
             }
             
-            if info.key.lowercased() == dataKey.fee.rawValue.lowercased()  {
+        if info.key.lowercased() == dataKey.fee.rawValue.lowercased()  {
                 //if fee is set by the app and is more than zero we just show the fee here
                 if let fee = info.data as? Double {
                     if fee > 0 {
@@ -395,7 +394,6 @@ class SendRequestTableViewController: UITableViewController {
                 })
             }
         }
-        
     }
 }
 

@@ -18,6 +18,8 @@ protocol dAppBrowserDelegate {
    
     func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.SendResponse?, _ error: dAppProtocol.errorResponse?) -> Void)
     
+    func onInvokeRequest(message: dAppMessage, request: dAppProtocol.InvokeRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.InvokeRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.InvokeResponse?, _ error: dAppProtocol.errorResponse?) -> Void)
+    
     func error(message: dAppMessage, error: String)
     func didFinishMessage(message: dAppMessage, response: Any)
     func didFireEvent(name: String)
@@ -402,6 +404,30 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
             
             vc.onCancel = { m, r in
                 didCancel(m,r)
+            }
+            
+            vc.dappMetadata = self.viewModel.dappMetadata
+            vc.request = request
+        }
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    func onInvokeRequest(message: dAppMessage, request: dAppProtocol.InvokeRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.InvokeRequest) -> Void, onCompleted: @escaping (_ response: dAppProtocol.InvokeResponse?, _ error: dAppProtocol.errorResponse?) -> Void) {
+        
+        
+        let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "InvokeRequestTableViewControllerNav")
+        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+        nav.modalPresentationStyle = .custom
+        nav.transitioningDelegate = self.halfModalTransitioningDelegate
+        if let vc = nav.children.first as? InvokeRequestTableViewController {
+            vc.selectedWallet = self.viewModel.unlockedWallet
+            
+            vc.onCompleted = { response, err in
+                onCompleted(response,err)
+            }
+            
+            vc.onCancel = { m, r in
+                didCancel(m, r)
             }
             
             vc.dappMetadata = self.viewModel.dappMetadata
