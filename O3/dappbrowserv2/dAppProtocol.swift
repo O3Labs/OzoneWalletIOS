@@ -213,7 +213,6 @@ public class dAppProtocol: NSObject {
             let triggerContractVerification: Bool? = try? container.decode(Bool.self, forKey: .triggerContractVerification)
             let fee: String = try container.decode(String.self, forKey: .fee)
             let args: [Arg]? = try! container.decode([Arg].self, forKey: .args)
-            print(args)
             let network: String = try container.decode(String.self, forKey: .network)
             
             self.init(operation: operation, scriptHash: scriptHash, assetIntentOverrides: assetIntentOverrides, attachedAssets: attachedAssets, triggerContractVerification: triggerContractVerification ?? false, fee: fee, args: args, network: network)

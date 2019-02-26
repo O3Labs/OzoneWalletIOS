@@ -143,7 +143,11 @@ class dAppBrowserViewModel: NSObject {
             }, onCompleted: { response, err in
                 self.delegate?.beginLoading()
                 DispatchQueue.global().async {
-                    self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
+                    if err == nil {
+                        self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
+                    } else {
+                        self.delegate?.error(message: message, error: err.debugDescription)
+                    }
                 }
             })
             return
@@ -163,7 +167,11 @@ class dAppBrowserViewModel: NSObject {
             }, onCompleted: { response, err in
                 self.delegate?.beginLoading()
                 DispatchQueue.global().async {
-                    self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
+                    if err == nil {
+                        self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
+                    } else {
+                        self.delegate?.error(message: message, error: err.debugDescription)
+                    }
                 }
             })
             

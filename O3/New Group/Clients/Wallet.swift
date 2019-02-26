@@ -564,9 +564,11 @@ public class Wallet {
     
     public func invokeContract(network: Network, seedURL: String,
                                    invokeRequest: dAppProtocol.InvokeRequest, completion: @escaping(String?, Error?) -> Void) {
+        
+        let remark = String(format: "O3X%@", Date().timeIntervalSince1970.description)
         var customAttributes: [TransactionAttritbute] = []
         customAttributes.append(TransactionAttritbute(script: self.address.hashFromAddress()))
-        let remark = String(format: "O3X%@", Date().timeIntervalSince1970.description)
+        customAttributes.append(TransactionAttritbute(remark: remark))
         
         let scriptBuilder = ScriptBuilder()
         scriptBuilder.pushTypedContractInvoke(scriptHash: invokeRequest.scriptHash, operation: invokeRequest.operation,
@@ -586,7 +588,7 @@ public class Wallet {
             case .failure(let error):
                 completion(nil, error)
             case .success(let response):
-                if response == false {
+                if response == true {
                     completion(txID, nil)
                 } else {
                     completion(nil, InvokeError.invokeFailed)
