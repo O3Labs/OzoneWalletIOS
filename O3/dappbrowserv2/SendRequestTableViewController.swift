@@ -253,12 +253,13 @@ class SendRequestTableViewController: UITableViewController {
                         let cell = tableView.dequeueReusableCell(withIdentifier: "info-cell") as! SendRequestTableViewCell
                         cell.keyLabel.text = String(format:"%@", info.title)
                         cell.valueLabel.text = String(format:"%@ GAS", fee.string(8, removeTrailing: true))
+                        cell.actionButton?.isHidden = true
                         return cell
                     }
                 }
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "fee-cell") as! SendRequestTableViewCell
-                
+                cell.actionButton?.isHidden = false
                 cell.actionButton!.isSelected = self.usePriority!
                 cell.actionButton!.tintColor = self.usePriority! ? Theme.light.accentColor : Theme.light.lightTextColor
                 

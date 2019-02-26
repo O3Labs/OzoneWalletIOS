@@ -575,15 +575,12 @@ public class Wallet {
                                               args: invokeRequest.args ?? [])
         let script = scriptBuilder.rawBytes
         let scriptBytes = [UInt8(script.count)] + script
-        print (script.fullHexString)
         var payload = self.generateGenericInvokeTransactionPayload(script: scriptBytes.fullHexString,
                                                                    attributes: customAttributes, invokeRequest: invokeRequest)
         
         payload.1 += invokeRequest.scriptHash.dataWithHexString().bytes
         let txID = payload.0
         NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
-            print(payload.1.fullHexString)
-            print (result)
             switch result {
             case .failure(let error):
                 completion(nil, error)
