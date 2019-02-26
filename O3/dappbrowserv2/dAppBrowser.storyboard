@@ -940,10 +940,11 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                             <connections>
+                                                <action selector="didTapCancel:" destination="siu-GO-cuH" eventType="touchUpInside" id="2q4-N9-fcA"/>
                                                 <action selector="didTapCancel:" destination="JxT-Qi-2p9" eventType="touchUpInside" id="iOl-EB-49O"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" clipsSubviews="YES" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pts-fV-4BG">
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pts-fV-4BG">
                                             <rect key="frame" x="177.5" y="0.0" width="157.5" height="44"/>
                                             <color key="backgroundColor" name="lightThemeGreen"/>
                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
@@ -956,6 +957,7 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                             <connections>
+                                                <action selector="didTapConfirm:" destination="siu-GO-cuH" eventType="touchUpInside" id="wwu-2Y-GMF"/>
                                                 <action selector="didTapConnect:" destination="JxT-Qi-2p9" eventType="touchUpInside" id="5AK-NQ-IfX"/>
                                             </connections>
                                         </button>
@@ -1118,12 +1120,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="xAz-bO-Xp2"/>
                     <connections>
-                        <segue destination="QeV-Ng-Esb" kind="presentation" identifier="segueToContractDetails" id="XXD-55-OWS"/>
+                        <outlet property="actionContainerView" destination="fJh-j0-IYj" id="RhV-S2-yr5"/>
+                        <outlet property="containerView" destination="BQq-4Z-TKu" id="gg2-e3-9B4"/>
+                        <segue destination="cBj-Hy-zDb" kind="show" identifier="segueToContractDetails" id="Eg9-dQ-B3u"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A4Z-xu-j1N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1412" y="2112"/>
+            <point key="canvasLocation" x="1482" y="2225"/>
         </scene>
         <!--Contract Details Table View Controller-->
         <scene sceneID="NEy-Dc-RjL">
@@ -1224,9 +1228,6 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="cBj-Hy-zDb" kind="relationship" relationship="rootViewController" id="IaX-PH-heL"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pjF-BZ-A89" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

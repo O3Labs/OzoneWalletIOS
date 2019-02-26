@@ -198,7 +198,7 @@ public class Wallet {
     }
 
     func getOuputDataPayload(asset: AssetId, with inputData: Data, runningAmount: Decimal,
-                             toSendAmount: Double, toAddress: String, fee: Double = 0.0) -> (payload: Data, outputCount: UInt8) {
+                             toSendAmount: Double, toScriptHash: String, fee: Double = 0.0) -> (payload: Data, outputCount: UInt8) {
         let needsTwoOutputTransactions =
             runningAmount != (Decimal(toSendAmount) + Decimal(fee))
 
@@ -218,7 +218,7 @@ public class Wallet {
             payload += toByteArray(amountToSendInMemory)
 
             //reciever addressHash
-            payload += toAddress.hashFromAddress().dataWithHexString()
+            payload += toScriptHash.dataWithHexString()
 
             //Transaction To Sender
             payload += asset.rawValue.dataWithHexString().bytes.reversed()
@@ -238,7 +238,7 @@ public class Wallet {
             let amountToSendInMemory = UInt64(amountToSendRounded)
 
             payload += toByteArray(amountToSendInMemory)
-            payload += toAddress.hashFromAddress().dataWithHexString()
+            payload += toScriptHash.dataWithHexString()
         }
         return (Data(bytes: payload), outputCount)
     }
@@ -263,13 +263,13 @@ public class Wallet {
             mainInputData = getInputsNecessaryToSendGas(amount: amount, assets: assets, fee: fee)
             mainOutputData = getOuputDataPayload(asset: asset, with: mainInputData.payload!,
                                                  runningAmount: mainInputData.totalAmount!,
-                                                 toSendAmount: amount, toAddress: toAddress, fee: fee)
+                                                 toSendAmount: amount, toScriptHash: toAddress.hashFromAddress(), fee: fee)
 
         } else {
             mainInputData = getInputsNecessaryToSendNeo(amount: amount, assets: assets)
             mainOutputData = getOuputDataPayload(asset: asset, with: mainInputData.payload!,
                                                  runningAmount: mainInputData.totalAmount!,
-                                                 toSendAmount: amount, toAddress: toAddress, fee: 0)
+                                                 toSendAmount: amount, toScriptHash: toAddress.hashFromAddress(), fee: 0)
             if fee > 0.0 {
                 optionalFeeInputData = getInputsNecessaryToSendGas(amount: 0.00000001, assets: assets, fee: fee)
             }
@@ -279,7 +279,7 @@ public class Wallet {
         if optionalFeeInputData != nil {
             optionalFeeOutputData = getOuputDataPayload(asset: AssetId.gasAssetId, with: (optionalFeeInputData?.payload!)!,
                                                             runningAmount: (optionalFeeInputData?.totalAmount!)!,
-                                                            toSendAmount: 0.00000001, toAddress: self.address, fee: fee)
+                                                            toSendAmount: 0.00000001, toScriptHash: self.address.hashFromAddress(), fee: fee)
         }
 
         let sendPayloadPrefix: [UInt8] = [0x80, 0x00]
@@ -411,7 +411,7 @@ public class Wallet {
         let mainInputData = getInputsNecessaryToSendGas(amount: amount, assets: assets, fee: fee)
         let mainOutputData = getOuputDataPayload(asset: AssetId.gasAssetId, with: mainInputData.payload!,
                             runningAmount: mainInputData.totalAmount!,
-                            toSendAmount: amount, toAddress: self.address, fee: fee)
+                            toSendAmount: amount, toScriptHash: self.address.hashFromAddress(), fee: fee)
 
         let payloadPrefix = [0xd1, 0x00] + script.dataWithHexString().bytes
 
@@ -431,6 +431,64 @@ public class Wallet {
         let txid = self.unsignedPayloadToTransactionId(rawTransactionData)
         return (txid, finalPayload)
     }
+    
+    private func generateGenericInvokeTransactionPayload(assets: Assets? = nil, script: String, attributes: [TransactionAttritbute]?, invokeRequest: dAppProtocol.InvokeRequest) -> (String, Data) {
+        var error: NSError?
+        var gasAmount = 0.00000001
+        var neoAmount = 0.0
+        
+        //everything will always be in the format where double is period
+        if let attachedGas = invokeRequest.attachedAssets?.gas {
+            gasAmount = Double(attachedGas)!
+        }
+        
+        if let attachedNeo = invokeRequest.attachedAssets?.neo {
+            neoAmount = Double(attachedNeo)!
+        }
+    
+        let gasInputData = getInputsNecessaryToSendGas(amount: gasAmount, assets: assets, fee: Double(invokeRequest.fee) ?? 0)
+        
+        var neoInputData: (totalAmount: Decimal?, inputCount: UInt8?, payload: Data?, error: Error?)? = nil
+        if neoAmount > 0 {
+            neoInputData = getInputsNecessaryToSendNeo(amount: neoAmount, assets: assets)
+        }
+        
+        var neoOutputData: (payload: Data, outputCount: UInt8)?
+        if neoInputData != nil {
+            neoOutputData = getOuputDataPayload(asset: AssetId.neoAssetId, with: neoInputData!.payload!,
+                                                     runningAmount: neoInputData!.totalAmount!,
+                                                     toSendAmount: neoAmount, toScriptHash: invokeRequest.scriptHash, fee: Double(invokeRequest.fee) ?? 0)
+        }
+        
+        var gasOutputData: (payload: Data, outputCount: UInt8)?
+        if gasInputData.payload != nil {
+            gasOutputData = getOuputDataPayload(asset: AssetId.gasAssetId, with: gasInputData.payload!,
+                                                    runningAmount: gasInputData.totalAmount!,
+                                                    toSendAmount: gasAmount, toScriptHash: invokeRequest.scriptHash, fee: Double(invokeRequest.fee) ?? 0)
+        }
+        
+        let totalInputCount = (neoInputData?.inputCount ?? 0) + (gasInputData.inputCount ?? 0)
+        let finalInputPayload = (neoInputData?.payload ?? Data()) + (gasInputData.payload ?? Data())
+        
+        let finalOutputCount = (neoOutputData?.outputCount ?? 0) + (gasOutputData?.outputCount ?? 0)
+        let finalOutputPayload = (neoOutputData?.payload ?? Data()) + (gasOutputData?.payload ?? Data())
+        
+        let payloadPrefix = [0xd1, 0x00] + script.dataWithHexString().bytes
+        let attributesPayload = getAttributesPayload(attributes: attributes)
+        var rawTransaction = payloadPrefix + attributesPayload
+        rawTransaction += [totalInputCount] + finalInputPayload.bytes +
+            [finalOutputCount] + finalOutputPayload.bytes
+        
+        print(rawTransaction.fullHexString)
+        let rawTransactionData = Data(bytes: rawTransaction)
+        
+        let signatureData = NeoutilsSign(rawTransactionData, privateKey.fullHexString, &error)
+        let finalPayload = concatenatePayloadData(txData: rawTransactionData, signatureData: signatureData!)
+        //hash unsigned tx to get txid
+        let txid = self.unsignedPayloadToTransactionId(rawTransactionData)
+        return (txid, finalPayload)
+    }
+    
 
     private func buildNEP5TransferScript(scriptHash: String, decimals: Int, fromAddress: String,
                                          toAddress: String, amount: Double) -> [UInt8] {
@@ -499,26 +557,40 @@ public class Wallet {
             }
         }
     }
-
-    public func participateTokenSales(network: Network, seedURL: String, scriptHash: String, assetID: String, amount: Float64, remark: String, networkFee: Float64, completion: @escaping(Bool?, String, Error?) -> Void) {
-
-        var networkString = "main"
-        if network == .test {
-            networkString = "test"
-        }
-        var error: NSError?
-
-        let payload = NeoutilsMintTokensRawTransactionMobile(networkString, scriptHash, self.wif, assetID, amount, remark, networkFee, &error)
-        if payload == nil {
-            completion(false, "", error)
-            return
-        }
-        NeoClient(seed: seedURL).sendRawTransaction(with: payload!.data()) { (result) in
+    
+    enum InvokeError: Error {
+        case invokeFailed
+    }
+    
+    public func invokeContract(network: Network, seedURL: String,
+                                   invokeRequest: dAppProtocol.InvokeRequest, completion: @escaping(String?, Error?) -> Void) {
+        var customAttributes: [TransactionAttritbute] = []
+        customAttributes.append(TransactionAttritbute(script: self.address.hashFromAddress()))
+        let remark = String(format: "O3X%@", Date().timeIntervalSince1970.description)
+        
+        let scriptBuilder = ScriptBuilder()
+        scriptBuilder.pushTypedContractInvoke(scriptHash: invokeRequest.scriptHash, operation: invokeRequest.operation,
+                                              args: invokeRequest.args ?? [])
+        let script = scriptBuilder.rawBytes
+        let scriptBytes = [UInt8(script.count)] + script
+        print (script.fullHexString)
+        var payload = self.generateGenericInvokeTransactionPayload(script: scriptBytes.fullHexString,
+                                                                   attributes: customAttributes, invokeRequest: invokeRequest)
+        
+        payload.1 += invokeRequest.scriptHash.dataWithHexString().bytes
+        let txID = payload.0
+        NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
+            print(payload.1.fullHexString)
+            print (result)
             switch result {
             case .failure(let error):
-                completion(nil, "", error)
+                completion(nil, error)
             case .success(let response):
-                completion(response, payload!.txid(), nil)
+                if response == false {
+                    completion(txID, nil)
+                } else {
+                    completion(nil, InvokeError.invokeFailed)
+                }
             }
         }
     }

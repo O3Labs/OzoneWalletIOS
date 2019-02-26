@@ -21,11 +21,18 @@ class InvokeRequestTableViewController: UITableViewController {
     var onCancel: ((_ message: dAppMessage, _ request: dAppProtocol.InvokeRequest)->())?
     var onCompleted: ((_ response: dAppProtocol.InvokeResponse?, _ error: dAppProtocol.errorResponse?)->())?
     
+    let activityView = dAppActivityView(frame: CGRect.zero)
     var usePriority: Bool! = false
     
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var actionContainerView: UIStackView!
+    
+    var message: dAppMessage!
     var selectedWallet: Wallet! = nil
     var dappMetadata: dAppMetadata! = nil
     var request: dAppProtocol.InvokeRequest! = nil
+    
+    
     
     var data: [info]! = []
     
@@ -168,11 +175,81 @@ class InvokeRequestTableViewController: UITableViewController {
         return cell!
     }
     
+    func loadActivityView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.activityView.frame = self.actionContainerView!.bounds
+            self.actionContainerView?.alpha = 0
+            self.containerView?.addSubview(self.activityView)
+            self.activityView.beginLoading()
+        }) { completed in
+            
+        }
+        
+    }
+    
+    //todo
+    func invoke() -> (dAppProtocol.InvokeResponse?, dAppProtocol.errorResponse?) {
+        let requestGroup = DispatchGroup()
+        requestGroup.enter()
+        var response: dAppProtocol.InvokeResponse?
+        var error: dAppProtocol.errorResponse?
+        self.selectedWallet.invokeContract(network: AppState.network, seedURL: AppState.bestSeedNodeURL, invokeRequest: request) { txId, err in
+            if err != nil {
+                error = dAppProtocol.errorResponse(error: err.debugDescription)
+                requestGroup.leave()
+                return
+            }
+            response = dAppProtocol.InvokeResponse(txid: txId!, nodeUrl: AppState.bestSeedNodeURL)
+            requestGroup.leave()
+            return
+        }
+        requestGroup.wait()
+        return (response, error)
+    }
+    
+    
+    @IBAction func didTapConfirm(_ sender: Any) {
+        DispatchQueue.main.async {
+            self.loadActivityView()
+        }
+        
+        //override it if dapp doesn't set the fee and user checked the priority
+        let fm = NumberFormatter()
+        if fm.number(from: request.fee) == 0  {
+            request.fee = self.usePriority! ? "0.0011" : "0"
+        }
+        
+        //perform send here
+        DispatchQueue.global(qos: .userInitiated).async {
+            //todo
+            let (response,err) = self.invoke()
+            DispatchQueue.main.async {
+                let generator = UINotificationFeedbackGenerator()
+                if err == nil {
+                    generator.notificationOccurred(.success)
+                } else {
+                    generator.notificationOccurred(.error)
+                }
+                
+                self.activityView.success()
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.5, execute: {
+                    self.onCompleted?(response,err)
+                    self.dismiss(animated: true, completion: nil)
+                })
+            }
+        }
+    }
+    
+    @IBAction func didTapCancel(_ sender: Any) {
+        onCancel?(message, request)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let dest = segue.destination as? UINavigationController,
-            let detailsContoller = dest.children[0] as? ContractDetailsTableViewController else {
+        guard let detailsContoller = segue.destination as? ContractDetailsTableViewController else {
                 fatalError("Invalid Segue Performed")
         }
+        
         detailsContoller.scriptHash = request.scriptHash
         if request.attachedAssets != nil {
             detailsContoller.attachedAssets =

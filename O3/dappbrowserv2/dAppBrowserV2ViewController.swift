@@ -421,7 +421,7 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         nav.transitioningDelegate = self.halfModalTransitioningDelegate
         if let vc = nav.children.first as? InvokeRequestTableViewController {
             vc.selectedWallet = self.viewModel.unlockedWallet
-            
+            vc.message = message
             vc.onCompleted = { response, err in
                 onCompleted(response,err)
             }

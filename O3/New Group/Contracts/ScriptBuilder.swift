@@ -68,6 +68,14 @@ public class ScriptBuilder {
         pushInt(arrayValue.count)
         pushOPCode(.PACK)
     }
+    
+    private func pushTypedArray(_ arrayValue: [dAppProtocol.Arg?]) {
+        for elem in arrayValue {
+            pushTypedData(elem)
+        }
+        pushInt(arrayValue.count)
+        pushOPCode(.PACK)
+    }
 
     public func resetScript() {
         rawBytes.removeAll()
@@ -88,10 +96,57 @@ public class ScriptBuilder {
             fatalError("Unsupported Data Type Pushed on stack")
         }
     }
+    
+    public func pushTypedData(_ data: dAppProtocol.Arg?) {
+        guard let unwrappedData = data else {
+            pushBool(false)
+            return
+        }
+        let type = unwrappedData.type.lowercased()
+        if type == "string" || type == "hash160" {
+            pushHexString(unwrappedData.value.toHexString())
+        } else if type == "address" {
+            pushHexString(unwrappedData.value.hashFromAddress())
+        } else if type == "boolean" {
+            pushBool(NSString(string: unwrappedData.value).boolValue)
+        }  else if type == "integer" {
+            pushInt(Int(unwrappedData.value)!)
+        } else if type == "bytearray" {
+            pushHexString(unwrappedData.value)
+        } else if type == "array" {
+            let decoder = JSONDecoder()
+            let responseData = try? JSONSerialization.data(withJSONObject: unwrappedData.value as Any, options: .prettyPrinted)
+            let array = try! decoder.decode([dAppProtocol.Arg?].self, from: responseData!)
+            pushTypedArray(array)
+        }
+    }
 
     public func pushContractInvoke(scriptHash: String, operation: String? = nil, args: Any? = nil, useTailCall: Bool = false) {
         pushData(args)
 
+        if let operation = operation {
+            let hex = operation.unicodeScalars.filter { $0.isASCII }.map { String(format: "%X", $0.value) }.joined()
+            pushData(hex)
+        }
+        if scriptHash.count != 40 {
+            fatalError("Attempting to invoke invalid contract")
+        }
+        if useTailCall {
+            pushOPCode(.TAILCALL)
+        } else {
+            pushOPCode(.APPCALL)
+            let toAppendBytes = scriptHash.dataWithHexString().bytes.reversed()
+            rawBytes += toAppendBytes
+        }
+    }
+    
+    public func pushTypedContractInvoke(scriptHash: String, operation: String? = nil, args: [dAppProtocol.Arg?], useTailCall: Bool = false) {
+        if (!args.isEmpty) {
+            pushTypedArray(args.reversed())
+        } else {
+            pushBool(false)
+        }
+        
         if let operation = operation {
             let hex = operation.unicodeScalars.filter { $0.isASCII }.map { String(format: "%X", $0.value) }.joined()
             pushData(hex)
