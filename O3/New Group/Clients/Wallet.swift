@@ -575,20 +575,48 @@ public class Wallet {
                                               args: invokeRequest.args ?? [])
         let script = scriptBuilder.rawBytes
         let scriptBytes = [UInt8(script.count)] + script
-        var payload = self.generateGenericInvokeTransactionPayload(script: scriptBytes.fullHexString,
-                                                                   attributes: customAttributes, invokeRequest: invokeRequest)
         
-        payload.1 += invokeRequest.scriptHash.dataWithHexString().bytes
-        let txID = payload.0
-        NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
-            switch result {
-            case .failure(let error):
-                completion(nil, error)
-            case .success(let response):
-                if response == true {
-                    completion(txID, nil)
-                } else {
-                    completion(nil, InvokeError.invokeFailed)
+        
+        if Double(invokeRequest.fee) == 0.0 && invokeRequest.attachedAssets?.neo == nil && invokeRequest.attachedAssets?.gas == nil {
+            var payload = self.generateGenericInvokeTransactionPayload(assets: nil, script: scriptBytes.fullHexString,
+                                                                       attributes: customAttributes, invokeRequest: invokeRequest)
+            
+            payload.1 += invokeRequest.scriptHash.dataWithHexString().bytes
+            let txID = payload.0
+            NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
+                switch result {
+                case .failure(let error):
+                    completion(nil, error)
+                case .success(let response):
+                    if response == true {
+                        completion(txID, nil)
+                    } else {
+                        completion(nil, InvokeError.invokeFailed)
+                    }
+                }
+            }
+        } else {
+            O3APIClient(network: network).getUTXO(for: self.address) { result in
+                switch result {
+                case .failure(let error):
+                    completion(nil, error)
+                case .success(let assets):
+                    var payload = self.generateGenericInvokeTransactionPayload(assets: assets, script: scriptBytes.fullHexString,
+                                                                               attributes: customAttributes, invokeRequest: invokeRequest)
+                    payload.1 += invokeRequest.scriptHash.dataWithHexString().bytes
+                    let txID = payload.0
+                    NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
+                        switch result {
+                        case .failure(let error):
+                            completion(nil, error)
+                        case .success(let response):
+                            if response == true {
+                                completion(txID, nil)
+                            } else {
+                                completion(nil, InvokeError.invokeFailed)
+                            }
+                        }
+                    }
                 }
             }
         }
