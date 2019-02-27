@@ -172,14 +172,14 @@ class SendReviewTableViewController: UITableViewController {
                 if self.feeEnabled {
                  fee = 0.0011
                 }
-                Authenticated.wallet?.sendNep5Token(network: AppState.network, seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, decimals: self.selectedAsset!.decimals, amount: amount, toAddress: toAddress, fee: fee) { (completed, _ , txID) in
+                Authenticated.wallet?.sendNep5Token(network: AppState.network, seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, decimals: self.selectedAsset!.decimals, amount: amount, toAddress: toAddress, fee: fee) { (txid, error) in
                         O3HUD.stop {
-                            self.transactionCompleted = completed ?? false
+                            self.transactionCompleted = txid != nil
                             Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
                                                                                                "amount": amount])
                             if self.transactionCompleted == true {
-                                self.txId = txID!
-                                self.savePendingTransaction(blockchain: "neo", txID: txID!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
+                                self.txId = txid!
+                                self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
                                 self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                             }
                         }
