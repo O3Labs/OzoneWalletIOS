@@ -147,8 +147,8 @@ public class dAppProtocol: NSObject {
     }
     
     public struct Arg: Codable {
-        let type: String
-        let value: String
+        var type: String
+        var value: String
         
         enum CodingKeys: String, CodingKey {
             case type
@@ -167,6 +167,11 @@ public class dAppProtocol: NSObject {
                     throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: container.codingPath, debugDescription: "Not a JSON"))
                 }
             }
+        }
+        
+        public init(type: String, value: String) {
+            self.type = type
+            self.value = value
         }
     }
     

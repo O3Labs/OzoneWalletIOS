@@ -200,7 +200,7 @@ public class Wallet {
     func getOuputDataPayload(asset: AssetId, with inputData: Data, runningAmount: Decimal,
                              toSendAmount: Double, toScriptHash: String, fee: Double = 0.0) -> (payload: Data, outputCount: UInt8) {
         let needsTwoOutputTransactions =
-            runningAmount != (Decimal(toSendAmount) + Decimal(fee))
+            (runningAmount != (Decimal(toSendAmount) + Decimal(fee))) && toSendAmount > 0
 
         var outputCount: UInt8
         var payload: [UInt8] = []
@@ -230,13 +230,24 @@ public class Wallet {
             payload += toByteArray(amountToGetBackInMemory)
             payload += hashedSignature.bytes
 
+            //we just paying fee and want to return everything back to ourselves
+        } else if toSendAmount == 0.0 {
+            outputCount = 1
+            payload += asset.rawValue.dataWithHexString().bytes.reversed()
+            let runningAmountRounded = round(NSDecimalNumber(decimal: runningAmount * pow(10, 8)).doubleValue)
+            let feeRounded = round(fee * pow(10, 8))
+            let amountToGetBack = runningAmountRounded - feeRounded
+            let amountToGetBackInMemory = UInt64(amountToGetBack)
+            
+            payload += toByteArray(amountToGetBackInMemory)
+            payload += hashedSignature.bytes
         } else {
             outputCount = 1
             payload += asset.rawValue.dataWithHexString().bytes.reversed()
             let amountToSend = toSendAmount * pow(10, 8)
             let amountToSendRounded = round(amountToSend)
             let amountToSendInMemory = UInt64(amountToSendRounded)
-
+            
             payload += toByteArray(amountToSendInMemory)
             payload += toScriptHash.dataWithHexString()
         }
@@ -403,38 +414,10 @@ public class Wallet {
             }
         }
     }
-
-    private func generateInvokeTransactionPayload(assets: Assets? = nil, script: String, contractAddress: String, attributes: [TransactionAttritbute]?, fee: Double = 0.0) -> (String, Data) {
-        var error: NSError?
-        let amount = 0.00000001
-
-        let mainInputData = getInputsNecessaryToSendGas(amount: amount, assets: assets, fee: fee)
-        let mainOutputData = getOuputDataPayload(asset: AssetId.gasAssetId, with: mainInputData.payload!,
-                            runningAmount: mainInputData.totalAmount!,
-                            toSendAmount: amount, toScriptHash: self.address.hashFromAddress(), fee: fee)
-
-        let payloadPrefix = [0xd1, 0x00] + script.dataWithHexString().bytes
-
-        let attributesPayload = getAttributesPayload(attributes: attributes)
-
-        var rawTransaction = payloadPrefix + attributesPayload
-
-        rawTransaction += [mainInputData.inputCount!] + mainInputData.payload!.bytes +
-            [mainOutputData.outputCount] + mainOutputData.payload.bytes
-
-        print(rawTransaction.fullHexString)
-        let rawTransactionData = Data(bytes: rawTransaction)
-
-        let signatureData = NeoutilsSign(rawTransactionData, privateKey.fullHexString, &error)
-        let finalPayload = concatenatePayloadData(txData: rawTransactionData, signatureData: signatureData!)
-        //hash unsigned tx to get txid
-        let txid = self.unsignedPayloadToTransactionId(rawTransactionData)
-        return (txid, finalPayload)
-    }
     
     private func generateGenericInvokeTransactionPayload(assets: Assets? = nil, script: String, attributes: [TransactionAttritbute]?, invokeRequest: dAppProtocol.InvokeRequest) -> (String, Data) {
         var error: NSError?
-        var gasAmount = 0.00000001
+        var gasAmount = 0.0
         var neoAmount = 0.0
         
         //everything will always be in the format where double is period
@@ -502,61 +485,6 @@ public class Wallet {
         let script = scriptBuilder.rawBytes
         return [UInt8(script.count)] + script
     }
-
-    public func sendNep5Token(network: Network, seedURL: String, tokenContractHash: String, decimals: Int, amount: Double, toAddress: String,
-                              attributes: [TransactionAttritbute]? = nil, fee: Double = 0.0, completion: @escaping(Bool?, Error?, String?) -> Void) {
-
-        var customAttributes: [TransactionAttritbute] = []
-        customAttributes.append(TransactionAttritbute(script: self.address.hashFromAddress()))
-        let remark = String(format: "O3X%@", Date().timeIntervalSince1970.description)
-        customAttributes.append(TransactionAttritbute(remark: remark))
-        customAttributes.append(TransactionAttritbute(descriptionHex: tokenContractHash))
-
-        //send nep5 token without using utxo
-        let scriptBytes = self.buildNEP5TransferScript(scriptHash: tokenContractHash, decimals: decimals,
-                                                       fromAddress: self.address, toAddress: toAddress, amount: amount)
-
-        if fee == 0 {
-            var payload = self.generateInvokeTransactionPayload(script: scriptBytes.fullHexString,
-                                                                contractAddress: tokenContractHash, attributes: customAttributes, fee: fee)
-            payload.1 += tokenContractHash.dataWithHexString().bytes
-            #if DEBUG
-            print(payload.1.fullHexString)
-            #endif
-            let txID = payload.0
-            NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
-                switch result {
-                case .failure(let error):
-                    completion(nil, error, txID)
-                case .success(let response):
-                    completion(response, nil, txID)
-                }
-            }
-        } else {
-            O3APIClient(network: network).getUTXO(for: self.address) { result in
-                switch result {
-                case .failure(let error):
-                    completion(nil, error, nil)
-                case .success(let assets):
-                    var payload = self.generateInvokeTransactionPayload(assets: assets, script: scriptBytes.fullHexString,
-                                                                    contractAddress: tokenContractHash, attributes: customAttributes, fee: fee)
-                    payload.1 += tokenContractHash.dataWithHexString().bytes
-                    let txID = payload.0
-                    #if DEBUG
-                    print(payload.1.fullHexString)
-                    #endif
-                    NeoClient(seed: seedURL).sendRawTransaction(with: payload.1) { (result) in
-                        switch result {
-                        case .failure(let error):
-                            completion(nil, error, txID)
-                        case .success(let response):
-                            completion(response, nil, txID)
-                        }
-                    }
-                }
-            }
-        }
-    }
     
     enum InvokeError: Error {
         case invokeFailed
@@ -564,9 +492,9 @@ public class Wallet {
     
     public func invokeContract(network: Network, seedURL: String,
                                    invokeRequest: dAppProtocol.InvokeRequest, completion: @escaping(String?, Error?) -> Void) {
-        
-        let remark = String(format: "O3X%@", Date().timeIntervalSince1970.description)
+
         var customAttributes: [TransactionAttritbute] = []
+        let remark = String(format: "O3X%@", Date().timeIntervalSince1970.description)
         customAttributes.append(TransactionAttritbute(script: self.address.hashFromAddress()))
         customAttributes.append(TransactionAttritbute(remark: remark))
         
@@ -620,5 +548,20 @@ public class Wallet {
                 }
             }
         }
+    }
+    
+    public func sendNep5Token(network: Network, seedURL: String, tokenContractHash: String, decimals: Int, amount: Double, toAddress: String,
+                              attributes: [TransactionAttritbute]? = nil, fee: Double = 0.0, completion: @escaping(String?, Error?) -> Void) {
+        
+        let amountToSend = Int(amount * pow(10, Double(decimals)))
+        let args:[dAppProtocol.Arg] = [dAppProtocol.Arg(type: "address", value: self.address),
+                                       dAppProtocol.Arg(type: "address", value: toAddress),
+                                       dAppProtocol.Arg(type: "integer", value: String(amountToSend))]
+        
+        
+        let invokeRequest = dAppProtocol.InvokeRequest(operation: "transfer", scriptHash: tokenContractHash, assetIntentOverrides: nil,
+                                                       attachedAssets: nil, triggerContractVerification: false, fee: String(fee),
+                                                       args: args, network: network.rawValue)
+        invokeContract(network: network, seedURL: seedURL, invokeRequest: invokeRequest, completion: completion)
     }
 }
