@@ -101,6 +101,7 @@ public class NeoClient {
         case getMemPool = "getrawmempool"
         case getStorage = "getstorage"
         case invokefunction = "invokefunction"
+        case getContractState = "getcontractstate"
     }
     
     public init(seed: String) {
@@ -185,6 +186,26 @@ public class NeoClient {
                     return
                 }
                 let result = NeoClientResult.success(mempool.count)
+                completion(result)
+            }
+        }
+    }
+    
+    public func getContractState(scriptHash: String, completion: @escaping(NeoClientResult<ContractState>) -> Void) {
+        sendJSONRPCRequest(.getContractState, params: [scriptHash]) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                
+                let decoder = JSONDecoder()
+                guard let dictionary = response["result"] as? JSONDictionary,
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary as Any, options: .prettyPrinted),
+                    let decoded = try? decoder.decode(ContractState.self, from: data) else {
+                        completion(.failure(.invalidData))
+                        return
+                }
+                let result = NeoClientResult.success(decoded)
                 completion(result)
             }
         }

@@ -277,7 +277,6 @@ extension AppDelegate: LoginToNEP6ViewControllerDelegate {
                 let marketplace = marketplaceNav.children[0] as? MarketplaceController else {
                 return
             }
-            marketplace.startAtTokenSale = true
         }
     }
 
