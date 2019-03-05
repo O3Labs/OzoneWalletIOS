@@ -171,13 +171,6 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
         return cell
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let dest = segue.destination as? PrivateKeyCreationViewController else {
-            return
-        }
-        dest.wif = (Wallet()?.wif)!
-    }
-
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }

@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,45 +30,71 @@
                         <constraint firstAttribute="height" constant="1" id="Ihw-p7-qUx"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftV-cz-eoU" customClass="ShadowedButton" customModule="O3" customModuleProvider="target">
-                    <rect key="frame" x="16" y="349" width="343" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="1dQ-Gv-Lbr"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
-                    <state key="normal" title="Button">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RFk-QK-Jqx">
+                    <rect key="frame" x="212" y="361" width="79" height="24"/>
+                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
+                    <inset key="imageEdgeInsets" minX="-16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Button" image="ic_qr_orange">
+                        <color key="titleColor" name="lightThemeOrange"/>
                     </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="22"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="buttonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="AUG-fm-GyE"/>
+                        <action selector="rightButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="7XH-Ez-AtL"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yi5-j5-Ua0">
+                    <rect key="frame" x="92.5" y="361" width="79" height="24"/>
+                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
+                    <inset key="imageEdgeInsets" minX="-16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Button" image="ic_credit_card_green">
+                        <color key="titleColor" name="lightThemeGreen"/>
+                    </state>
+                    <connections>
+                        <action selector="leftButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="F8T-0b-vZf"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S0H-7b-ORW">
+                    <rect key="frame" x="187.5" y="355" width="0.5" height="36"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="0.5" id="8wr-QD-UCp"/>
+                        <constraint firstAttribute="height" constant="36" id="w4E-Q0-LVB"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="QHi-Li-1Bm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="7Yy-vf-w6J"/>
                 <constraint firstItem="dl1-Vp-gyP" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Fhz-9h-YgM"/>
+                <constraint firstItem="Yi5-j5-Ua0" firstAttribute="centerY" secondItem="S0H-7b-ORW" secondAttribute="centerY" id="Mah-sB-fzp"/>
                 <constraint firstItem="QHi-Li-1Bm" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="MiF-Np-Clt"/>
                 <constraint firstItem="QHi-Li-1Bm" firstAttribute="top" secondItem="dl1-Vp-gyP" secondAttribute="bottom" constant="4" id="Mtw-dB-e4K"/>
+                <constraint firstItem="RFk-QK-Jqx" firstAttribute="centerY" secondItem="S0H-7b-ORW" secondAttribute="centerY" id="YMi-Ot-QLc"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dl1-Vp-gyP" secondAttribute="trailing" constant="16" id="aH8-Kd-ljz"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ftV-cz-eoU" secondAttribute="trailing" constant="16" id="cX2-Lu-aGx"/>
                 <constraint firstItem="dl1-Vp-gyP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="daz-M6-WbF"/>
+                <constraint firstItem="S0H-7b-ORW" firstAttribute="leading" secondItem="Yi5-j5-Ua0" secondAttribute="trailing" constant="16" id="h77-bQ-t0H"/>
                 <constraint firstItem="QHi-Li-1Bm" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="hoS-bU-ONS"/>
-                <constraint firstItem="ftV-cz-eoU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="n50-b8-rsy"/>
-                <constraint firstItem="ftV-cz-eoU" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="oIj-ui-WNt"/>
-                <constraint firstItem="ftV-cz-eoU" firstAttribute="top" secondItem="QHi-Li-1Bm" secondAttribute="bottom" constant="5" id="sVG-cu-kc6"/>
+                <constraint firstItem="S0H-7b-ORW" firstAttribute="top" secondItem="dl1-Vp-gyP" secondAttribute="bottom" constant="16" id="iQh-pQ-9xg"/>
+                <constraint firstItem="RFk-QK-Jqx" firstAttribute="leading" secondItem="S0H-7b-ORW" secondAttribute="trailing" constant="24" id="qmk-eK-1bj"/>
+                <constraint firstItem="S0H-7b-ORW" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="xez-bh-siy"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="emptyActionButton" destination="ftV-cz-eoU" id="Huy-e3-lBh"/>
+                <outlet property="dividerLine" destination="S0H-7b-ORW" id="GYY-1O-YRg"/>
                 <outlet property="emptyLabel" destination="dl1-Vp-gyP" id="SWO-Yt-8G4"/>
+                <outlet property="leftActionButton" destination="Yi5-j5-Ua0" id="EKG-aU-TMW"/>
+                <outlet property="rightActionButton" destination="RFk-QK-Jqx" id="ONz-NK-wpM"/>
             </connections>
             <point key="canvasLocation" x="144.80000000000001" y="137.18140929535232"/>
         </view>
     </objects>
+    <resources>
+        <image name="ic_credit_card_green" width="24" height="24"/>
+        <image name="ic_qr_orange" width="24" height="24"/>
+        <namedColor name="lightThemeGreen">
+            <color red="0.49411764705882355" green="0.82745098039215681" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="lightThemeOrange">
+            <color red="0.96078431372549022" green="0.65098039215686276" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
 </document>

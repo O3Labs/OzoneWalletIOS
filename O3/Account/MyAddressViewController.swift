@@ -80,7 +80,8 @@ class MyAddressViewController: UIViewController {
         setLocalizedStrings()
         configureView()
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
-        self.view.addGestureRecognizer(tap)
+        self.qrImageView.isUserInteractionEnabled = true
+        self.qrImageView.addGestureRecognizer(tap)
         
         O3APIClient(network: AppState.network).reverseDomainLookup(address: (Authenticated.wallet?.address)!) { result in
             switch result {

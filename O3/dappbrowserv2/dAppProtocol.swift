@@ -18,7 +18,7 @@ extension Encodable {
     }
 }
 
-class dAppProtocol: NSObject {
+public class dAppProtocol: NSObject {
     
     static let availableCommands: [String] = ["getProvider",
                                               "getNetworks",
@@ -27,6 +27,7 @@ class dAppProtocol: NSObject {
                                               "getStorage",
                                               "invokeRead",
                                               "invoke",
+                                              "disconnect",
                                               "send"]
     
     static let needAuthorizationCommands: [String] = ["getAccount", "getAddress", "invoke", "send"]
@@ -41,19 +42,22 @@ class dAppProtocol: NSObject {
         let name: String
         let version: String
         let website: String
+        let extra: [String: String]
         
         enum CodingKeys: String, CodingKey {
             case compatibility = "platform"
             case name = "name"
             case version = "version"
             case website = "website"
+            case extra = "extra"
         }
         
-        init(name: String, version: String, website: String, compatibility: [String]) {
+        init(name: String, version: String, website: String, compatibility: [String], theme: String) {
             self.name = name
             self.version = version
             self.website = website
             self.compatibility = compatibility
+            self.extra = ["theme": theme]
         }
     }
     
@@ -142,19 +146,44 @@ class dAppProtocol: NSObject {
         let network: String
     }
     
-    struct Arg: Codable {
-        let type, value: String
+    public struct Arg: Codable {
+        var type: String
+        var value: String
+        
+        enum CodingKeys: String, CodingKey {
+            case type
+            case value
+        }
+        
+        public init(from decoder: Decoder) throws {
+            do {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                type = try! container.decode(String.self, forKey: .type)
+                if let stringProperty = try? container.decode(String.self, forKey: .value) {
+                    value = stringProperty
+                } else if let intProperty = try? container.decode(Int.self, forKey: .value) {
+                    value = String(intProperty)
+                } else {
+                    throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: container.codingPath, debugDescription: "Not a JSON"))
+                }
+            }
+        }
+        
+        public init(type: String, value: String) {
+            self.type = type
+            self.value = value
+        }
     }
     
     typealias InvokeReadResponse = JSONDictionary
 
     
-    struct InvokeRequest: Codable {
+    public struct InvokeRequest: Codable {
         let operation, scriptHash: String
         let assetIntentOverrides: AssetIntentOverrides?
         let attachedAssets: AttachedAssets?
         let triggerContractVerification: Bool
-        let fee: String
+        var fee: String
         let args: [Arg]?
         let network: String
         
@@ -180,18 +209,18 @@ class dAppProtocol: NSObject {
             self.network = network
         }
         //this is here to validate type. sometime developers could send in a wrong type. e.g. args:"" and Swift won't parse it properly and throw an error
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let operation: String = try container.decode(String.self, forKey: .operation)
             let scriptHash: String = try container.decode(String.self, forKey: .scriptHash)
             let assetIntentOverrides: AssetIntentOverrides? = try? container.decode(AssetIntentOverrides.self, forKey: .assetIntentOverrides)
             let attachedAssets: AttachedAssets? = try? container.decode(AttachedAssets.self, forKey: .attachedAssets)
-            let triggerContractVerification: Bool = try container.decode(Bool.self, forKey: .triggerContractVerification)
+            let triggerContractVerification: Bool? = try? container.decode(Bool.self, forKey: .triggerContractVerification)
             let fee: String = try container.decode(String.self, forKey: .fee)
-            let args: [Arg]? = try? container.decode([Arg].self, forKey: .args)
+            let args: [Arg]? = try! container.decode([Arg].self, forKey: .args)
             let network: String = try container.decode(String.self, forKey: .network)
             
-            self.init(operation: operation, scriptHash: scriptHash, assetIntentOverrides: assetIntentOverrides, attachedAssets: attachedAssets, triggerContractVerification: triggerContractVerification, fee: fee, args: args, network: network)
+            self.init(operation: operation, scriptHash: scriptHash, assetIntentOverrides: assetIntentOverrides, attachedAssets: attachedAssets, triggerContractVerification: triggerContractVerification ?? false, fee: fee, args: args, network: network)
         }
         
         struct AssetIntentOverrides: Codable {
@@ -209,16 +238,14 @@ class dAppProtocol: NSObject {
         }
 
         struct AttachedAssets: Codable {
-            let gas: Int?
-            let neo: Int?
+            let gas: String?
+            let neo: String?
             
             enum CodingKeys: String, CodingKey {
                 case gas = "GAS"
                 case neo = "NEO"
             }
         }
-        
-        
     }
     
     struct InvokeResponse: Codable {
@@ -316,46 +343,6 @@ class O3DappAPI {
         return dAppProtocol.InvokeResponse(txid: "implement this", nodeUrl: "https://o3.network")
     }
     
-    //this function has been moved to SendRequestTableViewController
-//    func send(wallet: Wallet, request: dAppProtocol.SendRequest) -> (dAppProtocol.SendResponse?, dAppProtocol.errorResponse?) {
-//        let isNative = request.asset.lowercased() == "neo" || request.asset.lowercased() == "gas"
-//        let network = request.network.lowercased().contains("test") ? Network.test : Network.main
-//        var node = AppState.bestSeedNodeURL
-//        if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: network) {
-//            node = bestNode
-//        }
-//        let requestGroup = DispatchGroup()
-//        requestGroup.enter()
-//
-//        var response: dAppProtocol.SendResponse?
-//        var error: dAppProtocol.errorResponse?
-//        if isNative {
-//            let assetID = request.asset.lowercased() == "neo" ? AssetId.neoAssetId : AssetId.gasAssetId
-//            let fm = NumberFormatter()
-//            let amountNumber = fm.number(from: request.amount)
-//            let feeNumber = fm.number(from: request.fee ?? "0")
-//            var attributes:[TransactionAttritbute] = []
-//            if request.remark != nil {
-//                attributes.append(TransactionAttritbute(remark1: request.remark!))
-//                attributes.append(TransactionAttritbute(remark: "O3XDAPI")) //TODO discuss what we should put in
-//            }
-//            wallet.sendAssetTransaction(network: network, seedURL: node, asset: assetID, amount: amountNumber!.doubleValue, toAddress: request.toAddress, attributes: attributes, fee: feeNumber!.doubleValue) { txID, err in
-//                if err != nil {
-//                    error = dAppProtocol.errorResponse(error: err.debugDescription)
-//                    requestGroup.leave()
-//                    return
-//                }
-//                response = dAppProtocol.SendResponse(txid: txID!, nodeUrl: node)
-//                requestGroup.leave()
-//                return
-//            }
-//        }
-//
-//        requestGroup.wait()
-//        return (response, error)
-//    }
-    
-    
     func getBalance(request: dAppProtocol.RequestData<[dAppProtocol.GetBalanceRequest]>) -> dAppProtocol.GetBalanceResponse {
         
         
@@ -427,7 +414,7 @@ class O3DappAPI {
                             let utxo = t.symbol.lowercased() == "neo" ? addressUTXO[p.address]?.getSortedNEOUTXOs() : addressUTXO[p.address]?.getSortedGASUTXOs()
                             if utxo != nil {
                                 for u in utxo! {
-                                    let unspentTx = dAppProtocol.Unspent(n: u.index, txid: u.txid, value: NSDecimalNumber(decimal: u.value).stringValue)
+                                    let unspentTx = dAppProtocol.Unspent(n: u.index, txid: u.txid, value: NSDecimalNumber(decimal: u.value).description(withLocale: Locale(identifier: "en_us")))
                                     unspent.append(unspentTx)
                                 }
                             }

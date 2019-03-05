@@ -60,6 +60,12 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
         }
         
         enableContinueButton()
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
+    }
+    
+    @IBAction func tappedLeftBarButtonItem(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func addressTapped(_ sender: Any) {

@@ -13,6 +13,8 @@ class dAppBrowserMenuTableViewController: UITableViewController {
 
     var onRefresh: (()->())!
     var onClose: (()->())!
+    var onShare: (()->())!
+    var onDisconnect: (()->())!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,10 @@ class dAppBrowserMenuTableViewController: UITableViewController {
         if indexPath.row == 0 {
             onRefresh()
         } else if indexPath.row == 1 {
+            onShare()
+        } else if indexPath.row == 2 {
+            onDisconnect()
+        } else if indexPath.row == 3 {
             onClose()
         }
          self.dismiss(animated: true, completion: nil)

@@ -55,7 +55,7 @@
 "MULTIWALLET_activate_multiwallet_subtitle" = "Please enter a name and passphrase for this wallet";
 
 /* title for activating multiwallet page */
-"MULTIWALLET_activate_multiwallet_title" = "To ensure your funds are secure, O3 requires you to convert your private key to a safer encrypted key.";
+"MULTIWALLET_activate_multiwallet_title" = "O3 has recently improved its security and added multiple wallet functionality. To continue using the app, all wallets now require a safer encrypted private key with a passphrase.";
 
 /* title to add key to a watch only address */
 "MULTIWALLET_add_key" = "MULTIWALLET_add_key";
@@ -436,7 +436,7 @@
 "PORTFOLIO_Combined_Header" = "综合";
 
 /* Action Button to deposit tokens itno wallet */
-"PORTFOLIO_Deposit_Tokens" = "Deposit Tokens";
+"PORTFOLIO_Deposit_Tokens" = "Deposit";
 
 /* Title of empty state when user has no balance in wallte */
 "PORTFOLIO_Empty_Balance" = "You currently have no tokens in your wallet";
@@ -463,7 +463,7 @@
 "PORTFOLIO_Interval_Button_ALL" = "全部";
 
 /* Title of empty state when no watch addresses added */
-"PORTFOLIO_No_Watch_Addresses" = "You haven't added any watch addresses or additional wallets yet.";
+"PORTFOLIO_No_Watch_Addresses" = "You haven't added any additional wallets. Add a new one in the settings menu.";
 
 /* A header title on the portfolio screen, shows the displayed funds are located in the O3Wallet */
 "PORTFOLIO_O3_Wallet_Header" = "O3钱包";

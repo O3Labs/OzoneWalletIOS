@@ -26,6 +26,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     @IBOutlet weak var showRawKeyLabel: UILabel!
     @IBOutlet weak var removeWalletLabel: UILabel!
     @IBOutlet weak var addKeyLabel: UILabel!
+    @IBOutlet weak var manualBackupLabel: UILabel!
     
     @IBOutlet weak var addKeyTableViewCell: UITableViewCell!
     
@@ -33,6 +34,8 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     @IBOutlet weak var contentView2: UIView!
     @IBOutlet weak var contentView3: UIView!
     @IBOutlet weak var contentView4: UIView!
+    @IBOutlet weak var contentView5: UIView!
+    
     
     @IBOutlet weak var unlockWatchAddressDescription: UILabel!
     @IBOutlet weak var unlockWatchAddressButton: ShadowedButton!
@@ -181,7 +184,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         composeVC.setSubject(OnboardingStrings.emailSubject)
         composeVC.setMessageBody(String.localizedStringWithFormat(String(OnboardingStrings.emailBody), account.key!), isHTML: false)
         
-        composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
+        //composeVC.addAttachmentData(NEP6.getFromFileSystemAsData(), mimeType: "application/json", fileName: "O3Wallet.json")
         composeVC.addAttachmentData(imageData!, mimeType: "image/png", fileName: "key.png")
         
         self.present(composeVC, animated: true, completion: nil)
@@ -262,6 +265,17 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
     }
     
+    func performManualBackup() {
+        guard let verifyVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "verifyManualBackupViewController") as? VerifyManualBackupViewController else {
+            fatalError("Something went terribly wrong")
+        }
+        verifyVC.account = account
+        let nav = UINavigationController()
+        nav.viewControllers = [verifyVC]
+        self.present(nav, animated: true, completion: nil)
+
+    }
+    
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -276,6 +290,8 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         } else if indexPath.row == 2 {
             showPrivateKey()
         } else if indexPath.row == 3 {
+            performManualBackup()
+        } else if indexPath.row == 4 {
             if account.isDefault {
                 OzoneAlert.alertDialog(message: MultiWalletStrings.cannotDeletePrimary, dismissTitle: OzoneAlert.okPositiveConfirmString) { }
             } else if account.key == nil {
@@ -304,13 +320,14 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     
     func setLocalizedStrings() {
         addressTitleLabel.text = MultiWalletStrings.address
-        backupWalletLabel.text = MultiWalletStrings.backupWallet
+        backupWalletLabel.text = "Export Wallet Backup"
         showRawKeyLabel.text = MultiWalletStrings.showRawKey
         removeWalletLabel.text = MultiWalletStrings.removeWallet
         addKeyLabel.text = MultiWalletStrings.addKey
         encryptedTitleLabel.text = MultiWalletStrings.encryptedKey
         unlockWatchAddressDescription.text = MultiWalletStrings.addKeyDescription
         unlockWatchAddressButton.setTitle(MultiWalletStrings.addKey, for: UIControl.State())
+        manualBackupLabel.text = "Verify Manual Backup"
     }
     
     func setThemedElements() {
@@ -325,5 +342,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         contentView2.theme_backgroundColor = O3Theme.backgroundColorPicker
         contentView3.theme_backgroundColor = O3Theme.backgroundColorPicker
         contentView4.theme_backgroundColor = O3Theme.backgroundColorPicker
+        contentView5.theme_backgroundColor =
+            O3Theme.backgroundColorPicker
     }
 }
