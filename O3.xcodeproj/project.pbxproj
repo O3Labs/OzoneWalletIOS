@@ -84,14 +84,12 @@
 		356F1B07218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */; };
 		356F1B0921901AA30004C088 /* EncryptPasswordEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */; };
 		356F1B0B219049130004C088 /* EncyptionCompletedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B0A219049130004C088 /* EncyptionCompletedViewController.swift */; };
-		35773D1021E5B99700CAA872 /* an_create_wallet.json in Resources */ = {isa = PBXBuildFile; fileRef = 35773D0F21E5B99700CAA872 /* an_create_wallet.json */; };
 		357D28C22122E16700DA67A0 /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 357D28C12122E16700DA67A0 /* Amplitude.framework */; };
 		357D28C32122E16700DA67A0 /* Amplitude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 357D28C12122E16700DA67A0 /* Amplitude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35809D9821E6EB5000E1D277 /* M13Checkbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35809D9721E6EB5000E1D277 /* M13Checkbox.framework */; };
 		35809D9921E6EB5000E1D277 /* M13Checkbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35809D9721E6EB5000E1D277 /* M13Checkbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35809D9B21E6EBD600E1D277 /* VerifyManualBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35809D9A21E6EBD600E1D277 /* VerifyManualBackupViewController.swift */; };
 		35809D9D21E7262800E1D277 /* NewWalletWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35809D9C21E7262800E1D277 /* NewWalletWelcomeViewController.swift */; };
-		35809D9F21E72C3A00E1D277 /* luna_bobbing.json in Resources */ = {isa = PBXBuildFile; fileRef = 35809D9E21E72C3A00E1D277 /* luna_bobbing.json */; };
 		358E95D9200358AA00A1878B /* NewsFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358E95D8200358AA00A1878B /* NewsFeed.swift */; };
 		35A6390F203517BB0054EA20 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A6390E203517BB0054EA20 /* CloudKit.framework */; };
 		35A8464C2212C23E00E95F48 /* InvokeRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */; };
@@ -188,6 +186,14 @@
 		6E4E6F9420146BEC001A5844 /* TransactionHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F9320146BEC001A5844 /* TransactionHistoryTableViewController.swift */; };
 		6E4E6F9820147868001A5844 /* ContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F9720147868001A5844 /* ContactsTableViewController.swift */; };
 		6E4E6F9A20147ABB001A5844 /* AccentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F9920147ABB001A5844 /* AccentButton.swift */; };
+		6E4F440E222E0ECF008B9BFC /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F440D222E0ECF008B9BFC /* DeepLink.swift */; };
+		6E4F4410222E119E008B9BFC /* Shortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F440F222E119E008B9BFC /* Shortcut.swift */; };
+		6E4F4417222E4002008B9BFC /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4F4416222E4002008B9BFC /* NotificationCenter.framework */; };
+		6E4F441A222E4002008B9BFC /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F4419222E4002008B9BFC /* TodayViewController.swift */; };
+		6E4F441D222E4002008B9BFC /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E4F441B222E4002008B9BFC /* MainInterface.storyboard */; };
+		6E4F4421222E4002008B9BFC /* O3Widget.appex in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 6E4F4415222E4002008B9BFC /* O3Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6E4F4428222E4444008B9BFC /* AssetWidgetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F4427222E4444008B9BFC /* AssetWidgetTableViewCell.swift */; };
+		6E4F442C222E4A4D008B9BFC /* WidgetAssetPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F442B222E4A4D008B9BFC /* WidgetAssetPrice.swift */; };
 		6E5568EA214A319300BA805E /* TradingAccountToolbarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568E9214A319300BA805E /* TradingAccountToolbarTableViewCell.swift */; };
 		6E5568EC214A4FD700BA805E /* AccountHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568EB214A4FD700BA805E /* AccountHeaderTableViewCell.swift */; };
 		6E5568EE214B5F1E00BA805E /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568ED214B5F1E00BA805E /* UIButton.swift */; };
@@ -333,6 +339,16 @@
 		75E28F311F9B3B34006C6E37 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28F301F9B3B34006C6E37 /* ThemeManager.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		6E4F441F222E4002008B9BFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7575ADBA1F6006AB0077007B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6E4F4414222E4002008B9BFC;
+			remoteInfo = O3Widget;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		35CE4A322175D81400F460ED /* Embed PlugIns */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -340,6 +356,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				6E4F4421222E4002008B9BFC /* O3Widget.appex in Embed PlugIns */,
 				35CE4A312175D81400F460ED /* ZendeskSDKStrings.bundle in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
@@ -450,12 +467,10 @@
 		356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewCell.swift; sourceTree = "<group>"; };
 		356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptPasswordEntryTableViewController.swift; sourceTree = "<group>"; };
 		356F1B0A219049130004C088 /* EncyptionCompletedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncyptionCompletedViewController.swift; sourceTree = "<group>"; };
-		35773D0F21E5B99700CAA872 /* an_create_wallet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = an_create_wallet.json; sourceTree = "<group>"; };
 		357D28C12122E16700DA67A0 /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
 		35809D9721E6EB5000E1D277 /* M13Checkbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = M13Checkbox.framework; path = Carthage/Build/iOS/M13Checkbox.framework; sourceTree = "<group>"; };
 		35809D9A21E6EBD600E1D277 /* VerifyManualBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyManualBackupViewController.swift; sourceTree = "<group>"; };
 		35809D9C21E7262800E1D277 /* NewWalletWelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWalletWelcomeViewController.swift; sourceTree = "<group>"; };
-		35809D9E21E72C3A00E1D277 /* luna_bobbing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = luna_bobbing.json; sourceTree = "<group>"; };
 		358E95D8200358AA00A1878B /* NewsFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeed.swift; sourceTree = "<group>"; };
 		35A6390E203517BB0054EA20 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvokeRequestTableViewController.swift; sourceTree = "<group>"; };
@@ -549,6 +564,16 @@
 		6E4E6F9320146BEC001A5844 /* TransactionHistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryTableViewController.swift; sourceTree = "<group>"; };
 		6E4E6F9720147868001A5844 /* ContactsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTableViewController.swift; sourceTree = "<group>"; };
 		6E4E6F9920147ABB001A5844 /* AccentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentButton.swift; sourceTree = "<group>"; };
+		6E4F440D222E0ECF008B9BFC /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		6E4F440F222E119E008B9BFC /* Shortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcut.swift; sourceTree = "<group>"; };
+		6E4F4415222E4002008B9BFC /* O3Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = O3Widget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E4F4416222E4002008B9BFC /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		6E4F4419222E4002008B9BFC /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		6E4F441C222E4002008B9BFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		6E4F441E222E4002008B9BFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E4F4427222E4444008B9BFC /* AssetWidgetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetWidgetTableViewCell.swift; sourceTree = "<group>"; };
+		6E4F442A222E4922008B9BFC /* O3Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = O3Widget.entitlements; sourceTree = "<group>"; };
+		6E4F442B222E4A4D008B9BFC /* WidgetAssetPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetAssetPrice.swift; sourceTree = "<group>"; };
 		6E5568E9214A319300BA805E /* TradingAccountToolbarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingAccountToolbarTableViewCell.swift; sourceTree = "<group>"; };
 		6E5568EB214A4FD700BA805E /* AccountHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		6E5568ED214B5F1E00BA805E /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
@@ -693,6 +718,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6E4F4412222E4002008B9BFC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E4F4417222E4002008B9BFC /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7575ADBF1F6006AC0077007B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1093,6 +1126,19 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		6E4F4418222E4002008B9BFC /* O3Widget */ = {
+			isa = PBXGroup;
+			children = (
+				6E4F442A222E4922008B9BFC /* O3Widget.entitlements */,
+				6E4F4419222E4002008B9BFC /* TodayViewController.swift */,
+				6E4F441B222E4002008B9BFC /* MainInterface.storyboard */,
+				6E4F441E222E4002008B9BFC /* Info.plist */,
+				6E4F4427222E4444008B9BFC /* AssetWidgetTableViewCell.swift */,
+				6E4F442B222E4A4D008B9BFC /* WidgetAssetPrice.swift */,
+			);
+			path = O3Widget;
+			sourceTree = "<group>";
+		};
 		6E64C0BA2159CE19002B1366 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1285,6 +1331,7 @@
 				6ED600121F76219A006760E6 /* Channel.framework */,
 				752017351F729AFC00090C4F /* Lottie.framework */,
 				755D8F5F1F66743A00058434 /* ScrollableGraphView.framework */,
+				6E4F4416222E4002008B9BFC /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1314,6 +1361,7 @@
 				756AC1951F80A888003BF8F7 /* DeckTransition.framework */,
 				7537438A1F7F572500803A6C /* KeychainAccess.framework */,
 				7575ADC41F6006AC0077007B /* O3 */,
+				6E4F4418222E4002008B9BFC /* O3Widget */,
 				7575ADC31F6006AC0077007B /* Products */,
 				755D8F5E1F66743900058434 /* Frameworks */,
 			);
@@ -1323,6 +1371,7 @@
 			isa = PBXGroup;
 			children = (
 				7575ADC21F6006AC0077007B /* O3.app */,
+				6E4F4415222E4002008B9BFC /* O3Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1370,6 +1419,8 @@
 				6EEE3DFB20E0C5E00030A4AB /* Router.swift */,
 				6E63690D21660A56007F7FBC /* Events.swift */,
 				35C370A8218053500023AABC /* CloudDataManager.swift */,
+				6E4F440D222E0ECF008B9BFC /* DeepLink.swift */,
+				6E4F440F222E119E008B9BFC /* Shortcut.swift */,
 			);
 			path = O3;
 			sourceTree = "<group>";
@@ -1460,8 +1511,6 @@
 		75D5BFB01F6CE8B700E64855 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				35809D9E21E72C3A00E1D277 /* luna_bobbing.json */,
-				35773D0F21E5B99700CAA872 /* an_create_wallet.json */,
 				350E18762186F99B00AA10CE /* RocketSplash.json */,
 				35AF806C20CA6F9B00E48457 /* EnterPasswordKey.json */,
 				353E799820C68CA800B9AB1F /* WalletCreation */,
@@ -1528,6 +1577,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6E4F4414222E4002008B9BFC /* O3Widget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6E4F4422222E4002008B9BFC /* Build configuration list for PBXNativeTarget "O3Widget" */;
+			buildPhases = (
+				6E4F4411222E4002008B9BFC /* Sources */,
+				6E4F4412222E4002008B9BFC /* Frameworks */,
+				6E4F4413222E4002008B9BFC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = O3Widget;
+			productName = O3Widget;
+			productReference = 6E4F4415222E4002008B9BFC /* O3Widget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		7575ADC11F6006AC0077007B /* O3 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7575ADD41F6006AC0077007B /* Build configuration list for PBXNativeTarget "O3" */;
@@ -1543,6 +1609,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				6E4F4420222E4002008B9BFC /* PBXTargetDependency */,
 			);
 			name = O3;
 			productName = O3;
@@ -1555,10 +1622,19 @@
 		7575ADBA1F6006AB0077007B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0900;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "O3 Labs Inc.";
 				TargetAttributes = {
+					6E4F4414222E4002008B9BFC = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					7575ADC11F6006AC0077007B = {
 						CreatedOnToolsVersion = 9.0;
 						LastSwiftMigration = 0930;
@@ -1600,11 +1676,20 @@
 			projectRoot = "";
 			targets = (
 				7575ADC11F6006AC0077007B /* O3 */,
+				6E4F4414222E4002008B9BFC /* O3Widget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6E4F4413222E4002008B9BFC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E4F441D222E4002008B9BFC /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7575ADC01F6006AC0077007B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1642,10 +1727,8 @@
 				6E60CC6420CE43290062F1CE /* Loader_running.json in Resources */,
 				75BEB2641F89FB8A00DC20E9 /* O3HUD.storyboard in Resources */,
 				353E11E320C676E000697359 /* Landing.json in Resources */,
-				35773D1021E5B99700CAA872 /* an_create_wallet.json in Resources */,
 				6ED6001C1F76506B006760E6 /* SharedAssets.xcassets in Resources */,
 				6E4BB74E21B75CC10003C9DD /* dAppActivityView.xib in Resources */,
-				35809D9F21E72C3A00E1D277 /* luna_bobbing.json in Resources */,
 				75D5BFC41F6D1A4F00E64855 /* AppAssets.xcassets in Resources */,
 				353F364920037062002B4FE1 /* NewsFeed.storyboard in Resources */,
 				75D5BFAF1F6CE8AB00E64855 /* Onboarding.storyboard in Resources */,
@@ -1692,6 +1775,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6E4F4411222E4002008B9BFC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E4F442C222E4A4D008B9BFC /* WidgetAssetPrice.swift in Sources */,
+				6E4F4428222E4444008B9BFC /* AssetWidgetTableViewCell.swift in Sources */,
+				6E4F441A222E4002008B9BFC /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7575ADBE1F6006AC0077007B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1771,6 +1864,7 @@
 				35B399D32106F65100284BFA /* TokenSaleLog.swift in Sources */,
 				353E11E520C676E000697359 /* LandingViewController.swift in Sources */,
 				7575ADC61F6006AC0077007B /* AppDelegate.swift in Sources */,
+				6E4F440E222E0ECF008B9BFC /* DeepLink.swift in Sources */,
 				6EEE3DF820E0A8280030A4AB /* Inbox.swift in Sources */,
 				35C370B62182ADB30023AABC /* AddWalletTableViewController.swift in Sources */,
 				6E4E6F84201462D7001A5844 /* NEP5Token.swift in Sources */,
@@ -1830,6 +1924,7 @@
 				6E5FDFED216725B300C1A6B5 /* NoActionUITextField.swift in Sources */,
 				6E58720821A6A489007F1EC6 /* dAppMetadata.swift in Sources */,
 				350E18792186FB1400AA10CE /* LoginToNEP6.swift in Sources */,
+				6E4F4410222E119E008B9BFC /* Shortcut.swift in Sources */,
 				6E64C0D22159CE19002B1366 /* RequestCandlesticks.swift in Sources */,
 				6EB311AE21AB8323008EACD9 /* dAppMetaDataTableViewCell.swift in Sources */,
 				6E7F3D8F20B6805200835963 /* Data.swift in Sources */,
@@ -1926,7 +2021,103 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6E4F4420222E4002008B9BFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6E4F4414222E4002008B9BFC /* O3Widget */;
+			targetProxy = 6E4F441F222E4002008B9BFC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6E4F441B222E4002008B9BFC /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6E4F441C222E4002008B9BFC /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		6E4F4423222E4002008B9BFC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				INFOPLIST_FILE = O3Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6E4F4424222E4002008B9BFC /* TestNet */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				INFOPLIST_FILE = O3Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = TestNet;
+		};
+		6E4F4425222E4002008B9BFC /* PrivateNet */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				INFOPLIST_FILE = O3Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = PrivateNet;
+		};
+		6E4F4426222E4002008B9BFC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				INFOPLIST_FILE = O3Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		6EE22EB420688F5C00E19600 /* TestNet */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1996,6 +2187,7 @@
 		6EE22EB520688F5C00E19600 /* TestNet */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -2100,6 +2292,7 @@
 		6EE22EB72069CBFD00E19600 /* PrivateNet */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -2263,6 +2456,7 @@
 		7575ADD51F6006AC0077007B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -2301,6 +2495,7 @@
 		7575ADD61F6006AC0077007B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -2336,6 +2531,17 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6E4F4422222E4002008B9BFC /* Build configuration list for PBXNativeTarget "O3Widget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E4F4423222E4002008B9BFC /* Debug */,
+				6E4F4424222E4002008B9BFC /* TestNet */,
+				6E4F4425222E4002008B9BFC /* PrivateNet */,
+				6E4F4426222E4002008B9BFC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7575ADBD1F6006AB0077007B /* Build configuration list for PBXProject "O3" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

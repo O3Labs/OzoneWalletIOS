@@ -673,7 +673,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                     return
                 }
                 let top = sellOrders.first!
-                let price = Double(Double(top.wantAmount) / Double(top.offerAmount))
+                let price = Double(Double(top.wantAmountInt) / Double(top.offerAmountInt))
                 self.viewModel.topOrderPrice = price
                 self.priceInputToolbar.topOrderPrice = price
             } else {
@@ -686,7 +686,7 @@ extension CreateOrderTableViewController: CreateOrderDelegate {
                     return
                 }
                 let top = buyOrders.first!
-                let price = Double(Double(top.offerAmount) / Double(top.wantAmount))
+                let price = Double(Double(top.offerAmountInt) / Double(top.wantAmountInt))
                 self.viewModel.topOrderPrice = price
                 self.priceInputToolbar.topOrderPrice = price
             }

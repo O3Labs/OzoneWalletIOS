@@ -90,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             parsePushLink(link: link)
         }
     }
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
             ////If your plist contain root as Dictionary
@@ -128,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 application.registerForRemoteNotifications()
             }
         }
-
+        
         self.registerDefaults()
         self.setupChannel()
         self.setupReachability()
@@ -251,6 +251,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 }
 
 extension AppDelegate: LoginToNEP6ViewControllerDelegate {
+    
     func parsePushLink(link: String) {
         UIApplication.shared.keyWindow?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {
@@ -271,32 +272,42 @@ extension AppDelegate: LoginToNEP6ViewControllerDelegate {
         }
         tabbar.selectedIndex = tabItem
 
-        //marketplace
-        if (tabItem == 2 && components.count > 2) {
-            guard let marketplaceNav = tabbar.selectedViewController as? UINavigationController,
-                let marketplace = marketplaceNav.children[0] as? MarketplaceController else {
-                return
-            }
-        }
     }
 
     func authorized(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if let url = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
             Router.parseNEP9URL(url: url)
+            return
         }
+        //handle deeplink when the app launches
+        if let shortcutItem = launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
+            Deeplinker.handleShortcut(item: shortcutItem)
+            Deeplinker.checkDeepLink()
+            return
+        }
+        
         if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject] {
             if let notificationLink = notification["link"] as? String {
                 parsePushLink(link: notificationLink)
             }
+            return
         }
     }
+    
     // allow universal link to open the app
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        print("Continue User Activity called: ")
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             let url = userActivity.webpageURL!
             print(url.absoluteString)
         }
         return true
+    }
+     
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Swift.Void){
+          completionHandler(Deeplinker.handleShortcut(item: shortcutItem))
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        Deeplinker.checkDeepLink()
     }
 }

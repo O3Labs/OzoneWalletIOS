@@ -82,12 +82,11 @@ class Controller: NSObject {
             let nav = WalletHomeNavigationController(rootViewController: sendModal)
 
             //This is to use current tabbar to hold strong reference of the deck transition's animation
-            //otherwise, it won't open wiht deck transition
+            //otherwise, it won't open with deck transition
             nav.transitioningDelegate = tabbar.transitionDelegate
             nav.modalPresentationStyle = .custom
             nav.navigationBar.prefersLargeTitles = false
             nav.navigationItem.largeTitleDisplayMode = .never
-
             tabbar.present(nav, animated: true, completion: {
                 //sendModal.assetSelected(selected: selectedAsset, gasBalance: O3Cache.gas().value)
                 sendModal.addressTextField.text = to
@@ -107,5 +106,23 @@ class Controller: NSObject {
         let nav = UINavigationController()
         nav.viewControllers = [walletInfoModal]
         UIApplication.topViewController()!.present(nav, animated: true)
+    }
+    
+    func openMyAddress() {
+        guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {
+            return
+        }
+        
+        let modal = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "MyAddressNavigationController")
+        modal.transitioningDelegate = tabbar.transitionDelegate
+        modal.modalPresentationStyle = .custom
+        UIApplication.topViewController()!.present(modal, animated: true, completion: nil)
+    }
+    
+    func focusOnTab(tabIndex: Int) {
+        guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {
+            return
+        }
+        tabbar.selectedIndex = tabIndex
     }
 }

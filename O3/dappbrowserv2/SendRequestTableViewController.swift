@@ -138,6 +138,7 @@ class SendRequestTableViewController: UITableViewController {
         
         if request.fee != nil {
             let fm = NumberFormatter()
+            fm.locale = Locale(identifier: "en_US")
             let feeNumber = fm.number(from: request.fee ?? "0")?.doubleValue
             if feeNumber!.isZero {
                 data.append(info(key: dataKey.fee.rawValue, value: "", data: Double(0)))
@@ -221,6 +222,7 @@ class SendRequestTableViewController: UITableViewController {
     
                 if self.requestedAsset != nil {
                     let fm = NumberFormatter()
+                    fm.locale = Locale(identifier: "en_US")
                     let amountNumber = fm.number(from: self.request.amount)
     
                     if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
@@ -329,6 +331,7 @@ class SendRequestTableViewController: UITableViewController {
         if isNative {
             let assetID = request.asset.lowercased() == "neo" ? AssetId.neoAssetId : AssetId.gasAssetId
             let fm = NumberFormatter()
+            fm.locale = Locale(identifier: "en_US")
             let amountNumber = fm.number(from: request.amount)
             let feeNumber = fm.number(from: request.fee ?? "0")
             var attributes:[TransactionAttritbute] = []
@@ -357,6 +360,7 @@ class SendRequestTableViewController: UITableViewController {
         //check balance here
         if self.requestedAsset != nil {
             let fm = NumberFormatter()
+            fm.locale = Locale(identifier: "en_US")
             let amountNumber = fm.number(from: self.request.amount)
             if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
                 //insufficient balance
@@ -371,6 +375,7 @@ class SendRequestTableViewController: UITableViewController {
         
         //override it if dapp doesn't set the fee and user checked the priority
         let fm = NumberFormatter()
+        fm.locale = Locale(identifier: "en_US")
         if request.fee == nil || fm.number(from: request.fee ?? "0") == 0  {
             request.fee = self.usePriority! ? "0.0011" : "0"
         }

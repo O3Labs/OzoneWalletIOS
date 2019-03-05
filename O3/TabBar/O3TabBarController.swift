@@ -26,6 +26,8 @@ class O3TabBarController: UITabBarController {
         tabBar.items?[4].title = ""
         tabBar.items?[4].imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -10, right: 0)
         tabBar.items?[4].isEnabled = true
+        
+        ShortcutParser.shared.registerShortcuts()
     }
 
     @IBAction func unwindToTabbar(segue: UIStoryboardSegue) {
