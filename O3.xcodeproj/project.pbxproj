@@ -188,6 +188,12 @@
 		6E4E6F9A20147ABB001A5844 /* AccentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4E6F9920147ABB001A5844 /* AccentButton.swift */; };
 		6E4F440E222E0ECF008B9BFC /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F440D222E0ECF008B9BFC /* DeepLink.swift */; };
 		6E4F4410222E119E008B9BFC /* Shortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F440F222E119E008B9BFC /* Shortcut.swift */; };
+		6E4F4417222E4002008B9BFC /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4F4416222E4002008B9BFC /* NotificationCenter.framework */; };
+		6E4F441A222E4002008B9BFC /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F4419222E4002008B9BFC /* TodayViewController.swift */; };
+		6E4F441D222E4002008B9BFC /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E4F441B222E4002008B9BFC /* MainInterface.storyboard */; };
+		6E4F4421222E4002008B9BFC /* O3Widget.appex in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 6E4F4415222E4002008B9BFC /* O3Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6E4F4428222E4444008B9BFC /* AssetWidgetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F4427222E4444008B9BFC /* AssetWidgetTableViewCell.swift */; };
+		6E4F442C222E4A4D008B9BFC /* WidgetAssetPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F442B222E4A4D008B9BFC /* WidgetAssetPrice.swift */; };
 		6E5568EA214A319300BA805E /* TradingAccountToolbarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568E9214A319300BA805E /* TradingAccountToolbarTableViewCell.swift */; };
 		6E5568EC214A4FD700BA805E /* AccountHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568EB214A4FD700BA805E /* AccountHeaderTableViewCell.swift */; };
 		6E5568EE214B5F1E00BA805E /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5568ED214B5F1E00BA805E /* UIButton.swift */; };
@@ -333,6 +339,16 @@
 		75E28F311F9B3B34006C6E37 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28F301F9B3B34006C6E37 /* ThemeManager.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		6E4F441F222E4002008B9BFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7575ADBA1F6006AB0077007B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6E4F4414222E4002008B9BFC;
+			remoteInfo = O3Widget;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		35CE4A322175D81400F460ED /* Embed PlugIns */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -340,6 +356,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				6E4F4421222E4002008B9BFC /* O3Widget.appex in Embed PlugIns */,
 				35CE4A312175D81400F460ED /* ZendeskSDKStrings.bundle in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
@@ -549,6 +566,14 @@
 		6E4E6F9920147ABB001A5844 /* AccentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentButton.swift; sourceTree = "<group>"; };
 		6E4F440D222E0ECF008B9BFC /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		6E4F440F222E119E008B9BFC /* Shortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcut.swift; sourceTree = "<group>"; };
+		6E4F4415222E4002008B9BFC /* O3Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = O3Widget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E4F4416222E4002008B9BFC /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		6E4F4419222E4002008B9BFC /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		6E4F441C222E4002008B9BFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		6E4F441E222E4002008B9BFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E4F4427222E4444008B9BFC /* AssetWidgetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetWidgetTableViewCell.swift; sourceTree = "<group>"; };
+		6E4F442A222E4922008B9BFC /* O3Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = O3Widget.entitlements; sourceTree = "<group>"; };
+		6E4F442B222E4A4D008B9BFC /* WidgetAssetPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetAssetPrice.swift; sourceTree = "<group>"; };
 		6E5568E9214A319300BA805E /* TradingAccountToolbarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingAccountToolbarTableViewCell.swift; sourceTree = "<group>"; };
 		6E5568EB214A4FD700BA805E /* AccountHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		6E5568ED214B5F1E00BA805E /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
@@ -693,6 +718,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6E4F4412222E4002008B9BFC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E4F4417222E4002008B9BFC /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7575ADBF1F6006AC0077007B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1093,6 +1126,19 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		6E4F4418222E4002008B9BFC /* O3Widget */ = {
+			isa = PBXGroup;
+			children = (
+				6E4F442A222E4922008B9BFC /* O3Widget.entitlements */,
+				6E4F4419222E4002008B9BFC /* TodayViewController.swift */,
+				6E4F441B222E4002008B9BFC /* MainInterface.storyboard */,
+				6E4F441E222E4002008B9BFC /* Info.plist */,
+				6E4F4427222E4444008B9BFC /* AssetWidgetTableViewCell.swift */,
+				6E4F442B222E4A4D008B9BFC /* WidgetAssetPrice.swift */,
+			);
+			path = O3Widget;
+			sourceTree = "<group>";
+		};
 		6E64C0BA2159CE19002B1366 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1285,6 +1331,7 @@
 				6ED600121F76219A006760E6 /* Channel.framework */,
 				752017351F729AFC00090C4F /* Lottie.framework */,
 				755D8F5F1F66743A00058434 /* ScrollableGraphView.framework */,
+				6E4F4416222E4002008B9BFC /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1314,6 +1361,7 @@
 				756AC1951F80A888003BF8F7 /* DeckTransition.framework */,
 				7537438A1F7F572500803A6C /* KeychainAccess.framework */,
 				7575ADC41F6006AC0077007B /* O3 */,
+				6E4F4418222E4002008B9BFC /* O3Widget */,
 				7575ADC31F6006AC0077007B /* Products */,
 				755D8F5E1F66743900058434 /* Frameworks */,
 			);
@@ -1323,6 +1371,7 @@
 			isa = PBXGroup;
 			children = (
 				7575ADC21F6006AC0077007B /* O3.app */,
+				6E4F4415222E4002008B9BFC /* O3Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1528,6 +1577,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6E4F4414222E4002008B9BFC /* O3Widget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6E4F4422222E4002008B9BFC /* Build configuration list for PBXNativeTarget "O3Widget" */;
+			buildPhases = (
+				6E4F4411222E4002008B9BFC /* Sources */,
+				6E4F4412222E4002008B9BFC /* Frameworks */,
+				6E4F4413222E4002008B9BFC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = O3Widget;
+			productName = O3Widget;
+			productReference = 6E4F4415222E4002008B9BFC /* O3Widget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		7575ADC11F6006AC0077007B /* O3 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7575ADD41F6006AC0077007B /* Build configuration list for PBXNativeTarget "O3" */;
@@ -1543,6 +1609,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				6E4F4420222E4002008B9BFC /* PBXTargetDependency */,
 			);
 			name = O3;
 			productName = O3;
@@ -1555,10 +1622,19 @@
 		7575ADBA1F6006AB0077007B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0900;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "O3 Labs Inc.";
 				TargetAttributes = {
+					6E4F4414222E4002008B9BFC = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					7575ADC11F6006AC0077007B = {
 						CreatedOnToolsVersion = 9.0;
 						LastSwiftMigration = 0930;
@@ -1600,11 +1676,20 @@
 			projectRoot = "";
 			targets = (
 				7575ADC11F6006AC0077007B /* O3 */,
+				6E4F4414222E4002008B9BFC /* O3Widget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6E4F4413222E4002008B9BFC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E4F441D222E4002008B9BFC /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7575ADC01F6006AC0077007B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1690,6 +1775,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6E4F4411222E4002008B9BFC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E4F442C222E4A4D008B9BFC /* WidgetAssetPrice.swift in Sources */,
+				6E4F4428222E4444008B9BFC /* AssetWidgetTableViewCell.swift in Sources */,
+				6E4F441A222E4002008B9BFC /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7575ADBE1F6006AC0077007B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1926,7 +2021,103 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6E4F4420222E4002008B9BFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6E4F4414222E4002008B9BFC /* O3Widget */;
+			targetProxy = 6E4F441F222E4002008B9BFC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6E4F441B222E4002008B9BFC /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6E4F441C222E4002008B9BFC /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		6E4F4423222E4002008B9BFC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				INFOPLIST_FILE = O3Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6E4F4424222E4002008B9BFC /* TestNet */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				INFOPLIST_FILE = O3Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = TestNet;
+		};
+		6E4F4425222E4002008B9BFC /* PrivateNet */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				INFOPLIST_FILE = O3Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = PrivateNet;
+		};
+		6E4F4426222E4002008B9BFC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				INFOPLIST_FILE = O3Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		6EE22EB420688F5C00E19600 /* TestNet */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1996,6 +2187,7 @@
 		6EE22EB520688F5C00E19600 /* TestNet */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -2100,6 +2292,7 @@
 		6EE22EB72069CBFD00E19600 /* PrivateNet */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -2263,6 +2456,7 @@
 		7575ADD51F6006AC0077007B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -2301,6 +2495,7 @@
 		7575ADD61F6006AC0077007B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -2336,6 +2531,17 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6E4F4422222E4002008B9BFC /* Build configuration list for PBXNativeTarget "O3Widget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E4F4423222E4002008B9BFC /* Debug */,
+				6E4F4424222E4002008B9BFC /* TestNet */,
+				6E4F4425222E4002008B9BFC /* PrivateNet */,
+				6E4F4426222E4002008B9BFC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7575ADBD1F6006AB0077007B /* Build configuration list for PBXProject "O3" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
