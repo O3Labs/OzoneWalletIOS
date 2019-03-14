@@ -520,7 +520,7 @@
 "SEND_Invalid_Amount_Error" = "無効な金額が入力されています";
 
 /* text to display when NNS name couldn't be resolved */
-"SEND_Invalid_NNS" = "SEND_Invalid_NNS";
+"SEND_Invalid_NNS" = "このアドレスは存在していません";
 
 /* A string that shows how many transactions are currently ahead of you in the mempool */
 "SEND_mempool_height" = "%@ transactions ahead of you";
@@ -550,7 +550,7 @@
 "SEND_Rounding_Gas_Error" = "すべてのGASを送信する場合は、合計額から0.00000001を引いてください。これにより、エラーを回避しトランザクションが正常に処理されます。";
 
 /* Label for saving to contacts when */
-"SEND_save_to_contacts" = "SEND_save_to_contacts";
+"SEND_save_to_contacts" = "アドレス帳に保存";
 
 /* A title for the Select Asset pull up menu */
 "SEND_Select_Asset_Title" = "資産を選択";
@@ -625,7 +625,7 @@
 "SETTINGS_Logout_Warning" = "ログアウトしたら秘密鍵がデバイスから削除されます。秘密鍵をバックアップまたは紙に書いて保存しているか確認してください。アプリケーションへの再度ログインには秘密鍵の再入力が必要です。";
 
 /* settings item to manage existing wallets */
-"SETTINGS_manage_wallets" = "SETTINGS_manage_wallets";
+"SETTINGS_manage_wallets" = "ウォレットの管理";
 
 /* Settings Menu Title for Private Key */
 "SETTINGS_My_Private_Key" = "自分の秘密鍵";
