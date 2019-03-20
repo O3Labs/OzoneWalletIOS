@@ -64,12 +64,15 @@ public class dAppProtocol: NSObject {
 //    typealias GetNetworksResponse = [String]
     struct GetNetworksResponse: Codable {
         let networks: [String]
+        let defaultNetwork: String
         enum CodingKeys: String, CodingKey {
             case networks = "networks"
+            case defaultNetwork = "defaultNetwork"
         }
         
         init(networks: [String]) {
             self.networks = networks
+            self.defaultNetwork = AppState.network == Network.main ? "MainNet" : "TestNet"
         }
     }
     

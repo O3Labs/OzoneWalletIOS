@@ -53,7 +53,7 @@ class AddNameWatchAddressTableViewController: UITableViewController {
         var updatedNep6 = NEP6.getFromFileSystem()!
         updatedNep6.addWatchAddress(address: address, name: nameInputField.text!)
         updatedNep6.writeToFileSystem()
-        MultiwalletEvent.shared.watchAddressAdded(numWatchAddresses: NEP6.getFromFileSystem()!.getWatchAccounts().count)
+        MultiwalletEvent.shared.walletAdded(type: "watch_address", method: "import")
         Channel.shared().subscribe(toTopic: address)
         self.performSegue(withIdentifier: "segueToWatchAddressFinished", sender: nil)
         

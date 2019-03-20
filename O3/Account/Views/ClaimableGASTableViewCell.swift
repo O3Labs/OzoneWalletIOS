@@ -383,6 +383,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
                 DispatchQueue.main.async {
                     if txid != "" {
                         self.ontClaimedSuccess()
+                        ClaimEvent.shared.ongClaimed()
                     } else {
                         OzoneAlert.alertDialog(SendStrings.transactionFailedTitle, message: SendStrings.transactionFailedSubtitle, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
                         self.delegate?.setIsClaimingOnt(false)
@@ -407,6 +408,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
 
     func neoClaimedSuccess() {
         AppState.setClaimingState(address: Authenticated.wallet!.address, claimingState: .Fresh)
+        ClaimEvent.shared.gasClaimed()
         DispatchQueue.main.async {
             self.neoClaimLoadingContainer.isHidden = true
             self.neoClaimSuccessContainer.isHidden = false

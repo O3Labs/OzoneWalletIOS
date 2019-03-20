@@ -150,6 +150,7 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
                     .set(password, key: "ozoneActiveNep6Password")
                 nep6.writeToFileSystem()
                 Authenticated.wallet = wallet
+                MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
                 self.instantiateMainAsNewRoot()
             } catch _ {
                 fatalError("Something went terribly wrong")

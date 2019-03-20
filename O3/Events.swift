@@ -45,15 +45,16 @@ enum tradingEventField: String {
 }
 
 enum multiwalletEventName: String {
-    case walletAdded = "wallet_added"
+    case walletAdded = "ADD_WALLET"
     case watchAddressAdded = "watch_address_added"
     case multiwalletActivated = "multiwallet_activated"
     case walletUnlocked = "wallet_unlocked"
 }
 
 enum multiWalletEventField: String {
-    case numWallets = "total_num_wallets"
-    case numWatchAddresses = "total_num_watch_addresses"
+    case type = "type"
+    case method = "method"
+    case addressCount = "address_count"
 }
 
 class MultiwalletEvent: NSObject {
@@ -64,14 +65,11 @@ class MultiwalletEvent: NSObject {
         amplitude.logEvent(event, withEventProperties: data)
     }
     
-    func walletAdded(numWallets: Int) {
+    func walletAdded(type: String, method: String) {
         log(event: multiwalletEventName.walletAdded.rawValue,
-            data: [multiWalletEventField.numWallets.rawValue: numWallets])
-    }
-    
-    func watchAddressAdded(numWatchAddresses: Int) {
-        log(event: multiwalletEventName.watchAddressAdded.rawValue,
-            data: [multiWalletEventField.numWatchAddresses.rawValue: numWatchAddresses])
+            data: [multiWalletEventField.type.rawValue: type,
+                   multiWalletEventField.method.rawValue: method,
+                   multiWalletEventField.addressCount.rawValue: NEP6.getFromFileSystem()?.accounts.count])
     }
     
     func multiwalletActivated() {
@@ -84,6 +82,28 @@ class MultiwalletEvent: NSObject {
             data: [:])
     }
 }
+
+class ClaimEvent: NSObject {
+    private var amplitude: Amplitude! = Amplitude.instance()
+    static let shared: ClaimEvent! = ClaimEvent()
+    
+    func log(event: String, data: [String: Any]) {
+        amplitude.logEvent(event, withEventProperties: data)
+    }
+    
+    func ongClaimed() {
+        log(event: "CLAIM",
+            data: ["type": "ONG",
+                   "isLedger": false])
+    }
+    
+    func gasClaimed() {
+        log(event: "CLAIM",
+            data: ["type": "GAS",
+                   "isLedger": false])
+    }
+}
+
 
 class tradingEvent: NSObject {
     

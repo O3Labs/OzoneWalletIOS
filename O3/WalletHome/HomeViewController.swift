@@ -339,7 +339,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                     addressHasBalance = true
                 }
             }
-            return AppState.dismissBackupNotification() == false && addressHasBalance ? 1 : 0
+            return AppState.dismissBackupNotification() == false /*&& addressHasBalance*/ ? 1 : 0
         }
         return self.displayedAssets.count
     }

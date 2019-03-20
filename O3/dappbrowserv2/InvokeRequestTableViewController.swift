@@ -72,8 +72,8 @@ class InvokeRequestTableViewController: UITableViewController {
         
         if request.fee != nil {
             let fm = NumberFormatter()
-            let feeNumber = fm.number(from: request.fee ?? "0")?.doubleValue
-            if feeNumber!.isZero {
+            let feeNumber = fm.number(from: request.fee ?? "0")?.doubleValue ?? 0.0
+            if feeNumber.isZero {
                 data.append(info(key: dataKey.fee.rawValue, value: "", data: Double(0)))
             } else {
                 data.append(info(key: dataKey.fee.rawValue, value: String(format: "%@ GAS", request.fee), data: feeNumber))

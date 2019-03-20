@@ -112,6 +112,7 @@ class CreateWalletTableViewController: UITableViewController, UITextFieldDelegat
                 DispatchQueue.main.async {
                     HUD.hide()
                     self.performSegue(withIdentifier: "segueToWelcome", sender: nil)
+                    MultiwalletEvent.shared.walletAdded(type: "new_key", method: "new")
                 }
             } catch _ {
                 fatalError("Something went terribly wrong")
