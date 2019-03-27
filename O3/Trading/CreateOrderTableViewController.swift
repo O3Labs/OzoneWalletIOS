@@ -247,7 +247,7 @@ class CreateOrderViewModel {
         let pair = String(format:"%@_%@", wantAsset.symbol.uppercased(), offerAsset.symbol.uppercased())
         let blockchain = "neo"
         let sw = Switcheo(net: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test)
-        let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
+        let switcheoHash =  AppState.network == Network.main ? Switcheo.V3.Main : Switcheo.V3.Test
         let request = RequestOffer(blockchain: blockchain, pair: pair, contractHash: switcheoHash.rawValue)
         sw?.offers(request: request!, completion: { result in
             switch result {
@@ -276,7 +276,7 @@ class CreateOrderViewModel {
         let side = selectedAction == CreateOrderAction.Buy ? "buy" : "sell"
         let orderType = "limit"
         let switcheoAccount = SwitcheoAccount(network: AppState.network == Network.main ? Switcheo.Net.Main : Switcheo.Net.Test, account: Authenticated.wallet!)
-        let switcheoHash =  AppState.network == Network.main ? Switcheo.V2.Main : Switcheo.V2.Test
+        let switcheoHash =  AppState.network == Network.main ? Switcheo.V3.Main : Switcheo.V3.Test
         
         let want = selectedAction == CreateOrderAction.Buy ? wantAmount! : offerAmount!
         let order = RequestOrder(pair: pair, blockchain: blockchain, side: side, price: Float64(pairPrice.price), wantAmount: Float64(want), useNativeTokens: false, orderType: orderType, contractHash: switcheoHash.rawValue, otcAddress: "")
