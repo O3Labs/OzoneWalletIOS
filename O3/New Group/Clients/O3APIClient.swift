@@ -293,7 +293,7 @@ class O3APIClient: NSObject {
             return
         }
         let url = "/v1/trading/" + address
-        sendRESTAPIRequest(url, data: nil) { result in
+        sendRESTAPIRequest(url, data: nil, params: ["version": "3"]) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -341,7 +341,7 @@ class O3APIClient: NSObject {
         }
         
         let url = String(format: "/v1/trading/%@/tokens", "switcheo")
-        sendRESTAPIRequest(url, data: nil) { result in
+        sendRESTAPIRequest(url, data: nil, params: ["version": "3"]) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -370,7 +370,7 @@ class O3APIClient: NSObject {
         }
         
         let url = String(format: "/v1/trading/%@/pairs", "switcheo")
-        sendRESTAPIRequest(url, data: nil) { result in
+        sendRESTAPIRequest(url, data: nil, params: ["version": "3"]) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -399,6 +399,7 @@ class O3APIClient: NSObject {
         if pair != nil {
             params["pair"] = pair!
         }
+        params["version"] = "3"
         
         sendRESTAPIRequest(url, data: nil, params: params) { result in
             switch result {
