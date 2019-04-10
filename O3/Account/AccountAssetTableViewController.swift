@@ -656,6 +656,7 @@ extension AccountAssetTableViewController {
                 
                 if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
                     vc.viewModel = CreateOrderViewModel()
+                    
                     vc.viewModel.selectedAction = action
                     //override the precision here
                     let wantToken = tokens.first(where: { t -> Bool in
@@ -668,6 +669,14 @@ extension AccountAssetTableViewController {
                         return t.symbol != asset.symbol
                     }).first
                     vc.viewModel.tradingAccount = self.tradingAccount
+                    //override for sdusd
+                    if asset.symbol == "SDUSD" && action == CreateOrderAction.Sell {
+                        let tempAsset = vc.viewModel.wantAsset
+                        vc.viewModel.wantAsset = vc.viewModel.offerAsset
+                        vc.viewModel.offerAsset = tempAsset
+                        vc.viewModel.selectedAction = CreateOrderAction.Buy
+                    }
+                    
                 }
                 self.present(nav, animated: true, completion: nil)
             }

@@ -8,6 +8,9 @@
 
 import UIKit
 
+//idk whats going on here, looks like this is made specifically for widget.
+// maybe refactor in the future. For now will use router as the source of truth
+// for uri schemes
 enum DeepLinkType {
     case send(address: String)
     case receive

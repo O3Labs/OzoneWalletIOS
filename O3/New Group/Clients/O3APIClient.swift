@@ -369,7 +369,7 @@ class O3APIClient: NSObject {
             return
         }
         
-        let url = String(format: "/v1/trading/%@/pairs", "switcheo")
+        let url = String(format: "/v1/trading/%@/pairs?show_details=1", "switcheo")
         sendRESTAPIRequest(url, data: nil, params: ["version": "3"]) { result in
             switch result {
             case .failure(let error):
