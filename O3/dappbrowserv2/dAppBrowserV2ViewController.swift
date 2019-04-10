@@ -31,10 +31,14 @@ protocol dAppBrowserDelegate {
 
 class dAppBrowserV2ViewController: UIViewController {
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var backButton: UIBarButtonItem!
+    @IBOutlet weak var homeButton: UIBarButtonItem!
     @IBOutlet weak var walletSwitcherButton: UIBarButtonItem!
-    @IBOutlet weak var toolbar: UIView!
+    @IBOutlet weak var tradingToolbar: UIView!
+    @IBOutlet weak var browserToolbar: UIView!
     @IBOutlet weak var openOrderButton: BadgeUIButton!
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var forwardButton: UIButton!
+    
     var webView: WKWebView!
     var progressView: UIProgressView!
     var textFieldURL: UITextField!
@@ -54,6 +58,13 @@ class dAppBrowserV2ViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "viewTradingOrders"), object: nil)
     }
     
+    @IBAction func backTapped(_ sender: Any) {
+        didTapBack(sender)
+    }
+    
+    @IBAction func forwardTapped(_ sender: Any) {
+        didTapForward(sender)
+    }
     
     func setupView() {
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -71,11 +82,13 @@ class dAppBrowserV2ViewController: UIViewController {
         self.webView.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
         self.webView.addObserver(self, forKeyPath: "loading", options: .new, context: nil)
         self.webView.allowsBackForwardNavigationGestures = true
-        self.toolbar.isHidden = true
-        toolbar?.theme_backgroundColor = O3Theme.backgroundColorPicker
-        
+        self.tradingToolbar.isHidden = true
+        tradingToolbar?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        browserToolbar?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.browserToolbar.isHidden = false
         
         if viewModel.assetSymbol != nil {
+            self.browserToolbar.isHidden = true
             addObservers()
             loadTradableAssets { list in
                 let tradableAsset = list.first(where: { t -> Bool in
@@ -84,11 +97,14 @@ class dAppBrowserV2ViewController: UIViewController {
                 DispatchQueue.main.async {
                     if tradableAsset != nil {
                         self.viewModel.tradableAsset = tradableAsset
-                        self.toolbar?.isHidden = false
+                        self.tradingToolbar?.isHidden = false
+                        self.browserToolbar?.isHidden = true
                         self.loadTradingAccountBalances()
                         DispatchQueue.global(qos: .background).async {
                             self.loadOpenOrders()
                         }
+                    } else {
+                        self.browserToolbar?.isHidden = true
                     }
                 }
             }
@@ -162,27 +178,23 @@ class dAppBrowserV2ViewController: UIViewController {
     }
 
     
-    @IBAction func didTapBack(_ sender: Any) {
-        if self.webView.canGoBack {
-            print("Can go back")
-            self.webView.goBack()
-        } else {
-            print("Can't go back")
-        }
+    @IBAction func didTapHome(_ sender: Any) {
+        self.dismiss(animated: true)
     }
-    
-    func checkBackButton() {
+        
+    func beginLoading() {
         DispatchQueue.main.async {
-            self.backButton.isEnabled = self.webView.canGoBack
+            HUD.show(.progress)
         }
     }
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         
         var req = URLRequest(url: self.viewModel.url)
+        dapiEvent.shared.dappOpened(url: self.viewModel.url.absoluteString, domain: self.viewModel.url.host ?? "")
         if (viewModel.url?.absoluteString.hasPrefix("https://public.o3.network")) == true {
             let queryItems = [NSURLQueryItem(name: "theme", value: UserDefaultsManager.themeIndex == 0 ? "light" : "dark")]
             let urlComps = NSURLComponents(url: viewModel.url!, resolvingAgainstBaseURL: false)!
@@ -209,7 +221,13 @@ class dAppBrowserV2ViewController: UIViewController {
         showURLHost(url: self.viewModel.url)
         self.navigationItem.titleView = textFieldURL
         
-        checkBackButton()
+        checkBackForwardButton()
+        showDappDisclaimer()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        dapiEvent.shared.dappClosed(url: self.viewModel.url.absoluteString, domain: self.viewModel.url.host ?? "")
+        super.viewDidDisappear(animated)
     }
     
     @IBAction func didTapMore(_ sender: UIBarButtonItem) {
@@ -254,7 +272,16 @@ class dAppBrowserV2ViewController: UIViewController {
         presentationController.permittedArrowDirections = [.any]
         self.present(vc, animated: true, completion: nil)
     }
-
+    
+    func showDappDisclaimer() {
+        if (UserDefaultsManager.hasAgreedAnalytics == false) {
+            let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "dappWarningNav")
+            self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+            nav.modalPresentationStyle = .custom
+            nav.transitioningDelegate = self.halfModalTransitioningDelegate
+            self.present(nav, animated: true, completion: nil)
+        }
+    }
 }
 extension dAppBrowserV2ViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -279,7 +306,7 @@ extension dAppBrowserV2ViewController: WKUIDelegate {
     }
 }
 
-extension dAppBrowserV2ViewController: WKScriptMessageHandler{
+extension dAppBrowserV2ViewController: WKScriptMessageHandler {
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if (message.name != "sendMessageHandler") {
@@ -304,7 +331,7 @@ extension dAppBrowserV2ViewController: WKScriptMessageHandler{
             self.viewModel.responseWithError(message: message, error: "Command not supported")
             return
         }
-        
+        dapiEvent.shared.methodCall(method: message.command, url: self.viewModel.url.absoluteString, domain: self.viewModel.url.host ?? "")
         if dAppProtocol.needAuthorizationCommands.contains(message.command) && self.viewModel.isConnected == false {
             self.viewModel.requestToConnect(message: message, didCancel: { m in
                 //cancel
@@ -359,7 +386,8 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        checkBackButton()
+        checkBackForwardButton()
+        
         self.event(eventName: "READY", data: [:])
     }
     
@@ -373,146 +401,6 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
     
 }
 
-
-extension dAppBrowserV2ViewController: dAppBrowserDelegate {
-    func onWalletChanged(newWallet: Wallet) {
-        let response = dAppProtocol.GetAccountResponse(address: newWallet.address, publicKey: newWallet.publicKeyString)
-        self.event(eventName: "ACCOUNT_CHANGED", data: response.dictionary)
-    }
-    
-    
-    func beginLoading() {
-        DispatchQueue.main.async {
-            HUD.show(.progress)
-        }
-    }
-    
-    func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, onCompleted: @escaping (_ response: dAppProtocol.SendResponse?, _ error: dAppProtocol.errorResponse?) -> Void) {
-        
-        
-        let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "SendRequestTableViewControllerNav")
-        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
-        nav.modalPresentationStyle = .custom
-        nav.transitioningDelegate = self.halfModalTransitioningDelegate
-        if let vc = nav.children.first as? SendRequestTableViewController {
-            vc.message = message
-            vc.selectedWallet = self.viewModel.unlockedWallet
-
-            vc.onCompleted = { response, err in
-                onCompleted(response,err)
-            }
-            
-            vc.onCancel = { m, r in
-                didCancel(m,r)
-            }
-            
-            vc.dappMetadata = self.viewModel.dappMetadata
-            vc.request = request
-        }
-        self.present(nav, animated: true, completion: nil)
-    }
-    
-    func onInvokeRequest(message: dAppMessage, request: dAppProtocol.InvokeRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.InvokeRequest) -> Void, onCompleted: @escaping (_ response: dAppProtocol.InvokeResponse?, _ error: dAppProtocol.errorResponse?) -> Void) {
-        
-        
-        let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "InvokeRequestTableViewControllerNav")
-        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
-        nav.modalPresentationStyle = .custom
-        nav.transitioningDelegate = self.halfModalTransitioningDelegate
-        if let vc = nav.children.first as? InvokeRequestTableViewController {
-            vc.selectedWallet = self.viewModel.unlockedWallet
-            vc.message = message
-            vc.onCompleted = { response, err in
-                onCompleted(response,err)
-            }
-            
-            vc.onCancel = { m, r in
-                didCancel(m, r)
-            }
-            
-            vc.dappMetadata = self.viewModel.dappMetadata
-            vc.request = request
-        }
-        self.present(nav, animated: true, completion: nil)
-    }
-    
-    
-    func error(message: dAppMessage, error: String) {
-        var dic = message.dictionary
-        dic["error"] = error
-        let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
-        let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
-        self.callback(jsonString: jsonString)
-    }
-    
-    func event(eventName: String, data: [String: Any]) {
-        var dic:[String: Any] = [:]
-        dic["command"] = "event"
-        dic["eventName"] = eventName
-        dic["data"] = data
-        dic["blockchain"] = "NEO"
-        dic["platform"] = "o3-dapi"
-        dic["version"] = "1"
-        
-        let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
-        let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
-        self.callback(jsonString: jsonString)
-    }
-    
-    func callback(jsonString: String) {
-        //make sure this is called from Main Thread
-        DispatchQueue.main.async {
-            self.webView!.evaluateJavaScript("_o3dapi.receiveMessage(\(jsonString))") { _, error in
-                guard error == nil else {
-                    return
-                }
-            }
-        }
-    }
-    
-    func didFinishMessage(message: dAppMessage, response: Any) {
-        DispatchQueue.main.async {
-            HUD.hide()
-            
-            var dic = message.dictionary
-            dic["data"] = response
-            let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
-            let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
-            self.callback(jsonString: jsonString)
-        }
-    }
-    
-    func didFireEvent(name: String) {
-        if name.lowercased() == "disconnect" {
-            self.walletSwitcherButton.tintColor = UIColor.gray
-        }
-        self.event(eventName: name, data: [:])
-    }
-    
-    func onConnectRequest(url: URL, message: dAppMessage, didCancel: @escaping (dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account?) -> Void) {
-        let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "ConnectRequestTableViewControllerNav")
-        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
-        nav.modalPresentationStyle = .custom
-        nav.transitioningDelegate = self.halfModalTransitioningDelegate
-        if let vc = nav.children.first as? ConnectRequestTableViewController {
-            vc.url = url
-            vc.message = message
-            vc.onConfirm = { m, wallet, account in
-                DispatchQueue.main.async {
-                    self.walletSwitcherButton.theme_tintColor = O3Theme.positiveGainColorPicker
-                }
-                didConfirm(m, wallet, account)
-            }
-            
-            vc.onCancel = { m in
-                didCancel(m)
-            }
-            
-            vc.dappMetadata = self.viewModel.dappMetadata
-        }
-        self.present(nav, animated: true, completion: nil)
-    }
-}
 
 extension dAppBrowserV2ViewController: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate{
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {

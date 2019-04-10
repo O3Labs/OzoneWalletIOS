@@ -25,6 +25,13 @@
 		351200BB207DE0E2003CA07D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351200BA207DE0E2003CA07D /* StoreKit.framework */; };
 		351200BD207EF84C003CA07D /* TokenSales.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351200BC207EF84C003CA07D /* TokenSales.swift */; };
 		3512923721E5B55900BFD0FD /* CreateWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3512923621E5B55900BFD0FD /* CreateWalletTableViewController.swift */; };
+		3514C1DB225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514C1DA225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift */; };
+		3514C1DD225D823A00E5BB23 /* Disclaimers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3514C1DC225D823A00E5BB23 /* Disclaimers.storyboard */; };
+		3514DC5E225C30D8001DCFD9 /* dapiDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514DC5D225C30D8001DCFD9 /* dapiDelegate.swift */; };
+		3514DC60225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514DC5F225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift */; };
+		3514DC62225C67B2001DCFD9 /* DappDisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514DC61225C67B2001DCFD9 /* DappDisclaimerViewController.swift */; };
+		3514DC64225C8B8A001DCFD9 /* ActiveLabel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3514DC63225C8B8A001DCFD9 /* ActiveLabel.framework */; };
+		3514DC65225C8B8A001DCFD9 /* ActiveLabel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3514DC63225C8B8A001DCFD9 /* ActiveLabel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3522945821117790004A03A7 /* claim_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522945621117790004A03A7 /* claim_success.json */; };
 		3522945921117790004A03A7 /* loader_portfolio.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522945721117790004A03A7 /* loader_portfolio.json */; };
 		3522945B2111A693004A03A7 /* UnboundOng.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522945A2111A693004A03A7 /* UnboundOng.swift */; };
@@ -387,6 +394,7 @@
 				6E244EC120858AB8001B4B22 /* Lottie.framework in Embed Frameworks */,
 				35CE4A2E2175D81400F460ED /* ZendeskCoreSDK.framework in Embed Frameworks */,
 				6E6BD24C1FFC69330049098A /* PKHUD.framework in Embed Frameworks */,
+				3514DC65225C8B8A001DCFD9 /* ActiveLabel.framework in Embed Frameworks */,
 				6EF59C9221A2B12300087D72 /* OpenGraph.framework in Embed Frameworks */,
 				3549458C203FD02B00332E53 /* Cache.framework in Embed Frameworks */,
 			);
@@ -413,6 +421,12 @@
 		351200BA207DE0E2003CA07D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		351200BC207EF84C003CA07D /* TokenSales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSales.swift; sourceTree = "<group>"; };
 		3512923621E5B55900BFD0FD /* CreateWalletTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletTableViewController.swift; sourceTree = "<group>"; };
+		3514C1DA225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsDisclaimerViewController.swift; sourceTree = "<group>"; };
+		3514C1DC225D823A00E5BB23 /* Disclaimers.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Disclaimers.storyboard; sourceTree = "<group>"; };
+		3514DC5D225C30D8001DCFD9 /* dapiDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dapiDelegate.swift; sourceTree = "<group>"; };
+		3514DC5F225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dappBrowserBottomToolbar.swift; sourceTree = "<group>"; };
+		3514DC61225C67B2001DCFD9 /* DappDisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappDisclaimerViewController.swift; sourceTree = "<group>"; };
+		3514DC63225C8B8A001DCFD9 /* ActiveLabel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActiveLabel.framework; path = Carthage/Build/iOS/ActiveLabel.framework; sourceTree = "<group>"; };
 		3522945621117790004A03A7 /* claim_success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = claim_success.json; sourceTree = "<group>"; };
 		3522945721117790004A03A7 /* loader_portfolio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loader_portfolio.json; sourceTree = "<group>"; };
 		3522945A2111A693004A03A7 /* UnboundOng.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnboundOng.swift; sourceTree = "<group>"; };
@@ -754,6 +768,7 @@
 				6ECF0E251FAED3D800884F38 /* Reachability.framework in Frameworks */,
 				35CE4A2D2175D81400F460ED /* ZendeskCoreSDK.framework in Frameworks */,
 				7537438B1F7F572500803A6C /* KeychainAccess.framework in Frameworks */,
+				3514DC64225C8B8A001DCFD9 /* ActiveLabel.framework in Frameworks */,
 				35A6390F203517BB0054EA20 /* CloudKit.framework in Frameworks */,
 				3549458B203FD02B00332E53 /* Cache.framework in Frameworks */,
 				353F364F20037DFB002B4FE1 /* Kingfisher.framework in Frameworks */,
@@ -802,6 +817,40 @@
 				356F1B0A219049130004C088 /* EncyptionCompletedViewController.swift */,
 			);
 			path = PrivateKey;
+			sourceTree = "<group>";
+		};
+		3514C1D9225D816300E5BB23 /* Disclaimers */ = {
+			isa = PBXGroup;
+			children = (
+				3514DC61225C67B2001DCFD9 /* DappDisclaimerViewController.swift */,
+				3514C1DA225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift */,
+				3514C1DC225D823A00E5BB23 /* Disclaimers.storyboard */,
+			);
+			path = Disclaimers;
+			sourceTree = "<group>";
+		};
+		3514DC5B225C2EA8001DCFD9 /* DapiRequestControllers */ = {
+			isa = PBXGroup;
+			children = (
+				6E4BB74C21B75BB20003C9DD /* Controls */,
+				6EB311AC21AB8306008EACD9 /* views */,
+				6E79A31F21ABE46A002284D7 /* ConnectWalletSelectorTableViewController.swift */,
+				35A8464D2214FFF400E95F48 /* ContractDetailsTableViewController.swift */,
+				35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */,
+				6E58720521A69C72007F1EC6 /* SendRequestTableViewController.swift */,
+				6EF59C9321A3994F00087D72 /* ConnectRequestTableViewController.swift */,
+			);
+			path = DapiRequestControllers;
+			sourceTree = "<group>";
+		};
+		3514DC5C225C2F8E001DCFD9 /* Toolbars */ = {
+			isa = PBXGroup;
+			children = (
+				6E1ACFE521BA365A0079E752 /* dAppBrowserMenuTableViewController.swift */,
+				35585F8E21F59F3100BA39C6 /* dAppBrowserTrading.swift */,
+				3514DC5F225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift */,
+			);
+			path = Toolbars;
 			sourceTree = "<group>";
 		};
 		3527F8CB20C533F100C2FCB9 /* Marketplace */ = {
@@ -1224,20 +1273,14 @@
 		6EF59C8221A27B6500087D72 /* dappbrowserv2 */ = {
 			isa = PBXGroup;
 			children = (
-				6E4BB74C21B75BB20003C9DD /* Controls */,
-				6EB311AC21AB8306008EACD9 /* views */,
+				3514DC5C225C2F8E001DCFD9 /* Toolbars */,
+				3514DC5B225C2EA8001DCFD9 /* DapiRequestControllers */,
 				6EF59C8921A2A1FA00087D72 /* Models */,
-				35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */,
 				6EF59C8321A27CAD00087D72 /* dAppBrowserV2ViewController.swift */,
+				3514DC5D225C30D8001DCFD9 /* dapiDelegate.swift */,
 				6EF59C8521A27CBA00087D72 /* dAppBrowser.storyboard */,
 				6EF59C8721A28FAD00087D72 /* dAppBrowser.xcassets */,
-				6EF59C9321A3994F00087D72 /* ConnectRequestTableViewController.swift */,
 				6EF59C9521A3D25C00087D72 /* dAppProtocol.swift */,
-				6E58720521A69C72007F1EC6 /* SendRequestTableViewController.swift */,
-				6E79A31F21ABE46A002284D7 /* ConnectWalletSelectorTableViewController.swift */,
-				6E1ACFE521BA365A0079E752 /* dAppBrowserMenuTableViewController.swift */,
-				35585F8E21F59F3100BA39C6 /* dAppBrowserTrading.swift */,
-				35A8464D2214FFF400E95F48 /* ContractDetailsTableViewController.swift */,
 			);
 			path = dappbrowserv2;
 			sourceTree = "<group>";
@@ -1339,6 +1382,7 @@
 		7575ADB91F6006AB0077007B = {
 			isa = PBXGroup;
 			children = (
+				3514DC63225C8B8A001DCFD9 /* ActiveLabel.framework */,
 				35809D9721E6EB5000E1D277 /* M13Checkbox.framework */,
 				354C395021E43EC400D2F454 /* SkyFloatingLabelTextField.framework */,
 				6EF59C9021A2B12300087D72 /* OpenGraph.framework */,
@@ -1379,6 +1423,7 @@
 		7575ADC41F6006AC0077007B /* O3 */ = {
 			isa = PBXGroup;
 			children = (
+				3514C1D9225D816300E5BB23 /* Disclaimers */,
 				6E4376A921463A170091367A /* Trading */,
 				6E43767621460CB90091367A /* SwitcheoSwift */,
 				6EF59C8221A27B6500087D72 /* dappbrowserv2 */,
@@ -1737,6 +1782,7 @@
 				3557BAB220AA9CEE0034937C /* nodes.json in Resources */,
 				75D5BFC21F6D196200E64855 /* OnboardingAssets.xcassets in Resources */,
 				75BEB2681F8A068100DC20E9 /* HUD.xcassets in Resources */,
+				3514C1DD225D823A00E5BB23 /* Disclaimers.storyboard in Resources */,
 				6EF59C8821A28FAD00087D72 /* dAppBrowser.xcassets in Resources */,
 				35B426BF2098242600957211 /* TokenSelection.storyboard in Resources */,
 			);
@@ -1887,10 +1933,12 @@
 				6E2F26382151D7EA00A3DEB1 /* CreateOrderTableViewController.swift in Sources */,
 				353E11E420C676E000697359 /* LandingCollectionCell.swift in Sources */,
 				75DA590B1F7A83940065FE0D /* UIViewController.swift in Sources */,
+				3514DC5E225C30D8001DCFD9 /* dapiDelegate.swift in Sources */,
 				35B399D5210ECDB400284BFA /* OntologyClient.swift in Sources */,
 				35AD2B70209312600024A900 /* OnboardingStrings.swift in Sources */,
 				35A8464E2214FFF400E95F48 /* ContractDetailsTableViewController.swift in Sources */,
 				35DBABCA2098028D009BE767 /* PortfolioStrings.swift in Sources */,
+				3514DC60225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift in Sources */,
 				6E5568EE214B5F1E00BA805E /* UIButton.swift in Sources */,
 				6E84C88F2147A53100127766 /* TradableAssetSelectorTableViewController.swift in Sources */,
 				3557BAC820AA9D180034937C /* NeoScan.swift in Sources */,
@@ -1965,6 +2013,7 @@
 				3557BA9D20AA9C870034937C /* AssetIdConstants.swift in Sources */,
 				3557BAD220AA9D310034937C /* Base58.swift in Sources */,
 				3557BABE20AA9D0B0034937C /* Claims.swift in Sources */,
+				3514DC62225C67B2001DCFD9 /* DappDisclaimerViewController.swift in Sources */,
 				752006861F7F698300D19B5F /* O3TabBarController.swift in Sources */,
 				6E4E6F89201465BE001A5844 /* NativeAssetTableViewCell.swift in Sources */,
 				6ED5D7EC2016BFC900AF3713 /* AssetSelectorTableViewController.swift in Sources */,
@@ -2004,6 +2053,7 @@
 				757FEB731F77F07B0099E26F /* String.swift in Sources */,
 				6E64C0E0215B8A99002B1366 /* PriceInputToggleToolbar.swift in Sources */,
 				6E61BBD11F729D3B00D2B30B /* Money.swift in Sources */,
+				3514C1DB225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift in Sources */,
 				6E5FDFEB2167250600C1A6B5 /* ShadowedButton.swift in Sources */,
 				3557BACB20AA9D260034937C /* WIF.swift in Sources */,
 				35CCEF662182F383005EF03C /* AddNameEncryptedKeyTableViewController.swift in Sources */,

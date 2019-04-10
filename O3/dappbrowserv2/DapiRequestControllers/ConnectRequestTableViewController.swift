@@ -169,6 +169,7 @@ class ConnectRequestTableViewController: UITableViewController {
                 let generator = UINotificationFeedbackGenerator()
                   generator.notificationOccurred(.success)
                 let wallet = Wallet(wif: wif)
+                dapiEvent.shared.accountConnected(url: self.url?.absoluteString ?? "", domain: self.url?.host ?? "")
                 self.onConfirm?(self.message, wallet!, self.selectedAccount)
                 self.dismiss(animated: true, completion: nil)
             }

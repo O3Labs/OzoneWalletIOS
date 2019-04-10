@@ -31,6 +31,7 @@ class InvokeRequestTableViewController: UITableViewController {
     var selectedWallet: Wallet! = nil
     var dappMetadata: dAppMetadata! = nil
     var request: dAppProtocol.InvokeRequest! = nil
+    var url: URL?
     
     
     
@@ -200,6 +201,7 @@ class InvokeRequestTableViewController: UITableViewController {
                 requestGroup.leave()
                 return
             }
+            dapiEvent.shared.txAccepted(method: "invoke", url: self.url?.absoluteString ?? "", domain: self.url?.host ?? "")
             response = dAppProtocol.InvokeResponse(txid: txId!, nodeUrl: AppState.bestSeedNodeURL)
             requestGroup.leave()
             return

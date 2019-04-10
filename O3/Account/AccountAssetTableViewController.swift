@@ -703,7 +703,7 @@ extension AccountAssetTableViewController {
         
         if self.tradingAccount!.switcheo.confirmed.count > 0 {
             let depositButton = UIAlertAction(title: "Deposit", style: .default) { _ in
-                tradingEvent.shared.startDeposit(asset: "", source: TradingActionSource.tradingAccount)
+                tradingEvent.shared.startDeposit(asset: "NEO", source: TradingActionSource.tradingAccount)
                 self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Deposit, asset: nil)
             }
             alert.addAction(depositButton)

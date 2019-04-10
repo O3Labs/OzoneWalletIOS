@@ -209,10 +209,13 @@ class SendReviewTableViewController: UITableViewController {
             if selectedAsset.id.hasPrefix("0x") {
                 id = String(id.dropFirst(2))
             }
+            sendEvent.shared.assetSend(blockchain: "NEO", asset: selectedAsset.name, amount: selectedAmount)
             self.sendNativeAsset(assetId: AssetId(rawValue: id)!, assetName: selectedAsset.name, amount: selectedAmount, toAddress: sendToAddress)
         } else if self.selectedAsset?.assetType == .nep5Token {
+            sendEvent.shared.assetSend(blockchain: "NEO", asset: selectedAsset.name, amount: selectedAmount)
             self.sendNEP5Token(tokenHash: id, decimals: self.selectedAsset!.decimals, assetName: selectedAsset.name, amount: selectedAmount, toAddress: sendToAddress)
         } else if self.selectedAsset?.assetType == .ontologyAsset {
+            sendEvent.shared.assetSend(blockchain: "Ontology", asset: selectedAsset.name, amount: selectedAmount)
             self.sendOntology(assetSymbol: selectedAsset.symbol, amount: selectedAmount, toAddress: sendToAddress)
         }
     }

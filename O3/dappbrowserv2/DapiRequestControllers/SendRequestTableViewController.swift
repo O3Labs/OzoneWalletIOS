@@ -27,6 +27,7 @@ class SendRequestTableViewController: UITableViewController {
     var message: dAppMessage!
     var dappMetadata: dAppMetadata?
     var accountState: AccountState?
+    var url: URL?
     var requestedAsset: TransferableAsset?
     var isCheckingBalance: Bool! = false
 
@@ -345,6 +346,7 @@ class SendRequestTableViewController: UITableViewController {
                     requestGroup.leave()
                     return
                 }
+                dapiEvent.shared.txAccepted(method: "send", url: self.url?.absoluteString ?? "", domain: self.url?.host ?? "")
                 response = dAppProtocol.SendResponse(txid: txID!, nodeUrl: node)
                 requestGroup.leave()
                 return
