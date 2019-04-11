@@ -33,7 +33,7 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
     var passwordVerifyIsSecure = true
     var wif = ""
     
-    let animation = LOTAnimationView(name: "wallet_generated")
+    let animation = AnimationView(name: "wallet_generated")
     
     var allowedCharacters = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~`!@#$%^&*()+=-/;:\"\'{}[]<>^?,")
     var nep2: NeoutilsNEP2?
@@ -44,7 +44,7 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
         setThemedElements()
         applyNavBarTheme()
         animationContainerView.embed(animation)
-        animation.loopAnimation = true
+        animation.loopMode = .loop
         animation.play()
         continueButton.isEnabled = false
     }

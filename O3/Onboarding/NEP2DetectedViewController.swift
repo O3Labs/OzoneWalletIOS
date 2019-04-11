@@ -27,7 +27,7 @@ class NEP2DetectedViewController: UIViewController {
     var nep2EncryptedKey: String = ""
     var password = ""
 
-    let animationView = LOTAnimationView(name: "EnterPasswordKey")
+    let animationView = AnimationView(name: "EnterPasswordKey")
     weak var delegate: Nep2PasswordDelegate?
 
     override func viewDidLoad() {
@@ -49,7 +49,7 @@ class NEP2DetectedViewController: UIViewController {
         doneButton.isEnabled = false
 
         animationContainer.embed(animationView)
-        animationView.loopAnimation = true
+        animationView.loopMode = .loop
         animationView.play()
     }
 

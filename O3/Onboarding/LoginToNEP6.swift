@@ -23,7 +23,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     
-    let animation = LOTAnimationView(name: "RocketSplash")
+    let animation = AnimationView(name: "RocketSplash")
     let nep6 = NEP6.getFromFileSystem()
     var delegate: LoginToNEP6ViewControllerDelegate?
     var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -103,7 +103,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         setGradient()
         animationViewContainer.embed(animation)
-        animation.loopAnimation = true
+        animation.loopMode = .loop
         animation.play()
         tableView.delegate = self
         tableView.dataSource = self

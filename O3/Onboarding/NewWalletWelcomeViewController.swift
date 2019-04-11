@@ -17,11 +17,11 @@ class NewWalletWelcomeViewController: UIViewController {
     @IBOutlet weak var containerView: UIView!
     
     
-    let lottieAnimation = LOTAnimationView(name: "luna_bobbing")
+    let lottieAnimation = AnimationView(name: "luna_bobbing")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        lottieAnimation.loopAnimation = true
+        lottieAnimation.loopMode = .loop
         lottieAnimation.play()
         containerView.embed(lottieAnimation)
         setLocalizedStrings()

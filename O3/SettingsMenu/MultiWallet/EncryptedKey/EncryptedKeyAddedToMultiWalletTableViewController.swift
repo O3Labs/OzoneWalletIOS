@@ -17,7 +17,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
     @IBOutlet weak var passwordInputField: UITextField!
     @IBOutlet weak var continueButton: ShadowedButton!
     
-    let lottieView = LOTAnimationView(name: "EnterPasswordKey")
+    let lottieView = AnimationView(name: "EnterPasswordKey")
     var encryptedKey = ""
     var address = ""
     
@@ -26,7 +26,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
         setLocalizedStrings()
         setThemedElements()
         animationContainerView.embed(lottieView)
-        lottieView.loopAnimation = true
+        lottieView.loopMode = .loop
         lottieView.play()
         continueButton.isEnabled = false
         passwordInputField.isSecureTextEntry = true

@@ -23,7 +23,7 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var loginButtonLeading: NSLayoutConstraint!
     @IBOutlet weak var loginButtonTrailing: NSLayoutConstraint!
 
-    var animationView = LOTAnimationView(name: "Landing")
+    var animationView = AnimationView(name: "Landing")
     var currPosition = 0.0
     var maxPosition = 4.0
     var minPosition = 0.0
@@ -112,7 +112,7 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.pageControl.currentPage = Int(self.currPosition + 1)
             self.collectionView.scrollToItem(at: IndexPath(row: Int(self.currPosition) + 1, section: 0), at: .centeredHorizontally, animated: true)
             let keyFrame = NSNumber(value: (self.currPosition + 1) * 30.0)
-            self.animationView.play(toFrame: keyFrame) { _ in
+            self.animationView.play(toFrame: AnimationFrameTime(keyFrame)) { _ in
                 self.currPosition += 1
                 self.swipeDisabled = false
             }
@@ -134,7 +134,7 @@ class LandingViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.collectionView.scrollToItem(at: IndexPath(row: Int(self.currPosition) - 1, section: 0), at: .centeredHorizontally, animated: true)
             let currentKeyFrame = NSNumber(value: (self.currPosition) * 30.0)
             let nextKeyFrame = NSNumber(value: (self.currPosition - 1) * 30.0)
-            self.animationView.play(fromFrame: currentKeyFrame, toFrame: nextKeyFrame) { _ in
+            self.animationView.play(fromFrame: AnimationFrameTime(currentKeyFrame), toFrame: AnimationFrameTime(nextKeyFrame)) { _ in
                 self.swipeDisabled = false
                 self.currPosition -= 1
             }

@@ -28,12 +28,12 @@ class CreateWalletTableViewController: UITableViewController, UITextFieldDelegat
     @IBOutlet weak var confirmPasswordButton: UIButton!
     
     
-    let lottieView = LOTAnimationView(name: "an_create_wallet")
+    let lottieView = AnimationView(name: "an_create_wallet")
 
     override func viewDidLoad() {
         super.viewDidLoad()
         lottieContainer.embed(lottieView)
-        lottieView.loopAnimation = true
+        lottieView.loopMode = .loop
         lottieView.play()
         
         enterPasswordField.delegate = self

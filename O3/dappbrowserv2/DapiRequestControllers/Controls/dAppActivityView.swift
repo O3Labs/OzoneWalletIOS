@@ -14,8 +14,8 @@ class dAppActivityView: UIView {
     @IBOutlet var iconContainerView: UIView!
     @IBOutlet var titleLabel: UILabel!
     
-    let loadingView = LOTAnimationView(name: "loader_portfolio")
-    let successView = LOTAnimationView(name: "claim_success")
+    let loadingView = AnimationView(name: "loader_portfolio")
+    let successView = AnimationView(name: "claim_success")
     
     var view: UIView! {
         didSet {
@@ -40,7 +40,7 @@ class dAppActivityView: UIView {
     func success() {
         loadingView.removeFromSuperview()
         iconContainerView.addSubview(successView)
-        successView.animationProgress = 0.2 //skip the loading in the front
+        successView.currentProgress = 0.2 //skip the loading in the front
         successView.play()
         titleLabel.text = String(format: "Transaction sent")
         titleLabel.theme_textColor = O3Theme.positiveGainColorPicker

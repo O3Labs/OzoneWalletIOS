@@ -1,5 +1,6 @@
+github "zendesk/zendesk_sdk_ios"
 github "Skyscanner/SkyFloatingLabelTextField"
-github "apisit/ScrollableGraphView" "4.0.7"
+github "philackm/ScrollableGraphView" "4.0.6"
 github "kishikawakatsumi/KeychainAccess"
 github "HarshilShah/DeckTransition"
 github "ashleymills/Reachability.swift"

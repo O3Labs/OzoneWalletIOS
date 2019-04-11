@@ -19,8 +19,8 @@ protocol ClaimingGasCellDelegate: class {
 
 class ClaimableGASTableViewCell: UITableViewCell {
     weak var delegate: ClaimingGasCellDelegate?
-    var neoClaimSuccessAnimation: LOTAnimationView = LOTAnimationView(name: "claim_success")
-    var ontClaimSuccessAnimation: LOTAnimationView = LOTAnimationView(name: "claim_success")
+    var neoClaimSuccessAnimation: AnimationView = AnimationView(name: "claim_success")
+    var ontClaimSuccessAnimation: AnimationView = AnimationView(name: "claim_success")
     
     var ongBalance = 0.0
 
@@ -80,12 +80,12 @@ class ClaimableGASTableViewCell: UITableViewCell {
     }
 
     func setupView() {
-        let neoLoaderView = LOTAnimationView(name: "loader_portfolio")
-        neoLoaderView.loopAnimation = true
+        let neoLoaderView = AnimationView(name: "loader_portfolio")
+        neoLoaderView.loopMode = .loop
         neoLoaderView.play()
 
-        let ontLoaderView = LOTAnimationView(name: "loader_portfolio")
-        ontLoaderView.loopAnimation = true
+        let ontLoaderView = AnimationView(name: "loader_portfolio")
+        neoLoaderView.loopMode = .loop
         ontLoaderView.play()
 
         neoClaimLoadingContainer.embed(neoLoaderView)

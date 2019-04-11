@@ -40,7 +40,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     var selectedAmount: Double?
 
 
-    let loadingView = LOTAnimationView(name: "loader_portfolio")
+    let loadingView = AnimationView(name: "loader_portfolio")
     var incomingQRData: String?
     
     override func viewDidLoad() {

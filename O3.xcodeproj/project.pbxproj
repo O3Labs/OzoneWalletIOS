@@ -36,6 +36,13 @@
 		3522945821117790004A03A7 /* claim_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522945621117790004A03A7 /* claim_success.json */; };
 		3522945921117790004A03A7 /* loader_portfolio.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522945721117790004A03A7 /* loader_portfolio.json */; };
 		3522945B2111A693004A03A7 /* UnboundOng.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522945A2111A693004A03A7 /* UnboundOng.swift */; };
+		35267DC8225F355D0011E106 /* ZendeskProviderSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC4225F355D0011E106 /* ZendeskProviderSDK.framework */; };
+		35267DC9225F355D0011E106 /* ZendeskProviderSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC4225F355D0011E106 /* ZendeskProviderSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		35267DCA225F355D0011E106 /* ZendeskSDKStrings.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 35267DC5225F355D0011E106 /* ZendeskSDKStrings.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		35267DCB225F355E0011E106 /* ZendeskSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC6225F355D0011E106 /* ZendeskSDK.framework */; };
+		35267DCC225F355E0011E106 /* ZendeskSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC6225F355D0011E106 /* ZendeskSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		35267DCD225F355E0011E106 /* ZendeskCoreSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC7225F355D0011E106 /* ZendeskCoreSDK.framework */; };
+		35267DCE225F355E0011E106 /* ZendeskCoreSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC7225F355D0011E106 /* ZendeskCoreSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3527F8CD20C5349200C2FCB9 /* Marketplace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */; };
 		3527F8CF20C539A500C2FCB9 /* MarketplaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3527F8CE20C539A500C2FCB9 /* MarketplaceController.swift */; };
 		353E11DD20C65CF800697359 /* MarketplaceStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E11DC20C65CF800697359 /* MarketplaceStrings.swift */; };
@@ -140,13 +147,6 @@
 		35CCEF642182DB44005EF03C /* EncryptedKeyAddedToMultiWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CCEF632182DB44005EF03C /* EncryptedKeyAddedToMultiWalletTableViewController.swift */; };
 		35CCEF662182F383005EF03C /* AddNameEncryptedKeyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CCEF652182F383005EF03C /* AddNameEncryptedKeyTableViewController.swift */; };
 		35CE4A262175CA4C00F460ED /* BadgeUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CE4A252175CA4C00F460ED /* BadgeUIButton.swift */; };
-		35CE4A2B2175D81400F460ED /* ZendeskProviderSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A272175D81300F460ED /* ZendeskProviderSDK.framework */; };
-		35CE4A2C2175D81400F460ED /* ZendeskProviderSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A272175D81300F460ED /* ZendeskProviderSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		35CE4A2D2175D81400F460ED /* ZendeskCoreSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A282175D81300F460ED /* ZendeskCoreSDK.framework */; };
-		35CE4A2E2175D81400F460ED /* ZendeskCoreSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A282175D81300F460ED /* ZendeskCoreSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		35CE4A2F2175D81400F460ED /* ZendeskSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A292175D81300F460ED /* ZendeskSDK.framework */; };
-		35CE4A302175D81400F460ED /* ZendeskSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A292175D81300F460ED /* ZendeskSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		35CE4A312175D81400F460ED /* ZendeskSDKStrings.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 35CE4A2A2175D81400F460ED /* ZendeskSDKStrings.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35CE4A342175DF0C00F460ED /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CE4A332175DF0C00F460ED /* UIDevice.swift */; };
 		35CE4A362176CD1400F460ED /* SendWhatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CE4A352176CD1400F460ED /* SendWhatTableViewController.swift */; };
 		35CE4A3821772F4300F460ED /* SendReviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CE4A3721772F4300F460ED /* SendReviewTableViewController.swift */; };
@@ -238,10 +238,7 @@
 		6E64C0E0215B8A99002B1366 /* PriceInputToggleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E64C0DF215B8A99002B1366 /* PriceInputToggleToolbar.swift */; };
 		6E6BD24B1FFC69330049098A /* PKHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6BD24A1FFC67E10049098A /* PKHUD.framework */; };
 		6E6BD24C1FFC69330049098A /* PKHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6BD24A1FFC67E10049098A /* PKHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6E713ACA219BE5B200CFAE3C /* ZendeskSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E713AC6219BE5B200CFAE3C /* ZendeskSDK.framework */; };
-		6E713ACB219BE5B200CFAE3C /* ZendeskCoreSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E713AC7219BE5B200CFAE3C /* ZendeskCoreSDK.framework */; };
 		6E713ACC219BE5B200CFAE3C /* ZendeskSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6E713AC8219BE5B200CFAE3C /* ZendeskSDKStrings.bundle */; };
-		6E713ACD219BE5B200CFAE3C /* ZendeskProviderSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E713AC9219BE5B200CFAE3C /* ZendeskProviderSDK.framework */; };
 		6E72436420D0F0A5007D1201 /* LocalizableUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E72436320D0F0A5007D1201 /* LocalizableUILabel.swift */; };
 		6E79A31E21ABDF92002284D7 /* ConnectRequestWalletUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E79A31D21ABDF92002284D7 /* ConnectRequestWalletUITableViewCell.swift */; };
 		6E79A32021ABE46A002284D7 /* ConnectWalletSelectorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E79A31F21ABE46A002284D7 /* ConnectWalletSelectorTableViewController.swift */; };
@@ -364,8 +361,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				35267DCA225F355D0011E106 /* ZendeskSDKStrings.bundle in Embed PlugIns */,
 				6E4F4421222E4002008B9BFC /* O3Widget.appex in Embed PlugIns */,
-				35CE4A312175D81400F460ED /* ZendeskSDKStrings.bundle in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,22 +379,22 @@
 				35494578203C03DC00332E53 /* AutoInsetter.framework in Embed Frameworks */,
 				357D28C32122E16700DA67A0 /* Amplitude.framework in Embed Frameworks */,
 				350100F5204541A6000F6648 /* SwiftTheme.framework in Embed Frameworks */,
-				35CE4A302175D81400F460ED /* ZendeskSDK.framework in Embed Frameworks */,
+				35267DCC225F355E0011E106 /* ZendeskSDK.framework in Embed Frameworks */,
 				354C395221E43EC500D2F454 /* SkyFloatingLabelTextField.framework in Embed Frameworks */,
 				6E97C4BA1F7FCB4000526FF0 /* DeckTransition.framework in Embed Frameworks */,
 				7537438C1F7F572500803A6C /* KeychainAccess.framework in Embed Frameworks */,
 				755D8F621F66747A00058434 /* ScrollableGraphView.framework in Embed Frameworks */,
-				35CE4A2C2175D81400F460ED /* ZendeskProviderSDK.framework in Embed Frameworks */,
 				35809D9921E6EB5000E1D277 /* M13Checkbox.framework in Embed Frameworks */,
 				353F365020037DFB002B4FE1 /* Kingfisher.framework in Embed Frameworks */,
 				6ED600141F76219D006760E6 /* Channel.framework in Embed Frameworks */,
 				6ECF0E2B1FAED7BF00884F38 /* Reachability.framework in Embed Frameworks */,
 				6E244EC120858AB8001B4B22 /* Lottie.framework in Embed Frameworks */,
-				35CE4A2E2175D81400F460ED /* ZendeskCoreSDK.framework in Embed Frameworks */,
 				6E6BD24C1FFC69330049098A /* PKHUD.framework in Embed Frameworks */,
 				3514DC65225C8B8A001DCFD9 /* ActiveLabel.framework in Embed Frameworks */,
+				35267DC9225F355D0011E106 /* ZendeskProviderSDK.framework in Embed Frameworks */,
 				6EF59C9221A2B12300087D72 /* OpenGraph.framework in Embed Frameworks */,
 				3549458C203FD02B00332E53 /* Cache.framework in Embed Frameworks */,
+				35267DCE225F355E0011E106 /* ZendeskCoreSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +429,14 @@
 		3522945621117790004A03A7 /* claim_success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = claim_success.json; sourceTree = "<group>"; };
 		3522945721117790004A03A7 /* loader_portfolio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loader_portfolio.json; sourceTree = "<group>"; };
 		3522945A2111A693004A03A7 /* UnboundOng.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnboundOng.swift; sourceTree = "<group>"; };
+		35267DB9225F345F0011E106 /* ZendeskProviderSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZendeskProviderSDK.framework; sourceTree = "<group>"; };
+		35267DBA225F345F0011E106 /* ZendeskSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZendeskSDKStrings.bundle; sourceTree = "<group>"; };
+		35267DBB225F34600011E106 /* ZendeskCoreSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZendeskCoreSDK.framework; sourceTree = "<group>"; };
+		35267DBC225F34620011E106 /* ZendeskSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZendeskSDK.framework; sourceTree = "<group>"; };
+		35267DC4225F355D0011E106 /* ZendeskProviderSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZendeskProviderSDK.framework; path = Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0/ZendeskProviderSDK.framework; sourceTree = "<group>"; };
+		35267DC5225F355D0011E106 /* ZendeskSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ZendeskSDKStrings.bundle; path = Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0/ZendeskSDKStrings.bundle; sourceTree = "<group>"; };
+		35267DC6225F355D0011E106 /* ZendeskSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZendeskSDK.framework; path = Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0/ZendeskSDK.framework; sourceTree = "<group>"; };
+		35267DC7225F355D0011E106 /* ZendeskCoreSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZendeskCoreSDK.framework; path = Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0/ZendeskCoreSDK.framework; sourceTree = "<group>"; };
 		3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Marketplace.storyboard; sourceTree = "<group>"; };
 		3527F8CE20C539A500C2FCB9 /* MarketplaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceController.swift; sourceTree = "<group>"; };
 		353E11DC20C65CF800697359 /* MarketplaceStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceStrings.swift; sourceTree = "<group>"; };
@@ -747,9 +752,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				351200BB207DE0E2003CA07D /* StoreKit.framework in Frameworks */,
-				6E713ACD219BE5B200CFAE3C /* ZendeskProviderSDK.framework in Frameworks */,
-				6E713ACB219BE5B200CFAE3C /* ZendeskCoreSDK.framework in Frameworks */,
-				35CE4A2B2175D81400F460ED /* ZendeskProviderSDK.framework in Frameworks */,
+				35267DC8225F355D0011E106 /* ZendeskProviderSDK.framework in Frameworks */,
 				6E0BECCA2063B47A00FA0A03 /* WebBrowser.framework in Frameworks */,
 				350100F4204541A6000F6648 /* SwiftTheme.framework in Frameworks */,
 				6E244EC020858AB8001B4B22 /* Lottie.framework in Frameworks */,
@@ -757,22 +760,21 @@
 				6EF59C9121A2B12300087D72 /* OpenGraph.framework in Frameworks */,
 				35809D9821E6EB5000E1D277 /* M13Checkbox.framework in Frameworks */,
 				35494575203C030A00332E53 /* Tabman.framework in Frameworks */,
-				35CE4A2F2175D81400F460ED /* ZendeskSDK.framework in Frameworks */,
 				3549456D203BF1F700332E53 /* Pageboy.framework in Frameworks */,
 				6E97C4B91F7FCB4000526FF0 /* DeckTransition.framework in Frameworks */,
 				35051B1C1FFDB10800F9AD30 /* Crashlytics.framework in Frameworks */,
-				6E713ACA219BE5B200CFAE3C /* ZendeskSDK.framework in Frameworks */,
 				35051B1D1FFDB10800F9AD30 /* Fabric.framework in Frameworks */,
 				751666B21F80C290009ACC07 /* WebKit.framework in Frameworks */,
 				6E6BD24B1FFC69330049098A /* PKHUD.framework in Frameworks */,
+				35267DCB225F355E0011E106 /* ZendeskSDK.framework in Frameworks */,
 				6EEE3DF620DBB70D0030A4AB /* neoutils.framework in Frameworks */,
 				357D28C22122E16700DA67A0 /* Amplitude.framework in Frameworks */,
 				6ECF0E251FAED3D800884F38 /* Reachability.framework in Frameworks */,
-				35CE4A2D2175D81400F460ED /* ZendeskCoreSDK.framework in Frameworks */,
 				7537438B1F7F572500803A6C /* KeychainAccess.framework in Frameworks */,
 				3514DC64225C8B8A001DCFD9 /* ActiveLabel.framework in Frameworks */,
 				35A6390F203517BB0054EA20 /* CloudKit.framework in Frameworks */,
 				3549458B203FD02B00332E53 /* Cache.framework in Frameworks */,
+				35267DCD225F355E0011E106 /* ZendeskCoreSDK.framework in Frameworks */,
 				353F364F20037DFB002B4FE1 /* Kingfisher.framework in Frameworks */,
 				6ED600131F76219D006760E6 /* Channel.framework in Frameworks */,
 				755D8F601F66743A00058434 /* ScrollableGraphView.framework in Frameworks */,
@@ -1384,6 +1386,14 @@
 		7575ADB91F6006AB0077007B = {
 			isa = PBXGroup;
 			children = (
+				35267DBB225F34600011E106 /* ZendeskCoreSDK.framework */,
+				35267DC7225F355D0011E106 /* ZendeskCoreSDK.framework */,
+				35267DB9225F345F0011E106 /* ZendeskProviderSDK.framework */,
+				35267DBC225F34620011E106 /* ZendeskSDK.framework */,
+				35267DC6225F355D0011E106 /* ZendeskSDK.framework */,
+				35267DBA225F345F0011E106 /* ZendeskSDKStrings.bundle */,
+				35267DC4225F355D0011E106 /* ZendeskProviderSDK.framework */,
+				35267DC5225F355D0011E106 /* ZendeskSDKStrings.bundle */,
 				3514DC63225C8B8A001DCFD9 /* ActiveLabel.framework */,
 				35809D9721E6EB5000E1D277 /* M13Checkbox.framework */,
 				354C395021E43EC400D2F454 /* SkyFloatingLabelTextField.framework */,
@@ -2259,6 +2269,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
+					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2364,6 +2375,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
+					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2528,6 +2540,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
+					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2566,6 +2579,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
+					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

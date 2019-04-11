@@ -20,14 +20,14 @@ class AddNameEncryptedKeyTableViewController: UITableViewController {
     var address = ""
     var encryptedKey = ""
     
-    var animation = LOTAnimationView(name: "wallet_generated")
+    var animation = AnimationView(name: "wallet_generated")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
         setThemedElements()
         animationContainerView.embed(animation)
-        animation.loopAnimation = true
+        animation.loopMode = .loop
         animation.play()
     }
     

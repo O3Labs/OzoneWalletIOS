@@ -37,7 +37,7 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
     @IBOutlet weak var confirmPasswordRevealButton: UIButton!
     
     @IBOutlet weak var containerView: UIView!
-    let lottieAnimation = LOTAnimationView(name: "an_create_wallet")
+    let lottieAnimation = AnimationView(name: "an_create_wallet")
     
     var alreadyScanned = false
     var qrView: UIView!
@@ -47,7 +47,7 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
         super.viewDidLoad()
         setLocalizedStrings()
         lottieAnimation.play()
-        lottieAnimation.loopAnimation = true
+        lottieAnimation.loopMode = .loop
         containerView.embed(lottieAnimation)
     
         navigationController!.hideHairline()

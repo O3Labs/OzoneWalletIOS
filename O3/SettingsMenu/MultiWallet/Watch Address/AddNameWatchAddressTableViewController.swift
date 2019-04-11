@@ -21,13 +21,13 @@ class AddNameWatchAddressTableViewController: UITableViewController {
     
     var address = ""
     
-    let lottieView = LOTAnimationView(name: "wallet_generated")
+    let lottieView = AnimationView(name: "wallet_generated")
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
         setThemedElements()
         animationContainer.embed(lottieView)
-        lottieView.loopAnimation = true
+        lottieView.loopMode = .loop
         lottieView.play()
         continueButton.isEnabled = false
     }
