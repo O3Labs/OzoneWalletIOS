@@ -38,71 +38,63 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         view.layer.insertSublayer(gradient, at: 0)
     }
     
+    func setAccountDetails(_ account: Wallet) {
+        Authenticated.wallet = account
+        DispatchQueue.global(qos: .background).async {
+            if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
+                AppState.bestSeedNodeURL = bestNode
+            }
+            DispatchQueue.main.async {
+                O3HUD.stop {
+                    DispatchQueue.main.async {
+                        SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
+                        //instead of doing segue here. we need to init the whole rootViewController
+                        
+                        UIView.transition(with: UIApplication.appDelegate.window!, duration: 0.5, options: .transitionCrossDissolve, animations: {
+                            let oldState: Bool = UIView.areAnimationsEnabled
+                            UIView.setAnimationsEnabled(false)
+                            UIApplication.appDelegate.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+                            UIView.setAnimationsEnabled(oldState)
+                            
+                        }, completion: { (finished: Bool) -> Void in
+                            if finished {
+                                self.delegate?.authorized(launchOptions: self.launchOptions)
+                            }
+                        })
+                    }
+                }
+            }
+        }
+    }
     
     func login() {
-        let keychain = Keychain(service: "network.o3.neo.wallet")
-        DispatchQueue.global().async {
-            do {
-                var nep6Pass: String? = nil
-                var key: String? = nil
-                if NEP6.getFromFileSystem() != nil  {
-                    let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
-                    
-                    nep6Pass = try keychain
-                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .authenticationPrompt(authString)
-                        .get("ozoneActiveNep6Password")
-                } else {
-                    key = try keychain
-                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .authenticationPrompt(OnboardingStrings.authenticationPrompt)
-                        .get("ozonePrivateKey")
-                }
-                
-                if key == nil && nep6Pass == nil {
-                    return
-                }
+        if NEP6.getFromFileSystem() != nil  {
+            O3KeychainManager.getSigningKeyPassword { result in
                 O3HUD.start()
-                var account: Wallet!
-                if key != nil {
-                    account = Wallet(wif: key!)!
-                } else {
+                switch result {
+                case .success(let nep6Pass):
                     let nep6 = NEP6.getFromFileSystem()!
                     var error: NSError?
                     for accountLoop in nep6.accounts {
                         if accountLoop.isDefault {
-                            account = Wallet(wif: NeoutilsNEP2Decrypt(accountLoop.key, nep6Pass, &error))!
+                            let account = Wallet(wif: NeoutilsNEP2Decrypt(accountLoop.key, nep6Pass, &error))!
+                            self.setAccountDetails(account)
                         }
                     }
+                case .failure(_):
+                    return
                 }
-                Authenticated.wallet = account
-                DispatchQueue.global(qos: .background).async {
-                    if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
-                        AppState.bestSeedNodeURL = bestNode
-                    }
-                    DispatchQueue.main.async {
-                        O3HUD.stop {
-                            DispatchQueue.main.async {
-                                SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
-                                //instead of doing segue here. we need to init the whole rootViewController
-                                
-                                UIView.transition(with: UIApplication.appDelegate.window!, duration: 0.5, options: .transitionCrossDissolve, animations: {
-                                    let oldState: Bool = UIView.areAnimationsEnabled
-                                    UIView.setAnimationsEnabled(false)
-                                    UIApplication.appDelegate.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
-                                    UIView.setAnimationsEnabled(oldState)
-                                    
-                                }, completion: { (finished: Bool) -> Void in
-                                    if finished {
-                                        self.delegate?.authorized(launchOptions: self.launchOptions)
-                                    }
-                                })
-                            }
-                        }
-                    }
+            }
+        } else {
+            O3KeychainManager.getWifKey { result in
+                O3HUD.start()
+                switch result {
+                case .success(let wif):
+                    let account = Wallet(wif: wif)!
+                    self.setAccountDetails(account)
+                case .failure(_):
+                    return
                 }
-            } catch _ {
-                
             }
         }
     }
