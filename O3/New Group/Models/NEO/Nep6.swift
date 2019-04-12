@@ -205,6 +205,7 @@ public class NEP6: Codable {
         }
         
         let prompt = "Please confirm to enable wallet"
+        
         O3KeychainManager.setSigningKeyPassword(with: prompt, pass: pass) { result in
             switch result {
             case .success(let _):

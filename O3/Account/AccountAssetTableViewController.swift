@@ -213,10 +213,12 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             return
         }
         let indexPath = IndexPath(row: 0, section: sections.unclaimedGAS.rawValue)
-        guard let cell = self.tableView.cellForRow(at: indexPath) as? ClaimableGASTableViewCell else {
-            return
+        DispatchQueue.main.async {
+            guard let cell = self.tableView.cellForRow(at: indexPath) as? ClaimableGASTableViewCell else {
+                return
+            }
+            cell.loadClaimableGASNeo()
         }
-        cell.loadClaimableGASNeo()
     }
     
     @objc func loadClaimableOng() {
@@ -577,7 +579,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     //MARK: -
     func setLocalizedStrings() {
         if NEP6.getFromFileSystem()?.accounts.count ?? 0 > 0 {
-            self.navigationController?.navigationBar.topItem?.title = NEP6.getFromFileSystem()?.accounts[0].label
+            DispatchQueue.main.async { self.navigationController?.navigationBar.topItem?.title = NEP6.getFromFileSystem()?.accounts[0].label }
         } else {
             self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
         }

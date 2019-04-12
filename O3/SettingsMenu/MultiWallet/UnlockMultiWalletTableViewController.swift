@@ -77,8 +77,21 @@ class UnlockMultiWalletTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let address = accounts[indexPath.row].address
         let key = accounts[indexPath.row].key!
         let name = accounts[indexPath.row].label
-        displayPasswordInput(key: key, name: name)
+        
+        O3KeychainManager.getNep6DecryptionPassword(for: address) { result in
+            switch result {
+            case .success(let pass):
+                var error: NSError?
+                let _ = NeoutilsNEP2Decrypt(key, pass, &error)
+                NEP6.makeNewDefault(key: key, pass: pass)
+                MultiwalletEvent.shared.walletUnlocked()
+                self.dismiss(animated: true)
+            case .failure(_):
+                self.displayPasswordInput(key: key, name: name)
+            }
+        }
     }
 }

@@ -91,7 +91,18 @@ class O3KeychainManager {
         }
     }
     
-    static func getNep6DecryptionPassword(for address: String, completion: @escaping(O3KeychainResult<String>) -> ()) throws {
+    static func removeSigningKeyPassword(completion: @escaping(O3KeychainResult<String>) -> ()) {
+        do {
+            let keychain = Keychain(service: self.keychainService)
+            try keychain
+                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                .remove(self.signingKeyPasswordKey)
+        } catch _ {
+            return
+        }
+    }
+    
+    static func getNep6DecryptionPassword(for address: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
             let keychain = Keychain(service: self.keychainService)
             let hashed = (address.data(using: .utf8)?.sha256.sha256.fullHexString)!
@@ -100,10 +111,9 @@ class O3KeychainManager {
             let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, accountLabel)
             do {
                 let keyPass = try keychain
-                    .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                    .accessibility(.whenUnlockedThisDeviceOnly, authenticationPolicy: .userPresence)
                     .authenticationPrompt(authString)
                     .get(keychainKey)
-                
                 guard keyPass != nil else {
                     completion(.failure("The Key does not exist"))
                     return
@@ -115,7 +125,22 @@ class O3KeychainManager {
         }
     }
     
-    static func setNep6DecryptionPassword(for address: String) {
+    static func setNep6DecryptionPassword(for address: String, pass: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
+        let keychain = Keychain(service: self.keychainService)
+        let hashed = (address.data(using: .utf8)?.sha256.sha256.fullHexString)!
+        let keychainKey = "NEP6." + hashed
         
+        DispatchQueue.global(qos: .userInitiated).async {
+            let keychain = Keychain(service: "network.o3.neo.wallet")
+            do {
+                //save pirivate key to keychain
+                try keychain
+                    .accessibility(.whenUnlockedThisDeviceOnly, authenticationPolicy: .userPresence)
+                    .set(pass, key: keychainKey)
+                completion(.success(""))
+            } catch let error {
+                completion(.failure(error.localizedDescription))
+            }
+        }
     }
 }
