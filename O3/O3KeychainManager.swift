@@ -42,10 +42,27 @@ class O3KeychainManager {
         }
     }
     
+    static func setSigningKeyPassword(with prompt: String, pass: String,
+                                      completion: @escaping(O3KeychainResult<Bool>) -> ()) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let keychain = Keychain(service: "network.o3.neo.wallet")
+            do {
+                //save pirivate key to keychain
+                try keychain
+                    .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                    .authenticationPrompt(prompt)
+                    .set(pass, key: self.signingKeyPasswordKey)
+                completion(.success(true))
+            } catch let error {
+                completion(.failure(error.localizedDescription))
+            }
+        }
+    }
+    
     static func getWifKey(completion: @escaping(O3KeychainResult<String>) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
             let keychain = Keychain(service: self.keychainService)
-            let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
+            let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, "My O3 Wallet")
             do {
                 let wif = try keychain
                     .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
@@ -60,6 +77,17 @@ class O3KeychainManager {
             } catch let error {
                 completion(.failure(error.localizedDescription))
             }
+        }
+    }
+    
+    static func removeLegacyWifKey(completion: @escaping(O3KeychainResult<String>) -> ()) {
+        do {
+            let keychain = Keychain(service: self.keychainService)
+            try keychain
+                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                .remove(self.wifKey)
+        } catch _ {
+            return
         }
     }
     

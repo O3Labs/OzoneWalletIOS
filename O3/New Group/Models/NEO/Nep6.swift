@@ -203,23 +203,22 @@ public class NEP6: Codable {
         if newDefaultIndex == nil || currentDefaultIndex == nil {
             return
         }
-        let keychain = Keychain(service: "network.o3.neo.wallet")
-        do {
-            //save pirivate key to keychain
-            try keychain
-                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                .set(pass, key: "ozoneActiveNep6Password")
-            
-            nep6.accounts[currentDefaultIndex!].isDefault = false
-            nep6.accounts[newDefaultIndex!].isDefault = true
-            nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
-
-            nep6.writeToFileSystem()
-            var error: NSError?
-            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
-            NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
-        } catch _ {
-            return
+        
+        let prompt = "Please confirm to enable wallet"
+        O3KeychainManager.setSigningKeyPassword(with: prompt, pass: pass) { result in
+            switch result {
+            case .success(let _):
+                nep6.accounts[currentDefaultIndex!].isDefault = false
+                nep6.accounts[newDefaultIndex!].isDefault = true
+                nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
+                
+                nep6.writeToFileSystem()
+                var error: NSError?
+                Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
+                NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
+            case .failure(let _):
+                return
+            }
         }
     }
     
@@ -235,22 +234,21 @@ public class NEP6: Codable {
         if newDefaultIndex == nil || currentDefaultIndex == nil {
             return
         }
-        let keychain = Keychain(service: "network.o3.neo.wallet")
-        do {
-            //save pirivate key to keychain
-            try keychain
-                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                .authenticationPrompt("Confirm this to be the default wallet on your device")
-                .set(pass, key: "ozoneActiveNep6Password")
-            nep6.accounts[currentDefaultIndex!].isDefault = false
-            nep6.accounts[newDefaultIndex!].isDefault = true
-            nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
-            nep6.writeToFileSystem()
-            var error: NSError?
-            Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
-            NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
-        } catch _ {
-            return
+        
+        let prompt = "Confirm this to be the default wallet on your device"
+        O3KeychainManager.setSigningKeyPassword(with: prompt, pass: pass) { result in
+            switch(result) {
+            case .success(_):
+                nep6.accounts[currentDefaultIndex!].isDefault = false
+                nep6.accounts[newDefaultIndex!].isDefault = true
+                nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
+                nep6.writeToFileSystem()
+                var error: NSError?
+                Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
+                NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
+            case .failure(_):
+                return
+            }
         }
     }
     

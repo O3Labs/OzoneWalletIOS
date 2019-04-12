@@ -101,21 +101,21 @@ class CreateWalletTableViewController: UITableViewController, UITextFieldDelegat
                                           label: "My O3 Wallet", isDefault: true, lock: false,
                                           key: nep2.encryptedKey())
             let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
-            let keychain = Keychain(service: "network.o3.neo.wallet")
-            do {
-                //save pirivate key to keychain
-                try keychain
-                    .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                    .set(password, key: "ozoneActiveNep6Password")
-                nep6.writeToFileSystem()
-                Authenticated.wallet = wallet
-                DispatchQueue.main.async {
-                    HUD.hide()
-                    self.performSegue(withIdentifier: "segueToWelcome", sender: nil)
-                    MultiwalletEvent.shared.walletAdded(type: "new_key", method: "new")
+            
+            let prompt = "Authenticate to enable this wallet"
+            O3KeychainManager.setSigningKeyPassword(with: prompt, pass: password) { result in
+                switch (result) {
+                case .success(_):
+                    nep6.writeToFileSystem()
+                    Authenticated.wallet = wallet
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                        self.performSegue(withIdentifier: "segueToWelcome", sender: nil)
+                        MultiwalletEvent.shared.walletAdded(type: "new_key", method: "new")
+                    }
+                case .failure(_):
+                    fatalError("Something went terribly wrong")
                 }
-            } catch _ {
-                fatalError("Something went terribly wrong")
             }
         }
     }
