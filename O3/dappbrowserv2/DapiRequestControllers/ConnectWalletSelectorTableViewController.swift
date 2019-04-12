@@ -8,7 +8,6 @@
 
 import UIKit
 import PKHUD
-import KeychainAccess
 import Neoutils
 
 class ConnectWalletSelectorTableViewController: UITableViewController {
@@ -89,45 +88,26 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
         
         //default selected account is the main active one so if user hasn't change
         if account.isDefault == true {
-            DispatchQueue.main.async {
-                HUD.show(.progress)
-            }
-            DispatchQueue.global(qos: .userInitiated).async {
-                //we could pull the password from the keychain
-                let keychain = Keychain(service: "network.o3.neo.wallet")
-                do {
-                    var nep6Pass: String? = nil
-                    
-                    let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
-                    
-                    nep6Pass = try keychain
-                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .authenticationPrompt(authString)
-                        .get("ozoneActiveNep6Password")
-                    let start = NSDate()
+            DispatchQueue.main.async { HUD.show(.progress) }
+            let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
+            O3KeychainManager.getSigningKeyPassword(with: prompt) { result in
+                DispatchQueue.main.async { O3HUD.start() }
+                switch result {
+                case .success(let nep6Pass):
+                    let nep6 = NEP6.getFromFileSystem()!
                     var error: NSError?
+                    let defaultAccount = nep6.accounts.first { $0.isDefault }!
+                    let account = Wallet(wif: NeoutilsNEP2Decrypt(defaultAccount.key, nep6Pass, &error))!
                     let wif = NeoutilsNEP2Decrypt(encryptedKey, nep6Pass, &error)
-                    let end = NSDate()
-                    
-                    let timeInterval: Double = end.timeIntervalSince(start as Date)
-                    #if DEBUG
-                    print("Time to evaluate problem \(timeInterval) seconds")
-                    #endif
-                    DispatchQueue.main.async {
-                        HUD.hide()
-                    }
                     if error == nil {
-                        DispatchQueue.main.async {
-                            didConfirm(wif!)
-                        }
+                        didConfirm(wif!)
                     }
-                } catch _ {
-                    DispatchQueue.main.async {
-                        HUD.hide()
-                    }
+                    DispatchQueue.main.async { HUD.hide() }
+                case .failure(_):
+                    DispatchQueue.main.async { HUD.hide() }
+                    return
                 }
             }
-            return
         }
         
         let alertController = UIAlertController(title: String(format: "Unlock %@", name), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)

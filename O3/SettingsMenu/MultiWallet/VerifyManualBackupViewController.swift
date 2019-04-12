@@ -99,19 +99,16 @@ class VerifyManualBackupViewController: UIViewController {
     @IBAction func switchValueChanged(_ sender: UISwitch) {
         if sender.isOn {
             if account.isDefault {
-                let keychain = Keychain(service: "network.o3.neo.wallet")
-                do {
-                    let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
-                    
-                    _ = try keychain
-                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .authenticationPrompt(authString)
-                        .get("ozoneActiveNep6Password")
-                    keyLabel.text = (Authenticated.wallet?.wif)!
-                    keyQR.image = UIImage(qrData: (Authenticated.wallet?.wif)!, width: 200, height: 200, qrLogoName: "ic_QRkey")
-                    titleLabel.text = wifKeyDescriptionText
-                } catch {
-                    sender.isOn = false
+                let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
+                O3KeychainManager.getSigningKeyPassword(with: prompt) { result in
+                    switch result {
+                    case .success(let _):
+                        self.keyLabel.text = (Authenticated.wallet?.wif)!
+                        self.keyQR.image = UIImage(qrData: (Authenticated.wallet?.wif)!, width: 200, height: 200, qrLogoName: "ic_QRkey")
+                        self.titleLabel.text = self.wifKeyDescriptionText
+                    case .failure(let _):
+                        sender.isOn = false
+                    }
                 }
             } else {
                 attemptUnlockPassword()

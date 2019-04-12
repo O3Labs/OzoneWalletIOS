@@ -70,42 +70,38 @@ class SendReviewTableViewController: UITableViewController {
     }
     
     func sendNativeAsset(assetId: AssetId, assetName: String, amount: Double, toAddress: String) {
-        DispatchQueue.main.async {
-            let keychain = Keychain(service: "network.o3.neo.wallet")
-            do {
-                _ = try keychain
-                    .authenticationPrompt(SendStrings.authenticateToSendPrompt)
-                    .get(AppState.protectedKeyValue)
-                
-                    O3HUD.start()
-                    if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
-                        AppState.bestSeedNodeURL = bestNode
-                    }
-                    var customAttributes: [TransactionAttritbute] = []
-                    let remark = String(format: "O3XSEND")
-                    customAttributes.append(TransactionAttritbute(remark: remark))
-                    var fee = 0.0
-                    if self.feeEnabled {
-                        fee = 0.0011
-                    }
-                    Authenticated.wallet?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes, fee: fee) { txid, _ in
-                        O3HUD.stop {
-                            if txid != nil {
-                                self.txId = txid!
-                                self.transactionCompleted = true
-                                Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
-                                                                                                "amount": amount])
-                            } else {
-                                self.transactionCompleted = false
-                            }
-                            //save to pending tx if it's completed
-                            if self.transactionCompleted == true {
-                                self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
-                            }
-                            self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
-                        }
+        O3KeychainManager.getSigningKeyPassword(with: SendStrings.authenticateToSendPrompt) { result in
+            switch(result) {
+            case .success(let _):
+                if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
+                    AppState.bestSeedNodeURL = bestNode
                 }
-                } catch _ {
+                var customAttributes: [TransactionAttritbute] = []
+                let remark = String(format: "O3XSEND")
+                customAttributes.append(TransactionAttritbute(remark: remark))
+                var fee = 0.0
+                if self.feeEnabled {
+                    fee = 0.0011
+                }
+                Authenticated.wallet?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes, fee: fee) { txid, _ in
+                    O3HUD.stop {
+                        if txid != nil {
+                            self.txId = txid!
+                            self.transactionCompleted = true
+                            Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
+                                                                                               "amount": amount])
+                        } else {
+                            self.transactionCompleted = false
+                        }
+                        //save to pending tx if it's completed
+                        if self.transactionCompleted == true {
+                            self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
+                        }
+                        self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
+                    }
+                }
+            case .failure(let _):
+                DispatchQueue.main.async { O3HUD.stop{} }
             }
         }
     }
@@ -158,33 +154,31 @@ class SendReviewTableViewController: UITableViewController {
     
     
     func sendNEP5Token(tokenHash: String, decimals: Int, assetName: String, amount: Double, toAddress: String) {
-        DispatchQueue.main.async {
-            let keychain = Keychain(service: "network.o3.neo.wallet")
-            do {
-            _ = try keychain
-                .authenticationPrompt(SendStrings.authenticateToSendPrompt)
-                .get(AppState.protectedKeyValue)
+        O3KeychainManager.getSigningKeyPassword(with: SendStrings.authenticateToSendPrompt) { result in
+            switch(result) {
+            case .success(let _):
                 O3HUD.start()
                 if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                     AppState.bestSeedNodeURL = bestNode
                 }
                 var fee = 0.0
                 if self.feeEnabled {
-                 fee = 0.0011
+                    fee = 0.0011
                 }
                 Authenticated.wallet?.sendNep5Token(network: AppState.network, seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, decimals: self.selectedAsset!.decimals, amount: amount, toAddress: toAddress, fee: fee) { (txid, error) in
-                        O3HUD.stop {
-                            self.transactionCompleted = txid != nil
-                            Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
-                                                                                               "amount": amount])
-                            if self.transactionCompleted == true {
-                                self.txId = txid!
-                                self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
-                                self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
-                            }
+                    O3HUD.stop {
+                        self.transactionCompleted = txid != nil
+                        Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
+                                                                                           "amount": amount])
+                        if self.transactionCompleted == true {
+                            self.txId = txid!
+                            self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))
+                            self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                         }
+                    }
                 }
-            } catch _ {
+            case .failure(let _):
+                return
             }
         }
     }

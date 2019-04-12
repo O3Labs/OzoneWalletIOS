@@ -69,18 +69,16 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     
     func login() {
         if NEP6.getFromFileSystem() != nil  {
-            O3KeychainManager.getSigningKeyPassword { result in
+            let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
+            O3KeychainManager.getSigningKeyPassword(with: prompt) { result in
                 O3HUD.start()
                 switch result {
                 case .success(let nep6Pass):
                     let nep6 = NEP6.getFromFileSystem()!
                     var error: NSError?
-                    for accountLoop in nep6.accounts {
-                        if accountLoop.isDefault {
-                            let account = Wallet(wif: NeoutilsNEP2Decrypt(accountLoop.key, nep6Pass, &error))!
-                            self.setAccountDetails(account)
-                        }
-                    }
+                    let defaultAccount = nep6.accounts.first { $0.isDefault }!
+                    let account = Wallet(wif: NeoutilsNEP2Decrypt(defaultAccount.key, nep6Pass, &error))!
+                    self.setAccountDetails(account)
                 case .failure(_):
                     return
                 }

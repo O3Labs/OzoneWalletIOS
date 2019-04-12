@@ -19,17 +19,16 @@ class O3KeychainManager {
     private static let keychainService = "network.o3.neo.wallet"
     private static let signingKeyPasswordKey = "ozoneActiveNep6Password"
     
-    //legacy not used any more, maintain for backwards compatibility
+    //legacy not used any more, maintain for backwards compatibility, if active in keychain, user will be prompted to upgrade
     private static let wifKey = "ozonePrivateKey"
     
-    static func getSigningKeyPassword(completion: @escaping(O3KeychainResult<String>) -> ()) {
+    static func getSigningKeyPassword(with prompt: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
             let keychain = Keychain(service: self.keychainService)
-            let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
             do {
                 let signingKeyPass = try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .authenticationPrompt(authString)
+                        .authenticationPrompt(prompt)
                         .get(self.signingKeyPasswordKey)
             
                 guard signingKeyPass != nil else {

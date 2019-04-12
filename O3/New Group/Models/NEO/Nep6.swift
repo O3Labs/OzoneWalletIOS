@@ -163,7 +163,7 @@ public class NEP6: Codable {
     
     public func getWalletAccounts() -> [Account] {
         var walletAccounts = [Account]()
-        let defaultIndex = accounts.index { $0.isDefault == true }
+        let defaultIndex = accounts.firstIndex { $0.isDefault == true }
         walletAccounts.append(accounts[defaultIndex!])
         for account in accounts {
             if account.isDefault == false && account.key != nil {

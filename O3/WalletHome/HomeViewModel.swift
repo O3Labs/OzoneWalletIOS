@@ -68,7 +68,7 @@ class HomeViewModel {
         var assets: [TransferableAsset] = getWritableAssets()
         for addr in watchAddresses {
             for asset in readOnlyAssets[addr] ?? [] {
-                if let index = assets.index(where: { (item) -> Bool in item.name == asset.name }) {
+                if let index = assets.firstIndex(where: { (item) -> Bool in item.name == asset.name }) {
                     assets[index].value = assets[index].value + asset.value
                 } else {
                     assets.append(asset)
@@ -96,14 +96,14 @@ class HomeViewModel {
 
         //Put NEO + GAS at the top
         var sortedAssets = [TransferableAsset]()
-        if let indexNEO = transferableAssetsToReturn.index(where: { (item) -> Bool in
+        if let indexNEO = transferableAssetsToReturn.firstIndex(where: { (item) -> Bool in
             item.symbol == "NEO"
         }) {
             sortedAssets.append(transferableAssetsToReturn[indexNEO])
             transferableAssetsToReturn.remove(at: indexNEO)
         }
 
-        if let indexGAS = transferableAssetsToReturn.index(where: { (item) -> Bool in
+        if let indexGAS = transferableAssetsToReturn.firstIndex(where: { (item) -> Bool in
             item.symbol == "GAS"
         }) {
             sortedAssets.append(transferableAssetsToReturn[indexGAS])
@@ -183,7 +183,7 @@ class HomeViewModel {
             readOnlyAssets[address] = []
         }
         
-        if let index = readOnlyAssets[address]!.index(where: { (item) -> Bool in item.name == token.name }) {
+        if let index = readOnlyAssets[address]!.firstIndex(where: { (item) -> Bool in item.name == token.name }) {
             readOnlyAssets[address]![index].value += token.value
         } else {
             readOnlyAssets[address]!.append(token)

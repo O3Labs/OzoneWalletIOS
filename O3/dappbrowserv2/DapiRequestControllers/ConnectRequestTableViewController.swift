@@ -38,121 +38,69 @@ class ConnectRequestTableViewController: UITableViewController {
     }
     
     func inputPassword(account: NEP6.Account?, didCancel: @escaping () -> Void, didConfirm:@escaping (_ wif: String) -> Void) {
-        if (account == nil) {
-            DispatchQueue.main.async {
-                HUD.show(.progress)
-            }
-            DispatchQueue.global(qos: .userInitiated).async {
-                //we could pull the password from the keychain
-                let keychain = Keychain(service: "network.o3.neo.wallet")
-                do {
-                    let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, "My O3 Wallet")
-                    
-                    let key = try keychain
-                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .authenticationPrompt(OnboardingStrings.authenticationPrompt)
-                        .get("ozonePrivateKey")
-                    DispatchQueue.main.async {
-                        HUD.hide()
-                    }
-                    didConfirm(key!)
-                } catch _ {
-                    DispatchQueue.main.async {
-                        HUD.hide()
-                    }
-                }
-            }
-            return
-        }
-        
-        
-        
         let encryptedKey = account!.key
         let name = account!.label
         //default selected account is the main active one so if user hasn't change
         if account?.isDefault == true {
-            DispatchQueue.main.async {
-                HUD.show(.progress)
+            DispatchQueue.main.async { HUD.show(.progress) }
+            let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
+            O3KeychainManager.getSigningKeyPassword(with: prompt) { result in
+                switch result {
+                case .success(let pass):
+                    var error: NSError?
+                    let wif = NeoutilsNEP2Decrypt(encryptedKey, pass, &error)
+                    DispatchQueue.main.async { HUD.hide() }
+                    if error == nil {
+                        DispatchQueue.main.async { didConfirm(wif!) }
+                    }
+                case .failure(let _):
+                    DispatchQueue.main.async {HUD.hide() }
+                }
             }
-            DispatchQueue.global(qos: .userInitiated).async {
-                //we could pull the password from the keychain
-                let keychain = Keychain(service: "network.o3.neo.wallet")
-                do {
-                    var nep6Pass: String? = nil
-                    
-                    let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
-                    
-                    nep6Pass = try keychain
-                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .authenticationPrompt(authString)
-                        .get("ozoneActiveNep6Password")
+        } else {
+        
+            let alertController = UIAlertController(title: String(format: "Unlock %@", name), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)
+            let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
+                DispatchQueue.main.async {
+                    HUD.show(.progress)
+                }
+                let inputPass = alertController.textFields?[0].text
+                DispatchQueue.global(qos: .userInitiated).async {
                     let start = NSDate()
                     var error: NSError?
-                    let wif = NeoutilsNEP2Decrypt(encryptedKey, nep6Pass, &error)
+                    let wif = NeoutilsNEP2Decrypt(encryptedKey, inputPass, &error)
                     let end = NSDate()
                     
                     let timeInterval: Double = end.timeIntervalSince(start as Date)
-                    #if DEBUG
                     print("Time to evaluate problem \(timeInterval) seconds")
-                    #endif
-                    DispatchQueue.main.async {
-                        HUD.hide()
-                    }
                     if error == nil {
                         DispatchQueue.main.async {
                             didConfirm(wif!)
                         }
-                    }
-                } catch _ {
-                    DispatchQueue.main.async {
-                        HUD.hide()
+                    } else {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                            OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
+                        }
                     }
                 }
             }
-            return
-        }
-        
-        let alertController = UIAlertController(title: String(format: "Unlock %@", name), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
-            DispatchQueue.main.async {
-                HUD.show(.progress)
-            }
-            let inputPass = alertController.textFields?[0].text
-            DispatchQueue.global(qos: .userInitiated).async {
-                let start = NSDate()
-                var error: NSError?
-                let wif = NeoutilsNEP2Decrypt(encryptedKey, inputPass, &error)
-                let end = NSDate()
-                
-                let timeInterval: Double = end.timeIntervalSince(start as Date)
-                print("Time to evaluate problem \(timeInterval) seconds")
-                if error == nil {
-                    DispatchQueue.main.async {
-                        didConfirm(wif!)
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        HUD.hide()
-                        OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
-                    }   
+            
+            let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in
+                DispatchQueue.main.async {
+                    HUD.hide()
+                    didCancel()
                 }
             }
-        }
-        
-        let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in
-            DispatchQueue.main.async {
-                HUD.hide()
-                didCancel()
+            
+            alertController.addTextField { (textField) in
+                textField.isSecureTextEntry = true
             }
+            
+            alertController.addAction(confirmAction)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true, completion: nil)
         }
-        
-        alertController.addTextField { (textField) in
-            textField.isSecureTextEntry = true
-        }
-        
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        self.present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func didTapCancel(_ sender: Any) {

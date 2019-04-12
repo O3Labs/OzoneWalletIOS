@@ -49,31 +49,31 @@ class O3Cache {
     }
     
     static func clear() {
-        try? storage?.removeAll()
-        try? arrayStorage?.removeAll()
+        ((try? storage?.removeAll()) as ()??)
+        ((try? arrayStorage?.removeAll()) as ()??)
     }
     
     // MARK: Cache Setters for Writable Balances
     static func setNEOForSession(neoBalance: Int) {
         let neoAsset = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
                                          decimals: 8, value: Double(neoBalance), assetType: .neoAsset)
-        try? storage?.setObject(neoAsset, forKey: keys.neo.rawValue)
+        ((try? storage?.setObject(neoAsset, forKey: keys.neo.rawValue)) as ()??)
     }
     
     static func setGASForSession(gasBalance: Double) {
         let gasAsset = TransferableAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
                                          decimals: 8, value: gasBalance, assetType: .neoAsset)
-        try? storage?.setObject(gasAsset, forKey: keys.gas.rawValue)
+        ((try? storage?.setObject(gasAsset, forKey: keys.gas.rawValue)) as ()??)
         
     }
     
     static func setTokenAssetsForSession(tokens: [TransferableAsset]) {
-        try? arrayStorage?.setObject(tokens, forKey: keys.tokens.rawValue)
+        ((try? arrayStorage?.setObject(tokens, forKey: keys.tokens.rawValue)) as ()??)
         
     }
     
     static func setOntologyAssetsForSession(tokens: [TransferableAsset]) {
-        try? arrayStorage?.setObject(tokens, forKey: keys.ontology.rawValue)
+        ((try? arrayStorage?.setObject(tokens, forKey: keys.ontology.rawValue)) as ()??)
     }
     
     // MARK: Cache Setters for Read Only Balances
@@ -81,23 +81,23 @@ class O3Cache {
         
         let neoAsset = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
                                          decimals: 8, value: Double(neoBalance), assetType: .neoAsset)
-        try? storage?.setObject(neoAsset, forKey: address + "_" + keys.readOnlyNeo.rawValue)
+        ((try? storage?.setObject(neoAsset, forKey: address + "_" + keys.readOnlyNeo.rawValue)) as ()??)
         
     }
     
     static func setReadOnlyGasForSession(gasBalance: Double, address: String) {
         let gasAsset = TransferableAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
                                          decimals: 8, value: gasBalance, assetType: .neoAsset)
-        try? storage?.setObject(gasAsset, forKey: address + "_" + keys.readOnlyGas.rawValue)
+        ((try? storage?.setObject(gasAsset, forKey: address + "_" + keys.readOnlyGas.rawValue)) as ()??)
         
     }
     
     static func setReadOnlyTokensForSession(tokens: [TransferableAsset], address: String) {
-        try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.readOnlyTokens.rawValue)
+        ((try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.readOnlyTokens.rawValue)) as ()??)
     }
     
     static func setReadOnlyOntologyAssetsForSession(tokens: [TransferableAsset], address: String) {
-        try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.readOnlyOntologyAssets.rawValue)
+        ((try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.readOnlyOntologyAssets.rawValue)) as ()??)
     }
 
     

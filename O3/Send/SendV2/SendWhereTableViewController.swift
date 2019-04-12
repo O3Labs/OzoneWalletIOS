@@ -217,7 +217,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
                     selected = O3Cache.gas()
                 } else {
                     let tokenAssets = O3Cache.tokenAssets()
-                    let assetIndex = tokenAssets.index(where: { (item) -> Bool in
+                    let assetIndex = tokenAssets.firstIndex(where: { (item) -> Bool in
                         item.id.range(of: asset!) != nil
                      })
                     if assetIndex != nil {
