@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bmK-si-rOg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bmK-si-rOg">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -713,7 +713,7 @@
                                     </connections>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rei-I3-txI" customClass="ShadowedButton" customModule="O3" customModuleProvider="target">
-                                    <rect key="frame" x="16" y="375" width="343" height="44"/>
+                                    <rect key="frame" x="16" y="434" width="343" height="44"/>
                                     <color key="backgroundColor" name="lightThemeOrange"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="emY-KI-ZwU"/>
@@ -739,18 +739,51 @@
                                         <constraint firstAttribute="height" constant="84" id="mRS-ys-JIW"/>
                                     </constraints>
                                 </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PUK-Wt-qAy">
+                                    <rect key="frame" x="0.0" y="359" width="375" height="75"/>
+                                    <subviews>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B8f-Ft-Q8N">
+                                            <rect key="frame" x="310" y="22" width="51" height="31"/>
+                                        </switch>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="en9-pE-tbn">
+                                            <rect key="frame" x="16" y="16" width="42" height="23.5"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Access this wallet using pincode/touchid" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8cL-VM-7ZW">
+                                            <rect key="frame" x="16" y="41" width="286" height="18"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="B8f-Ft-Q8N" secondAttribute="trailing" constant="16" id="1ec-g8-VSz"/>
+                                        <constraint firstItem="8cL-VM-7ZW" firstAttribute="leading" secondItem="PUK-Wt-qAy" secondAttribute="leading" constant="16" id="4Kx-1K-gzb"/>
+                                        <constraint firstItem="B8f-Ft-Q8N" firstAttribute="centerY" secondItem="PUK-Wt-qAy" secondAttribute="centerY" id="PVY-Ix-g3R"/>
+                                        <constraint firstAttribute="height" constant="75" id="SdT-EX-2hz"/>
+                                        <constraint firstItem="en9-pE-tbn" firstAttribute="top" secondItem="PUK-Wt-qAy" secondAttribute="top" constant="16" id="caw-yR-lzh"/>
+                                        <constraint firstItem="B8f-Ft-Q8N" firstAttribute="leading" secondItem="8cL-VM-7ZW" secondAttribute="trailing" constant="8" id="ivQ-oH-g7K"/>
+                                        <constraint firstItem="en9-pE-tbn" firstAttribute="leading" secondItem="PUK-Wt-qAy" secondAttribute="leading" constant="16" id="qKl-4g-BBJ"/>
+                                        <constraint firstAttribute="bottom" secondItem="8cL-VM-7ZW" secondAttribute="bottom" constant="16" id="wJY-zN-4KA"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="Rei-I3-txI" firstAttribute="top" secondItem="PUK-Wt-qAy" secondAttribute="bottom" id="1AP-gv-1bR"/>
                                 <constraint firstAttribute="trailing" secondItem="Rei-I3-txI" secondAttribute="trailing" constant="16" id="3AI-zi-nDC"/>
                                 <constraint firstAttribute="trailing" secondItem="Mjc-PQ-3aN" secondAttribute="trailing" constant="16" id="4Yz-d2-mmJ"/>
+                                <constraint firstAttribute="trailing" secondItem="PUK-Wt-qAy" secondAttribute="trailing" id="4pc-2b-GGN"/>
                                 <constraint firstItem="qG8-D9-6ge" firstAttribute="top" secondItem="mQs-kN-85J" secondAttribute="bottom" constant="16" id="4sE-gf-BLO"/>
                                 <constraint firstItem="Mjc-PQ-3aN" firstAttribute="top" secondItem="1nQ-ue-6Wu" secondAttribute="bottom" constant="16" id="DFL-jv-Q0S"/>
                                 <constraint firstAttribute="trailing" secondItem="Nig-nJ-N2r" secondAttribute="trailing" constant="16" id="EYK-3e-mlq"/>
                                 <constraint firstItem="ZoA-Xw-9tn" firstAttribute="leading" secondItem="lIU-Re-mT1" secondAttribute="leading" constant="16" id="HHS-ge-sP1"/>
-                                <constraint firstItem="Rei-I3-txI" firstAttribute="top" secondItem="Mjc-PQ-3aN" secondAttribute="bottom" constant="16" id="Ijl-WQ-mzr"/>
                                 <constraint firstAttribute="trailing" secondItem="ZoA-Xw-9tn" secondAttribute="trailing" constant="16" id="LOI-7A-34x"/>
                                 <constraint firstItem="4Wv-ix-YVW" firstAttribute="centerY" secondItem="Mjc-PQ-3aN" secondAttribute="centerY" id="OCB-KH-fgM"/>
+                                <constraint firstItem="PUK-Wt-qAy" firstAttribute="top" secondItem="Mjc-PQ-3aN" secondAttribute="bottom" id="PSQ-qV-cM9"/>
                                 <constraint firstItem="1nQ-ue-6Wu" firstAttribute="top" secondItem="ZoA-Xw-9tn" secondAttribute="bottom" constant="16" id="PhS-vl-psu"/>
                                 <constraint firstItem="4Wv-ix-YVW" firstAttribute="trailing" secondItem="Mjc-PQ-3aN" secondAttribute="trailing" constant="-16" id="Rg1-pD-H7q"/>
                                 <constraint firstItem="ZoA-Xw-9tn" firstAttribute="top" secondItem="Nig-nJ-N2r" secondAttribute="bottom" constant="16" id="S6V-P3-58V"/>
@@ -759,6 +792,7 @@
                                 <constraint firstItem="Rei-I3-txI" firstAttribute="leading" secondItem="lIU-Re-mT1" secondAttribute="leading" constant="16" id="Wdb-68-WNP"/>
                                 <constraint firstItem="qG8-D9-6ge" firstAttribute="leading" secondItem="lIU-Re-mT1" secondAttribute="leading" constant="16" id="Y9i-2p-VOn"/>
                                 <constraint firstItem="Nig-nJ-N2r" firstAttribute="leading" secondItem="lIU-Re-mT1" secondAttribute="leading" constant="16" id="aq5-F0-ZtJ"/>
+                                <constraint firstItem="PUK-Wt-qAy" firstAttribute="leading" secondItem="lIU-Re-mT1" secondAttribute="leading" id="fKB-aH-7Ow"/>
                                 <constraint firstAttribute="trailing" secondItem="1nQ-ue-6Wu" secondAttribute="trailing" constant="16" id="hc0-BQ-EsV"/>
                                 <constraint firstAttribute="trailing" secondItem="qG8-D9-6ge" secondAttribute="trailing" constant="16" id="nJQ-X2-Jmh"/>
                                 <constraint firstItem="mQs-kN-85J" firstAttribute="top" secondItem="lIU-Re-mT1" secondAttribute="top" constant="16" id="oZz-li-Ati"/>
@@ -782,6 +816,10 @@
                         <outlet property="passwordInputShowButton" destination="YSQ-he-JAr" id="zoH-Ci-4BH"/>
                         <outlet property="passwordTextField" destination="1nQ-ue-6Wu" id="iS9-MC-0Fb"/>
                         <outlet property="passwordVerifyShowButton" destination="4Wv-ix-YVW" id="LCU-j4-NaZ"/>
+                        <outlet property="quickSwapContainer" destination="PUK-Wt-qAy" id="mmg-Tp-nTD"/>
+                        <outlet property="quickSwapSubtitleLabel" destination="8cL-VM-7ZW" id="8Yl-LD-FgV"/>
+                        <outlet property="quickSwapSwitch" destination="B8f-Ft-Q8N" id="JVg-rX-a1D"/>
+                        <outlet property="quickSwapTitleLabel" destination="en9-pE-tbn" id="foE-hh-fqM"/>
                         <outlet property="subtitleLabel" destination="Nig-nJ-N2r" id="YFh-r0-f52"/>
                         <outlet property="titleLabel" destination="qG8-D9-6ge" id="mKV-4g-TG5"/>
                         <segue destination="wU6-ny-EBX" kind="show" identifier="segueToFinishedEncryption" id="dyh-ht-3uy"/>
