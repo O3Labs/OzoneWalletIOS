@@ -131,7 +131,6 @@ class O3KeychainManager {
         let keychainKey = "NEP6." + hashed
         
         DispatchQueue.global(qos: .userInitiated).async {
-            let keychain = Keychain(service: "network.o3.neo.wallet")
             do {
                 //save pirivate key to keychain
                 try keychain
@@ -141,6 +140,33 @@ class O3KeychainManager {
             } catch let error {
                 completion(.failure(error.localizedDescription))
             }
+        }
+    }
+    
+    static func removeNep6DecryptionPassword(for address: String, completion: @escaping(O3KeychainResult<Bool>) -> ()) {
+        let keychain = Keychain(service: self.keychainService)
+        let hashed = (address.data(using: .utf8)?.sha256.sha256.fullHexString)!
+        let keychainKey = "NEP6." + hashed
+        do {
+            try keychain
+                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                .remove(keychainKey)
+            completion(.success(true))
+        } catch let error {
+            completion(.failure(error.localizedDescription))
+        }
+    }
+    
+    static func checkNep6PasswordExists(for address: String, completion: @escaping(O3KeychainResult<Bool>) -> ()) {
+        let keychain = Keychain(service: self.keychainService)
+        let hashed = (address.data(using: .utf8)?.sha256.sha256.fullHexString)!
+        let keychainKey = "NEP6." + hashed
+        do {
+            //save pirivate key to keychain
+            let containsKey = try keychain.contains(keychainKey)
+            completion(.success(containsKey))
+        } catch let error {
+            completion(.failure(error.localizedDescription))
         }
     }
 }

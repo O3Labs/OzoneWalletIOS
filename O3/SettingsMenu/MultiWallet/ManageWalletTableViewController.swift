@@ -22,6 +22,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     @IBOutlet weak var encryptedKeyLabel: UILabel!
     @IBOutlet weak var encryptedKeyQrView: UIImageView!
     
+    @IBOutlet weak var quickSwapLabel: UILabel!
     @IBOutlet weak var backupWalletLabel: UILabel!
     @IBOutlet weak var showRawKeyLabel: UILabel!
     @IBOutlet weak var removeWalletLabel: UILabel!
@@ -35,6 +36,10 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     @IBOutlet weak var contentView3: UIView!
     @IBOutlet weak var contentView4: UIView!
     @IBOutlet weak var contentView5: UIView!
+    @IBOutlet weak var contentView6: UIView!
+
+    @IBOutlet weak var quickSwapSwitch: UISwitch!
+    
     
     
     @IBOutlet weak var unlockWatchAddressDescription: UILabel!
@@ -84,13 +89,13 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if account.key == nil {
-            if indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 2 {
+            if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
                 return CGFloat(0)
             }
         }
         
         if account.isDefault {
-            if indexPath.row == 0 {
+            if indexPath.row == 1 {
                 return CGFloat(0)
             }
         }
@@ -105,6 +110,19 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         setLocalizedStrings()
         setWalletDetails()
         applyNavBarTheme()
+        setupQuickSwapSelector()
+    }
+    
+    func setupQuickSwapSelector() {
+        quickSwapSwitch.isUserInteractionEnabled = false
+        O3KeychainManager.checkNep6PasswordExists(for: account.address) { result in
+            switch result {
+            case .success(let containsPass):
+                DispatchQueue.main.async { self.quickSwapSwitch.setOn(containsPass, animated: false) }
+            case .failure(_):
+                DispatchQueue.main.async { self.quickSwapSwitch.setOn(false, animated: false) }
+            }
+        }
     }
     
     @objc func editNameTapped(_ sender: Any) {
@@ -238,6 +256,53 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
     }
     
+    func toggleQuickSwap() {
+        if quickSwapSwitch.isOn {
+            OzoneAlert.confirmDialog(message: "Turning off quick swap means you will need to reenter the password to access this wallet", cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
+                O3KeychainManager.removeNep6DecryptionPassword(for: self.account.address) {
+                    result in
+                    switch result {
+                    case .success(_):
+                        DispatchQueue.main.async { self.quickSwapSwitch.setOn(false, animated: true) }
+                    case .failure(_):
+                        return
+                    }
+                }
+            }
+        } else {
+            let alertController = UIAlertController(title: "Enable Quick swap for " + self.account.label, message: "Please enter the password for this wallet", preferredStyle: .alert)
+            let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
+                let inputPass = alertController.textFields?[0].text!
+                var error: NSError?
+                let decryptedKey = NeoutilsNEP2Decrypt(self.account.key, inputPass, &error)
+                if error == nil {
+                    O3KeychainManager.setNep6DecryptionPassword(for: self.account.address, pass: inputPass!) { result in
+                        switch result {
+                        case .success(_):
+                            DispatchQueue.main.async { self.quickSwapSwitch.setOn(true, animated: true) }
+                        case .failure(_):
+                            return
+                        }
+                    }
+                } else {
+                    OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
+            
+            alertController.addTextField { (textField) in
+                textField.placeholder = "Password"
+                textField.isSecureTextEntry = true
+            }
+            
+            alertController.addAction(confirmAction)
+            alertController.addAction(cancelAction)
+            
+            UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
+        }
+    }
+    
     func showPrivateKey() {
         let alertController = UIAlertController(title: "Show key for " + self.account.label, message: "Please enter the password for this wallet", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
@@ -280,18 +345,20 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
+          toggleQuickSwap()
+        } else if indexPath.row == 1 {
             if account.key == nil {
                 showPrivateKey()
             } else {
                 setWalletToDefault()
             }
-        } else if indexPath.row == 1 {
-            backupEncryptedKey()
         } else if indexPath.row == 2 {
-            showPrivateKey()
+            backupEncryptedKey()
         } else if indexPath.row == 3 {
-            performManualBackup()
+            showPrivateKey()
         } else if indexPath.row == 4 {
+            performManualBackup()
+        } else if indexPath.row == 5 {
             if account.isDefault {
                 OzoneAlert.alertDialog(message: MultiWalletStrings.cannotDeletePrimary, dismissTitle: OzoneAlert.okPositiveConfirmString) { }
             } else if account.key == nil {
@@ -328,6 +395,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         unlockWatchAddressDescription.text = MultiWalletStrings.addKeyDescription
         unlockWatchAddressButton.setTitle(MultiWalletStrings.addKey, for: UIControl.State())
         manualBackupLabel.text = "Verify Manual Backup"
+        quickSwapLabel.text = "Enable Quick Swap"
     }
     
     func setThemedElements() {
@@ -336,6 +404,7 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         encryptedTitleLabel.theme_textColor = O3Theme.titleColorPicker
         encryptedKeyLabel.theme_textColor = O3Theme.titleColorPicker
         unlockWatchAddressDescription.theme_textColor = O3Theme.titleColorPicker
+        quickSwapLabel.theme_textColor = O3Theme.titleColorPicker
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         
         contentView1.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -343,6 +412,8 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         contentView3.theme_backgroundColor = O3Theme.backgroundColorPicker
         contentView4.theme_backgroundColor = O3Theme.backgroundColorPicker
         contentView5.theme_backgroundColor =
+            O3Theme.backgroundColorPicker
+        contentView6.theme_backgroundColor =
             O3Theme.backgroundColorPicker
     }
 }
