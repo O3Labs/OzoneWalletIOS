@@ -228,7 +228,8 @@ public class NEP6: Codable {
         accounts[currentDefaultIndex!].label = newName
     }
     
-    static public func makeNewDefault(key: String, pass: String) {
+    
+    static public func makeNewDefault(key: String, wif: String) {
         let nep6 = getFromFileSystem()!
         let currentDefaultIndex = nep6.accounts.firstIndex { $0.isDefault }
         let newDefaultIndex = nep6.accounts.firstIndex { $0.key == key }
@@ -236,21 +237,13 @@ public class NEP6: Codable {
             return
         }
         
-        let prompt = "Confirm this to be the default wallet on your device"
-        O3KeychainManager.setSigningKeyPassword(with: prompt, pass: pass) { result in
-            switch(result) {
-            case .success(_):
-                nep6.accounts[currentDefaultIndex!].isDefault = false
-                nep6.accounts[newDefaultIndex!].isDefault = true
-                nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
-                nep6.writeToFileSystem()
-                var error: NSError?
-                Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
-                NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
-            case .failure(_):
-                return
-            }
-        }
+        nep6.accounts[currentDefaultIndex!].isDefault = false
+        nep6.accounts[newDefaultIndex!].isDefault = true
+        nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
+        nep6.writeToFileSystem()
+        var error: NSError?
+        Authenticated.wallet = Wallet(wif: wif)
+        NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
     }
     
     static public func clearAllExceptDefault() {

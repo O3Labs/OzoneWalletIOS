@@ -51,10 +51,10 @@ class UnlockMultiWalletTableViewController: UITableViewController {
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
                 let inputPass = alertController.textFields?[0].text!
                 var error: NSError?
-                let _ = NeoutilsNEP2Decrypt(key, inputPass, &error)
+                let wif = NeoutilsNEP2Decrypt(key, inputPass, &error)
                // self.navigationController?.popViewController(animated: true)
                 if error == nil {
-                    NEP6.makeNewDefault(key: key, pass: inputPass!)
+                    NEP6.makeNewDefault(key: key, wif: wif!)
                     MultiwalletEvent.shared.walletUnlocked()
                     self.dismiss(animated: true)
                 } else {
@@ -81,16 +81,16 @@ class UnlockMultiWalletTableViewController: UITableViewController {
         let key = accounts[indexPath.row].key!
         let name = accounts[indexPath.row].label
         
-        O3KeychainManager.getNep6DecryptionPassword(for: address) { result in
+        O3KeychainManager.getWifFromNep6(for: address) { result in
             switch result {
-            case .success(let pass):
-                var error: NSError?
-                let _ = NeoutilsNEP2Decrypt(key, pass, &error)
-                NEP6.makeNewDefault(key: key, pass: pass)
+            case .success(let wif):
+                NEP6.makeNewDefault(key: key, wif: wif)
                 MultiwalletEvent.shared.walletUnlocked()
                 self.dismiss(animated: true)
-            case .failure(_):
-                self.displayPasswordInput(key: key, name: name)
+            case .failure(let e):
+                if e == "The Key does not exist" {
+                    self.displayPasswordInput(key: key, name: name)
+                }
             }
         }
     }

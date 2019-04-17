@@ -9,6 +9,7 @@
 import Foundation
 import PKHUD
 import KeychainAccess
+import Neoutils
 
 class O3KeychainManager {
     public enum O3KeychainResult<T> {
@@ -17,7 +18,9 @@ class O3KeychainManager {
     }
     
     private static let keychainService = "network.o3.neo.wallet"
-    private static let signingKeyPasswordKey = "ozoneActiveNep6Password"
+    
+    //not used anymore maintain for backwards compatibilit if nep6 style key is not in keychain user is prompted to upgrade
+    private static let legacySigningKeyPasswordKey = "ozoneActiveNep6Password"
     
     //legacy not used any more, maintain for backwards compatibility, if active in keychain, user will be prompted to upgrade
     private static let wifKey = "ozonePrivateKey"
@@ -29,7 +32,7 @@ class O3KeychainManager {
                 let signingKeyPass = try keychain
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                         .authenticationPrompt(prompt)
-                        .get(self.signingKeyPasswordKey)
+                        .get(self.legacySigningKeyPasswordKey)
             
                 guard signingKeyPass != nil else {
                     completion(.failure("The Key does not exist"))
@@ -51,7 +54,7 @@ class O3KeychainManager {
                 try keychain
                     .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                     .authenticationPrompt(prompt)
-                    .set(pass, key: self.signingKeyPasswordKey)
+                    .set(pass, key: self.legacySigningKeyPasswordKey)
                 completion(.success(true))
             } catch let error {
                 completion(.failure(error.localizedDescription))
@@ -96,33 +99,77 @@ class O3KeychainManager {
             let keychain = Keychain(service: self.keychainService)
             try keychain
                 .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                .remove(self.signingKeyPasswordKey)
+                .remove(self.legacySigningKeyPasswordKey)
         } catch _ {
             return
         }
     }
     
-    static func getNep6DecryptionPassword(for address: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
-        DispatchQueue.global(qos: .userInitiated).async {
+    static func inputPassword(account: NEP6.Account, completion: @escaping(O3KeychainResult<String>) -> ()) {
+        let alertController = UIAlertController(title: String(format: "Login to %@", account.label), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
+            let inputPass = alertController.textFields?[0].text
+            var error: NSError?
+            if let wif = NeoutilsNEP2Decrypt(account.key!, inputPass, &error) {
+                completion(.success(wif))
+            } else {
+                OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {
+                    completion(.failure("Failed Decryption"))
+                }
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in
+            completion(.failure("Failed Decryption"))
+        }
+        
+        alertController.addTextField { (textField) in
+            textField.isSecureTextEntry = true
+        }
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
+    }
+    
+    
+    static func getWifFromNep6(for address: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
+        let account = (NEP6.getFromFileSystem()?.accounts.first{ $0.address == address})!
+       // DispatchQueue.global(qos: .userInteractive).async {
             let keychain = Keychain(service: self.keychainService)
             let hashed = (address.data(using: .utf8)?.sha256.sha256.fullHexString)!
             let keychainKey = "NEP6." + hashed
-            let accountLabel = (NEP6.getFromFileSystem()?.accounts.first{ $0.address == address}!.label)!
+            let accountLabel = account.label
             let authString = String(format: OnboardingStrings.nep6AuthenticationPrompt, accountLabel)
             do {
                 let keyPass = try keychain
                     .accessibility(.whenUnlockedThisDeviceOnly, authenticationPolicy: .userPresence)
                     .authenticationPrompt(authString)
                     .get(keychainKey)
-                guard keyPass != nil else {
-                    completion(.failure("The Key does not exist"))
+                
+                if keyPass != nil {
+                    var error: NSError? = nil
+                    let currtime = Date().timeIntervalSince1970
+                
+                    let wif = NeoutilsNEP2Decrypt(account.key, keyPass, &error)
+                    guard error == nil else {
+                        completion(.failure(error!.localizedDescription))
+                        return
+                    }
+                    print (Date().timeIntervalSince1970 - currtime)
+                    completion(.success(wif!))
                     return
                 }
-                completion(.success(keyPass!))
+                
+                O3KeychainManager.inputPassword(account: account) { result in
+                    completion(result)
+                }
             } catch let error {
                 completion(.failure(error.localizedDescription))
             }
-        }
+        //}
     }
     
     static func setNep6DecryptionPassword(for address: String, pass: String, completion: @escaping(O3KeychainResult<String>) -> ()) {

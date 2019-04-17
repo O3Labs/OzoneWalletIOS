@@ -145,19 +145,21 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     @objc func updateWalletInfo(_ sender: Any?) {
-        qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: qrView.bounds.size.width, height: qrView.bounds.size.height)
-        addressLabel.text = (Authenticated.wallet?.address)!
-        if let nep6 = NEP6.getFromFileSystem() {
-            let defaultIndex = nep6.accounts.firstIndex { $0.isDefault == true }
-            self.navigationController?.navigationBar.topItem?.title = nep6.accounts[defaultIndex!].label
-        } else {
-            self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
-        }
-        
-        if NEP6.getFromFileSystem() == nil {
-            multiWalletLabel.text = SettingsStrings.enableMultiWallet
-        } else {
-            multiWalletLabel.text = SettingsStrings.manageWallets
+        DispatchQueue.main.async {
+            self.qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: self.qrView.bounds.size.width, height: self.qrView.bounds.size.height)
+            self.addressLabel.text = (Authenticated.wallet?.address)!
+            if let nep6 = NEP6.getFromFileSystem() {
+                let defaultIndex = nep6.accounts.firstIndex { $0.isDefault == true }
+                self.navigationController?.navigationBar.topItem?.title = nep6.accounts[defaultIndex!].label
+            } else {
+                self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
+            }
+            
+            if NEP6.getFromFileSystem() == nil {
+                self.multiWalletLabel.text = SettingsStrings.enableMultiWallet
+            } else {
+                self.multiWalletLabel.text = SettingsStrings.manageWallets
+            }
         }
         
     }

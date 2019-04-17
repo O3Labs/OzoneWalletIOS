@@ -110,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 Support.initialize(withZendesk: Zendesk.instance)
                 let ident = Identity.createAnonymous()
                 Zendesk.instance?.setIdentity(ident)
-                #endif
+               #endif
             }
         }
         

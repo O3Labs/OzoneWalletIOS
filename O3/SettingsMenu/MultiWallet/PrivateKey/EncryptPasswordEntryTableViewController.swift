@@ -123,6 +123,10 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
                         }
                     }
                 }
+            } else {
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "segueToFinishedEncryption", sender: nil)
+                }
             }
         } catch {
             OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: OzoneAlert.okPositiveConfirmString) {}

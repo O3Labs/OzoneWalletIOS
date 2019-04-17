@@ -45,7 +45,7 @@ enum tradingEventField: String {
 }
 
 enum multiwalletEventName: String {
-    case walletAdded = "ADD_WALLET"
+    case walletAdded = "wallet_added"
     case watchAddressAdded = "watch_address_added"
     case multiwalletActivated = "multiwallet_activated"
     case walletUnlocked = "wallet_unlocked"
@@ -227,9 +227,8 @@ class dapiEvent: NSObject {
         case net
         case method
         case blockchain
-        
     }
-    
+        
     func log(event: String, data: [String: Any]) {
         amplitude.logEvent(event, withEventProperties: data)
     }
@@ -249,8 +248,9 @@ class dapiEvent: NSObject {
     }
     
     func dappClosed(url: String, domain: String) {
-        log(event: dapiEventName.dappOpened.rawValue, data: [dapiEventField.url.rawValue: url,
-                                                             dapiEventField.domain.rawValue: domain])
+        log(event: dapiEventName.dappClosed.rawValue, data: [dapiEventField.url.rawValue: url,
+                                                             dapiEventField.domain.rawValue: domain
+            ])
     }
     
     func accountConnected(url: String, domain: String) {
@@ -263,7 +263,7 @@ class dapiEvent: NSObject {
     
     func txAccepted(method: String, url: String, domain: String) {
         let net = UserDefaultsManager.network == .main ? "MainNet" : "TestNet"
-        log(event: dapiEventName.dappAccountConnected.rawValue, data: [dapiEventField.blockchain.rawValue: "NEO",
+        log(event: dapiEventName.dappTXAccepted.rawValue, data: [dapiEventField.blockchain.rawValue: "NEO",
                                                                        dapiEventField.net.rawValue: net,
                                                                        dapiEventField.url.rawValue: url,
                                                                        dapiEventField.domain.rawValue: domain])

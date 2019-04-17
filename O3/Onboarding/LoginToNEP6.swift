@@ -38,86 +38,56 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         view.layer.insertSublayer(gradient, at: 0)
     }
     
-    func setAccountDetails(_ account: Wallet) {
-        Authenticated.wallet = account
+    func enterPortfolio() {
         DispatchQueue.global(qos: .background).async {
             if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                 AppState.bestSeedNodeURL = bestNode
             }
             DispatchQueue.main.async {
-                DispatchQueue.main.async {
-                    SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
-                    //instead of doing segue here. we need to init the whole rootViewController
+                SwiftTheme.ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
+                //instead of doing segue here. we need to init the whole rootViewController
+                
+                UIView.transition(with: UIApplication.appDelegate.window!, duration: 0.5, options: .transitionCrossDissolve, animations: {
+                    let oldState: Bool = UIView.areAnimationsEnabled
+                    UIView.setAnimationsEnabled(false)
+                    UIApplication.appDelegate.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+                    UIView.setAnimationsEnabled(oldState)
                     
-                    UIView.transition(with: UIApplication.appDelegate.window!, duration: 0.5, options: .transitionCrossDissolve, animations: {
-                        let oldState: Bool = UIView.areAnimationsEnabled
-                        UIView.setAnimationsEnabled(false)
-                        UIApplication.appDelegate.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
-                        UIView.setAnimationsEnabled(oldState)
-                        
-                    }, completion: { (finished: Bool) -> Void in
-                        if finished {
-                            self.delegate?.authorized(launchOptions: self.launchOptions)
-                        }
-                    })
-                }
+                }, completion: { (finished: Bool) -> Void in
+                    if finished {
+                        self.delegate?.authorized(launchOptions: self.launchOptions)
+                    }
+                })
             }
         }
     }
     
-    func requestManualDecryptionOfKey() {
-        let alertController = UIAlertController(title: "Unlock Wallet", message: "Please enter the password for this wallet.", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
-            let inputPass = alertController.textFields?[0].text!
-            var error: NSError?
-            let defaultAccountKey = NEP6.getFromFileSystem()!.accounts.first { $0.isDefault }!.key
-            let account = Wallet(wif: NeoutilsNEP2Decrypt(defaultAccountKey, inputPass, &error))!
-            if error == nil {
-                self.setAccountDetails(account)                
-            } else {
-                OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
+    
+    func loginLegacy() {
+        O3KeychainManager.getWifKey { result in
+            switch result {
+            case .success(let wif):
+                let wallet = Wallet(wif: wif)!
+                Authenticated.wallet = wallet
+                self.enterPortfolio()
+            case .failure(_):
+                return
             }
         }
-        
-        let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
-        
-        alertController.addTextField { (textField) in
-            textField.placeholder = "Password"
-            textField.isSecureTextEntry = true
-        }
-        
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        
-        UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
     }
     
-    func login() {
-        if NEP6.getFromFileSystem() != nil  {
-            let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
-            O3KeychainManager.getSigningKeyPassword(with: prompt) { result in
-                switch result {
-                case .success(let nep6Pass):
-                    let nep6 = NEP6.getFromFileSystem()!
-                    var error: NSError?
-                    let defaultAccount = nep6.accounts.first { $0.isDefault }!
-                    let account = Wallet(wif: NeoutilsNEP2Decrypt(defaultAccount.key, nep6Pass, &error))!
-                    self.setAccountDetails(account)
-                case .failure(_):
-                    let nep6 = NEP6.getFromFileSystem()!
-                    let defaultAccount = nep6.accounts.first { $0.isDefault }!
-                    self.inputPassword(encryptedKey: defaultAccount.key!, name: "O3 Wallet")
-                }
-            }
-        } else {
-            O3KeychainManager.getWifKey { result in
-                switch result {
-                case .success(let wif):
-                    let account = Wallet(wif: wif)!
-                    self.setAccountDetails(account)
-                case .failure(_):
-                    return
-                }
+    func login(account: NEP6.Account) {
+        let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
+        O3KeychainManager.getWifFromNep6(for: account.address) { result in
+            switch result {
+            case .success(let wif):
+                let currtime = Date().timeIntervalSince1970
+            
+                NEP6.makeNewDefault(key: account.key!, wif: wif)
+                print(Date().timeIntervalSince1970 - currtime)
+                self.enterPortfolio()
+            case .failure(let e):
+                return
             }
         }
     }
@@ -131,36 +101,15 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.delegate = self
         tableView.dataSource = self
         setLocalizedStrings()
-        login()
+        if NEP6.getFromFileSystem() == nil {
+            loginLegacy()
+        } else {
+            login(account: (NEP6.getFromFileSystem()?.accounts.first {$0.isDefault})!)
+        }
+        
     }
     
-    func inputPassword(encryptedKey: String, name: String) {
-        let alertController = UIAlertController(title: String(format: "Login to %@", name), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)
 
-        let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
-            let inputPass = alertController.textFields?[0].text
-            var error: NSError?
-                if let wif = NeoutilsNEP2Decrypt(encryptedKey, inputPass, &error) {
-                    NEP6.makeNewDefault(key: encryptedKey, pass: inputPass!)
-                    self.setAccountDetails(Wallet(wif: wif)!)
-                } else {
-                    OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
-            
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
-        
-        alertController.addTextField { (textField) in
-            textField.isSecureTextEntry = true
-        }
-        
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        
-        UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if nep6 != nil {
             return nep6!.getWalletAccounts().count
@@ -190,17 +139,13 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if nep6 == nil {
-            login()
+            loginLegacy()
             return
         }
         
         
         let account = (nep6?.getWalletAccounts()[indexPath.row])!
-        if account.isDefault == true {
-            login()
-        } else {
-            inputPassword(encryptedKey: account.key!, name: account.label)
-        }
+        login(account: account)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
