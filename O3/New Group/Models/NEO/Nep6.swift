@@ -206,21 +206,15 @@ public class NEP6: Codable {
         
         let prompt = "Please confirm to enable wallet"
         
-        O3KeychainManager.setSigningKeyPassword(with: prompt, pass: pass) { result in
-            switch result {
-            case .success(let _):
-                nep6.accounts[currentDefaultIndex!].isDefault = false
-                nep6.accounts[newDefaultIndex!].isDefault = true
-                nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
-                
-                nep6.writeToFileSystem()
-                var error: NSError?
-                Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
-                NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
-            case .failure(let _):
-                return
-            }
-        }
+        nep6.accounts[currentDefaultIndex!].isDefault = false
+        nep6.accounts[newDefaultIndex!].isDefault = true
+        nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
+        
+        nep6.writeToFileSystem()
+        var error: NSError?
+        Authenticated.wallet = Wallet(wif: NeoutilsNEP2Decrypt(nep6.accounts[currentDefaultIndex!].key!, pass, &error))
+        NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
+        
     }
     
     public func editName(address: String, newName: String) {
@@ -229,7 +223,7 @@ public class NEP6: Codable {
     }
     
     
-    static public func makeNewDefault(key: String, wif: String) {
+    static public func makeNewDefault(key: String, wallet: Wallet) {
         let nep6 = getFromFileSystem()!
         let currentDefaultIndex = nep6.accounts.firstIndex { $0.isDefault }
         let newDefaultIndex = nep6.accounts.firstIndex { $0.key == key }
@@ -242,7 +236,7 @@ public class NEP6: Codable {
         nep6.accounts.swapAt(newDefaultIndex!, currentDefaultIndex!)
         nep6.writeToFileSystem()
         var error: NSError?
-        Authenticated.wallet = Wallet(wif: wif)
+        Authenticated.wallet = wallet
         NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
     }
     

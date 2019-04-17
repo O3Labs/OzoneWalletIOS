@@ -462,7 +462,7 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                 
             }) {
                 let prompt = String(format: "Connect with %@?", host!)
-                O3KeychainManager.getSigningKeyPassword(with: prompt) { result in
+                O3KeychainManager.authenticateWithBiometricOrPass(message: prompt) { result in
                     switch(result) {
                     case .success(let _):
                         self.title = host?.firstUppercased

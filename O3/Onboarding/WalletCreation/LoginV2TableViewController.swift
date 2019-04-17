@@ -142,8 +142,7 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
                                           label: "My O3 Wallet", isDefault: true, lock: false,
                                           key: encryptedKey)
             let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
-            let prompt = "Confirm this to be the default wallet on your device"
-            O3KeychainManager.setSigningKeyPassword(with: prompt, pass: password) { result in
+            O3KeychainManager.setNep6DecryptionPassword(for: newAccount.address, pass: password) { result in
                 switch result {
                 case .success(_):
                     nep6.writeToFileSystem()

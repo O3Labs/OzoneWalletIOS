@@ -10,6 +10,7 @@ import Foundation
 import PKHUD
 import KeychainAccess
 import Neoutils
+import LocalAuthentication
 
 class O3KeychainManager {
     public enum O3KeychainResult<T> {
@@ -45,20 +46,25 @@ class O3KeychainManager {
         }
     }
     
-    static func setSigningKeyPassword(with prompt: String, pass: String,
-                                      completion: @escaping(O3KeychainResult<Bool>) -> ()) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let keychain = Keychain(service: "network.o3.neo.wallet")
-            do {
-                //save pirivate key to keychain
-                try keychain
-                    .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                    .authenticationPrompt(prompt)
-                    .set(pass, key: self.legacySigningKeyPasswordKey)
-                completion(.success(true))
-            } catch let error {
-                completion(.failure(error.localizedDescription))
-            }
+    static func removeLegacySigningKey(completion: @escaping(O3KeychainResult<String>) -> ()) {
+        do {
+            let keychain = Keychain(service: self.keychainService)
+            try keychain
+                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                .remove(self.legacySigningKeyPasswordKey)
+        } catch _ {
+            return
+        }
+    }
+    
+    static func checkSigningKeyExists(completion: @escaping(O3KeychainResult<Bool>) -> ()) {
+        let keychain = Keychain(service: self.keychainService)
+        do {
+            //save pirivate key to keychain
+            let containsKey = try keychain.contains(legacySigningKeyPasswordKey)
+            completion(.success(containsKey))
+        } catch let error {
+            completion(.failure(error.localizedDescription))
         }
     }
     
@@ -105,14 +111,14 @@ class O3KeychainManager {
         }
     }
     
-    static func inputPassword(account: NEP6.Account, completion: @escaping(O3KeychainResult<String>) -> ()) {
+    static func inputPassword(account: NEP6.Account, completion: @escaping(O3KeychainResult<Wallet>) -> ()) {
         let alertController = UIAlertController(title: String(format: "Login to %@", account.label), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)
         
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
             let inputPass = alertController.textFields?[0].text
             var error: NSError?
-            if let wif = NeoutilsNEP2Decrypt(account.key!, inputPass, &error) {
-                completion(.success(wif))
+            if let wallet = Wallet(wallet: NeoutilsNEP2DecryptToWallet(account.key!, inputPass, &error)) {
+                completion(.success(wallet))
             } else {
                 OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {
                     completion(.failure("Failed Decryption"))
@@ -135,9 +141,9 @@ class O3KeychainManager {
     }
     
     
-    static func getWifFromNep6(for address: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
+    static func getWalletForNep6(for address: String, completion: @escaping(O3KeychainResult<Wallet>) -> ()) {
         let account = (NEP6.getFromFileSystem()?.accounts.first{ $0.address == address})!
-       // DispatchQueue.global(qos: .userInteractive).async {
+       DispatchQueue.global(qos: .userInteractive).async {
             let keychain = Keychain(service: self.keychainService)
             let hashed = (address.data(using: .utf8)?.sha256.sha256.fullHexString)!
             let keychainKey = "NEP6." + hashed
@@ -152,14 +158,15 @@ class O3KeychainManager {
                 if keyPass != nil {
                     var error: NSError? = nil
                     let currtime = Date().timeIntervalSince1970
-                
-                    let wif = NeoutilsNEP2Decrypt(account.key, keyPass, &error)
+                    let wif: String? = ""
+        
+                    let wallet = Wallet(wallet: NeoutilsNEP2DecryptToWallet(account.key, keyPass, &error))!
                     guard error == nil else {
                         completion(.failure(error!.localizedDescription))
                         return
                     }
-                    print (Date().timeIntervalSince1970 - currtime)
-                    completion(.success(wif!))
+                    print(Date().timeIntervalSince1970 - currtime)
+                    completion(.success(wallet))
                     return
                 }
                 
@@ -169,7 +176,7 @@ class O3KeychainManager {
             } catch let error {
                 completion(.failure(error.localizedDescription))
             }
-        //}
+        }
     }
     
     static func setNep6DecryptionPassword(for address: String, pass: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
@@ -214,6 +221,31 @@ class O3KeychainManager {
             completion(.success(containsKey))
         } catch let error {
             completion(.failure(error.localizedDescription))
+        }
+    }
+    
+    static func authenticateWithBiometricOrPass(message: String, completion: @escaping(O3KeychainResult<Bool>) -> ()) {
+        let localAuthenticationContext = LAContext()
+        localAuthenticationContext.localizedFallbackTitle = "Use Passcode"
+        #if targetEnvironment(simulator)
+        completion(.success(true))
+        return
+        #endif
+        
+        var authError: NSError?
+        let reasonString = message
+        
+        if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
+            
+            localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString) { success, evaluateError in
+                if success {
+                    completion(.success(true))
+                } else {
+                    completion(.failure("Did not authenticate"))
+                }
+            }
+        } else {
+            completion(.failure("Did not authenticate"))
         }
     }
 }

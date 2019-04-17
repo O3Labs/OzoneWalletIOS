@@ -100,7 +100,7 @@ class VerifyManualBackupViewController: UIViewController {
         if sender.isOn {
             if account.isDefault {
                 let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
-                O3KeychainManager.getSigningKeyPassword(with: prompt) { result in
+                O3KeychainManager.AuthenticateWithBiometricOrPass(message: prompt) { result in
                     switch result {
                     case .success(let _):
                         self.keyLabel.text = (Authenticated.wallet?.wif)!

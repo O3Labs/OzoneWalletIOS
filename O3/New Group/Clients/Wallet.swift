@@ -44,6 +44,14 @@ public class Wallet {
         self.address = wallet.address()
         self.hashedSignature = wallet.hashedSignature()
     }
+    
+    public init?(wallet: NeoutilsWallet) {
+        self.wif = wallet.wif()
+        self.publicKey = wallet.publicKey()
+        self.privateKey = wallet.privateKey()
+        self.address = wallet.address()
+        self.hashedSignature = wallet.hashedSignature()
+    }
 
     public init?() {
         let byteCount: Int = 32

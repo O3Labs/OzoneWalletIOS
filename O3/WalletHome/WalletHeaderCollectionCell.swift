@@ -144,9 +144,9 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
             let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
                     let inputPass = alertController.textFields?[0].text!
                     var error: NSError?
-                    let wif = NeoutilsNEP2Decrypt(key, inputPass, &error)!
+                    let wallet = Wallet(wallet: NeoutilsNEP2DecryptToWallet(key, inputPass, &error)!)
                     if error == nil {
-                        NEP6.makeNewDefault(key: key, wif: wif)
+                        NEP6.makeNewDefault(key: key, wallet: wallet!)
                         MultiwalletEvent.shared.walletUnlocked()
                     } else {
                         OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}

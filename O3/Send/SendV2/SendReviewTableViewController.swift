@@ -70,7 +70,7 @@ class SendReviewTableViewController: UITableViewController {
     }
     
     func sendNativeAsset(assetId: AssetId, assetName: String, amount: Double, toAddress: String) {
-        O3KeychainManager.getSigningKeyPassword(with: SendStrings.authenticateToSendPrompt) { result in
+        O3KeychainManager.authenticateWithBiometricOrPass(message: SendStrings.authenticateToSendPrompt) { result in
             switch(result) {
             case .success(let _):
                 if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
@@ -154,7 +154,7 @@ class SendReviewTableViewController: UITableViewController {
     
     
     func sendNEP5Token(tokenHash: String, decimals: Int, assetName: String, amount: Double, toAddress: String) {
-        O3KeychainManager.getSigningKeyPassword(with: SendStrings.authenticateToSendPrompt) { result in
+        O3KeychainManager.authenticateWithBiometricOrPass(message: SendStrings.authenticateToSendPrompt) { result in
             switch(result) {
             case .success(let _):
                 O3HUD.start()

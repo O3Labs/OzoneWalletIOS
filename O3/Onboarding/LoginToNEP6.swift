@@ -77,19 +77,27 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func login(account: NEP6.Account) {
-        let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
-        O3KeychainManager.getWifFromNep6(for: account.address) { result in
+        O3KeychainManager.authenticateWithBiometricOrPass(message: "Authenticate this please") { result in
             switch result {
-            case .success(let wif):
+            case .success(let wallet):
+                return
+            case .failure(let e):
+                return
+            }
+        }
+        
+        /*let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
+        O3KeychainManager.getWalletForNep6(for: account.address) { result in
+            switch result {
+            case .success(let wallet):
                 let currtime = Date().timeIntervalSince1970
-            
-                NEP6.makeNewDefault(key: account.key!, wif: wif)
+                NEP6.makeNewDefault(key: account.key!, wallet: wallet)
                 print(Date().timeIntervalSince1970 - currtime)
                 self.enterPortfolio()
             case .failure(let e):
                 return
             }
-        }
+        }*/
     }
     
     override func viewDidLoad() {
