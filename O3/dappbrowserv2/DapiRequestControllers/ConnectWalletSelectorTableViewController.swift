@@ -70,85 +70,23 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
             }
             return
         }
+        
         selectedAccount = account
+        HUD.show(.progress)
         if self.navigationController?.viewControllers == nil {
-            inputPassword(account: account!, didCancel: {
-                self.dismiss(animated: true, completion: nil)
-            }) { wif in
-                let wallet = Wallet(wif: wif)
-                self.selectedWallet = wallet
-                self.performSegue(withIdentifier: "unwindToDappBrowser", sender: nil)
-            }
-        }
-    }
+            O3KeychainManager.getWalletForNep6(for: (self.selectedAccount?.address)!) { result in
+                DispatchQueue.main.async {
+                    HUD.hide()
+                    switch result {
+                    case .success(let wallet):
+                        self.selectedWallet = wallet
+                        self.performSegue(withIdentifier: "unwindToDappBrowser", sender: nil)
+                    case .failure:
+                        self.dismiss(animated: true, completion: nil)
 
-    func inputPassword(account: NEP6.Account, didCancel: @escaping () -> Void, didConfirm:@escaping (_ wif: String) -> Void) {
-        let encryptedKey = account.key
-        let name = account.label
-        
-        //default selected account is the main active one so if user hasn't change
-        if account.isDefault == true {
-            DispatchQueue.main.async { HUD.show(.progress) }
-            let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
-            O3KeychainManager.getSigningKeyPassword(with: prompt) { result in
-                DispatchQueue.main.async { O3HUD.start() }
-                switch result {
-                case .success(let nep6Pass):
-                    let nep6 = NEP6.getFromFileSystem()!
-                    var error: NSError?
-                    let defaultAccount = nep6.accounts.first { $0.isDefault }!
-                    let account = Wallet(wif: NeoutilsNEP2Decrypt(defaultAccount.key, nep6Pass, &error))!
-                    let wif = NeoutilsNEP2Decrypt(encryptedKey, nep6Pass, &error)
-                    if error == nil {
-                        didConfirm(wif!)
-                    }
-                    DispatchQueue.main.async { HUD.hide() }
-                case .failure(_):
-                    DispatchQueue.main.async { HUD.hide() }
-                    return
-                }
-            }
-        }
-        
-        let alertController = UIAlertController(title: String(format: "Unlock %@", name), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
-            DispatchQueue.main.async {
-                HUD.show(.progress)
-            }
-            let inputPass = alertController.textFields?[0].text
-            DispatchQueue.global(qos: .userInitiated).async {
-                let start = NSDate()
-                var error: NSError?
-                let wif = NeoutilsNEP2Decrypt(encryptedKey, inputPass, &error)
-                let end = NSDate()
-                
-                let timeInterval: Double = end.timeIntervalSince(start as Date)
-                print("Time to evaluate problem \(timeInterval) seconds")
-                if error == nil {
-                    DispatchQueue.main.async {
-                        HUD.hide()
-                        didConfirm(wif!)
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        HUD.hide()
-                        OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
                     }
                 }
             }
         }
-        
-        let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in
-            didCancel()
-        }
-        
-        alertController.addTextField { (textField) in
-            textField.isSecureTextEntry = true
-        }
-        
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        self.present(alertController, animated: true, completion: nil)
     }
-    
 }

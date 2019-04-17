@@ -77,16 +77,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func login(account: NEP6.Account) {
-        O3KeychainManager.authenticateWithBiometricOrPass(message: "Authenticate this please") { result in
-            switch result {
-            case .success(let wallet):
-                return
-            case .failure(let e):
-                return
-            }
-        }
-        
-        /*let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
+        let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
         O3KeychainManager.getWalletForNep6(for: account.address) { result in
             switch result {
             case .success(let wallet):
@@ -97,7 +88,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
             case .failure(let e):
                 return
             }
-        }*/
+        }
     }
     
     override func viewDidLoad() {

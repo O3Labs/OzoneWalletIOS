@@ -37,89 +37,34 @@ class ConnectRequestTableViewController: UITableViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func inputPassword(account: NEP6.Account?, didCancel: @escaping () -> Void, didConfirm:@escaping (_ wif: String) -> Void) {
-        let encryptedKey = account!.key
-        let name = account!.label
-        //default selected account is the main active one so if user hasn't change
-        if account?.isDefault == true {
-            DispatchQueue.main.async { HUD.show(.progress) }
-            let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, (NEP6.getFromFileSystem()?.accounts[0].label)!)
-            O3KeychainManager.getSigningKeyPassword(with: prompt) { result in
-                switch result {
-                case .success(let pass):
-                    var error: NSError?
-                    let wif = NeoutilsNEP2Decrypt(encryptedKey, pass, &error)
-                    DispatchQueue.main.async { HUD.hide() }
-                    if error == nil {
-                        DispatchQueue.main.async { didConfirm(wif!) }
-                    }
-                case .failure(let _):
-                    DispatchQueue.main.async {HUD.hide() }
-                }
-            }
-        } else {
-        
-            let alertController = UIAlertController(title: String(format: "Unlock %@", name), message: "Enter the password you used to secure this wallet", preferredStyle: .alert)
-            let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
-                DispatchQueue.main.async {
-                    HUD.show(.progress)
-                }
-                let inputPass = alertController.textFields?[0].text
-                DispatchQueue.global(qos: .userInitiated).async {
-                    let start = NSDate()
-                    var error: NSError?
-                    let wif = NeoutilsNEP2Decrypt(encryptedKey, inputPass, &error)
-                    let end = NSDate()
-                    
-                    let timeInterval: Double = end.timeIntervalSince(start as Date)
-                    print("Time to evaluate problem \(timeInterval) seconds")
-                    if error == nil {
-                        DispatchQueue.main.async {
-                            didConfirm(wif!)
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            HUD.hide()
-                            OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
-                        }
-                    }
-                }
-            }
-            
-            let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in
-                DispatchQueue.main.async {
-                    HUD.hide()
-                    didCancel()
-                }
-            }
-            
-            alertController.addTextField { (textField) in
-                textField.isSecureTextEntry = true
-            }
-            
-            alertController.addAction(confirmAction)
-            alertController.addAction(cancelAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
     @IBAction func didTapCancel(_ sender: Any) {
         onCancel?(message)
         self.dismiss(animated: true, completion: nil)
     }
     
+    func sendWalletDetails(wallet: Wallet) {
+        DispatchQueue.main.async {
+            HUD.hide()
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            dapiEvent.shared.accountConnected(url: self.url?.absoluteString ?? "", domain: self.url?.host ?? "")
+            self.onConfirm?(self.message, wallet, self.selectedAccount)
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
     @IBAction func didTapConnect(_ sender: Any) {
-        inputPassword(account: selectedAccount, didCancel: {
-            
-        }) { wif in
-            DispatchQueue.main.async {
-                HUD.hide()
-                let generator = UINotificationFeedbackGenerator()
-                  generator.notificationOccurred(.success)
-                let wallet = Wallet(wif: wif)
-                dapiEvent.shared.accountConnected(url: self.url?.absoluteString ?? "", domain: self.url?.host ?? "")
-                self.onConfirm?(self.message, wallet!, self.selectedAccount)
-                self.dismiss(animated: true, completion: nil)
+        if selectedAccount?.isDefault ?? false{
+            //no need to decrypt the default wallet, its already in session
+            sendWalletDetails(wallet: Authenticated.wallet!)
+        } else {
+            O3KeychainManager.getWalletForNep6(for: (self.selectedAccount?.address)!) { result in
+                switch result {
+                case .success(let wallet):
+                    self.sendWalletDetails(wallet: wallet)
+                case .failure:
+                     return
+                }
             }
         }
     }
