@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SwiftTheme
 import Neoutils
+import PKHUD
 
 class UnlockMultiWalletTableViewController: UITableViewController {
     let nep6 = NEP6.getFromFileSystem()!
@@ -81,14 +82,18 @@ class UnlockMultiWalletTableViewController: UITableViewController {
         let key = accounts[indexPath.row].key!
         let name = accounts[indexPath.row].label
         
+        DispatchQueue.main.async { HUD.show(.progress) }
         O3KeychainManager.getWalletForNep6(for: address) { result in
-            switch result {
-            case .success(let wallet):
-                NEP6.makeNewDefault(key: key, wallet: wallet)
-                MultiwalletEvent.shared.walletUnlocked()
-                DispatchQueue.main.async { self.dismiss(animated: true) }
-            case .failure(let e):
-                return
+            DispatchQueue.main.async {
+                HUD.hide()
+                switch result {
+                case .success(let wallet):
+                    NEP6.makeNewDefault(key: key, wallet: wallet)
+                    MultiwalletEvent.shared.walletUnlocked()
+                    self.dismiss(animated: true)
+                case .failure(let e):
+                    return
+                }
             }
         }
     }

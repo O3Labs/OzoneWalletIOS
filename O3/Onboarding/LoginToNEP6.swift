@@ -12,6 +12,7 @@ import Lottie
 import KeychainAccess
 import SwiftTheme
 import Neoutils
+import PKHUD
 
 protocol LoginToNEP6ViewControllerDelegate {
     func authorized(launchOptions: [UIApplication.LaunchOptionsKey: Any]?)
@@ -78,15 +79,19 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     
     func login(account: NEP6.Account) {
         let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
+        
         O3KeychainManager.getWalletForNep6(for: account.address) { result in
-            switch result {
-            case .success(let wallet):
-                let currtime = Date().timeIntervalSince1970
-                NEP6.makeNewDefault(key: account.key!, wallet: wallet)
-                print(Date().timeIntervalSince1970 - currtime)
-                self.enterPortfolio()
-            case .failure(let e):
-                return
+            DispatchQueue.main.async {
+       //         HUD.hide()
+                switch result {
+                case .success(let wallet):
+                    let currtime = Date().timeIntervalSince1970
+                    NEP6.makeNewDefault(key: account.key!, wallet: wallet)
+                    print(Date().timeIntervalSince1970 - currtime)
+                    self.enterPortfolio()
+                case .failure(let e):
+                    return
+                }
             }
         }
     }

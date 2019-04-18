@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aAt-DZ-4hK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aAt-DZ-4hK">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -137,7 +137,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="9uh-6y-pWc" firstAttribute="bottom" secondItem="C7R-pa-eav" secondAttribute="bottom" id="9ci-CB-nmw"/>
-                            <constraint firstItem="ALb-R4-Im4" firstAttribute="bottom" secondItem="CqK-y7-n6I" secondAttribute="bottom" id="LPS-Mo-2Vr"/>
+                            <constraint firstItem="ALb-R4-Im4" firstAttribute="top" secondItem="CqK-y7-n6I" secondAttribute="bottom" id="LPS-Mo-2Vr"/>
                             <constraint firstItem="C7R-pa-eav" firstAttribute="trailing" secondItem="CqK-y7-n6I" secondAttribute="trailing" id="O9R-eI-Pcj"/>
                             <constraint firstItem="CqK-y7-n6I" firstAttribute="leading" secondItem="C7R-pa-eav" secondAttribute="leading" id="Sfy-jq-wwf"/>
                             <constraint firstItem="9uh-6y-pWc" firstAttribute="leading" secondItem="C7R-pa-eav" secondAttribute="leading" id="daI-da-BL9"/>
@@ -1283,7 +1283,7 @@
         <image name="ic_wallet_active" width="30" height="30"/>
         <image name="ic_wallet_disconnected" width="24" height="24"/>
         <image name="logo-white-30px" width="30" height="30"/>
-        <image name="power-off" width="48" height="50"/>
+        <image name="power-off" width="24" height="25"/>
         <image name="receipt" width="18" height="20"/>
         <image name="redo" width="20" height="20"/>
         <image name="shareAltSetting" width="17" height="20"/>

@@ -218,7 +218,7 @@ class O3KeychainManager {
         do {
             //save pirivate key to keychain
             let containsKey = try keychain.contains(keychainKey)
-            completion(.success(containsKey))
+            completion(.success(true))
         } catch let error {
             completion(.failure(error.localizedDescription))
         }
@@ -248,4 +248,28 @@ class O3KeychainManager {
             completion(.failure("Did not authenticate"))
         }
     }
+    
+    static public func containsNep6Password(for address: String) -> Bool {
+        // We spcify kSecUseAuthenticationUIFail so that the error
+        // errSecInteractionNotAllowed will be returned if an item needs
+        // to authenticate with UI and the authentication UI will not be presented.
+        let hashed = (address.data(using: .utf8)?.sha256.sha256.fullHexString)!
+        let keychainKey = "NEP6." + hashed
+        
+        let keychainQuery: [AnyHashable: Any] = [
+            kSecClass as AnyHashable: kSecClassGenericPassword,
+            kSecAttrService as AnyHashable: "network.o3.neo.wallet",
+            kSecAttrAccount as AnyHashable: keychainKey,
+            kSecUseAuthenticationUI as AnyHashable: kSecUseAuthenticationUIFail
+        ]
+        
+        var result: AnyObject?
+        let status = SecItemCopyMatching(keychainQuery as CFDictionary, &result)
+        
+        // If that status is errSecInteractionNotAllowed, then
+        // we know that the key is present, but you cannot interact with
+        // it without authentication. Otherwise, we assume the key is not present.
+        return status == errSecInteractionNotAllowed
+    }
 }
+

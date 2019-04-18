@@ -165,5 +165,5 @@ class UserDefaultsManager {
             UserDefaults.standard.set(newValue, forKey: hasAgreedAnalyticsDisclaimerKey)
             UserDefaults.standard.synchronize()
         }
-    }
+    }   
 }
