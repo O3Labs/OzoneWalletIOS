@@ -117,14 +117,6 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         quickSwapSwitch.isUserInteractionEnabled = false
         let containsPass = O3KeychainManager.containsNep6Password(for: account.address)
         DispatchQueue.main.async { self.quickSwapSwitch.setOn(containsPass, animated: false)}
-        /*O3KeychainManager.checkNep6PasswordExists(for: account.address) { result in
-                switch result {
-            case .success(let containsPass):
-                DispatchQueue.main.async { self.quickSwapSwitch.setOn(containsPass, animated: false) }
-            case .failure(_):
-                DispatchQueue.main.async { self.quickSwapSwitch.setOn(false, animated: false) }
-            }
-        }*/
     }
     
     @objc func editNameTapped(_ sender: Any) {

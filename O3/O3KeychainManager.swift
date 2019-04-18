@@ -52,8 +52,9 @@ class O3KeychainManager {
             try keychain
                 .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
                 .remove(self.legacySigningKeyPasswordKey)
-        } catch _ {
-            return
+            completion(.success(""))
+        } catch let e {
+            completion(.failure(e.localizedDescription))
         }
     }
     
@@ -260,6 +261,27 @@ class O3KeychainManager {
             kSecClass as AnyHashable: kSecClassGenericPassword,
             kSecAttrService as AnyHashable: "network.o3.neo.wallet",
             kSecAttrAccount as AnyHashable: keychainKey,
+            kSecUseAuthenticationUI as AnyHashable: kSecUseAuthenticationUIFail
+        ]
+        
+        var result: AnyObject?
+        let status = SecItemCopyMatching(keychainQuery as CFDictionary, &result)
+        
+        // If that status is errSecInteractionNotAllowed, then
+        // we know that the key is present, but you cannot interact with
+        // it without authentication. Otherwise, we assume the key is not present.
+        return status == errSecInteractionNotAllowed
+    }
+    
+    static public func containsLegacyNep6() -> Bool {
+        // We spcify kSecUseAuthenticationUIFail so that the error
+        // errSecInteractionNotAllowed will be returned if an item needs
+        // to authenticate with UI and the authentication UI will not be presented.
+
+        let keychainQuery: [AnyHashable: Any] = [
+            kSecClass as AnyHashable: kSecClassGenericPassword,
+            kSecAttrService as AnyHashable: "network.o3.neo.wallet",
+            kSecAttrAccount as AnyHashable: legacySigningKeyPasswordKey,
             kSecUseAuthenticationUI as AnyHashable: kSecUseAuthenticationUIFail
         ]
         

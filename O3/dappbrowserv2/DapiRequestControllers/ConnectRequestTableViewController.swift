@@ -57,9 +57,7 @@ class ConnectRequestTableViewController: UITableViewController {
             //no need to decrypt the default wallet, its already in session
             sendWalletDetails(wallet: Authenticated.wallet!)
         } else {
-            DispatchQueue.main.async { HUD.show(.progress) }
             O3KeychainManager.getWalletForNep6(for: (self.selectedAccount?.address)!) { result in
-                DispatchQueue.main.async { HUD.hide() }
                 switch result {
                 case .success(let wallet):
                     self.sendWalletDetails(wallet: wallet)

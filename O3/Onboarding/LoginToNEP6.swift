@@ -78,11 +78,15 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func login(account: NEP6.Account) {
+        if O3KeychainManager.containsLegacyNep6() {
+            forceMigrate()
+            return
+        }
+        
         let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
         
         O3KeychainManager.getWalletForNep6(for: account.address) { result in
             DispatchQueue.main.async {
-       //         HUD.hide()
                 switch result {
                 case .success(let wallet):
                     let currtime = Date().timeIntervalSince1970
@@ -107,10 +111,38 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         setLocalizedStrings()
         if NEP6.getFromFileSystem() == nil {
             loginLegacy()
-        } else {
-            login(account: (NEP6.getFromFileSystem()?.accounts.first {$0.isDefault})!)
+            return
         }
         
+        login(account: (NEP6.getFromFileSystem()?.accounts.first {$0.isDefault})!)
+        
+    }
+    
+    func forceMigrate() {
+        let defaultAccount = (NEP6.getFromFileSystem()?.accounts.first {$0.isDefault})!
+        O3KeychainManager.getSigningKeyPassword(with: "Security updated. Please authenticate to login again") { result in
+            switch result {
+            case .success(let pass):
+                O3KeychainManager.setNep6DecryptionPassword(for: defaultAccount.address, pass: pass) { result in
+                    switch result {
+                    case .success:
+                        O3KeychainManager.removeLegacySigningKey { result in
+                            switch result {
+                            case .success:
+                                self.login(account: (NEP6.getFromFileSystem()?.accounts.first {$0.isDefault})!)
+                            case .failure(let e):
+                                return
+                            }
+                            
+                        }
+                    case .failure(let e):
+                        return
+                    }
+                }
+            case .failure(let e):
+                return
+            }
+        }
     }
     
 

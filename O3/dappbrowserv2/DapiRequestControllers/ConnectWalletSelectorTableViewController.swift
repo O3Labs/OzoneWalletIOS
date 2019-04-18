@@ -73,10 +73,8 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
         
         selectedAccount = account
         if self.navigationController?.viewControllers == nil {
-            DispatchQueue.main.async { HUD.show(.progress) }
             O3KeychainManager.getWalletForNep6(for: (self.selectedAccount?.address)!) { result in
                 DispatchQueue.main.async {
-                    HUD.hide()
                     switch result {
                     case .success(let wallet):
                         self.selectedWallet = wallet

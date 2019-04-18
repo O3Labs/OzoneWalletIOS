@@ -82,10 +82,8 @@ class UnlockMultiWalletTableViewController: UITableViewController {
         let key = accounts[indexPath.row].key!
         let name = accounts[indexPath.row].label
         
-        DispatchQueue.main.async { HUD.show(.progress) }
         O3KeychainManager.getWalletForNep6(for: address) { result in
             DispatchQueue.main.async {
-                HUD.hide()
                 switch result {
                 case .success(let wallet):
                     NEP6.makeNewDefault(key: key, wallet: wallet)
