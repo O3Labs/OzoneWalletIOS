@@ -166,12 +166,14 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: self.qrView.bounds.size.width, height: self.qrView.bounds.size.height)
+        
         setThemedElements()
         setLocalizedStrings()
         applyNavBarTheme()
         addWalletChangeObserver()
         updateWalletInfo(nil)
-        
+    
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
         self.headerView.addGestureRecognizer(tap)
         contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))

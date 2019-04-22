@@ -88,8 +88,11 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        //watch addr
         if account.key == nil {
-            if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
+            if indexPath.row == 5 {
+                return CGFloat(44)
+            } else {
                 return CGFloat(0)
             }
         }
