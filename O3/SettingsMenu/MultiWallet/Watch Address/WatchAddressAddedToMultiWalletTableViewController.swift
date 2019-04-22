@@ -16,14 +16,14 @@ class WatchAddressAddedToMultiWalletTableViewController: UITableViewController {
     @IBOutlet weak var animationViewContainer: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     
-    let lottieView = AnimationView(name: "wallet_generated")
+    let lottieView = LOTAnimationView(name: "wallet_generated")
         
     override func viewDidLoad() {
         super.viewDidLoad()
         setLocalizedStrings()
         setThemeElements()
         animationViewContainer.embed(lottieView)
-        lottieView.loopMode = .loop
+        lottieView.loopAnimation = true
         lottieView.play()
     }
     

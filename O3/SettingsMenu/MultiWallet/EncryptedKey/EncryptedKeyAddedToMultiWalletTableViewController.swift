@@ -23,7 +23,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
     @IBOutlet weak var quickSwapSubtitleLabel: UILabel!
     @IBOutlet weak var quickSwapSwitch: UISwitch!
     
-    let lottieView = AnimationView(name: "EnterPasswordKey")
+    let lottieView = LOTAnimationView(name: "EnterPasswordKey")
     var encryptedKey = ""
     var address = ""
     
@@ -32,7 +32,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
         setLocalizedStrings()
         setThemedElements()
         animationContainerView.embed(lottieView)
-        lottieView.loopMode = .loop
+        lottieView.loopAnimation = true
         lottieView.play()
         continueButton.isEnabled = false
         passwordInputField.isSecureTextEntry = true

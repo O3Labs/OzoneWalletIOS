@@ -186,7 +186,7 @@ class DAppBrowserViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(didTapLeft(_:)))
         
-        let loadingView = AnimationView(name: "loader_portfolio")
+        let loadingView = LOTAnimationView(name: "loader_portfolio")
         loadingView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         loadingView.play()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: loadingView)

@@ -23,7 +23,7 @@ class ActivateMultiWalletTableViewController: UITableViewController {
     @IBOutlet weak var passwordVerifyShowButton: UIButton!
     
     @IBOutlet weak var animationContainerView: UIView!
-    let animation = AnimationView(name: "EnterPasswordKey")
+    let animation = LOTAnimationView(name: "EnterPasswordKey")
     
     var passwordInputIsSecure = true
     var passwordVerifyIsSecure = true
@@ -36,7 +36,7 @@ class ActivateMultiWalletTableViewController: UITableViewController {
         applyNavBarTheme()
         setLocalizedStrings()
         setThemedElements()
-        animation.loopMode = .loop
+        animation.loopAnimation = true
         animationContainerView.embed(animation)
         animation.play()
         generateNEP6Button.isEnabled = false

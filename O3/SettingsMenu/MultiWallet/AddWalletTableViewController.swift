@@ -21,7 +21,7 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     
     var newWif = ""
     
-    let lottieView = AnimationView(name: "wallet_generated")
+    let lottieView = LOTAnimationView(name: "wallet_generated")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
         applyNavBarTheme()
         setThemedElements()
         animationContainerView.embed(lottieView)
-        lottieView.loopMode = .loop
+        lottieView.loopAnimation = true
         lottieView.play()
         addWalletButton.isEnabled = false
         let buttonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(dismissPage(_:)))

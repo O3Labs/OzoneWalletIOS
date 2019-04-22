@@ -111,7 +111,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         if list.count == 0 {
             let fiat = Fiat(amount: 0.0)
             self.accountValues[account] = fiat.formattedString()
-            DispatchQueue.main.async { self.tableView.reloadData() }
+            self.tableView.reloadData()
             return
         }
         
@@ -213,12 +213,11 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             return
         }
         let indexPath = IndexPath(row: 0, section: sections.unclaimedGAS.rawValue)
-        DispatchQueue.main.async {
-            guard let cell = self.tableView.cellForRow(at: indexPath) as? ClaimableGASTableViewCell else {
-                return
-            }
-            cell.loadClaimableGASNeo()
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? ClaimableGASTableViewCell else {
+            return
         }
+        cell.loadClaimableGASNeo()
+
     }
     
     @objc func loadClaimableOng() {
@@ -230,14 +229,10 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             return
         }
         let indexPath = IndexPath(row: 0, section: sections.unclaimedGAS.rawValue)
-        DispatchQueue.main.async {
-            
-            
-            guard let cell = self.tableView.cellForRow(at: indexPath) as? ClaimableGASTableViewCell else {
-                return
-            }
-            cell.loadClaimableOng()
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? ClaimableGASTableViewCell else {
+            return
         }
+        cell.loadClaimableOng()
     }
     
     func updateCacheAndLocalBalance(accountState: AccountState) {
