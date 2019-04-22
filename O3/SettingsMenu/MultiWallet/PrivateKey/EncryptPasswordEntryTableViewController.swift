@@ -21,6 +21,11 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var quickSwapTitleLabel: UILabel!
+    @IBOutlet weak var quickSwapSubtitleLabel: UILabel!
+    @IBOutlet weak var quickSwapSwitch: UISwitch!
+    @IBOutlet weak var quickSwapContainer: UIView!
+    
     
     @IBOutlet weak var passwordInputShowButton: UIButton!
     @IBOutlet weak var passwordVerifyShowButton: UIButton!
@@ -35,7 +40,7 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
     
     let animation = LOTAnimationView(name: "wallet_generated")
     
-    var allowedCharacters = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~`!@#$%^&*()+=-/;:\"\'{}[]<>^?,")
+    var allowedCharacters = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~`!@#$%^&*()+=-/;:\"\'{}[]<>^?, ")
     var nep2: NeoutilsNEP2?
     
     override func viewDidLoad() {
@@ -90,11 +95,12 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
     if !self.validatePasswordAndName() {
         return
     }
-    
-    var updatedNep6 = NEP6.getFromFileSystem()!
+    let password = self.passwordTextField.text!
+    let name = self.nameEntryTextField.text!
+    let updatedNep6 = NEP6.getFromFileSystem()!
         do {
             var error: NSError?
-            self.nep2 = NeoutilsNEP2Encrypt(self.wif, self.passwordTextField.text!, &error)
+            self.nep2 = NeoutilsNEP2Encrypt(self.wif, password, &error)
             let index = NEP6.getFromFileSystem()!.accounts.firstIndex { $0.address == nep2?.address()}
             if (index != nil) {
                 OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
@@ -102,11 +108,26 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
                 return
             }
             
-            try updatedNep6.addEncryptedKey(name: self.nameEntryTextField.text!, address: self.nep2!.address(), key: self.nep2!.encryptedKey())
+            try updatedNep6.addEncryptedKey(name: name, address: self.nep2!.address(), key: self.nep2!.encryptedKey())
             updatedNep6.writeToFileSystem()
             MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
             Channel.shared().subscribe(toTopic: self.nep2!.address())
-            self.performSegue(withIdentifier: "segueToFinishedEncryption", sender: nil)
+            if quickSwapSwitch.isOn {
+                O3KeychainManager.setNep6DecryptionPassword(for: self.nep2!.address(), pass: password) { result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(_):
+                            self.performSegue(withIdentifier: "segueToFinishedEncryption", sender: nil)
+                        case .failure(_):
+                            self.performSegue(withIdentifier: "segueToFinishedEncryption", sender: nil)
+                        }
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "segueToFinishedEncryption", sender: nil)
+                }
+            }
         } catch {
             OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
         }
@@ -174,10 +195,14 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
         passwordTextField.placeholder = MultiWalletStrings.passwordInputHint
         confirmPasswordTextField.placeholder = MultiWalletStrings.verifyPasswordInputHint
         nameEntryTextField.placeholder = "My O3 Wallet"
+        quickSwapTitleLabel.text = "Enable Quick Swap"
+        quickSwapSubtitleLabel.text = "Access this wallet using pincode/touchid"
     }
     func setThemedElements() {
         titleLabel.theme_textColor = O3Theme.titleColorPicker
         subtitleLabel.theme_textColor = O3Theme.titleColorPicker
+        quickSwapTitleLabel.theme_textColor = O3Theme.titleColorPicker
+        quickSwapSubtitleLabel.theme_textColor = O3Theme.lightTextColorPicker
         passwordTextField.theme_placeholderAttributes = O3Theme.placeholderAttributesPicker
         passwordTextField.theme_textColor = O3Theme.textFieldTextColorPicker
         passwordTextField.theme_keyboardAppearance = O3Theme.keyboardPicker

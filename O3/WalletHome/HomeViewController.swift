@@ -43,6 +43,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var selectedPrice: PriceData?
     var displayedAssets = [TransferableAsset]()
     var watchAddresses = [NEP6.Account]()
+    
+    var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
 
     func addThemedElements() {
         applyNavBarTheme()
@@ -170,7 +172,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func resetPage(_ sender: Any?) {
-        self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: false)
+        DispatchQueue.main.async {
+            self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: false)
+        }
         watchAddresses = loadWatchAddresses()
         homeviewModel = HomeViewModel(delegate: self)
     }
@@ -212,7 +216,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.present(vcWithNav, animated: true, completion: {})
             }
         }
-
+        
+        showDisclaimer()
         super.viewDidLoad()
 
     }
@@ -401,6 +406,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         sixtyMinButton.setTitle(PortfolioStrings.oneMonthInterval, for: UIControl.State())
         oneDayButton.setTitle(PortfolioStrings.threeMonthInterval, for: UIControl.State())
         allButton.setTitle(PortfolioStrings.allInterval, for: UIControl.State())
+    }
+    
+    func showDisclaimer() {
+        if (UserDefaultsManager.hasAgreedAnalytics == false) {
+            let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "analyticsWarningNav")
+            self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+            nav.modalPresentationStyle = .custom
+            nav.transitioningDelegate = self.halfModalTransitioningDelegate
+            self.present(nav, animated: true, completion: nil)
+        }
     }
 }
 

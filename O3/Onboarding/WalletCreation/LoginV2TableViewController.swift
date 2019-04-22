@@ -142,18 +142,16 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
                                           label: "My O3 Wallet", isDefault: true, lock: false,
                                           key: encryptedKey)
             let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
-            let keychain = Keychain(service: "network.o3.neo.wallet")
-            do {
-                //save pirivate key to keychain
-                try keychain
-                    .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                    .set(password, key: "ozoneActiveNep6Password")
-                nep6.writeToFileSystem()
-                Authenticated.wallet = wallet
-                MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
-                self.instantiateMainAsNewRoot()
-            } catch _ {
-                fatalError("Something went terribly wrong")
+            O3KeychainManager.setNep6DecryptionPassword(for: newAccount.address, pass: password) { result in
+                switch result {
+                case .success(_):
+                    nep6.writeToFileSystem()
+                    Authenticated.wallet = wallet
+                    MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
+                    self.instantiateMainAsNewRoot()
+                case .failure(_):
+                    fatalError("Something went terribly wrong")
+                }
             }
         }
     }

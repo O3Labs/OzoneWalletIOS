@@ -40,7 +40,7 @@ class BadgeUIButton : UIButton {
         labelText.string = self.badgeValue.uppercased()
         labelText.fontSize = 12.0
         labelText.font = UIFont(name: "Avenir-Heavy", size: 12)
-        labelText.alignmentMode = CATextLayerAlignmentMode.center
+        labelText.alignmentMode  = CATextLayerAlignmentMode.center
         labelText.foregroundColor = UIColor.white.cgColor
         //        let labelString = self.badgeValue.uppercased() as String?
         //        let labelFont = UIFont(name: "Avenir-Heavy", size: 12)

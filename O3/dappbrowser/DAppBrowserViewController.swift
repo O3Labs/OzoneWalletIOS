@@ -315,6 +315,13 @@ extension DAppBrowserViewController {
                 return t.symbol != asset.symbol
             }).first
             vc.viewModel.tradingAccount = self.tradingAccount
+            //override for sdusd
+            if asset.symbol == "SDUSD" && action == CreateOrderAction.Sell {
+                let tempAsset = vc.viewModel.wantAsset
+                vc.viewModel.wantAsset = vc.viewModel.offerAsset
+                vc.viewModel.offerAsset = tempAsset
+                vc.viewModel.selectedAction = CreateOrderAction.Buy
+            }
         }
         self.present(nav, animated: true, completion: nil)
     }
@@ -454,22 +461,19 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
             OzoneAlert.confirmDialog(message: message, cancelTitle: "Cancel", confirmTitle: "Allow", didCancel: {
                 
             }) {
-                //pop up pincode here
-                let keychain = Keychain(service: "network.o3.neo.wallet")
-                do {
-                    _ = try keychain
-                        .authenticationPrompt(String(format: "Connect with %@?", host!))
-                        .get(AppState.protectedKeyValue)
-                    DispatchQueue.main.async {
+                let prompt = String(format: "Connect with %@?", host!)
+                O3KeychainManager.authenticateWithBiometricOrPass(message: prompt) { result in
+                    switch(result) {
+                    case .success(let _):
                         self.title = host?.firstUppercased
-                        //generate session ID
-                        //consider saving this to the app state and make it valid as long as user is still active in the app.
                         self.sessionID = UUID().uuidString
                         self.loggedIn = true
                         self.callback(command: "requestToConnect", data: self.currentAccount(), errorMessage: nil, withSession: true)
+                    case .failure(let _):
+                        return
                     }
-                } catch _ {
                 }
+
             }
             return
         }

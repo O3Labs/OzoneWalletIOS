@@ -59,9 +59,9 @@ class TransactionCell: UITableViewCell {
         }
         if address == Authenticated.wallet?.address ?? "" {
             return AccountStrings.o3Wallet
-        } else if let contactIndex = delegate?.getContacts().index(where: {$0.address == address}) {
+        } else if let contactIndex = delegate?.getContacts().firstIndex(where: {$0.address == address}) {
             return delegate?.getContacts()[contactIndex].nickName ?? address
-        } else if let watchAddressIndex = delegate?.getWatchAddresses().index(where: {$0.address == address}) {
+        } else if let watchAddressIndex = delegate?.getWatchAddresses().firstIndex(where: {$0.address == address}) {
             return delegate?.getWatchAddresses()[watchAddressIndex].nickName ?? address
         } else if address == "claim" {
             return AccountStrings.claimTransaction

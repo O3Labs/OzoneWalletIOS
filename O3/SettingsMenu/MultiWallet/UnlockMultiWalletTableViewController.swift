@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SwiftTheme
 import Neoutils
+import PKHUD
 
 class UnlockMultiWalletTableViewController: UITableViewController {
     let nep6 = NEP6.getFromFileSystem()!
@@ -51,10 +52,10 @@ class UnlockMultiWalletTableViewController: UITableViewController {
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
                 let inputPass = alertController.textFields?[0].text!
                 var error: NSError?
-                let _ = NeoutilsNEP2Decrypt(key, inputPass, &error)
+                let wallet = Wallet(wallet: NeoutilsNEP2DecryptToWallet(key, inputPass, &error))
                // self.navigationController?.popViewController(animated: true)
                 if error == nil {
-                    NEP6.makeNewDefault(key: key, pass: inputPass!)
+                    NEP6.makeNewDefault(key: key, wallet: wallet!)
                     MultiwalletEvent.shared.walletUnlocked()
                     self.dismiss(animated: true)
                 } else {
@@ -77,8 +78,21 @@ class UnlockMultiWalletTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let address = accounts[indexPath.row].address
         let key = accounts[indexPath.row].key!
         let name = accounts[indexPath.row].label
-        displayPasswordInput(key: key, name: name)
+        
+        O3KeychainManager.getWalletForNep6(for: address) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let wallet):
+                    NEP6.makeNewDefault(key: key, wallet: wallet)
+                    MultiwalletEvent.shared.walletUnlocked()
+                    self.dismiss(animated: true)
+                case .failure(let e):
+                    return
+                }
+            }
+        }
     }
 }

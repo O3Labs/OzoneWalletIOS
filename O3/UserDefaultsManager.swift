@@ -142,4 +142,28 @@ class UserDefaultsManager {
             UserDefaults.standard.synchronize()
         }
     }
+    
+    private static let hasAgreedDappDisclaimerKey = "hasAgreedDapps"
+    static var hasAgreedDapps: Bool {
+        get {
+            let boolValue = UserDefaults.standard.bool(forKey: hasAgreedDappDisclaimerKey)
+            return boolValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: hasAgreedDappDisclaimerKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    private static let hasAgreedAnalyticsDisclaimerKey = "hasAgreedAnalytics"
+    static var hasAgreedAnalytics: Bool {
+        get {
+            let boolValue = UserDefaults.standard.bool(forKey: hasAgreedAnalyticsDisclaimerKey)
+            return boolValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: hasAgreedAnalyticsDisclaimerKey)
+            UserDefaults.standard.synchronize()
+        }
+    }   
 }

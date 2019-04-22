@@ -85,7 +85,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
         neoLoaderView.play()
 
         let ontLoaderView = LOTAnimationView(name: "loader_portfolio")
-        ontLoaderView.loopAnimation = true
+        neoLoaderView.loopAnimation = true
         ontLoaderView.play()
 
         neoClaimLoadingContainer.embed(neoLoaderView)
