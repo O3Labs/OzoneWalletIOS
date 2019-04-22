@@ -155,8 +155,8 @@ class O3KeychainManager {
                     .accessibility(.whenUnlockedThisDeviceOnly, authenticationPolicy: .userPresence)
                     .authenticationPrompt(authString)
                     .get(keychainKey)
-                
                 if keyPass != nil {
+                    DispatchQueue.main.async { HUD.show(.progress) }
                     var error: NSError? = nil
                     let currtime = Date().timeIntervalSince1970
                     let wif: String? = ""
@@ -166,6 +166,7 @@ class O3KeychainManager {
                         completion(.failure(error!.localizedDescription))
                         return
                     }
+                    DispatchQueue.main.async { HUD.hide() }
                     print(Date().timeIntervalSince1970 - currtime)
                     completion(.success(wallet))
                     return
