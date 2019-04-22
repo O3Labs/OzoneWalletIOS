@@ -44,6 +44,7 @@ public class O3Client {
 
     enum HTTPMethod: String {
         case GET
+        case POST
     }
 
     var baseURL = "https://api.o3.network"
@@ -60,7 +61,7 @@ public class O3Client {
         }
         let url = URL(string: urlString)
         let request = NSMutableURLRequest(url: url!)
-        request.httpMethod = "GET"
+        request.httpMethod = method.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.cachePolicy = .reloadIgnoringLocalCacheData
         if data != nil {

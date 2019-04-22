@@ -106,6 +106,7 @@
 		35809D9B21E6EBD600E1D277 /* VerifyManualBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35809D9A21E6EBD600E1D277 /* VerifyManualBackupViewController.swift */; };
 		35809D9D21E7262800E1D277 /* NewWalletWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35809D9C21E7262800E1D277 /* NewWalletWelcomeViewController.swift */; };
 		358E95D9200358AA00A1878B /* NewsFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358E95D8200358AA00A1878B /* NewsFeed.swift */; };
+		35A37C2F226D70CB00473895 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A37C2E226D70CB00473895 /* Notifications.swift */; };
 		35A6390F203517BB0054EA20 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A6390E203517BB0054EA20 /* CloudKit.framework */; };
 		35A8464C2212C23E00E95F48 /* InvokeRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */; };
 		35A8464E2214FFF400E95F48 /* ContractDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A8464D2214FFF400E95F48 /* ContractDetailsTableViewController.swift */; };
@@ -493,6 +494,7 @@
 		35809D9A21E6EBD600E1D277 /* VerifyManualBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyManualBackupViewController.swift; sourceTree = "<group>"; };
 		35809D9C21E7262800E1D277 /* NewWalletWelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWalletWelcomeViewController.swift; sourceTree = "<group>"; };
 		358E95D8200358AA00A1878B /* NewsFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeed.swift; sourceTree = "<group>"; };
+		35A37C2E226D70CB00473895 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		35A6390E203517BB0054EA20 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvokeRequestTableViewController.swift; sourceTree = "<group>"; };
 		35A8464D2214FFF400E95F48 /* ContractDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractDetailsTableViewController.swift; sourceTree = "<group>"; };
@@ -994,6 +996,7 @@
 				3557BAC720AA9D180034937C /* NeoClient.swift */,
 				3557BAC620AA9D180034937C /* NeoScan.swift */,
 				6E7F3D8A20B5329B00835963 /* O3APIClient.swift */,
+				35A37C2E226D70CB00473895 /* Notifications.swift */,
 			);
 			path = Clients;
 			sourceTree = "<group>";
@@ -2055,6 +2058,7 @@
 				6E2F26472154CA9C00A3DEB1 /* OrdersTabsViewController.swift in Sources */,
 				35CCEF642182DB44005EF03C /* EncryptedKeyAddedToMultiWalletTableViewController.swift in Sources */,
 				6ED600201F765C9C006760E6 /* WalletHomeNavigationController.swift in Sources */,
+				35A37C2F226D70CB00473895 /* Notifications.swift in Sources */,
 				350E187F21884F7700AA10CE /* AddWalletTableViewCell.swift in Sources */,
 				356F1B07218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift in Sources */,
 				750E17431F6FD560001F62FD /* GraphPanView.swift in Sources */,
