@@ -119,26 +119,22 @@ class ActivateMultiWalletTableViewController: UITableViewController {
                                           key: nep2!.encryptedKey())
         let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
         
-        let keychain = Keychain(service: "network.o3.neo.wallet")
-        do {
-            //save pirivate key to keychain
-            try keychain
-                .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                .set(self.passwordInputField.text!, key: "ozoneActiveNep6Password")
+        O3KeychainManager.setNep6DecryptionPassword(for: newAccount.address, pass: self.passwordInputField.text!) { result in
+            switch result {
+            case .success:
                 nep6.writeToFileSystem()
-                do {
-                    // remove private key from settings
-                    try keychain
-                        .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .remove("ozonePrivateKey")
-                } catch _ {
-                    return
+                O3KeychainManager.removeLegacyWifKey { result in
+                    switch result {
+                    case .success:
+                        self.performSegue(withIdentifier: "segueToNep6Complete", sender: nil)
+                    case .failure:
+                        return
+                    }
                 }
-            } catch _ {
+            case .failure:
                 return
+            }
         }
-        
-        self.performSegue(withIdentifier: "segueToNep6Complete", sender: nil)
     }
     
     @IBAction func passwordVerifyShowButtonTapped(_ sender: Any) {

@@ -306,6 +306,8 @@
 
 FOUNDATION_EXPORT NSString* const NeoutilsVERSION;
 
+FOUNDATION_EXPORT NSString* NeoutilsBuildOntologyInvocationTransaction(NSString* contract, NSString* method, NSString* args, long gasPrice, long gasLimit, NSString* wif, NSError** error);
+
 /**
  * Simple bytes to Hex
  */
@@ -366,6 +368,8 @@ FOUNDATION_EXPORT NSString* NeoutilsNEOAddresstoScriptHashBigEndian(NSString* ne
 
 FOUNDATION_EXPORT NSString* NeoutilsNEP2Decrypt(NSString* key, NSString* passphrase, NSError** error);
 
+FOUNDATION_EXPORT NeoutilsWallet* NeoutilsNEP2DecryptToWallet(NSString* key, NSString* passphrase, NSError** error);
+
 FOUNDATION_EXPORT NeoutilsNEP2* NeoutilsNEP2Encrypt(NSString* wif, NSString* passphrase, NSError** error);
 
 // skipped function NeonJSTXSerializer with unsupported parameter or return types
@@ -375,6 +379,11 @@ FOUNDATION_EXPORT NeoutilsNEP2* NeoutilsNEP2Encrypt(NSString* wif, NSString* pas
  * Create a new wallet.
  */
 FOUNDATION_EXPORT NeoutilsWallet* NeoutilsNewWallet(NSError** error);
+
+/**
+ * OntologyInvoke : Invoke a neovm contract in Ontology
+ */
+FOUNDATION_EXPORT NSString* NeoutilsOntologyInvoke(NSString* endpoint, NSString* contract, NSString* method, NSString* args, long gasPrice, long gasLimit, NSString* wif, NSError** error);
 
 FOUNDATION_EXPORT NSString* NeoutilsOntologyTransfer(NSString* endpoint, long gasPrice, long gasLimit, NSString* wif, NSString* asset, NSString* to, double amount, NSError** error);
 

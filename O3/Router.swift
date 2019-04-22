@@ -66,5 +66,31 @@ class Router: NSObject {
             }
         }
     }
-
+    
+    static func parseO3NetworkScheme(url: URL) {
+        switch url.host {
+        case "portfolio":
+            Controller().focusOnTab(tabIndex: 0)
+        case "wallet":
+            Controller().focusOnTab(tabIndex: 1)
+        case "news":
+            Controller().focusOnTab(tabIndex: 2)
+        case "marketplace":
+            Controller().focusOnTab(tabIndex: 3)
+        case "settings":
+            Controller().focusOnTab(tabIndex: 4)
+        default:
+            Controller().focusOnTab(tabIndex: 0)
+        }
+    }
+    
+    static func parseO3BrowserScheme(url: URL) {
+        switch url.host {
+        case "dapp":
+            var dappurl = URLComponents(string: url.absoluteString)?.queryItems?.filter({$0.name == "url"}).first?.value!
+            Controller().openDappBrowserV2(url: URL(string: dappurl ?? "www.o3.network")!)
+        default:
+            return
+        }
+    }
 }

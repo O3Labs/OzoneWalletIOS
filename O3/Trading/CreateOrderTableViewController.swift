@@ -99,7 +99,7 @@ class CreateOrderViewModel {
     
     func setOfferAmount(value: Double) {
         offerAmount = value
-        wantAmount = Double(value / pairPrice.price)
+        wantAmount = Double(value / pairPrice.price).precised(wantAsset.precision!)
     }
     
     var wantAmount: Double? = 0 {

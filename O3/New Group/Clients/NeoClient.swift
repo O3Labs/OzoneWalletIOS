@@ -143,7 +143,7 @@ public class NeoClient {
                 return
             }
             
-            guard let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? JSONDictionary else {
+            guard let json = ((try? JSONSerialization.jsonObject(with: data!, options: []) as? JSONDictionary) as JSONDictionary??) else {
                 completion(.failure(.invalidData))
                 return
             }

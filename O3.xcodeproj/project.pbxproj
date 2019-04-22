@@ -25,9 +25,24 @@
 		351200BB207DE0E2003CA07D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351200BA207DE0E2003CA07D /* StoreKit.framework */; };
 		351200BD207EF84C003CA07D /* TokenSales.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351200BC207EF84C003CA07D /* TokenSales.swift */; };
 		3512923721E5B55900BFD0FD /* CreateWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3512923621E5B55900BFD0FD /* CreateWalletTableViewController.swift */; };
+		3514C1DB225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514C1DA225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift */; };
+		3514C1DD225D823A00E5BB23 /* Disclaimers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3514C1DC225D823A00E5BB23 /* Disclaimers.storyboard */; };
+		3514C1DF225ED4D900E5BB23 /* O3KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514C1DE225ED4D900E5BB23 /* O3KeychainManager.swift */; };
+		3514DC5E225C30D8001DCFD9 /* dapiDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514DC5D225C30D8001DCFD9 /* dapiDelegate.swift */; };
+		3514DC60225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514DC5F225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift */; };
+		3514DC62225C67B2001DCFD9 /* DappDisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514DC61225C67B2001DCFD9 /* DappDisclaimerViewController.swift */; };
+		3514DC64225C8B8A001DCFD9 /* ActiveLabel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3514DC63225C8B8A001DCFD9 /* ActiveLabel.framework */; };
+		3514DC65225C8B8A001DCFD9 /* ActiveLabel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3514DC63225C8B8A001DCFD9 /* ActiveLabel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3522945821117790004A03A7 /* claim_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522945621117790004A03A7 /* claim_success.json */; };
 		3522945921117790004A03A7 /* loader_portfolio.json in Resources */ = {isa = PBXBuildFile; fileRef = 3522945721117790004A03A7 /* loader_portfolio.json */; };
 		3522945B2111A693004A03A7 /* UnboundOng.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522945A2111A693004A03A7 /* UnboundOng.swift */; };
+		35267DC8225F355D0011E106 /* ZendeskProviderSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC4225F355D0011E106 /* ZendeskProviderSDK.framework */; };
+		35267DC9225F355D0011E106 /* ZendeskProviderSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC4225F355D0011E106 /* ZendeskProviderSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		35267DCA225F355D0011E106 /* ZendeskSDKStrings.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 35267DC5225F355D0011E106 /* ZendeskSDKStrings.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		35267DCB225F355E0011E106 /* ZendeskSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC6225F355D0011E106 /* ZendeskSDK.framework */; };
+		35267DCC225F355E0011E106 /* ZendeskSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC6225F355D0011E106 /* ZendeskSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		35267DCD225F355E0011E106 /* ZendeskCoreSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC7225F355D0011E106 /* ZendeskCoreSDK.framework */; };
+		35267DCE225F355E0011E106 /* ZendeskCoreSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC7225F355D0011E106 /* ZendeskCoreSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3527F8CD20C5349200C2FCB9 /* Marketplace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */; };
 		3527F8CF20C539A500C2FCB9 /* MarketplaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3527F8CE20C539A500C2FCB9 /* MarketplaceController.swift */; };
 		353E11DD20C65CF800697359 /* MarketplaceStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E11DC20C65CF800697359 /* MarketplaceStrings.swift */; };
@@ -132,13 +147,6 @@
 		35CCEF642182DB44005EF03C /* EncryptedKeyAddedToMultiWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CCEF632182DB44005EF03C /* EncryptedKeyAddedToMultiWalletTableViewController.swift */; };
 		35CCEF662182F383005EF03C /* AddNameEncryptedKeyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CCEF652182F383005EF03C /* AddNameEncryptedKeyTableViewController.swift */; };
 		35CE4A262175CA4C00F460ED /* BadgeUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CE4A252175CA4C00F460ED /* BadgeUIButton.swift */; };
-		35CE4A2B2175D81400F460ED /* ZendeskProviderSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A272175D81300F460ED /* ZendeskProviderSDK.framework */; };
-		35CE4A2C2175D81400F460ED /* ZendeskProviderSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A272175D81300F460ED /* ZendeskProviderSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		35CE4A2D2175D81400F460ED /* ZendeskCoreSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A282175D81300F460ED /* ZendeskCoreSDK.framework */; };
-		35CE4A2E2175D81400F460ED /* ZendeskCoreSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A282175D81300F460ED /* ZendeskCoreSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		35CE4A2F2175D81400F460ED /* ZendeskSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A292175D81300F460ED /* ZendeskSDK.framework */; };
-		35CE4A302175D81400F460ED /* ZendeskSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35CE4A292175D81300F460ED /* ZendeskSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		35CE4A312175D81400F460ED /* ZendeskSDKStrings.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 35CE4A2A2175D81400F460ED /* ZendeskSDKStrings.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35CE4A342175DF0C00F460ED /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CE4A332175DF0C00F460ED /* UIDevice.swift */; };
 		35CE4A362176CD1400F460ED /* SendWhatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CE4A352176CD1400F460ED /* SendWhatTableViewController.swift */; };
 		35CE4A3821772F4300F460ED /* SendReviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CE4A3721772F4300F460ED /* SendReviewTableViewController.swift */; };
@@ -230,10 +238,7 @@
 		6E64C0E0215B8A99002B1366 /* PriceInputToggleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E64C0DF215B8A99002B1366 /* PriceInputToggleToolbar.swift */; };
 		6E6BD24B1FFC69330049098A /* PKHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6BD24A1FFC67E10049098A /* PKHUD.framework */; };
 		6E6BD24C1FFC69330049098A /* PKHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6BD24A1FFC67E10049098A /* PKHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6E713ACA219BE5B200CFAE3C /* ZendeskSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E713AC6219BE5B200CFAE3C /* ZendeskSDK.framework */; };
-		6E713ACB219BE5B200CFAE3C /* ZendeskCoreSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E713AC7219BE5B200CFAE3C /* ZendeskCoreSDK.framework */; };
 		6E713ACC219BE5B200CFAE3C /* ZendeskSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6E713AC8219BE5B200CFAE3C /* ZendeskSDKStrings.bundle */; };
-		6E713ACD219BE5B200CFAE3C /* ZendeskProviderSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E713AC9219BE5B200CFAE3C /* ZendeskProviderSDK.framework */; };
 		6E72436420D0F0A5007D1201 /* LocalizableUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E72436320D0F0A5007D1201 /* LocalizableUILabel.swift */; };
 		6E79A31E21ABDF92002284D7 /* ConnectRequestWalletUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E79A31D21ABDF92002284D7 /* ConnectRequestWalletUITableViewCell.swift */; };
 		6E79A32021ABE46A002284D7 /* ConnectWalletSelectorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E79A31F21ABE46A002284D7 /* ConnectWalletSelectorTableViewController.swift */; };
@@ -356,8 +361,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				35267DCA225F355D0011E106 /* ZendeskSDKStrings.bundle in Embed PlugIns */,
 				6E4F4421222E4002008B9BFC /* O3Widget.appex in Embed PlugIns */,
-				35CE4A312175D81400F460ED /* ZendeskSDKStrings.bundle in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -374,21 +379,22 @@
 				35494578203C03DC00332E53 /* AutoInsetter.framework in Embed Frameworks */,
 				357D28C32122E16700DA67A0 /* Amplitude.framework in Embed Frameworks */,
 				350100F5204541A6000F6648 /* SwiftTheme.framework in Embed Frameworks */,
-				35CE4A302175D81400F460ED /* ZendeskSDK.framework in Embed Frameworks */,
+				35267DCC225F355E0011E106 /* ZendeskSDK.framework in Embed Frameworks */,
 				354C395221E43EC500D2F454 /* SkyFloatingLabelTextField.framework in Embed Frameworks */,
 				6E97C4BA1F7FCB4000526FF0 /* DeckTransition.framework in Embed Frameworks */,
 				7537438C1F7F572500803A6C /* KeychainAccess.framework in Embed Frameworks */,
 				755D8F621F66747A00058434 /* ScrollableGraphView.framework in Embed Frameworks */,
-				35CE4A2C2175D81400F460ED /* ZendeskProviderSDK.framework in Embed Frameworks */,
 				35809D9921E6EB5000E1D277 /* M13Checkbox.framework in Embed Frameworks */,
 				353F365020037DFB002B4FE1 /* Kingfisher.framework in Embed Frameworks */,
 				6ED600141F76219D006760E6 /* Channel.framework in Embed Frameworks */,
 				6ECF0E2B1FAED7BF00884F38 /* Reachability.framework in Embed Frameworks */,
 				6E244EC120858AB8001B4B22 /* Lottie.framework in Embed Frameworks */,
-				35CE4A2E2175D81400F460ED /* ZendeskCoreSDK.framework in Embed Frameworks */,
 				6E6BD24C1FFC69330049098A /* PKHUD.framework in Embed Frameworks */,
+				3514DC65225C8B8A001DCFD9 /* ActiveLabel.framework in Embed Frameworks */,
+				35267DC9225F355D0011E106 /* ZendeskProviderSDK.framework in Embed Frameworks */,
 				6EF59C9221A2B12300087D72 /* OpenGraph.framework in Embed Frameworks */,
 				3549458C203FD02B00332E53 /* Cache.framework in Embed Frameworks */,
+				35267DCE225F355E0011E106 /* ZendeskCoreSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -413,9 +419,24 @@
 		351200BA207DE0E2003CA07D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		351200BC207EF84C003CA07D /* TokenSales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSales.swift; sourceTree = "<group>"; };
 		3512923621E5B55900BFD0FD /* CreateWalletTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletTableViewController.swift; sourceTree = "<group>"; };
+		3514C1DA225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsDisclaimerViewController.swift; sourceTree = "<group>"; };
+		3514C1DC225D823A00E5BB23 /* Disclaimers.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Disclaimers.storyboard; sourceTree = "<group>"; };
+		3514C1DE225ED4D900E5BB23 /* O3KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = O3KeychainManager.swift; sourceTree = "<group>"; };
+		3514DC5D225C30D8001DCFD9 /* dapiDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dapiDelegate.swift; sourceTree = "<group>"; };
+		3514DC5F225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dappBrowserBottomToolbar.swift; sourceTree = "<group>"; };
+		3514DC61225C67B2001DCFD9 /* DappDisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappDisclaimerViewController.swift; sourceTree = "<group>"; };
+		3514DC63225C8B8A001DCFD9 /* ActiveLabel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActiveLabel.framework; path = Carthage/Build/iOS/ActiveLabel.framework; sourceTree = "<group>"; };
 		3522945621117790004A03A7 /* claim_success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = claim_success.json; sourceTree = "<group>"; };
 		3522945721117790004A03A7 /* loader_portfolio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loader_portfolio.json; sourceTree = "<group>"; };
 		3522945A2111A693004A03A7 /* UnboundOng.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnboundOng.swift; sourceTree = "<group>"; };
+		35267DB9225F345F0011E106 /* ZendeskProviderSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZendeskProviderSDK.framework; sourceTree = "<group>"; };
+		35267DBA225F345F0011E106 /* ZendeskSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZendeskSDKStrings.bundle; sourceTree = "<group>"; };
+		35267DBB225F34600011E106 /* ZendeskCoreSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZendeskCoreSDK.framework; sourceTree = "<group>"; };
+		35267DBC225F34620011E106 /* ZendeskSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZendeskSDK.framework; sourceTree = "<group>"; };
+		35267DC4225F355D0011E106 /* ZendeskProviderSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZendeskProviderSDK.framework; path = Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0/ZendeskProviderSDK.framework; sourceTree = "<group>"; };
+		35267DC5225F355D0011E106 /* ZendeskSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ZendeskSDKStrings.bundle; path = Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0/ZendeskSDKStrings.bundle; sourceTree = "<group>"; };
+		35267DC6225F355D0011E106 /* ZendeskSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZendeskSDK.framework; path = Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0/ZendeskSDK.framework; sourceTree = "<group>"; };
+		35267DC7225F355D0011E106 /* ZendeskCoreSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZendeskCoreSDK.framework; path = Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0/ZendeskCoreSDK.framework; sourceTree = "<group>"; };
 		3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Marketplace.storyboard; sourceTree = "<group>"; };
 		3527F8CE20C539A500C2FCB9 /* MarketplaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceController.swift; sourceTree = "<group>"; };
 		353E11DC20C65CF800697359 /* MarketplaceStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceStrings.swift; sourceTree = "<group>"; };
@@ -731,9 +752,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				351200BB207DE0E2003CA07D /* StoreKit.framework in Frameworks */,
-				6E713ACD219BE5B200CFAE3C /* ZendeskProviderSDK.framework in Frameworks */,
-				6E713ACB219BE5B200CFAE3C /* ZendeskCoreSDK.framework in Frameworks */,
-				35CE4A2B2175D81400F460ED /* ZendeskProviderSDK.framework in Frameworks */,
+				35267DC8225F355D0011E106 /* ZendeskProviderSDK.framework in Frameworks */,
 				6E0BECCA2063B47A00FA0A03 /* WebBrowser.framework in Frameworks */,
 				350100F4204541A6000F6648 /* SwiftTheme.framework in Frameworks */,
 				6E244EC020858AB8001B4B22 /* Lottie.framework in Frameworks */,
@@ -741,21 +760,21 @@
 				6EF59C9121A2B12300087D72 /* OpenGraph.framework in Frameworks */,
 				35809D9821E6EB5000E1D277 /* M13Checkbox.framework in Frameworks */,
 				35494575203C030A00332E53 /* Tabman.framework in Frameworks */,
-				35CE4A2F2175D81400F460ED /* ZendeskSDK.framework in Frameworks */,
 				3549456D203BF1F700332E53 /* Pageboy.framework in Frameworks */,
 				6E97C4B91F7FCB4000526FF0 /* DeckTransition.framework in Frameworks */,
 				35051B1C1FFDB10800F9AD30 /* Crashlytics.framework in Frameworks */,
-				6E713ACA219BE5B200CFAE3C /* ZendeskSDK.framework in Frameworks */,
 				35051B1D1FFDB10800F9AD30 /* Fabric.framework in Frameworks */,
 				751666B21F80C290009ACC07 /* WebKit.framework in Frameworks */,
 				6E6BD24B1FFC69330049098A /* PKHUD.framework in Frameworks */,
+				35267DCB225F355E0011E106 /* ZendeskSDK.framework in Frameworks */,
 				6EEE3DF620DBB70D0030A4AB /* neoutils.framework in Frameworks */,
 				357D28C22122E16700DA67A0 /* Amplitude.framework in Frameworks */,
 				6ECF0E251FAED3D800884F38 /* Reachability.framework in Frameworks */,
-				35CE4A2D2175D81400F460ED /* ZendeskCoreSDK.framework in Frameworks */,
 				7537438B1F7F572500803A6C /* KeychainAccess.framework in Frameworks */,
+				3514DC64225C8B8A001DCFD9 /* ActiveLabel.framework in Frameworks */,
 				35A6390F203517BB0054EA20 /* CloudKit.framework in Frameworks */,
 				3549458B203FD02B00332E53 /* Cache.framework in Frameworks */,
+				35267DCD225F355E0011E106 /* ZendeskCoreSDK.framework in Frameworks */,
 				353F364F20037DFB002B4FE1 /* Kingfisher.framework in Frameworks */,
 				6ED600131F76219D006760E6 /* Channel.framework in Frameworks */,
 				755D8F601F66743A00058434 /* ScrollableGraphView.framework in Frameworks */,
@@ -802,6 +821,40 @@
 				356F1B0A219049130004C088 /* EncyptionCompletedViewController.swift */,
 			);
 			path = PrivateKey;
+			sourceTree = "<group>";
+		};
+		3514C1D9225D816300E5BB23 /* Disclaimers */ = {
+			isa = PBXGroup;
+			children = (
+				3514DC61225C67B2001DCFD9 /* DappDisclaimerViewController.swift */,
+				3514C1DA225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift */,
+				3514C1DC225D823A00E5BB23 /* Disclaimers.storyboard */,
+			);
+			path = Disclaimers;
+			sourceTree = "<group>";
+		};
+		3514DC5B225C2EA8001DCFD9 /* DapiRequestControllers */ = {
+			isa = PBXGroup;
+			children = (
+				6E4BB74C21B75BB20003C9DD /* Controls */,
+				6EB311AC21AB8306008EACD9 /* views */,
+				6E79A31F21ABE46A002284D7 /* ConnectWalletSelectorTableViewController.swift */,
+				35A8464D2214FFF400E95F48 /* ContractDetailsTableViewController.swift */,
+				35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */,
+				6E58720521A69C72007F1EC6 /* SendRequestTableViewController.swift */,
+				6EF59C9321A3994F00087D72 /* ConnectRequestTableViewController.swift */,
+			);
+			path = DapiRequestControllers;
+			sourceTree = "<group>";
+		};
+		3514DC5C225C2F8E001DCFD9 /* Toolbars */ = {
+			isa = PBXGroup;
+			children = (
+				6E1ACFE521BA365A0079E752 /* dAppBrowserMenuTableViewController.swift */,
+				35585F8E21F59F3100BA39C6 /* dAppBrowserTrading.swift */,
+				3514DC5F225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift */,
+			);
+			path = Toolbars;
 			sourceTree = "<group>";
 		};
 		3527F8CB20C533F100C2FCB9 /* Marketplace */ = {
@@ -1224,20 +1277,14 @@
 		6EF59C8221A27B6500087D72 /* dappbrowserv2 */ = {
 			isa = PBXGroup;
 			children = (
-				6E4BB74C21B75BB20003C9DD /* Controls */,
-				6EB311AC21AB8306008EACD9 /* views */,
+				3514DC5C225C2F8E001DCFD9 /* Toolbars */,
+				3514DC5B225C2EA8001DCFD9 /* DapiRequestControllers */,
 				6EF59C8921A2A1FA00087D72 /* Models */,
-				35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */,
 				6EF59C8321A27CAD00087D72 /* dAppBrowserV2ViewController.swift */,
+				3514DC5D225C30D8001DCFD9 /* dapiDelegate.swift */,
 				6EF59C8521A27CBA00087D72 /* dAppBrowser.storyboard */,
 				6EF59C8721A28FAD00087D72 /* dAppBrowser.xcassets */,
-				6EF59C9321A3994F00087D72 /* ConnectRequestTableViewController.swift */,
 				6EF59C9521A3D25C00087D72 /* dAppProtocol.swift */,
-				6E58720521A69C72007F1EC6 /* SendRequestTableViewController.swift */,
-				6E79A31F21ABE46A002284D7 /* ConnectWalletSelectorTableViewController.swift */,
-				6E1ACFE521BA365A0079E752 /* dAppBrowserMenuTableViewController.swift */,
-				35585F8E21F59F3100BA39C6 /* dAppBrowserTrading.swift */,
-				35A8464D2214FFF400E95F48 /* ContractDetailsTableViewController.swift */,
 			);
 			path = dappbrowserv2;
 			sourceTree = "<group>";
@@ -1339,6 +1386,15 @@
 		7575ADB91F6006AB0077007B = {
 			isa = PBXGroup;
 			children = (
+				35267DBB225F34600011E106 /* ZendeskCoreSDK.framework */,
+				35267DC7225F355D0011E106 /* ZendeskCoreSDK.framework */,
+				35267DB9225F345F0011E106 /* ZendeskProviderSDK.framework */,
+				35267DBC225F34620011E106 /* ZendeskSDK.framework */,
+				35267DC6225F355D0011E106 /* ZendeskSDK.framework */,
+				35267DBA225F345F0011E106 /* ZendeskSDKStrings.bundle */,
+				35267DC4225F355D0011E106 /* ZendeskProviderSDK.framework */,
+				35267DC5225F355D0011E106 /* ZendeskSDKStrings.bundle */,
+				3514DC63225C8B8A001DCFD9 /* ActiveLabel.framework */,
 				35809D9721E6EB5000E1D277 /* M13Checkbox.framework */,
 				354C395021E43EC400D2F454 /* SkyFloatingLabelTextField.framework */,
 				6EF59C9021A2B12300087D72 /* OpenGraph.framework */,
@@ -1379,6 +1435,7 @@
 		7575ADC41F6006AC0077007B /* O3 */ = {
 			isa = PBXGroup;
 			children = (
+				3514C1D9225D816300E5BB23 /* Disclaimers */,
 				6E4376A921463A170091367A /* Trading */,
 				6E43767621460CB90091367A /* SwitcheoSwift */,
 				6EF59C8221A27B6500087D72 /* dappbrowserv2 */,
@@ -1421,6 +1478,7 @@
 				35C370A8218053500023AABC /* CloudDataManager.swift */,
 				6E4F440D222E0ECF008B9BFC /* DeepLink.swift */,
 				6E4F440F222E119E008B9BFC /* Shortcut.swift */,
+				3514C1DE225ED4D900E5BB23 /* O3KeychainManager.swift */,
 			);
 			path = O3;
 			sourceTree = "<group>";
@@ -1628,6 +1686,7 @@
 				TargetAttributes = {
 					6E4F4414222E4002008B9BFC = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -1637,7 +1696,7 @@
 					};
 					7575ADC11F6006AC0077007B = {
 						CreatedOnToolsVersion = 9.0;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -1737,6 +1796,7 @@
 				3557BAB220AA9CEE0034937C /* nodes.json in Resources */,
 				75D5BFC21F6D196200E64855 /* OnboardingAssets.xcassets in Resources */,
 				75BEB2681F8A068100DC20E9 /* HUD.xcassets in Resources */,
+				3514C1DD225D823A00E5BB23 /* Disclaimers.storyboard in Resources */,
 				6EF59C8821A28FAD00087D72 /* dAppBrowser.xcassets in Resources */,
 				35B426BF2098242600957211 /* TokenSelection.storyboard in Resources */,
 			);
@@ -1887,10 +1947,12 @@
 				6E2F26382151D7EA00A3DEB1 /* CreateOrderTableViewController.swift in Sources */,
 				353E11E420C676E000697359 /* LandingCollectionCell.swift in Sources */,
 				75DA590B1F7A83940065FE0D /* UIViewController.swift in Sources */,
+				3514DC5E225C30D8001DCFD9 /* dapiDelegate.swift in Sources */,
 				35B399D5210ECDB400284BFA /* OntologyClient.swift in Sources */,
 				35AD2B70209312600024A900 /* OnboardingStrings.swift in Sources */,
 				35A8464E2214FFF400E95F48 /* ContractDetailsTableViewController.swift in Sources */,
 				35DBABCA2098028D009BE767 /* PortfolioStrings.swift in Sources */,
+				3514DC60225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift in Sources */,
 				6E5568EE214B5F1E00BA805E /* UIButton.swift in Sources */,
 				6E84C88F2147A53100127766 /* TradableAssetSelectorTableViewController.swift in Sources */,
 				3557BAC820AA9D180034937C /* NeoScan.swift in Sources */,
@@ -1950,6 +2012,7 @@
 				358E95D9200358AA00A1878B /* NewsFeed.swift in Sources */,
 				6E64C0D02159CE19002B1366 /* Account+Switcheo.swift in Sources */,
 				3527F8CF20C539A500C2FCB9 /* MarketplaceController.swift in Sources */,
+				3514C1DF225ED4D900E5BB23 /* O3KeychainManager.swift in Sources */,
 				35E5F60C20283AA600D65BEA /* AddressBookEntryTableViewCell.swift in Sources */,
 				35A84650221509EE00E95F48 /* ContractState.swift in Sources */,
 				350771CC208470C90049346B /* O3Cache.swift in Sources */,
@@ -1965,6 +2028,7 @@
 				3557BA9D20AA9C870034937C /* AssetIdConstants.swift in Sources */,
 				3557BAD220AA9D310034937C /* Base58.swift in Sources */,
 				3557BABE20AA9D0B0034937C /* Claims.swift in Sources */,
+				3514DC62225C67B2001DCFD9 /* DappDisclaimerViewController.swift in Sources */,
 				752006861F7F698300D19B5F /* O3TabBarController.swift in Sources */,
 				6E4E6F89201465BE001A5844 /* NativeAssetTableViewCell.swift in Sources */,
 				6ED5D7EC2016BFC900AF3713 /* AssetSelectorTableViewController.swift in Sources */,
@@ -2004,6 +2068,7 @@
 				757FEB731F77F07B0099E26F /* String.swift in Sources */,
 				6E64C0E0215B8A99002B1366 /* PriceInputToggleToolbar.swift in Sources */,
 				6E61BBD11F729D3B00D2B30B /* Money.swift in Sources */,
+				3514C1DB225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift in Sources */,
 				6E5FDFEB2167250600C1A6B5 /* ShadowedButton.swift in Sources */,
 				3557BACB20AA9D260034937C /* WIF.swift in Sources */,
 				35CCEF662182F383005EF03C /* AddNameEncryptedKeyTableViewController.swift in Sources */,
@@ -2056,7 +2121,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2075,7 +2140,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = TestNet;
@@ -2094,7 +2159,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = PrivateNet;
@@ -2113,7 +2178,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -2205,6 +2270,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
+					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2218,7 +2284,7 @@
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "O3/O3-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = TestNet;
@@ -2310,6 +2376,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
+					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2323,7 +2390,7 @@
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "O3/O3-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = PrivateNet;
@@ -2474,6 +2541,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
+					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2487,7 +2555,7 @@
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "O3/O3-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2512,6 +2580,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
 					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
+					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2523,7 +2592,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "O3/O3-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -217,6 +217,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             return
         }
         cell.loadClaimableGASNeo()
+
     }
     
     @objc func loadClaimableOng() {
@@ -577,7 +578,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     //MARK: -
     func setLocalizedStrings() {
         if NEP6.getFromFileSystem()?.accounts.count ?? 0 > 0 {
-            self.navigationController?.navigationBar.topItem?.title = NEP6.getFromFileSystem()?.accounts[0].label
+            DispatchQueue.main.async { self.navigationController?.navigationBar.topItem?.title = NEP6.getFromFileSystem()?.accounts[0].label }
         } else {
             self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
         }
@@ -656,6 +657,7 @@ extension AccountAssetTableViewController {
                 
                 if let vc = nav.viewControllers.first as? CreateOrderTableViewController {
                     vc.viewModel = CreateOrderViewModel()
+                    
                     vc.viewModel.selectedAction = action
                     //override the precision here
                     let wantToken = tokens.first(where: { t -> Bool in
@@ -668,6 +670,14 @@ extension AccountAssetTableViewController {
                         return t.symbol != asset.symbol
                     }).first
                     vc.viewModel.tradingAccount = self.tradingAccount
+                    //override for sdusd
+                    if asset.symbol == "SDUSD" && action == CreateOrderAction.Sell {
+                        let tempAsset = vc.viewModel.wantAsset
+                        vc.viewModel.wantAsset = vc.viewModel.offerAsset
+                        vc.viewModel.offerAsset = tempAsset
+                        vc.viewModel.selectedAction = CreateOrderAction.Buy
+                    }
+                    
                 }
                 self.present(nav, animated: true, completion: nil)
             }
@@ -703,7 +713,7 @@ extension AccountAssetTableViewController {
         
         if self.tradingAccount!.switcheo.confirmed.count > 0 {
             let depositButton = UIAlertAction(title: "Deposit", style: .default) { _ in
-                tradingEvent.shared.startDeposit(asset: "", source: TradingActionSource.tradingAccount)
+                tradingEvent.shared.startDeposit(asset: "NEO", source: TradingActionSource.tradingAccount)
                 self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Deposit, asset: nil)
             }
             alert.addAction(depositButton)

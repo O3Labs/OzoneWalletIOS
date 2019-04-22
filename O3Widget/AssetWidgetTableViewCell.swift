@@ -52,7 +52,7 @@ class AssetWidgetTableViewCell: UITableViewCell {
             if (error != nil) {
                 return
             }
-            guard let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? JSONDictionary else {
+            guard let json = ((try? JSONSerialization.jsonObject(with: data!, options: []) as? JSONDictionary) as JSONDictionary??) else {
                 return
             }
             let decoder = JSONDecoder()

@@ -45,7 +45,7 @@ enum tradingEventField: String {
 }
 
 enum multiwalletEventName: String {
-    case walletAdded = "ADD_WALLET"
+    case walletAdded = "wallet_added"
     case watchAddressAdded = "watch_address_added"
     case multiwalletActivated = "multiwallet_activated"
     case walletUnlocked = "wallet_unlocked"
@@ -127,7 +127,7 @@ class tradingEvent: NSObject {
     }
     
     func startDeposit(asset: String, source: TradingActionSource){
-        let properties: [String: Any] = [tradingEventField.asset.rawValue: asset,
+        let properties: [String: Any] = [tradingEventField.asset.rawValue: "NEO",
                                          tradingEventField.source.rawValue: source.rawValue]
          log(event: tradingEventName.depositInitiated.rawValue, data: properties)
     }
@@ -179,7 +179,95 @@ class tradingEvent: NSObject {
                                          tradingEventField.priceSelection.rawValue: priceSelection]
         log(event: tradingEventName.placedOrder.rawValue, data: properties)
     }
+}
+
+class sendEvent: NSObject {
+    private var amplitude: Amplitude! = Amplitude.instance()
+    static let shared: sendEvent! = sendEvent()
     
+    enum sendEventName: String {
+        case assetSend = "ASSET SEND"
+    }
+    
+    enum sendEventField: String {
+        case blockchain
+        case net
+        case asset
+        case amount
+    }
+    
+    func log(event: String, data: [String: Any]) {
+        amplitude.logEvent(event, withEventProperties: data)
+    }
+    
+    func assetSend(blockchain: String, asset: String, amount: Any) {
+        let net = UserDefaultsManager.network == .main ? "MainNet" : "TestNet"
+        log(event: sendEventName.assetSend.rawValue, data: [sendEventField.blockchain.rawValue: blockchain,
+                                                                 sendEventField.net.rawValue: net,
+                                                                 sendEventField.asset.rawValue: asset,
+                                                                 sendEventField.amount.rawValue: amount])
+    }
+}
+
+class dapiEvent: NSObject {
+    private var amplitude: Amplitude! = Amplitude.instance()
+    static let shared: dapiEvent! = dapiEvent()
+    
+    enum dapiEventName: String {
+        case dappOpened = "dAPI_open"
+        case dappMethodCall = "dAPI_method_call"
+        case dappAccountConnected = "dAPI_account_connected"
+        case dappTXAccepted = "dAPI_tx_accepted"
+        case dappClosed = "dAPI_closed"
+    }
+    
+    enum dapiEventField: String {
+        case url
+        case domain
+        case net
+        case method
+        case blockchain
+    }
+        
+    func log(event: String, data: [String: Any]) {
+        amplitude.logEvent(event, withEventProperties: data)
+    }
+    
+    func methodCall(method: String, url: String, domain: String) {
+        let net = UserDefaultsManager.network == .main ? "MainNet" : "TestNet"
+        log(event: dapiEventName.dappMethodCall.rawValue, data: [dapiEventField.blockchain.rawValue: "NEO",
+                                                                 dapiEventField.net.rawValue: net,
+                                                                 dapiEventField.method.rawValue: method,
+                                                                 dapiEventField.url.rawValue: url,
+                                                                 dapiEventField.domain.rawValue: domain])
+    }
+    
+    func dappOpened(url: String, domain: String) {
+        log(event: dapiEventName.dappOpened.rawValue, data: [dapiEventField.url.rawValue: url,
+                                                             dapiEventField.domain.rawValue: domain])
+    }
+    
+    func dappClosed(url: String, domain: String) {
+        log(event: dapiEventName.dappClosed.rawValue, data: [dapiEventField.url.rawValue: url,
+                                                             dapiEventField.domain.rawValue: domain
+            ])
+    }
+    
+    func accountConnected(url: String, domain: String) {
+        let net = UserDefaultsManager.network == .main ? "MainNet" : "TestNet"
+        log(event: dapiEventName.dappAccountConnected.rawValue, data: [dapiEventField.blockchain.rawValue: "NEO",
+                                                                 dapiEventField.net.rawValue: net,
+                                                                 dapiEventField.url.rawValue: url,
+                                                                 dapiEventField.domain.rawValue: domain])
+    }
+    
+    func txAccepted(method: String, url: String, domain: String) {
+        let net = UserDefaultsManager.network == .main ? "MainNet" : "TestNet"
+        log(event: dapiEventName.dappTXAccepted.rawValue, data: [dapiEventField.blockchain.rawValue: "NEO",
+                                                                       dapiEventField.net.rawValue: net,
+                                                                       dapiEventField.url.rawValue: url,
+                                                                       dapiEventField.domain.rawValue: domain])
+    }
 }
 
 

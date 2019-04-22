@@ -80,7 +80,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
     func checkPending() {
         //cross check with the tx history
         for pending in self.pendingTransactions {
-            let foundIndex = self.transactionHistory.index{ return $0.txid == pending.txID! }
+            let foundIndex = self.transactionHistory.firstIndex{ return $0.txid == pending.txID! }
             if foundIndex != nil {
                 UIApplication.appDelegate.accountPersistentContainer.viewContext.delete(pending)
                 try? UIApplication.appDelegate.accountPersistentContainer.viewContext.save()
@@ -191,7 +191,7 @@ class TransactionHistoryTableViewController: UITableViewController, TransactionH
         if indexPath.section == 0 {
             let pending = pendingTransactions[indexPath.row]
         
-            let index = self.allAssets.index { return $0.symbol.uppercased() == pending.asset!.uppercased() }
+            let index = self.allAssets.firstIndex { return $0.symbol.uppercased() == pending.asset!.uppercased() }
             let asset = self.allAssets[index!]
             let pendingData = TransactionCell.PendingTransactionData(txID: pending.txID!, time: UInt64(pending.timestamp),
                                                                  asset: asset, toAddress: pending.to!,

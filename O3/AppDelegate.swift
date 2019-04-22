@@ -110,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 Support.initialize(withZendesk: Zendesk.instance)
                 let ident = Identity.createAnonymous()
                 Zendesk.instance?.setIdentity(ident)
-                #endif
+               #endif
             }
         }
         
@@ -244,9 +244,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // MARK: - deeplink
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         if app.applicationState == .inactive {
-            Router.parseNEP9URL(url: url)
+            if url.scheme == "neo" {
+                Router.parseNEP9URL(url: url)
+                return true
+            } else if (url.scheme == "o3network") {
+                Router.parseO3NetworkScheme(url: url)
+                return true
+            } else if (url.scheme == "o3browser") {
+                Router.parseO3BrowserScheme(url: url)
+            }
         }
-        return false
+        return true
     }
 }
 
