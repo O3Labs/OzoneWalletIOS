@@ -161,12 +161,19 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
                 self.multiWalletLabel.text = SettingsStrings.manageWallets
             }
         }
-        
+    }
+    
+    @objc func rightBarButtonTapped(_ sender: Any) {
+        let inboxController = UIStoryboard(name: "Inbox", bundle: nil).instantiateInitialViewController()!
+        self.present(inboxController, animated: true)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: self.qrView.bounds.size.width, height: self.qrView.bounds.size.height)
+        
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_envelope"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
         
         setThemedElements()
         setLocalizedStrings()
