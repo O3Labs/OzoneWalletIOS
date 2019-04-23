@@ -165,5 +165,25 @@ class UserDefaultsManager {
             UserDefaults.standard.set(newValue, forKey: hasAgreedAnalyticsDisclaimerKey)
             UserDefaults.standard.synchronize()
         }
-    }   
+    }
+    
+    enum Subscriptions: String {
+        case o3 = "o3"
+        case switcheo = "switcheo"
+        case neoeconomy = "neoeconomy"
+    }
+    
+    private static let subscribedServicesKey = "SubscribedServices"
+    static var subscribedServices: [String] {
+        get {
+            guard let arrayValue = UserDefaults.standard.array(forKey: subscribedServicesKey) as? [String] else {
+                return []
+            }
+            return arrayValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: subscribedServicesKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
 }

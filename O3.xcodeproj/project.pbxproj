@@ -111,6 +111,8 @@
 		35A37C34226D9EEB00473895 /* InboxTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A37C33226D9EEB00473895 /* InboxTableViewController.swift */; };
 		35A37C36226D9FAA00473895 /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A37C35226D9FAA00473895 /* InboxTableViewCell.swift */; };
 		35A37C38226EA5F700473895 /* task_failed.json in Resources */ = {isa = PBXBuildFile; fileRef = 35A37C37226EA5F700473895 /* task_failed.json */; };
+		35A37C3A226EBF6100473895 /* InboxSettingsMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A37C39226EBF6100473895 /* InboxSettingsMenuTableViewController.swift */; };
+		35A37C3C226EBF8E00473895 /* InboxSettingsMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A37C3B226EBF8E00473895 /* InboxSettingsMenuTableViewCell.swift */; };
 		35A6390F203517BB0054EA20 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A6390E203517BB0054EA20 /* CloudKit.framework */; };
 		35A8464C2212C23E00E95F48 /* InvokeRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */; };
 		35A8464E2214FFF400E95F48 /* ContractDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A8464D2214FFF400E95F48 /* ContractDetailsTableViewController.swift */; };
@@ -503,6 +505,8 @@
 		35A37C33226D9EEB00473895 /* InboxTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxTableViewController.swift; sourceTree = "<group>"; };
 		35A37C35226D9FAA00473895 /* InboxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
 		35A37C37226EA5F700473895 /* task_failed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = task_failed.json; sourceTree = "<group>"; };
+		35A37C39226EBF6100473895 /* InboxSettingsMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxSettingsMenuTableViewController.swift; sourceTree = "<group>"; };
+		35A37C3B226EBF8E00473895 /* InboxSettingsMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxSettingsMenuTableViewCell.swift; sourceTree = "<group>"; };
 		35A6390E203517BB0054EA20 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvokeRequestTableViewController.swift; sourceTree = "<group>"; };
 		35A8464D2214FFF400E95F48 /* ContractDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractDetailsTableViewController.swift; sourceTree = "<group>"; };
@@ -1001,6 +1005,8 @@
 				35A37C31226D9ED200473895 /* Inbox.storyboard */,
 				35A37C33226D9EEB00473895 /* InboxTableViewController.swift */,
 				35A37C35226D9FAA00473895 /* InboxTableViewCell.swift */,
+				35A37C39226EBF6100473895 /* InboxSettingsMenuTableViewController.swift */,
+				35A37C3B226EBF8E00473895 /* InboxSettingsMenuTableViewCell.swift */,
 			);
 			path = Inbox;
 			sourceTree = "<group>";
@@ -1940,6 +1946,7 @@
 				6E97C4B71F7FC6FC00526FF0 /* MyAddressViewController.swift in Sources */,
 				6E7F3D8D20B5419A00835963 /* AppState.swift in Sources */,
 				75E14E541F7D27F900BEAE22 /* O3.xcdatamodeld in Sources */,
+				35A37C3C226EBF8E00473895 /* InboxSettingsMenuTableViewCell.swift in Sources */,
 				3557BAAE20AA9CB20034937C /* SHA256.swift in Sources */,
 				6EC4838C21634044002CBF76 /* ThemedUITableView.swift in Sources */,
 				75DA59091F7A815E0065FE0D /* OzoneAlert.swift in Sources */,
@@ -2012,6 +2019,7 @@
 				6E5568F2214BA3EF00BA805E /* AssetIconsTableViewCell.swift in Sources */,
 				6E5FDFED216725B300C1A6B5 /* NoActionUITextField.swift in Sources */,
 				6E58720821A6A489007F1EC6 /* dAppMetadata.swift in Sources */,
+				35A37C3A226EBF6100473895 /* InboxSettingsMenuTableViewController.swift in Sources */,
 				350E18792186FB1400AA10CE /* LoginToNEP6.swift in Sources */,
 				6E4F4410222E119E008B9BFC /* Shortcut.swift in Sources */,
 				6E64C0D22159CE19002B1366 /* RequestCandlesticks.swift in Sources */,

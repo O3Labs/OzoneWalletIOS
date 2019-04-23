@@ -80,7 +80,7 @@ public struct Message: Codable {
     var title: String
     var timestamp: String
     var channel: Channel
-    var action: Action
+    var action: Action?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -90,7 +90,7 @@ public struct Message: Codable {
         case action
     }
     
-    public init(id: String, title: String, timestamp: String, channel: Channel, action: Action) {
+    public init(id: String, title: String, timestamp: String, channel: Channel, action: Action?) {
         self.id = id
         self.title = title
         self.timestamp = timestamp
