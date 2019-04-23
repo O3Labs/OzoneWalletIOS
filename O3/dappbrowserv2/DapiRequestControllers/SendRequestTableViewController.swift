@@ -139,6 +139,7 @@ class SendRequestTableViewController: UITableViewController {
         
         if request.fee != nil {
             let fm = NumberFormatter()
+            fm.maximumFractionDigits = 8
             fm.locale = Locale(identifier: "en_US")
             let feeNumber = fm.number(from: request.fee ?? "0")?.doubleValue
             if feeNumber!.isZero {
@@ -223,7 +224,9 @@ class SendRequestTableViewController: UITableViewController {
     
                 if self.requestedAsset != nil {
                     let fm = NumberFormatter()
-                    fm.locale = Locale(identifier: "en_US")
+                    fm.minimumFractionDigits = 0
+                    fm.maximumFractionDigits = 8
+                    fm.numberStyle = .decimal
                     let amountNumber = fm.number(from: self.request.amount)
     
                     if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
@@ -333,6 +336,7 @@ class SendRequestTableViewController: UITableViewController {
             let assetID = request.asset.lowercased() == "neo" ? AssetId.neoAssetId : AssetId.gasAssetId
             let fm = NumberFormatter()
             fm.locale = Locale(identifier: "en_US")
+            fm.maximumFractionDigits = 8
             let amountNumber = fm.number(from: request.amount)
             let feeNumber = fm.number(from: request.fee ?? "0")
             var attributes:[TransactionAttritbute] = []
@@ -362,6 +366,7 @@ class SendRequestTableViewController: UITableViewController {
         //check balance here
         if self.requestedAsset != nil {
             let fm = NumberFormatter()
+            fm.maximumFractionDigits = 8
             fm.locale = Locale(identifier: "en_US")
             let amountNumber = fm.number(from: self.request.amount)
             if self.requestedAsset!.value.isLess(than: amountNumber!.doubleValue) {
@@ -377,6 +382,7 @@ class SendRequestTableViewController: UITableViewController {
         
         //override it if dapp doesn't set the fee and user checked the priority
         let fm = NumberFormatter()
+        fm.maximumFractionDigits = 8
         fm.locale = Locale(identifier: "en_US")
         if request.fee == nil || fm.number(from: request.fee ?? "0") == 0  {
             request.fee = self.usePriority! ? "0.0011" : "0"
@@ -389,14 +395,14 @@ class SendRequestTableViewController: UITableViewController {
                 let generator = UINotificationFeedbackGenerator()
                 if err == nil {
                     generator.notificationOccurred(.success)
+                    self.activityView.success()
                 } else {
                     generator.notificationOccurred(.error)
+                    self.activityView.failed()
                 }
                 
-                
                 //breifly show the success then close the modal after 0.5 second
-                self.activityView.success()
-                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.5, execute: {
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1.0, execute: {
                     self.onCompleted?(response,err)
                     self.dismiss(animated: true, completion: nil)
                 })

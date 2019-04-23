@@ -16,12 +16,14 @@ class dAppActivityView: UIView {
     
     let loadingView = LOTAnimationView(name: "loader_portfolio")
     let successView = LOTAnimationView(name: "claim_success")
+    let errorView = LOTAnimationView(name: "task_failed")
     
     var view: UIView! {
         didSet {
             view.theme_backgroundColor = O3Theme.backgroundColorPicker
             loadingView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
             successView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+            errorView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
             iconContainerView.addSubview(loadingView)
         }
     }
@@ -44,6 +46,15 @@ class dAppActivityView: UIView {
         successView.play()
         titleLabel.text = String(format: "Transaction sent")
         titleLabel.theme_textColor = O3Theme.positiveGainColorPicker
+    }
+    
+    func failed() {
+        loadingView.removeFromSuperview()
+        iconContainerView.addSubview(errorView)
+        successView.animationProgress = 0.2 //skip the loading in the front
+        successView.play()
+        titleLabel.text = String(format: "Transaction failed")
+        titleLabel.theme_textColor = O3Theme.negativeLossColorPicker
     }
     
     func setup() {

@@ -25,7 +25,6 @@ protocol dAppBrowserDelegate {
     func didFireEvent(name: String)
     func onWalletChanged(newWallet: Wallet)
     
-    func beginLoading()
 }
 
 
@@ -181,13 +180,6 @@ class dAppBrowserV2ViewController: UIViewController {
     @IBAction func didTapHome(_ sender: Any) {
         self.dismiss(animated: true)
     }
-        
-    func beginLoading() {
-        DispatchQueue.main.async {
-            HUD.show(.progress)
-        }
-    }
-
     
     override func viewDidLoad() {
         super.viewDidLoad()

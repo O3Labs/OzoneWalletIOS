@@ -230,12 +230,13 @@ class InvokeRequestTableViewController: UITableViewController {
                 let generator = UINotificationFeedbackGenerator()
                 if err == nil {
                     generator.notificationOccurred(.success)
+                    self.activityView.success()
                 } else {
                     generator.notificationOccurred(.error)
+                    self.activityView.failed()
                 }
                 
-                self.activityView.success()
-                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.5, execute: {
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1.0, execute: {
                     self.onCompleted?(response,err)
                     self.dismiss(animated: true, completion: nil)
                 })
