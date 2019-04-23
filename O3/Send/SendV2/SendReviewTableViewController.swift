@@ -12,6 +12,7 @@ import Kingfisher
 import KeychainAccess
 import Neoutils
 import Amplitude
+import PKHUD
 
 class SendReviewTableViewController: UITableViewController {
     @IBOutlet weak var sendReviewTitleLabel: UILabel!
@@ -73,6 +74,7 @@ class SendReviewTableViewController: UITableViewController {
         O3KeychainManager.authenticateWithBiometricOrPass(message: SendStrings.authenticateToSendPrompt) { result in
             switch(result) {
             case .success(let _):
+                DispatchQueue.main.async { HUD.show(.progress) }
                 if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                     AppState.bestSeedNodeURL = bestNode
                 }
@@ -84,7 +86,8 @@ class SendReviewTableViewController: UITableViewController {
                     fee = 0.0011
                 }
                 Authenticated.wallet?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: assetId, amount: amount, toAddress: toAddress, attributes: customAttributes, fee: fee) { txid, _ in
-                    O3HUD.stop {
+                    DispatchQueue.main.async {
+                        DispatchQueue.main.async { HUD.hide() }
                         if txid != nil {
                             self.txId = txid!
                             self.transactionCompleted = true
@@ -101,7 +104,7 @@ class SendReviewTableViewController: UITableViewController {
                     }
                 }
             case .failure(let _):
-                DispatchQueue.main.async { O3HUD.stop{} }
+                DispatchQueue.main.async { HUD.hide() }
             }
         }
     }
@@ -157,7 +160,7 @@ class SendReviewTableViewController: UITableViewController {
         O3KeychainManager.authenticateWithBiometricOrPass(message: SendStrings.authenticateToSendPrompt) { result in
             switch(result) {
             case .success(let _):
-                O3HUD.start()
+                DispatchQueue.main.async {HUD.show(.progress)}
                 if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
                     AppState.bestSeedNodeURL = bestNode
                 }
@@ -166,7 +169,8 @@ class SendReviewTableViewController: UITableViewController {
                     fee = 0.0011
                 }
                 Authenticated.wallet?.sendNep5Token(network: AppState.network, seedURL: AppState.bestSeedNodeURL, tokenContractHash: tokenHash, decimals: self.selectedAsset!.decimals, amount: amount, toAddress: toAddress, fee: fee) { (txid, error) in
-                    O3HUD.stop {
+                    DispatchQueue.main.async {
+                        HUD.hide()
                         self.transactionCompleted = txid != nil
                         Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
                                                                                            "amount": amount])

@@ -106,6 +106,7 @@
 		35809D9B21E6EBD600E1D277 /* VerifyManualBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35809D9A21E6EBD600E1D277 /* VerifyManualBackupViewController.swift */; };
 		35809D9D21E7262800E1D277 /* NewWalletWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35809D9C21E7262800E1D277 /* NewWalletWelcomeViewController.swift */; };
 		358E95D9200358AA00A1878B /* NewsFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358E95D8200358AA00A1878B /* NewsFeed.swift */; };
+		35A37C38226EA5F700473895 /* task_failed.json in Resources */ = {isa = PBXBuildFile; fileRef = 35A37C37226EA5F700473895 /* task_failed.json */; };
 		35A6390F203517BB0054EA20 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A6390E203517BB0054EA20 /* CloudKit.framework */; };
 		35A8464C2212C23E00E95F48 /* InvokeRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */; };
 		35A8464E2214FFF400E95F48 /* ContractDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A8464D2214FFF400E95F48 /* ContractDetailsTableViewController.swift */; };
@@ -493,6 +494,7 @@
 		35809D9A21E6EBD600E1D277 /* VerifyManualBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyManualBackupViewController.swift; sourceTree = "<group>"; };
 		35809D9C21E7262800E1D277 /* NewWalletWelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWalletWelcomeViewController.swift; sourceTree = "<group>"; };
 		358E95D8200358AA00A1878B /* NewsFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeed.swift; sourceTree = "<group>"; };
+		35A37C37226EA5F700473895 /* task_failed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = task_failed.json; sourceTree = "<group>"; };
 		35A6390E203517BB0054EA20 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		35A8464B2212C23E00E95F48 /* InvokeRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvokeRequestTableViewController.swift; sourceTree = "<group>"; };
 		35A8464D2214FFF400E95F48 /* ContractDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractDetailsTableViewController.swift; sourceTree = "<group>"; };
@@ -1435,6 +1437,7 @@
 		7575ADC41F6006AC0077007B /* O3 */ = {
 			isa = PBXGroup;
 			children = (
+				35A37C37226EA5F700473895 /* task_failed.json */,
 				3514C1D9225D816300E5BB23 /* Disclaimers */,
 				6E4376A921463A170091367A /* Trading */,
 				6E43767621460CB90091367A /* SwitcheoSwift */,
@@ -1797,6 +1800,7 @@
 				75D5BFC21F6D196200E64855 /* OnboardingAssets.xcassets in Resources */,
 				75BEB2681F8A068100DC20E9 /* HUD.xcassets in Resources */,
 				3514C1DD225D823A00E5BB23 /* Disclaimers.storyboard in Resources */,
+				35A37C38226EA5F700473895 /* task_failed.json in Resources */,
 				6EF59C8821A28FAD00087D72 /* dAppBrowser.xcassets in Resources */,
 				35B426BF2098242600957211 /* TokenSelection.storyboard in Resources */,
 			);

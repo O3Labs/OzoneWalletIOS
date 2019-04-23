@@ -94,7 +94,6 @@ class dAppBrowserViewModel: NSObject {
                     self.delegate?.error(message: message, error: "Unable to parse the request")
                     return
             }
-            self.delegate?.beginLoading()
             DispatchQueue.global().async {
                 let response = O3DappAPI().getBalance(request: request)
                 //it is very important to make the struct to dictionary otherwise JSONDecoder will throw and error invalid SwiftValue when trying to decode it
@@ -141,7 +140,6 @@ class dAppBrowserViewModel: NSObject {
             self.requestToInvoke(message: message, request: request, didCancel: { m,r in
                 self.delegate?.error(message: message, error: "USER_CANCELLED_INVOKE")
             }, onCompleted: { response, err in
-                self.delegate?.beginLoading()
                 DispatchQueue.global().async {
                     if err == nil {
                         self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
@@ -165,7 +163,6 @@ class dAppBrowserViewModel: NSObject {
             self.requestToSend(message: message, request: request, didCancel: { m,r in
                 self.delegate?.error(message: message, error: "USER_CANCELLED_SEND")
             }, onCompleted: { response, err in
-                self.delegate?.beginLoading()
                 DispatchQueue.global().async {
                     if err == nil {
                         self.delegate?.didFinishMessage(message: message, response: response!.dictionary)

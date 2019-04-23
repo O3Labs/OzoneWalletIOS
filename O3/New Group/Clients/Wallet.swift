@@ -169,7 +169,15 @@ public class Wallet {
         var sortedUnspents = [UTXO]()
         var neededForTransaction = [UTXO]()
         sortedUnspents = assets!.getSortedGASUTXOs()
-        if sortedUnspents.reduce(0, {$0 + $1.value}) < Decimal(amount) {
+        var amountDecimal: Decimal = Decimal(amount)
+        var amountDecimalRounded: Decimal = Decimal()
+        NSDecimalRound(&amountDecimalRounded, &amountDecimal, 8, .down)
+            
+        var feeDecimal: Decimal = Decimal(fee)
+        var feeDecimalRounded: Decimal = Decimal()
+        NSDecimalRound(&feeDecimalRounded, &feeDecimal, 8, .down)
+            
+        if sortedUnspents.reduce(0, {$0 + $1.value}) < amountDecimalRounded {
             return (nil, nil, nil, NSError())
         }
 
@@ -177,7 +185,7 @@ public class Wallet {
         var index = 0
         var count: UInt8 = 0
         //Assume we always have enough balance to do this, prevent the check for bal
-        while runningAmount < Decimal(amount) + Decimal(fee) {
+        while runningAmount < amountDecimalRounded + feeDecimalRounded {
             neededForTransaction.append(sortedUnspents[index])
             runningAmount += sortedUnspents[index].value
             index += 1
@@ -207,8 +215,16 @@ public class Wallet {
 
     func getOuputDataPayload(asset: AssetId, with inputData: Data, runningAmount: Decimal,
                              toSendAmount: Double, toScriptHash: String, fee: Double = 0.0) -> (payload: Data, outputCount: UInt8) {
+        var toSendAmountDecimal: Decimal = Decimal(toSendAmount)
+        var toSendAmountDecimalRounded: Decimal = Decimal()
+        NSDecimalRound(&toSendAmountDecimalRounded, &toSendAmountDecimal, 8, .down)
+        
+        var feeDecimal: Decimal = Decimal(fee)
+        var feeDecimalRounded: Decimal = Decimal()
+        NSDecimalRound(&feeDecimalRounded, &feeDecimal, 8, .down)
+        
         let needsTwoOutputTransactions =
-            (runningAmount != (Decimal(toSendAmount) + Decimal(fee))) && toSendAmount > 0
+            (runningAmount != (toSendAmountDecimalRounded + feeDecimalRounded)) && toSendAmount > 0
 
         var outputCount: UInt8
         var payload: [UInt8] = []
