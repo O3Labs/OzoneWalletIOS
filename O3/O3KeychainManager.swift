@@ -26,6 +26,10 @@ class O3KeychainManager {
     //legacy not used any more, maintain for backwards compatibility, if active in keychain, user will be prompted to upgrade
     private static let wifKey = "ozonePrivateKey"
     
+    //O3 Keys for protected auth to o3 services
+    private static let o3PrivKey = "o3PrivKey"
+    private static let o3PubKey = "o3PubKey"
+    
     static func getSigningKeyPassword(with prompt: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
             let keychain = Keychain(service: self.keychainService)
@@ -293,6 +297,25 @@ class O3KeychainManager {
         // we know that the key is present, but you cannot interact with
         // it without authentication. Otherwise, we assume the key is not present.
         return status == errSecInteractionNotAllowed
+    }
+    
+    static public func createO3KeyPair() {
+        //use neo format for generating pub/priv key
+        var error: NSError? = nil
+        let wallet = NeoutilsNewWallet(&error)
+        let keychain = Keychain(service: self.keychainService)
+        keychain[o3PubKey] = wallet!.publicKey()?.fullHexString
+        keychain[o3PrivKey] = wallet!.publicKey()?.fullHexString
+    }
+    
+    static public func getO3PubKey() -> String? {
+        let keychain = Keychain(service: self.keychainService)
+        return keychain[o3PubKey]
+    }
+    
+    static public func getO3PrivKey() -> String? {
+        let keychain = Keychain(service: self.keychainService)
+        return keychain[o3PrivKey]
     }
 }
 

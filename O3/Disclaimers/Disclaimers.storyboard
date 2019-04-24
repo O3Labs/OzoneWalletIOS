@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -274,6 +274,124 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SYQ-Sd-LTf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-318" y="2823"/>
+        </scene>
+        <!--Inbox Disclaimer View Controller-->
+        <scene sceneID="vp6-OA-Cc1">
+            <objects>
+                <viewController id="ru4-UN-5iL" customClass="InboxDisclaimerViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fyO-On-93A">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJU-LP-hlj">
+                                <rect key="frame" x="56" y="80" width="43" height="24"/>
+                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5E-9y-2S5" customClass="ActiveLabel" customModule="ActiveLabel">
+                                <rect key="frame" x="16" y="120" width="343" height="20.5"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RAO-6V-jHq">
+                                <rect key="frame" x="16" y="156.5" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="HHw-rr-7vP"/>
+                                    <constraint firstAttribute="height" constant="24" id="ie3-l6-Ory"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dil-8R-xvy">
+                                <rect key="frame" x="56" y="158" width="37" height="21"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CAG-na-vlo">
+                                <rect key="frame" x="16" y="211" width="343" height="44"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="ZI3-Pf-cRR"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="6"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="agreeButtonTapped:" destination="ru4-UN-5iL" eventType="touchUpInside" id="8ec-NV-iMM"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info-circle" translatesAutoresizingMaskIntoConstraints="NO" id="XIn-Fg-dWO">
+                                <rect key="frame" x="16" y="80" width="24" height="24"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="OYg-di-4sz"/>
+                                    <constraint firstAttribute="height" constant="24" id="UNT-iH-jpL"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="dil-8R-xvy" firstAttribute="centerY" secondItem="RAO-6V-jHq" secondAttribute="centerY" id="8hE-Wy-v60"/>
+                            <constraint firstItem="CAG-na-vlo" firstAttribute="top" secondItem="RAO-6V-jHq" secondAttribute="bottom" constant="30.5" id="HMk-Mh-vcb"/>
+                            <constraint firstItem="hJU-LP-hlj" firstAttribute="leading" secondItem="XIn-Fg-dWO" secondAttribute="trailing" constant="16" id="KEY-dx-gjB"/>
+                            <constraint firstItem="hJU-LP-hlj" firstAttribute="centerY" secondItem="XIn-Fg-dWO" secondAttribute="centerY" id="MqL-sA-Oyi"/>
+                            <constraint firstItem="XIn-Fg-dWO" firstAttribute="top" secondItem="DpB-tR-pr6" secondAttribute="top" constant="16" id="OWz-2u-yMd"/>
+                            <constraint firstItem="M5E-9y-2S5" firstAttribute="leading" secondItem="XIn-Fg-dWO" secondAttribute="leading" id="Q95-T2-sgE"/>
+                            <constraint firstItem="RAO-6V-jHq" firstAttribute="top" secondItem="M5E-9y-2S5" secondAttribute="bottom" constant="16" id="TeZ-g2-vvr"/>
+                            <constraint firstItem="M5E-9y-2S5" firstAttribute="top" secondItem="XIn-Fg-dWO" secondAttribute="bottom" constant="16" id="Wg6-6c-6ge"/>
+                            <constraint firstItem="RAO-6V-jHq" firstAttribute="leading" secondItem="DpB-tR-pr6" secondAttribute="leading" constant="16" id="dxa-PW-BUw"/>
+                            <constraint firstItem="CAG-na-vlo" firstAttribute="leading" secondItem="DpB-tR-pr6" secondAttribute="leading" constant="16" id="f3Z-sq-x9u"/>
+                            <constraint firstItem="XIn-Fg-dWO" firstAttribute="leading" secondItem="DpB-tR-pr6" secondAttribute="leading" constant="16" id="lol-cW-UYH"/>
+                            <constraint firstItem="DpB-tR-pr6" firstAttribute="trailing" secondItem="CAG-na-vlo" secondAttribute="trailing" constant="16" id="nF8-VW-eEQ"/>
+                            <constraint firstItem="dil-8R-xvy" firstAttribute="leading" secondItem="RAO-6V-jHq" secondAttribute="trailing" constant="16" id="q5j-Ou-BAx"/>
+                            <constraint firstItem="DpB-tR-pr6" firstAttribute="trailing" secondItem="M5E-9y-2S5" secondAttribute="trailing" constant="16" id="wtU-s6-KQH"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="DpB-tR-pr6"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="2Lq-mR-yyG">
+                        <barButtonItem key="rightBarButtonItem" image="close-x" id="afg-LH-FLN">
+                            <connections>
+                                <action selector="closeTapped:" destination="ru4-UN-5iL" id="CsG-bm-a1H"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="agreeButton" destination="CAG-na-vlo" id="qcd-Fv-GeF"/>
+                        <outlet property="checkboxContainer" destination="RAO-6V-jHq" id="FCi-AA-lfj"/>
+                        <outlet property="checkboxDescription" destination="dil-8R-xvy" id="b7S-If-gda"/>
+                        <outlet property="warningDescriptionLabel" destination="M5E-9y-2S5" id="TON-Xl-tJw"/>
+                        <outlet property="warningImageView" destination="XIn-Fg-dWO" id="4gB-GH-eT8"/>
+                        <outlet property="warningTitleLabel" destination="hJU-LP-hlj" id="qch-sX-dmT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="V2t-U3-mWE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="678" y="3559"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="aep-6b-Kle">
+            <objects>
+                <navigationController storyboardIdentifier="inboxDisclaimerNav" automaticallyAdjustsScrollViewInsets="NO" id="f7Q-PD-yNb" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="SZp-yu-xwC">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ru4-UN-5iL" kind="relationship" relationship="rootViewController" id="dD9-MJ-E70"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cHK-ku-59S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-319" y="3559"/>
         </scene>
     </scenes>
     <resources>

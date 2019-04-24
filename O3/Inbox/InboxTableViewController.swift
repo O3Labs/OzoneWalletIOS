@@ -16,6 +16,8 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
     
     var dummyMessages = [Message]()
     
+    var halfModalTransitioningDelegate: HalfModalTransitioningDelegate? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         applyNavBarTheme()
@@ -26,11 +28,32 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "cog"), style: .plain, target: self, action: #selector(showSettingsMenu(_:)))
         
-        loadMessages()
+        if O3KeychainManager.getO3PrivKey() == nil {
+            //do nothing
+            displayOptInBottomSheet()
+        } else {
+            loadMessages()
+        }
+        
+        
+    }
+    
+    func displayOptInBottomSheet() {
+        let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "inboxDisclaimerNav")
+        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+        nav.modalPresentationStyle = .custom
+        nav.transitioningDelegate = self.halfModalTransitioningDelegate
+        self.present(nav, animated: true, completion: nil)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummyMessages.count
+        let numMessages = dummyMessages.count
+        if numMessages == 0 {
+            tableView.setEmptyMessage("You currently have no inbox items")
+        } else {
+            tableView.restore()
+        }
+        return numMessages
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
