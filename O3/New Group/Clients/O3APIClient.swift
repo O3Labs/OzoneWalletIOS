@@ -84,7 +84,7 @@ class O3APIClient: NSObject {
         request.httpBody = data
 
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, result, err) in
-            #if DEGUB
+            #if DEBUG
             print(result)
             #endif
             if err != nil {

@@ -43,7 +43,7 @@ public struct NotificationSubscriptionSignedRequest: Encodable {
     }
 }
 
-public struct MessagesUnsignedRequest: Encodable {
+public struct   : Encodable {
     var timestamp: String
     
     enum CodingKeys: String, CodingKey {
