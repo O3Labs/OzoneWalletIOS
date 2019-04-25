@@ -465,10 +465,12 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                 O3KeychainManager.authenticateWithBiometricOrPass(message: prompt) { result in
                     switch(result) {
                     case .success(let _):
-                        self.title = host?.firstUppercased
-                        self.sessionID = UUID().uuidString
-                        self.loggedIn = true
-                        self.callback(command: "requestToConnect", data: self.currentAccount(), errorMessage: nil, withSession: true)
+                        DispatchQueue.main.async {
+                            self.title = host?.firstUppercased
+                            self.sessionID = UUID().uuidString
+                            self.loggedIn = true
+                            self.callback(command: "requestToConnect", data: self.currentAccount(), errorMessage: nil, withSession: true)
+                        }
                     case .failure(let _):
                         return
                     }
