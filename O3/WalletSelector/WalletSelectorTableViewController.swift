@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import PKHUD
+import Channel
 
 class WalletSelectorTableViewController: UITableViewController {
     
@@ -17,6 +18,8 @@ class WalletSelectorTableViewController: UITableViewController {
     
     var accountValues: [IndexPath: AccountValue] = [:]
     var combinedAccountValue: AccountValue?
+    
+    var selectedWatchAddr = ""
     
     var group: DispatchGroup = DispatchGroup()
     
@@ -38,6 +41,11 @@ class WalletSelectorTableViewController: UITableViewController {
             DispatchQueue.main.async { self.tableView.reloadRows(at: [indexPath], with: .automatic) }
             return true
         }
+    }
+    
+    func updateWallets() {
+        wallets = NEP6.getFromFileSystem()?.getWalletAccounts() ?? []
+        watchAddresses = NEP6.getFromFileSystem()?.getWatchAccounts() ?? []
     }
     
     
@@ -170,26 +178,93 @@ class WalletSelectorTableViewController: UITableViewController {
         return cell
     }
     
+    func handleWalletTapped(indexPath: IndexPath) {
+        O3KeychainManager.getWalletForNep6(for: wallets[indexPath.row].address) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let wallet):
+                    NEP6.makeNewDefault(key: self.wallets[indexPath.row].key!, wallet: wallet)
+                    MultiwalletEvent.shared.walletUnlocked()
+                    DispatchQueue.main.async { HUD.show(.progress) }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        HUD.hide()
+                        self.dismiss(animated: true)
+                    }
+                    
+                case .failure(let e):
+                    return
+                }
+            }
+        }
+    }
+    
+    func handleEditNameAction(indexPath: IndexPath) {
+        let alertController = UIAlertController(title: MultiWalletStrings.editName, message: MultiWalletStrings.enterNewName, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
+            let inputNewName = alertController.textFields?[0].text!
+            let nep6 = NEP6.getFromFileSystem()!
+            nep6.editName(address: self.watchAddresses[indexPath.row].address   , newName: inputNewName!)
+            nep6.writeToFileSystem()
+            self.updateWallets()
+            DispatchQueue.main.async {
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = MultiWalletStrings.myWalletPlaceholder
+        }
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
+    }
+    
+    func handleWatchAddressTapped(indexPath: IndexPath) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let editNameAction = UIAlertAction(title: "Edit Name", style: .default) { _ in
+            self.handleEditNameAction(indexPath: indexPath)
+        }
+        alert.addAction(editNameAction)
+        
+        let addRemoveTotalAction = UIAlertAction(title: "Show/Hide Total", style: .default) { _ in
+        }
+        alert.addAction(addRemoveTotalAction)
+        
+        let convertToWalletAction = UIAlertAction(title: "Convert To Wallet", style: .default) { _ in
+            self.selectedWatchAddr = self.watchAddresses[indexPath.row].address
+            self.performSegue(withIdentifier: "segueToConvertWallet", sender: nil)
+        }
+        alert.addAction(convertToWalletAction)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+            let nep6 = NEP6.getFromFileSystem()!
+            nep6.removeEncryptedKey(address: self.watchAddresses[indexPath.row].address)
+            nep6.writeToFileSystem()
+            Channel.shared().unsubscribe(fromTopic: self.watchAddresses[indexPath.row].address, block: {})
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        alert.addAction(deleteAction)
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        alert.addAction(cancel)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // wallet
         if indexPath.section == 1 {
-            O3KeychainManager.getWalletForNep6(for: wallets[indexPath.row].address) { result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let wallet):
-                        NEP6.makeNewDefault(key: self.wallets[indexPath.row].key!, wallet: wallet)
-                        MultiwalletEvent.shared.walletUnlocked()
-                        DispatchQueue.main.async { HUD.show(.progress) }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            HUD.hide()
-                            self.dismiss(animated: true)
-                        }
-                        
-                    case .failure(let e):
-                        return
-                    }
-                }
-            }
+            handleWalletTapped(indexPath: indexPath)
+        } else if indexPath.section == 2 {
+            handleWatchAddressTapped(indexPath: indexPath)
         }
     }
     
@@ -204,5 +279,11 @@ class WalletSelectorTableViewController: UITableViewController {
     
     func setLocalizedStrings() {
         navigationItem.title = "My Wallets"
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dest = segue.destination as? ConvertToWalletTableViewController {
+            dest.watchAddress = selectedWatchAddr
+        }
     }
 }

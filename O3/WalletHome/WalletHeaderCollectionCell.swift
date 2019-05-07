@@ -48,15 +48,15 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
             walletHeaderLabel.text = "MY O3 Wallet"
         }
         
-        leftButton.isHidden = true
+        leftButton.isHidden = false
         rightButton.isHidden = false
         percentChangeLabel.isHidden = false
     }
 
     func setupCombined() {
         walletHeaderLabel.text = PortfolioStrings.portfolioHeaderCombinedHeader
-        rightButton.isHidden = true
-        leftButton.isHidden = false
+        rightButton.isHidden = false
+        leftButton.isHidden = true
         percentChangeLabel.isHidden = false
     }
     

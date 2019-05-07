@@ -89,9 +89,9 @@ class HomeViewModel {
     func getTransferableAssets() -> [TransferableAsset] {
         var transferableAssetsToReturn: [TransferableAsset]  = []
         switch currentIndex {
-        case 0: transferableAssetsToReturn = getWritableAssets()
-        case watchAddresses.count + 1: transferableAssetsToReturn = getCombinedReadOnlyAndWriteable()
-        default: transferableAssetsToReturn = readOnlyAssets[watchAddresses[currentIndex - 1]] ?? []
+        case 0: transferableAssetsToReturn = getCombinedReadOnlyAndWriteable()
+        case 1: transferableAssetsToReturn = getWritableAssets()
+        default: transferableAssetsToReturn = readOnlyAssets[watchAddresses[currentIndex - 2]] ?? []
         }
 
         //Put NEO + GAS at the top

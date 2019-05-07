@@ -130,6 +130,7 @@ class Controller: NSObject {
         let modal = UIStoryboard(name: "WalletSelector", bundle: nil).instantiateInitialViewController()
         UIApplication.topViewController()!.present(modal!, animated: true, completion: nil)
     }
+    
     func openAddNewWallet() {
         let modal = UIStoryboard(name: "AddNewMultiWallet", bundle: nil).instantiateInitialViewController()
         UIApplication.topViewController()!.present(modal!, animated: true, completion: nil)

@@ -460,15 +460,15 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         var type: WalletHeaderCollectionCell.HeaderType
         var nep6 = NEP6.getFromFileSystem()
         if indexPath.row == 0 {
+            type = WalletHeaderCollectionCell.HeaderType.combined
+        } else if indexPath.row == 1 {
             type = WalletHeaderCollectionCell.HeaderType.activeWallet
             if nep6 != nil {
-                account = nep6!.accounts[indexPath.row]
+                account = nep6!.accounts.first { $0.isDefault }!
             }
-        } else if indexPath.row <= watchAddresses.count {
-            type = WalletHeaderCollectionCell.HeaderType.lockedWallet
-            account = nep6!.accounts[indexPath.row]
         } else {
-            type = WalletHeaderCollectionCell.HeaderType.combined
+            type = WalletHeaderCollectionCell.HeaderType.lockedWallet
+            account = nep6!.accounts[indexPath.row - 1]
         }
         
         
