@@ -22,6 +22,7 @@ class O3Cache {
         case readOnlyNeo
         case readOnlyTokens
         case readOnlyOntologyAssets
+        case portfolioValue
     }
     
     static var storage: Storage<TransferableAsset>? {
@@ -51,6 +52,7 @@ class O3Cache {
     static func clear() {
         ((try? storage?.removeAll()) as ()??)
         ((try? arrayStorage?.removeAll()) as ()??)
+        ((try? portfolioStorage?.removeAll()) as ()??)
     }
     
     // MARK: Cache Setters for Writable Balances
@@ -217,4 +219,32 @@ class O3Cache {
         return storage
     }
     
+    
+    //address to string portfolio value
+    static var portfolioStorage: Storage<AccountValue>? {
+        let diskConfig = DiskConfig(name: "portfolioStorage")
+        let expiry = Date().addingTimeInterval(TimeInterval(3600))
+        let memoryConfig = MemoryConfig(expiry: .date(expiry), countLimit: 10, totalCostLimit: 10)
+        
+        let storage = try? Storage(
+            diskConfig: diskConfig,
+            memoryConfig: memoryConfig,
+            transformer: TransformerFactory.forCodable(ofType: AccountValue.self)
+        )
+        return storage
+    }
+    
+    static func setCachedPortfolioValue(for address: String, portfolioValue: AccountValue) {
+        ((try? O3Cache.portfolioStorage?.setObject(portfolioValue, forKey: address + "_" + keys.portfolioValue.rawValue)) as ()??)
+    }
+    
+    static func getCachedPortfolioValue(for address: String)-> AccountValue? {
+        var cachedportfolioValue: AccountValue?
+        do {
+            cachedportfolioValue = try O3Cache.portfolioStorage?.object(forKey: address + "_" + keys.portfolioValue.rawValue)
+        } catch {
+            
+        }
+        return cachedportfolioValue
+    }
 }

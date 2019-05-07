@@ -125,4 +125,9 @@ class Controller: NSObject {
         }
         tabbar.selectedIndex = tabIndex
     }
+    
+    func openWalletSelector() {
+        let modal = UIStoryboard(name: "WalletSelector", bundle: nil).instantiateInitialViewController()
+        UIApplication.topViewController()!.present(modal!, animated: true, completion: nil)
+    }
 }

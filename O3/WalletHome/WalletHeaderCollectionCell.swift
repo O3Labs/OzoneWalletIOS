@@ -135,7 +135,8 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
     
     
     @objc func unlockTapped() {
-        if let key = data?.account?.key {
+        Controller().openWalletSelector()
+        /*if let key = data?.account?.key {
             if data?.account?.isDefault == true {
                 return
             }
@@ -165,7 +166,7 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
             alertController.addAction(cancelAction)
             
             UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
-        }
+        }*/
     }
     
     override func awakeFromNib() {
