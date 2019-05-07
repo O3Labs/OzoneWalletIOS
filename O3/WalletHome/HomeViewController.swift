@@ -189,6 +189,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         activatedLineCenterXAnchor = activatedLine.centerXAnchor.constraint(equalTo: fifteenMinButton.centerXAnchor, constant: 0)
         activatedLineCenterXAnchor?.isActive = true
         homeviewModel = HomeViewModel(delegate: self)
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_envelope"), style: .plain, target: self, action: #selector(leftBarButtonTapped))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped))
 
         if UserDefaults.standard.string(forKey: "subscribedAddress") != Authenticated.wallet?.address {
             Channel.shared().unsubscribe(fromTopic: "*") {
@@ -398,7 +401,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func setLocalizedStrings() {
-        self.navigationController?.isNavigationBarHidden = true
+        
         self.navigationController?.navigationBar.topItem?.title = PortfolioStrings.portfolio
         fiveMinButton.setTitle(PortfolioStrings.sixHourInterval, for: UIControl.State())
         fifteenMinButton.setTitle(PortfolioStrings.oneDayInterval, for: UIControl.State())
@@ -416,6 +419,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             nav.transitioningDelegate = self.halfModalTransitioningDelegate
             self.present(nav, animated: true, completion: nil)
         }
+    }
+    
+    @objc func leftBarButtonTapped() {
+        let inboxController = UIStoryboard(name: "Inbox", bundle: nil).instantiateInitialViewController()!
+        self.present(inboxController, animated: true)
+    }
+    
+    @objc func rightBarButtonTapped() {
+        guard let modal = UIStoryboard(name: "QR", bundle: nil).instantiateInitialViewController() as? QRScannerController else {
+            fatalError("Presenting improper modal controller")
+        }
+        modal.delegate = self
+        let nav = WalletHomeNavigationController(rootViewController: modal)
+        nav.navigationBar.prefersLargeTitles = false
+        nav.setNavigationBarHidden(true, animated: false)
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        self.present(nav, animated: true, completion: nil)
     }
 }
 
@@ -591,18 +613,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch (homeviewModel?.referenceCurrency)! {
-        case .btc:
-            homeviewModel?.setReferenceCurrency(UserDefaultsManager.referenceFiatCurrency)
-        default:
-            homeviewModel?.setReferenceCurrency(.btc)
-        }
+        Controller().openWalletSelector()
 
-        DispatchQueue.main.async {
-            collectionView.reloadData()
-            self.assetsTable.reloadData()
-            self.graphView.reload()
-        }
     }
 
     func didTapLeft() {
@@ -639,6 +651,21 @@ extension HomeViewController: PortfolioNotificationTableViewCellDelegate {
         DispatchQueue.main.async {
             AppState.setDismissBackupNotification(dismiss: true)
             self.assetsTable.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        }
+    }
+}
+
+extension HomeViewController: QRScanDelegate {
+    func qrScanned(data: String) {
+        //if there is more type of string we have to check it here
+        if data.hasPrefix("neo") {
+            DispatchQueue.main.async {
+                //Controller().openSend(to:)
+            }
+        } else if (URL(string: data) != nil) {
+            Controller().openDappBrowserV2(url: URL(string: data)!)
+        } else {
+            //Controller().openSend()
         }
     }
 }

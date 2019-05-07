@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3yr-Aq-3ZN">
-                                <rect key="frame" x="0.0" y="111" width="320" height="408"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="jYl-dS-zJf">
@@ -47,16 +47,7 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY O3 WALLET" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EaX-BB-Mbg" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
-                                                                <rect key="frame" x="40" y="54" width="88" height="15"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="15" id="wss-Id-fZC"/>
-                                                                </constraints>
-                                                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dsadsadas" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PeE-4J-R2k">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dsadsadas" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PeE-4J-R2k">
                                                                 <rect key="frame" x="40" y="18" width="295" height="32"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="32" id="560-sv-GZd"/>
@@ -66,7 +57,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dsadsadsa" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HOi-Wg-OIl">
-                                                                <rect key="frame" x="278" y="54" width="57" height="15"/>
+                                                                <rect key="frame" x="159" y="50" width="57" height="15"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="15" id="zF6-G5-YPl"/>
                                                                 </constraints>
@@ -94,48 +85,31 @@
                                                                     <action selector="didTapLeft:" destination="l8q-km-s97" eventType="touchUpInside" id="SJf-gd-LQP"/>
                                                                 </connections>
                                                             </button>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_wallet" translatesAutoresizingMaskIntoConstraints="NO" id="Mar-1O-pog">
-                                                                <rect key="frame" x="40" y="22" width="24" height="24"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY O3 WALLET" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EaX-BB-Mbg" customClass="ThemedUILabel" customModule="O3" customModuleProvider="target">
+                                                                <rect key="frame" x="143.5" y="0.0" width="88" height="15"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="24" id="cHY-Lw-n42"/>
-                                                                    <constraint firstAttribute="width" constant="24" id="rU4-9U-27x"/>
+                                                                    <constraint firstAttribute="height" constant="15" id="wss-Id-fZC"/>
                                                                 </constraints>
-                                                            </imageView>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_unlocked" translatesAutoresizingMaskIntoConstraints="NO" id="yZB-X9-tjg">
-                                                                <rect key="frame" x="132" y="55" width="13" height="13"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="13" id="GBZ-aR-lSi"/>
-                                                                    <constraint firstAttribute="width" constant="13" id="l8M-b8-ns2"/>
-                                                                </constraints>
-                                                            </imageView>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8C5-Zf-9VM">
-                                                                <rect key="frame" x="40" y="0.0" width="105" height="75"/>
-                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            </view>
+                                                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
                                                         </subviews>
                                                     </view>
                                                     <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="8C5-Zf-9VM" secondAttribute="bottom" id="3yD-wC-ibj"/>
                                                         <constraint firstAttribute="bottom" secondItem="Oh2-ZP-cWU" secondAttribute="bottom" id="4J3-v6-dia"/>
-                                                        <constraint firstAttribute="bottom" secondItem="EaX-BB-Mbg" secondAttribute="bottom" constant="6" id="5ba-ev-mwA"/>
-                                                        <constraint firstItem="HOi-Wg-OIl" firstAttribute="trailing" secondItem="PeE-4J-R2k" secondAttribute="trailing" id="5c7-Yj-LWn"/>
+                                                        <constraint firstItem="EaX-BB-Mbg" firstAttribute="centerX" secondItem="l8q-km-s97" secondAttribute="centerX" id="4cH-T4-p0i"/>
                                                         <constraint firstItem="dPK-c1-nMS" firstAttribute="leading" secondItem="l8q-km-s97" secondAttribute="leading" id="7v2-sd-Ho0"/>
                                                         <constraint firstAttribute="trailing" secondItem="Oh2-ZP-cWU" secondAttribute="trailing" id="BUR-s1-stN"/>
-                                                        <constraint firstItem="yZB-X9-tjg" firstAttribute="leading" secondItem="EaX-BB-Mbg" secondAttribute="trailing" constant="4" id="DD5-UK-Hbr"/>
-                                                        <constraint firstItem="Mar-1O-pog" firstAttribute="centerY" secondItem="PeE-4J-R2k" secondAttribute="centerY" id="Fcx-Fc-d2r"/>
-                                                        <constraint firstItem="8C5-Zf-9VM" firstAttribute="top" secondItem="l8q-km-s97" secondAttribute="top" id="OJ0-Lx-nH9"/>
                                                         <constraint firstItem="PeE-4J-R2k" firstAttribute="leading" secondItem="dPK-c1-nMS" secondAttribute="trailing" id="Qxt-eR-Q3K"/>
                                                         <constraint firstAttribute="bottom" secondItem="dPK-c1-nMS" secondAttribute="bottom" id="TS2-a9-nnh"/>
-                                                        <constraint firstItem="8C5-Zf-9VM" firstAttribute="trailing" secondItem="yZB-X9-tjg" secondAttribute="trailing" id="TSi-2b-kr4"/>
-                                                        <constraint firstItem="EaX-BB-Mbg" firstAttribute="leading" secondItem="dPK-c1-nMS" secondAttribute="trailing" id="Vf9-uf-Hhg"/>
-                                                        <constraint firstItem="Mar-1O-pog" firstAttribute="leading" secondItem="EaX-BB-Mbg" secondAttribute="leading" id="Vlh-yj-zUT"/>
                                                         <constraint firstItem="PeE-4J-R2k" firstAttribute="centerY" secondItem="l8q-km-s97" secondAttribute="centerY" multiplier="0.9" id="Xwf-pf-RwW"/>
                                                         <constraint firstItem="Oh2-ZP-cWU" firstAttribute="top" secondItem="l8q-km-s97" secondAttribute="top" id="ZfF-Ve-Ezp"/>
-                                                        <constraint firstItem="HOi-Wg-OIl" firstAttribute="centerY" secondItem="EaX-BB-Mbg" secondAttribute="centerY" id="aSU-rE-eez"/>
                                                         <constraint firstItem="Oh2-ZP-cWU" firstAttribute="leading" secondItem="PeE-4J-R2k" secondAttribute="trailing" id="f33-ME-jyu"/>
-                                                        <constraint firstItem="8C5-Zf-9VM" firstAttribute="leading" secondItem="Mar-1O-pog" secondAttribute="leading" id="lkq-oh-aZv"/>
+                                                        <constraint firstItem="EaX-BB-Mbg" firstAttribute="top" secondItem="l8q-km-s97" secondAttribute="top" id="iDa-pg-ih5"/>
+                                                        <constraint firstItem="HOi-Wg-OIl" firstAttribute="centerX" secondItem="l8q-km-s97" secondAttribute="centerX" id="iXZ-nr-S13"/>
+                                                        <constraint firstItem="HOi-Wg-OIl" firstAttribute="top" secondItem="PeE-4J-R2k" secondAttribute="bottom" id="u9j-Df-ukx"/>
                                                         <constraint firstItem="dPK-c1-nMS" firstAttribute="top" secondItem="l8q-km-s97" secondAttribute="top" id="uNH-PB-f5N"/>
-                                                        <constraint firstItem="yZB-X9-tjg" firstAttribute="centerY" secondItem="HOi-Wg-OIl" secondAttribute="centerY" id="vaR-yd-aup"/>
                                                     </constraints>
                                                     <connections>
                                                         <outlet property="leftButton" destination="dPK-c1-nMS" id="2Wa-j4-P3i"/>
@@ -143,9 +117,6 @@
                                                         <outlet property="portfolioValueLabel" destination="PeE-4J-R2k" id="IYX-jk-hF1"/>
                                                         <outlet property="rightButton" destination="Oh2-ZP-cWU" id="LW2-Go-PS2"/>
                                                         <outlet property="walletHeaderLabel" destination="EaX-BB-Mbg" id="WQi-kh-BeQ"/>
-                                                        <outlet property="walletMajorIcon" destination="Mar-1O-pog" id="aXc-dE-Su6"/>
-                                                        <outlet property="walletMinorIcon" destination="yZB-X9-tjg" id="wSj-eh-jkl"/>
-                                                        <outlet property="walletUnlockHeaderArea" destination="8C5-Zf-9VM" id="8Ux-dH-blr"/>
                                                     </connections>
                                                 </collectionViewCell>
                                             </cells>
@@ -432,7 +403,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="AUs-oL-6bF"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Portfolio" id="5vG-EF-lAG"/>
+                    <navigationItem key="navigationItem" title="Portfolio" largeTitleDisplayMode="never" id="5vG-EF-lAG"/>
                     <connections>
                         <outlet property="activatedLine" destination="xPp-QI-GoT" id="0mP-2I-21v"/>
                         <outlet property="allButton" destination="zNK-oY-pqW" id="Q3I-Jk-4JO"/>
@@ -449,7 +420,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bMh-de-bZf" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4164" y="-170.46476761619192"/>
+            <point key="canvasLocation" x="4162.5" y="-171.12676056338029"/>
         </scene>
         <!--Address Entry Table View Controller-->
         <scene sceneID="EuJ-QD-f2l">
@@ -1334,7 +1305,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jKo-Se-R2B">
-                                                    <rect key="frame" x="36" y="10.5" width="42" height="23.5"/>
+                                                    <rect key="frame" x="36" y="10" width="42" height="23.5"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
                                                     <color key="textColor" name="lightThemeRed"/>
                                                     <nil key="highlightedColor"/>
@@ -2488,7 +2459,6 @@ Your raw private key is not password protected, anyone with access to this priva
         <image name="ic_credit_card_green" width="24" height="24"/>
         <image name="ic_identity" width="24" height="24"/>
         <image name="ic_unlocked" width="16" height="16"/>
-        <image name="ic_wallet" width="28" height="28"/>
         <image name="ic_wallet_swap" width="24" height="24"/>
         <image name="plus" width="24" height="24"/>
         <image name="support" width="24" height="24"/>

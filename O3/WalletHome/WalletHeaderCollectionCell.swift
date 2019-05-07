@@ -38,10 +38,6 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
     @IBOutlet weak var percentChangeLabel: UILabel!
     @IBOutlet weak var rightButton: UIButton!
     @IBOutlet weak var leftButton: UIButton!
-    @IBOutlet weak var walletMajorIcon: UIImageView!
-    @IBOutlet weak var walletMinorIcon: UIImageView!
-    
-    @IBOutlet weak var walletUnlockHeaderArea: UIView!
     
     weak var delegate: WalletHeaderCellDelegate?
     
@@ -55,9 +51,6 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
         leftButton.isHidden = true
         rightButton.isHidden = false
         percentChangeLabel.isHidden = false
-        walletMajorIcon.image = UIImage(named: "ic_wallet")
-        walletMinorIcon.image = UIImage(named: "ic_unlocked")
-        walletMinorIcon.isHidden = false
     }
 
     func setupCombined() {
@@ -65,8 +58,6 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
         rightButton.isHidden = true
         leftButton.isHidden = false
         percentChangeLabel.isHidden = false
-        walletMajorIcon.image = UIImage(named: "ic_all_wallet")
-        walletMinorIcon.isHidden = true
     }
     
     func setupLockedWallet() {
@@ -74,14 +65,6 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
         rightButton.isHidden = false
         leftButton.isHidden = false
         percentChangeLabel.isHidden = false
-        if data?.account!.key == nil {
-            walletMajorIcon.image = UIImage(named: "ic_watch")
-            walletMinorIcon.isHidden = true
-        } else {
-            walletMajorIcon.image = UIImage(named: "ic_wallet")
-            walletMinorIcon.image = UIImage(named: "ic_locked")
-            walletMinorIcon.isHidden = false
-        }
     }
     
     
@@ -116,7 +99,6 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
             }
             percentChangeLabel.text = String.percentChangeString(latestPrice: latestPrice, previousPrice: previousPrice,
                                                                  with: selectedInterval, referenceCurrency: referenceCurrency)
-            walletUnlockHeaderArea.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(unlockTapped)))
             
             if (latestPrice.average - previousPrice.average == 0.0) {
                 portfolioValueLabel.theme_textColor = O3Theme.lightTextColorPicker
@@ -133,49 +115,11 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
         super.prepareForReuse()
     }
     
-    
-    @objc func unlockTapped() {
-        Controller().openWalletSelector()
-        /*if let key = data?.account?.key {
-            if data?.account?.isDefault == true {
-                return
-            }
-
-            let alertController = UIAlertController(title: "Unlock " + (data?.account?.label ?? ""), message: "Please enter the password for this wallet. This will set it to default and lock all other wallets.", preferredStyle: .alert)
-            let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
-                    let inputPass = alertController.textFields?[0].text!
-                    var error: NSError?
-                    let wallet = Wallet(wallet: NeoutilsNEP2DecryptToWallet(key, inputPass, &error)!)
-                    if error == nil {
-                        NEP6.makeNewDefault(key: key, wallet: wallet!)
-                        MultiwalletEvent.shared.walletUnlocked()
-                    } else {
-                        OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {}
-                    }
-                
-            }
-            
-            let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
-            
-            alertController.addTextField { (textField) in
-                textField.placeholder = "Password"
-                textField.isSecureTextEntry = true
-            }
-            
-            alertController.addAction(confirmAction)
-            alertController.addAction(cancelAction)
-            
-            UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
-        }*/
-    }
-    
     override func awakeFromNib() {
         walletHeaderLabel.theme_textColor = O3Theme.lightTextColorPicker
         super.awakeFromNib()
     }
     
-    
-
     @IBAction func didTapRight(_ sender: Any) {
         delegate?.didTapRight()
     }

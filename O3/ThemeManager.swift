@@ -283,7 +283,11 @@ class O3Theme {
     static let tabBarStylePicker = ThemeBarStylePicker(styles: .default, .black)
 
     static let backgroundLightgrey = ThemeColorPicker(colors: "#FAFAFAFF",
-                                                   Theme.dark.cardColor.hexString(false),
-                                                   Theme.dark.cardColor.hexString(false))
+                                                   Theme.dark.backgroundColor.hexString(false),
+                                                   Theme.dark.backgroundColor.hexString(false))
+    
+    static let backgroundSectionHeader = ThemeColorPicker(colors: "#FAFAFAFF",
+                                                      Theme.dark.cardColor.hexString(false),
+                                                      Theme.dark.cardColor.hexString(false))
     
 }

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import PKHUD
 
 class WalletSelectorTableViewController: UITableViewController {
     
@@ -22,6 +23,7 @@ class WalletSelectorTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismissTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_add_wallet"), style: .plain, target: self, action: #selector(openAddWallet))
         loadPortfoliosForAll()
         setThemedElements()
         setLocalizedStrings()
@@ -164,8 +166,35 @@ class WalletSelectorTableViewController: UITableViewController {
         }
         titleLabel.theme_textColor = O3Theme.titleColorPicker
         cell?.theme_backgroundColor = O3Theme.backgroundLightgrey
-        cell?.contentView.theme_backgroundColor = O3Theme.backgroundLightgrey
+        cell?.contentView.theme_backgroundColor = O3Theme.backgroundSectionHeader
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // wallet
+        if indexPath.section == 1 {
+            O3KeychainManager.getWalletForNep6(for: wallets[indexPath.row].address) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let wallet):
+                        NEP6.makeNewDefault(key: self.wallets[indexPath.row].key!, wallet: wallet)
+                        MultiwalletEvent.shared.walletUnlocked()
+                        DispatchQueue.main.async { HUD.show(.progress) }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            HUD.hide()
+                            self.dismiss(animated: true)
+                        }
+                        
+                    case .failure(let e):
+                        return
+                    }
+                }
+            }
+        }
+    }
+    
+    @objc func openAddWallet() {
+        Controller().openAddNewWallet()
     }
     
     func setThemedElements() {
@@ -174,6 +203,6 @@ class WalletSelectorTableViewController: UITableViewController {
     }
     
     func setLocalizedStrings() {
-        
+        navigationItem.title = "My Wallets"
     }
 }

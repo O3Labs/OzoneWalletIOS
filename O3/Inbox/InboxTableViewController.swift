@@ -30,6 +30,7 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
         
         if O3KeychainManager.getO3PrivKey() == nil {
             //do nothing
+            loadMessages()
             displayOptInBottomSheet()
         } else {
             loadMessages()
