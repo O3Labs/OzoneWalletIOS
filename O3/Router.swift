@@ -73,9 +73,9 @@ class Router: NSObject {
             Controller().focusOnTab(tabIndex: 0)
         case "wallet":
             Controller().focusOnTab(tabIndex: 1)
-        case "news":
-            Controller().focusOnTab(tabIndex: 2)
         case "marketplace":
+            Controller().focusOnTab(tabIndex: 2)
+        case "news":
             Controller().focusOnTab(tabIndex: 3)
         case "settings":
             Controller().focusOnTab(tabIndex: 4)

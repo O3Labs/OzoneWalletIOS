@@ -47,6 +47,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var buyButton: UIButton!
     @IBOutlet weak var referButton: UIButton!
     
+    @IBOutlet weak var privacyPolicyLabel: UILabel!
+    @IBOutlet weak var footerView: UIView!
     
     // swiftlint:disable weak_delegate
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
@@ -187,11 +189,17 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         themeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTheme)))
         enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
         idCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openIdentity)))
+        footerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openPrivacyPolicy)))
         setThemeLabel()
         
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.versionLabel.text = String(format: SettingsStrings.versionLabel, version)
         }
+    }
+    
+    @objc func openPrivacyPolicy() {
+        Controller().openDappBrowserV2(url: URL(string:
+            "https://o3.network/privacy/")!)
     }
     
     @IBAction func buyNeo(_ sender: Any) {
@@ -319,6 +327,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    
     func setThemedElements() {
         let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel, idLabel]
         let themedCells = [themeCell, currencyCell, contactCell, idCell]
@@ -380,5 +389,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
             multiWalletLabel.text = SettingsStrings.manageWallets
         }
         headerTitleLabel.text = AccountStrings.myAddressInfo
+        privacyPolicyLabel.text = "Terms and privacy policy"
     }
 }

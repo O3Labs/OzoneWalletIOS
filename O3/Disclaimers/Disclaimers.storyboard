@@ -414,7 +414,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JYz-Sf-XRk">
-                                <rect key="frame" x="16" y="302" width="343" height="44"/>
+                                <rect key="frame" x="16" y="299" width="343" height="44"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="9IY-Pa-5I1"/>
@@ -441,13 +441,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UwM-ZA-YiA">
-                                <rect key="frame" x="19" y="199" width="43" height="24"/>
+                                <rect key="frame" x="16" y="199" width="43" height="24"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lgL-P5-eZT">
-                                <rect key="frame" x="16" y="242" width="343" height="44"/>
+                                <rect key="frame" x="16" y="239" width="343" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="V3s-Te-UkS"/>
                                 </constraints>
@@ -458,7 +458,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="lgL-P5-eZT" firstAttribute="top" secondItem="UwM-ZA-YiA" secondAttribute="bottom" constant="19" id="0cG-MV-BcC"/>
+                            <constraint firstItem="lgL-P5-eZT" firstAttribute="top" secondItem="UwM-ZA-YiA" secondAttribute="bottom" constant="16" id="0cG-MV-BcC"/>
                             <constraint firstItem="lgL-P5-eZT" firstAttribute="centerX" secondItem="Wh8-t0-vlb" secondAttribute="centerX" id="4WC-mh-IH1"/>
                             <constraint firstItem="JYz-Sf-XRk" firstAttribute="leading" secondItem="Wh8-t0-vlb" secondAttribute="leading" constant="16" id="7in-Ya-mdK"/>
                             <constraint firstItem="Aca-9a-gQk" firstAttribute="leading" secondItem="Wh8-t0-vlb" secondAttribute="leading" constant="16" id="BGn-L5-jf4"/>
@@ -472,7 +472,7 @@
                             <constraint firstItem="493-jA-XaO" firstAttribute="top" secondItem="Wh8-t0-vlb" secondAttribute="top" constant="16" id="rP3-Z9-MGk"/>
                             <constraint firstItem="UwM-ZA-YiA" firstAttribute="top" secondItem="lMX-q4-maE" secondAttribute="bottom" constant="7" id="st7-ct-21M"/>
                             <constraint firstItem="lgL-P5-eZT" firstAttribute="leading" secondItem="Wh8-t0-vlb" secondAttribute="leading" constant="16" id="trq-fT-jUO"/>
-                            <constraint firstItem="UwM-ZA-YiA" firstAttribute="leading" secondItem="Wh8-t0-vlb" secondAttribute="leading" constant="19" id="x8d-GE-5TL"/>
+                            <constraint firstItem="UwM-ZA-YiA" firstAttribute="leading" secondItem="Wh8-t0-vlb" secondAttribute="leading" constant="16" id="x8d-GE-5TL"/>
                             <constraint firstItem="lMX-q4-maE" firstAttribute="leading" secondItem="Wh8-t0-vlb" secondAttribute="leading" constant="15" id="ypG-NR-aRT"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Wh8-t0-vlb"/>

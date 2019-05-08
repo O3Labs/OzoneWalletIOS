@@ -26,6 +26,10 @@ class ReferralLinkViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func shareButtonTapped(_ sender: Any) {
+        let shareURL = URL(string: "https://buy.o3.network/?ref=" + Authenticated.wallet!.address)
+        let activityViewController = UIActivityViewController(activityItems: [shareURL as Any], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     @IBAction func closeTapped(_ sender: Any) {
@@ -33,6 +37,7 @@ class ReferralLinkViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func learnMoreTapped(_ sender: Any) {
+        Controller().openDappBrowserV2(url: URL(string: "https://www.o3.network")!)
     }
     
     func setThemedElements() {

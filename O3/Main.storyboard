@@ -845,10 +845,18 @@
                                     <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zkg-Vu-Mdy">
+                                    <rect key="frame" x="50" y="34" width="36.5" height="20.5"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                    <color key="textColor" name="lightThemePrimary"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="zkg-Vu-Mdy" firstAttribute="leading" secondItem="We1-HS-Cs2" secondAttribute="leading" id="4kJ-22-uMz"/>
                                 <constraint firstItem="We1-HS-Cs2" firstAttribute="leading" secondItem="MNX-oG-Dku" secondAttribute="leading" constant="50" id="KH1-Ch-pE8"/>
+                                <constraint firstItem="zkg-Vu-Mdy" firstAttribute="top" secondItem="We1-HS-Cs2" secondAttribute="bottom" constant="4" id="qqc-Wd-W8S"/>
                                 <constraint firstItem="We1-HS-Cs2" firstAttribute="top" secondItem="MNX-oG-Dku" secondAttribute="top" constant="10" id="yBG-4b-mAa"/>
                                 <constraint firstAttribute="trailing" secondItem="We1-HS-Cs2" secondAttribute="trailing" id="zYA-7B-WCO"/>
                             </constraints>
@@ -1073,11 +1081,13 @@
                         <outlet property="currencyLabel" destination="VAd-JC-Q5E" id="OJT-F2-JOL"/>
                         <outlet property="currencyView" destination="h1P-bs-h7b" id="jV6-DM-zmq"/>
                         <outlet property="enableMultiWalletCell" destination="9mk-IM-Xwk" id="Lat-Ze-vqM"/>
+                        <outlet property="footerView" destination="MNX-oG-Dku" id="zLz-tl-OOV"/>
                         <outlet property="headerTitleLabel" destination="k4d-PG-3Rk" id="f76-kg-4FX"/>
                         <outlet property="headerView" destination="rPQ-Pj-GlN" id="3TJ-mV-cc2"/>
                         <outlet property="idCell" destination="YDq-YY-kr8" id="WUk-6j-m2A"/>
                         <outlet property="idLabel" destination="47P-UG-qY8" id="2p6-qH-9Cj"/>
                         <outlet property="multiWalletLabel" destination="u4J-3R-7jr" id="ArY-4D-Xcg"/>
+                        <outlet property="privacyPolicyLabel" destination="zkg-Vu-Mdy" id="lTh-ub-DA8"/>
                         <outlet property="qrView" destination="aPK-Ea-z7c" id="koh-1o-2DW"/>
                         <outlet property="referButton" destination="NUd-Fn-vaa" id="EqJ-MU-zyT"/>
                         <outlet property="supportCell" destination="a69-ZT-FSz" id="R05-TQ-5W6"/>
