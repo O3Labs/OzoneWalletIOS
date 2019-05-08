@@ -186,4 +186,18 @@ class UserDefaultsManager {
             UserDefaults.standard.synchronize()
         }
     }
+    
+    private static let untrackedWatchAddrKey = "untrackedWatchAddr"
+    static var untrackedWatchAddr: [String] {
+        get {
+            guard let arrayValue = UserDefaults.standard.array(forKey: untrackedWatchAddrKey) as? [String] else {
+                return []
+            }
+            return arrayValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: untrackedWatchAddrKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
 }

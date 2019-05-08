@@ -16,7 +16,11 @@ class WalletSelectorTableViewController: UITableViewController {
     var wallets = NEP6.getFromFileSystem()?.getWalletAccounts() ?? []
     var watchAddresses = NEP6.getFromFileSystem()?.getWatchAccounts() ?? []
     
+    var trackedCount = 0
+    var untrackedCount = 0
+    
     var accountValues: [IndexPath: AccountValue] = [:]
+    var watchAddrs: [IndexPath: NEP6.Account] = [:]
     var combinedAccountValue: AccountValue?
     
     var selectedWatchAddr = ""
@@ -48,45 +52,62 @@ class WalletSelectorTableViewController: UITableViewController {
         watchAddresses = NEP6.getFromFileSystem()?.getWatchAccounts() ?? []
     }
     
-    
-    //naive solution is hit the network every time
     func loadPortfoliosForAll() {
-        DispatchQueue.global().async {
             for i in 0..<self.wallets.count {
                 let indexPath = IndexPath(row: i, section: 1)
                 if self.getCachedPortfolioValue(for: self.wallets[i].address, indexPath: indexPath) == false {
-                    self.group.enter()
-                    O3APIClient(network: AppState.network).getAccountState(address: self.wallets[i].address) { result in
-                        switch result {
-                        case .failure:
-                            self.group.leave()
-                            return
-                        case .success(let accountState):
-                            self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.wallets[i].address)
+                    DispatchQueue.global().async {
+                        self.group.enter()
+                        O3APIClient(network: AppState.network).getAccountState(address: self.wallets[i].address) { result in
+                            switch result {
+                            case .failure:
+                                self.group.leave()
+                                return
+                            case .success(let accountState):
+                                self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.wallets[i].address)
+                            }
                         }
                     }
                 }
             }
             
+            self.trackedCount = 0
+            self.untrackedCount = 0
             for i in 0..<self.watchAddresses.count {
-                let indexPath = IndexPath(row: i, section: 2)
+                var indexPath: IndexPath
+                if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddresses[i].address) {
+                    indexPath = IndexPath(row: self.untrackedCount, section: 3)
+                    self.untrackedCount = self.untrackedCount + 1
+                } else {
+                    indexPath = IndexPath(row: self.trackedCount, section: 2)
+                    self.trackedCount = self.trackedCount + 1
+                }
+                self.watchAddrs[indexPath] = self.watchAddresses[i]
                 if self.getCachedPortfolioValue(for: self.watchAddresses[i].address, indexPath: indexPath) == false {
-                    self.group.enter()
-                    O3APIClient(network: AppState.network).getAccountState(address: self.watchAddresses[i].address) { result in
-                        switch result {
-                        case .failure:
-                            self.group.leave()
-                            return
-                        case .success(let accountState):
-                            let indexPath = IndexPath(row: i, section: 2)
-                            self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.watchAddresses[i].address)
+                    DispatchQueue.global().async {
+                        self.group.enter()
+                        O3APIClient(network: AppState.network).getAccountState(address: self.watchAddresses[i].address) { result in
+                            switch result {
+                            case .failure:
+                                self.group.leave()
+                                return
+                            case .success(let accountState):
+                                if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddresses[i].address) {
+                                    indexPath = IndexPath(row: self.untrackedCount, section: 3)
+                                    self.untrackedCount = self.untrackedCount + 1
+                                } else {
+                                    indexPath = IndexPath(row: self.trackedCount, section: 2)
+                                    self.trackedCount = self.trackedCount + 1
+                                }
+                                self.watchAddrs[indexPath] = self.watchAddresses[i]
+                                self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.watchAddresses[i].address)
+                            }
                         }
                     }
                 }
             }
             self.group.wait()
             self.sumForCombined()
-        }
     }
     
     func sumForCombined() {
@@ -94,6 +115,9 @@ class WalletSelectorTableViewController: UITableViewController {
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         for key in accountValues.keys {
+            if watchAddrs[key] != nil && UserDefaultsManager.untrackedWatchAddr.contains(watchAddrs[key]!.address) {
+                continue
+            }
             if accountValue == nil {
                 accountValue = accountValues[key]
             } else {
@@ -107,7 +131,7 @@ class WalletSelectorTableViewController: UITableViewController {
         combinedAccountValue = accountValue
         let indexPath = IndexPath(row: 0, section: 0)
         DispatchQueue.main.async {
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            self.tableView.reloadData()
         }
     }
     
@@ -129,7 +153,7 @@ class WalletSelectorTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -137,12 +161,12 @@ class WalletSelectorTableViewController: UITableViewController {
             return 1
         } else if section == 1 {
             return wallets.count
+        } else if section == 2 {
+            return trackedCount
         } else {
-            return watchAddresses.count
+            return untrackedCount
         }
     }
-    
-    
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80.0
@@ -157,7 +181,7 @@ class WalletSelectorTableViewController: UITableViewController {
         } else if indexPath.section == 1 {
             cell.data = WalletSelectorTableViewCell.Data(title: wallets[indexPath.row].label, subtitle: wallets[indexPath.row].address, value: accountValues[indexPath])
         } else {
-            cell.data = WalletSelectorTableViewCell.Data(title: watchAddresses[indexPath.row].label, subtitle: watchAddresses[indexPath.row].address, value: accountValues[indexPath])
+            cell.data = WalletSelectorTableViewCell.Data(title: watchAddrs[indexPath]!.label, subtitle: watchAddrs[indexPath]!.address, value: accountValues[indexPath])
         }
         return cell
     }
@@ -169,8 +193,10 @@ class WalletSelectorTableViewController: UITableViewController {
             titleLabel.text = "Combined"
         } else if section == 1 {
             titleLabel.text = "Wallets"
+        } else if section == 2{
+            titleLabel.text = "Watch Only Tracked"
         } else {
-            titleLabel.text = "Watch Only"
+            titleLabel.text = "Watch Only unTracked"
         }
         titleLabel.theme_textColor = O3Theme.titleColorPicker
         cell?.theme_backgroundColor = O3Theme.backgroundLightgrey
@@ -207,7 +233,7 @@ class WalletSelectorTableViewController: UITableViewController {
             nep6.writeToFileSystem()
             self.updateWallets()
             DispatchQueue.main.async {
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                self.tableView.reloadData()
             }
         }
         
@@ -230,7 +256,47 @@ class WalletSelectorTableViewController: UITableViewController {
         }
         alert.addAction(editNameAction)
         
-        let addRemoveTotalAction = UIAlertAction(title: "Show/Hide Total", style: .default) { _ in
+        var totalTitle = "Hide from Total"
+        if indexPath.section == 3 {
+            totalTitle = "Show in Total"
+        }
+        
+        let addRemoveTotalAction = UIAlertAction(title: totalTitle, style: .default) { _ in
+            if indexPath.section == 2 {
+                UserDefaultsManager.untrackedWatchAddr = UserDefaultsManager.untrackedWatchAddr + [self.watchAddrs[indexPath]!.address]
+                let newIndex = IndexPath(row: self.untrackedCount, section: 3)
+                self.trackedCount = self.trackedCount - 1
+                self.untrackedCount = self.untrackedCount + 1
+                let value = self.watchAddrs[indexPath]!
+                self.watchAddrs.removeValue(forKey: indexPath)
+                self.watchAddrs[newIndex] = value
+                
+                let accountValue = self.accountValues[indexPath]!
+                self.accountValues.removeValue(forKey: indexPath)
+                self.accountValues[newIndex] = accountValue
+                self.sumForCombined()
+                
+            } else {
+                var newUntracked = UserDefaultsManager.untrackedWatchAddr
+                newUntracked.remove(at: newUntracked.firstIndex {$0 == self.watchAddrs[indexPath]!.address }!)
+                UserDefaultsManager.untrackedWatchAddr = newUntracked
+                let newIndex = IndexPath(row: self.trackedCount, section: 2)
+                self.trackedCount = self.trackedCount + 1
+                self.untrackedCount = self.untrackedCount - 1
+                
+                let value = self.watchAddrs[indexPath]!
+                self.watchAddrs.removeValue(forKey: indexPath)
+                self.watchAddrs[newIndex] = value
+                
+                let accountValue = self.accountValues[indexPath]!
+                self.accountValues.removeValue(forKey: indexPath)
+                self.accountValues[newIndex] = accountValue
+                self.sumForCombined()
+
+            }
+           // DispatchQueue.main.async { self.tableView.reloadData() }
+            
+
         }
         alert.addAction(addRemoveTotalAction)
         
@@ -263,7 +329,7 @@ class WalletSelectorTableViewController: UITableViewController {
         // wallet
         if indexPath.section == 1 {
             handleWalletTapped(indexPath: indexPath)
-        } else if indexPath.section == 2 {
+        } else if indexPath.section == 2  || indexPath.section == 3 {
             handleWatchAddressTapped(indexPath: indexPath)
         }
     }

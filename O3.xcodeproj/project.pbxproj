@@ -45,6 +45,7 @@
 		35267DCE225F355E0011E106 /* ZendeskCoreSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35267DC7225F355D0011E106 /* ZendeskCoreSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3527F8CD20C5349200C2FCB9 /* Marketplace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */; };
 		3527F8CF20C539A500C2FCB9 /* MarketplaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3527F8CE20C539A500C2FCB9 /* MarketplaceController.swift */; };
+		352839682282B3F900F9965A /* ReferralLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352839672282B3F900F9965A /* ReferralLinkViewController.swift */; };
 		353E11DD20C65CF800697359 /* MarketplaceStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E11DC20C65CF800697359 /* MarketplaceStrings.swift */; };
 		353E11E320C676E000697359 /* Landing.json in Resources */ = {isa = PBXBuildFile; fileRef = 353E11E020C676DF00697359 /* Landing.json */; };
 		353E11E420C676E000697359 /* LandingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E11E120C676DF00697359 /* LandingCollectionCell.swift */; };
@@ -451,6 +452,7 @@
 		35267DC7225F355D0011E106 /* ZendeskCoreSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZendeskCoreSDK.framework; path = Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0/ZendeskCoreSDK.framework; sourceTree = "<group>"; };
 		3527F8CC20C5349200C2FCB9 /* Marketplace.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Marketplace.storyboard; sourceTree = "<group>"; };
 		3527F8CE20C539A500C2FCB9 /* MarketplaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceController.swift; sourceTree = "<group>"; };
+		352839672282B3F900F9965A /* ReferralLinkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralLinkViewController.swift; sourceTree = "<group>"; };
 		353E11DC20C65CF800697359 /* MarketplaceStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceStrings.swift; sourceTree = "<group>"; };
 		353E11E020C676DF00697359 /* Landing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Landing.json; sourceTree = "<group>"; };
 		353E11E120C676DF00697359 /* LandingCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingCollectionCell.swift; sourceTree = "<group>"; };
@@ -854,6 +856,7 @@
 				3514C1DA225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift */,
 				3514C1DC225D823A00E5BB23 /* Disclaimers.storyboard */,
 				35A37C3D2270016B00473895 /* InboxDisclaimerViewController.swift */,
+				352839672282B3F900F9965A /* ReferralLinkViewController.swift */,
 			);
 			path = Disclaimers;
 			sourceTree = "<group>";
@@ -1964,6 +1967,7 @@
 				356F1B0921901AA30004C088 /* EncryptPasswordEntryTableViewController.swift in Sources */,
 				6E5568EC214A4FD700BA805E /* AccountHeaderTableViewCell.swift in Sources */,
 				6E2F264321549BF900A3DEB1 /* OrdersTableViewController.swift in Sources */,
+				352839682282B3F900F9965A /* ReferralLinkViewController.swift in Sources */,
 				75E14E571F7D2AEC00BEAE22 /* UIApplication.swift in Sources */,
 				35C370AC21815FB70023AABC /* ActivateMultiWalletTableViewController.swift in Sources */,
 				75179F021F7620E700F4C67F /* Double.swift in Sources */,

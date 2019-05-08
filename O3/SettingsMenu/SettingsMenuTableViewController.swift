@@ -23,12 +23,10 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var supportCell: UITableViewCell!
     @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
     @IBOutlet weak var idCell: UITableViewCell!
-    @IBOutlet weak var buyCell: UITableViewCell!
     
     @IBOutlet weak var supportView: UIView!
     @IBOutlet weak var currencyView: UIView!
     @IBOutlet weak var themeView: UIView!
-    @IBOutlet weak var buyView: UITableViewCell!
     
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
@@ -37,7 +35,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var supportLabel: UILabel!
     @IBOutlet weak var multiWalletLabel: UILabel!
     @IBOutlet weak var idLabel: UILabel!
-    @IBOutlet weak var buyLabel: UILabel!
     
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
@@ -47,6 +44,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var walletNameLabel: UILabel!
 
     @IBOutlet weak var congestionIcon: UIImageView!
+    @IBOutlet weak var buyButton: UIButton!
+    @IBOutlet weak var referButton: UIButton!
     
     
     // swiftlint:disable weak_delegate
@@ -184,7 +183,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
         self.headerView.addGestureRecognizer(tap)
         contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
-        buyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buyNeo)))
         supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
         themeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTheme)))
         enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
@@ -196,7 +194,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         }
     }
     
-    @objc func buyNeo() {
+    @IBAction func buyNeo(_ sender: Any) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
             Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
@@ -214,6 +212,15 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         actionSheet.addAction(cancel)
         present(actionSheet, animated: true, completion: nil)
     }
+    
+    @IBAction func referNeo(_ sender: Any) {
+        let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "referralNav")
+        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+        nav.modalPresentationStyle = .custom
+        nav.transitioningDelegate = self.halfModalTransitioningDelegate
+        self.present(nav, animated: true, completion: nil)
+    }
+    
     
     @objc func openIdentity() {
         self.performSegue(withIdentifier: "segueToIdentitiesList", sender: nil)
@@ -239,6 +246,12 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         super.viewWillAppear(animated)
         checkCongestion()
         currencyLabel.text = String(format: SettingsStrings.currencyTitle, UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased())
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        DispatchQueue.main.async { self.setGradients() }
     }
 
     @objc func maximize(_ sender: Any) {
@@ -308,7 +321,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     
     func setThemedElements() {
         let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel, idLabel]
-        let themedCells = [themeCell, currencyCell, contactCell, idCell, buyCell]
+        let themedCells = [themeCell, currencyCell, contactCell, idCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
             cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -317,13 +330,42 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         for label in themedTitleLabels {
             label?.theme_textColor = O3Theme.titleColorPicker
         }
-        buyLabel.theme_textColor = O3Theme.positiveGainColorPicker
         versionLabel?.theme_textColor = O3Theme.lightTextColorPicker
         tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         headerView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        
+        
     }
     
+    func setGradients() {
+        buyButton.setTitle("Buy NEO Today!", for: UIControl.State())
+        referButton.setTitle("Refer friends and get rewards!", for: UIControl.State())
+        
+        let gradientBuy = CAGradientLayer()
+        gradientBuy.frame = CGRect(x: 0, y: 0, width: buyButton.bounds.width, height: buyButton.bounds.height)
+        gradientBuy.colors = [
+            UIColor(red:0.57, green:0.88, blue:0, alpha:1).cgColor,
+            UIColor(red:0.35, green:0.75, blue:0, alpha:1).cgColor]
+        gradientBuy.locations = [0, 1]
+        gradientBuy.startPoint = CGPoint(x: 1.0, y: 0.5)
+        gradientBuy.endPoint = CGPoint(x: 0.5, y: 1)
+        gradientBuy.cornerRadius = buyButton.cornerRadius
+        buyButton.layer.insertSublayer(gradientBuy, at: 0)
+        
+        let gradientRefer = CAGradientLayer()
+        gradientRefer.frame = CGRect(x: 0, y: 0, width: referButton.bounds.width, height: referButton.bounds.height)
+        gradientRefer.colors = [
+            UIColor(red:0.98, green:0.85, blue:0.38, alpha:1).cgColor,
+            UIColor(red:0.97, green:0.45, blue:0.13, alpha:1).cgColor,
+            UIColor(red:0.97, green:0.42, blue:0.11, alpha:1).cgColor
+        ]
+        gradientRefer.locations = [0, 0.93623286, 1]
+        gradientRefer.startPoint = CGPoint(x: 1, y: 0.28)
+        gradientRefer.endPoint = CGPoint(x: 0.42, y: 1)
+        gradientRefer.cornerRadius = buyButton.cornerRadius
+        referButton.layer.insertSublayer(gradientRefer, at: 0)
+    }
 
     func setLocalizedStrings() {
         themeLabel.text = SettingsStrings.themeTitle
@@ -331,7 +373,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         contactLabel.text = SettingsStrings.contactTitle
         supportLabel.text = SettingsStrings.supportTitle
         versionLabel.text = SettingsStrings.versionLabel
-        buyLabel.text = "Get NEO Today"
         idLabel.text = SettingsStrings.idLabel
         if NEP6.getFromFileSystem() == nil {
             multiWalletLabel.text = SettingsStrings.enableMultiWallet

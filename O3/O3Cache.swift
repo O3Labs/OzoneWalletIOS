@@ -222,8 +222,8 @@ class O3Cache {
     
     //address to string portfolio value
     static var portfolioStorage: Storage<AccountValue>? {
-        let diskConfig = DiskConfig(name: "portfolioStorage")
         let expiry = Date().addingTimeInterval(TimeInterval(3600))
+        let diskConfig = DiskConfig(name: "portfolioStorage", expiry: .date(expiry) )
         let memoryConfig = MemoryConfig(expiry: .date(expiry), countLimit: 10, totalCostLimit: 10)
         
         let storage = try? Storage(
@@ -241,6 +241,7 @@ class O3Cache {
     static func getCachedPortfolioValue(for address: String)-> AccountValue? {
         var cachedportfolioValue: AccountValue?
         do {
+            try O3Cache.portfolioStorage?.removeExpiredObjects()
             cachedportfolioValue = try O3Cache.portfolioStorage?.object(forKey: address + "_" + keys.portfolioValue.rawValue)
         } catch {
             
