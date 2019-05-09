@@ -17,31 +17,24 @@ import Neoutils
 
 class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate {
     @IBOutlet weak var contactView: UIView!
-    @IBOutlet weak var themeCell: UITableViewCell!
-    @IBOutlet weak var currencyCell: UITableViewCell!
+    @IBOutlet weak var generalSettingsCell: UITableViewCell!
     @IBOutlet weak var contactCell: UITableViewCell!
     @IBOutlet weak var supportCell: UITableViewCell!
     @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
-    @IBOutlet weak var idCell: UITableViewCell!
     
     @IBOutlet weak var supportView: UIView!
-    @IBOutlet weak var currencyView: UIView!
-    @IBOutlet weak var themeView: UIView!
+    @IBOutlet weak var generalSettingsView: UIView!
     
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
-    @IBOutlet weak var themeLabel: UILabel!
-    @IBOutlet weak var currencyLabel: UILabel!
+    @IBOutlet weak var generalSettingsLabel: UILabel!
     @IBOutlet weak var supportLabel: UILabel!
     @IBOutlet weak var multiWalletLabel: UILabel!
-    @IBOutlet weak var idLabel: UILabel!
     
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
     @IBOutlet weak var qrView: UIImageView!
     @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var shareButton: UIButton!
-    @IBOutlet weak var walletNameLabel: UILabel!
 
     @IBOutlet weak var congestionIcon: UIImageView!
     @IBOutlet weak var buyButton: UIButton!
@@ -114,20 +107,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         }
     }
     
-    
-    var themeString = UserDefaultsManager.themeIndex == 0 ? SettingsStrings.classicTheme: SettingsStrings.darkTheme {
-        didSet {
-            self.setThemeLabel()
-        }
-    }
-
-    func setThemeLabel() {
-        guard let label = themeCell.viewWithTag(1) as? UILabel else {
-            fatalError("Undefined behavior with table view")
-        }
-        DispatchQueue.main.async { label.text = self.themeString }
-    }
-    
     func checkCongestion() {
         NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight() { (result) in
             switch result {
@@ -186,11 +165,9 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.headerView.addGestureRecognizer(tap)
         contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
         supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
-        themeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTheme)))
+        generalSettingsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openGeneralSettings)))
         enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
-        idCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openIdentity)))
         footerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openPrivacyPolicy)))
-        setThemeLabel()
         
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.versionLabel.text = String(format: SettingsStrings.versionLabel, version)
@@ -229,11 +206,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.present(nav, animated: true, completion: nil)
     }
     
-    
-    @objc func openIdentity() {
-        self.performSegue(withIdentifier: "segueToIdentitiesList", sender: nil)
-    }
-    
     @objc func enableMultiWallet() {
         if NEP6.getFromFileSystem()?.accounts == nil {
             self.performSegue(withIdentifier: "segueToMultiWalletActivation", sender: nil)
@@ -253,7 +225,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         checkCongestion()
-        currencyLabel.text = String(format: SettingsStrings.currencyTitle, UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased())
     }
     
     
@@ -266,30 +237,16 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         maximizeToFullScreen()
     }
 
-    @objc func changeTheme() {
-        let optionMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let lightThemeAction = UIAlertAction(title: SettingsStrings.classicTheme, style: .default) { _ in
-            UserDefaultsManager.themeIndex = 0
-            ThemeManager.setTheme(index: 0)
-            self.themeString = SettingsStrings.classicTheme
+    @objc func openGeneralSettings() {
+        guard let walletInfoModal = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(withIdentifier: "generalSettingsTableViewController") as? GeneralSettingsTableViewController else {
+            
+            fatalError("Presenting improper view controller")
         }
-
-        let darkThemeAction = UIAlertAction(title: SettingsStrings.darkTheme, style: .default) { _ in
-            UserDefaultsManager.themeIndex = 1
-            ThemeManager.setTheme(index: 1)
-            self.themeString = SettingsStrings.darkTheme
-        }
-
-        let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
-        }
-
-        optionMenu.addAction(lightThemeAction)
-        optionMenu.addAction(darkThemeAction)
-        optionMenu.addAction(cancelAction)
-
-        optionMenu.popoverPresentationController?.sourceView = themeView
-        present(optionMenu, animated: true, completion: nil)
+        
+    
+        let nav = UINavigationController()
+        nav.viewControllers = [walletInfoModal]
+        UIApplication.topViewController()!.present(nav, animated: true)
     }
 
     @objc func sendMail() {
@@ -302,7 +259,17 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
 
     @objc func openSupportForum() {
-        let webBrowserViewController = WebBrowserViewController()
+        guard let walletInfoModal = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(withIdentifier: "helpTableViewController") as? HelpTableViewController else {
+            
+            fatalError("Presenting improper view controller")
+        }
+        
+        
+        let nav = UINavigationController()
+        nav.viewControllers = [walletInfoModal]
+        UIApplication.topViewController()!.present(nav, animated: true)
+        
+        /*let webBrowserViewController = WebBrowserViewController()
 
         webBrowserViewController.delegate = self
         webBrowserViewController.isToolbarHidden = true
@@ -315,7 +282,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         maximizeToFullScreen(allowReverse: false)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.navigationController?.pushViewController(webBrowserViewController, animated: true)
-        }
+        }*/
     }
 
     @IBAction func closeTapped(_ sender: Any) {
@@ -329,8 +296,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     
     
     func setThemedElements() {
-        let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel, idLabel]
-        let themedCells = [themeCell, currencyCell, contactCell, idCell]
+        let themedTitleLabels = [contactLabel, generalSettingsLabel, versionLabel, supportLabel, multiWalletLabel]
+        let themedCells = [generalSettingsCell, contactCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
             cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -377,17 +344,11 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
 
     func setLocalizedStrings() {
-        themeLabel.text = SettingsStrings.themeTitle
-        currencyLabel.text = SettingsStrings.currencyTitle + UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased()
+        generalSettingsLabel.text = "General"
         contactLabel.text = SettingsStrings.contactTitle
         supportLabel.text = SettingsStrings.supportTitle
         versionLabel.text = SettingsStrings.versionLabel
-        idLabel.text = SettingsStrings.idLabel
-        if NEP6.getFromFileSystem() == nil {
-            multiWalletLabel.text = SettingsStrings.enableMultiWallet
-        } else {
-            multiWalletLabel.text = SettingsStrings.manageWallets
-        }
+        multiWalletLabel.text = SettingsStrings.manageWallets
         headerTitleLabel.text = AccountStrings.myAddressInfo
         privacyPolicyLabel.text = "Terms and privacy policy"
     }

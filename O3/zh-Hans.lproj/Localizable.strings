@@ -145,7 +145,7 @@
 "MULTIWALLET_show_raw_key" = "Show Raw Key";
 
 /* title for manage wallets bottom sehet */
-"MULTIWALLET_wallets" = "Manage Wallets";
+"MULTIWALLET_wallets" = "Wallet Security Center";
 
 /* A description to display after a watch address has been successfully added */
 "MULTIWALLET_watch_address_added" = "A watch address has been added. You can unlock this address at ay time via settings > manage wallet and entering a private or encrypted key";
@@ -625,7 +625,7 @@
 "SETTINGS_Logout_Warning" = "退出程序后，您的私钥将会从该设备上移除。请确认私钥已备份或记下。下次登入该应用程序，需要从备份中恢复私钥";
 
 /* settings item to manage existing wallets */
-"SETTINGS_manage_wallets" = "Manage Wallets";
+"SETTINGS_manage_wallets" = "Wallet Security Center";
 
 /* Settings Menu Title for Private Key */
 "SETTINGS_My_Private_Key" = "我的私钥";
