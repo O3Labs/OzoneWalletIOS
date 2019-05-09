@@ -602,7 +602,7 @@
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="RdY-DN-unY">
-                        <rect key="frame" x="0.0" y="20" width="320" height="92"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="91"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="0.0" green="0.41176470590000003" blue="0.85098039219999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -833,7 +833,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="MNX-oG-Dku">
-                            <rect key="frame" x="0.0" y="542" width="320" height="95"/>
+                            <rect key="frame" x="0.0" y="498" width="320" height="95"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="O3 Wallet Version 0.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="We1-HS-Cs2">
@@ -877,7 +877,7 @@
                                                     <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_wallet_swap" translatesAutoresizingMaskIntoConstraints="NO" id="kmG-oW-AqO">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_security" translatesAutoresizingMaskIntoConstraints="NO" id="kmG-oW-AqO">
                                                     <rect key="frame" x="16" y="12" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="20" id="Ow0-ly-QDg"/>
@@ -910,7 +910,7 @@
                                                     <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="toggle-off" translatesAutoresizingMaskIntoConstraints="NO" id="cSc-sj-IdQ">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_general" translatesAutoresizingMaskIntoConstraints="NO" id="cSc-sj-IdQ">
                                                     <rect key="frame" x="16" y="12" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="20" id="o9a-Cv-ny2"/>
@@ -943,7 +943,7 @@
                                                     <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="support" translatesAutoresizingMaskIntoConstraints="NO" id="sKj-Q8-tul">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_help" translatesAutoresizingMaskIntoConstraints="NO" id="sKj-Q8-tul">
                                                     <rect key="frame" x="16" y="12" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="QmD-wN-JI7"/>
@@ -963,39 +963,6 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="283-pc-Ro7">
-                                        <rect key="frame" x="0.0" y="498" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="283-pc-Ro7" id="wZZ-Zg-S0l">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JnV-5q-g4u">
-                                                    <rect key="frame" x="46" y="0.0" width="234" height="43.5"/>
-                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
-                                                    <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="atSetting" translatesAutoresizingMaskIntoConstraints="NO" id="nJo-ch-Lq3">
-                                                    <rect key="frame" x="16" y="12" width="20" height="20"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="Lib-tW-h9a"/>
-                                                        <constraint firstAttribute="width" constant="20" id="qSx-2k-l4X"/>
-                                                    </constraints>
-                                                </imageView>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstItem="JnV-5q-g4u" firstAttribute="leading" secondItem="nJo-ch-Lq3" secondAttribute="trailing" constant="10" id="PBz-6P-tN5"/>
-                                                <constraint firstItem="nJo-ch-Lq3" firstAttribute="centerY" secondItem="wZZ-Zg-S0l" secondAttribute="centerY" id="QN2-ZU-gpo"/>
-                                                <constraint firstItem="JnV-5q-g4u" firstAttribute="top" secondItem="wZZ-Zg-S0l" secondAttribute="top" id="Ue8-i7-wvo"/>
-                                                <constraint firstItem="nJo-ch-Lq3" firstAttribute="leading" secondItem="wZZ-Zg-S0l" secondAttribute="leading" constant="16" id="Zxv-k8-zs3"/>
-                                                <constraint firstAttribute="trailing" secondItem="JnV-5q-g4u" secondAttribute="trailing" constant="40" id="eNB-Xq-FWX"/>
-                                                <constraint firstAttribute="bottom" secondItem="JnV-5q-g4u" secondAttribute="bottom" id="sso-4D-1i7"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -1009,9 +976,6 @@
                         <outlet property="addressLabel" destination="UpB-0b-kCt" id="PlR-eN-Xa3"/>
                         <outlet property="buyButton" destination="N0W-Fl-cDv" id="7QP-xF-0lq"/>
                         <outlet property="congestionIcon" destination="bqY-57-POW" id="Sxv-0g-aci"/>
-                        <outlet property="contactCell" destination="283-pc-Ro7" id="v4o-QB-oSO"/>
-                        <outlet property="contactLabel" destination="JnV-5q-g4u" id="mmC-06-gRK"/>
-                        <outlet property="contactView" destination="wZZ-Zg-S0l" id="eH5-ww-cbX"/>
                         <outlet property="enableMultiWalletCell" destination="9mk-IM-Xwk" id="Lat-Ze-vqM"/>
                         <outlet property="footerView" destination="MNX-oG-Dku" id="zLz-tl-OOV"/>
                         <outlet property="generalSettingsCell" destination="WsQ-LW-dmG" id="PZZ-8h-Y7o"/>
@@ -1019,13 +983,13 @@
                         <outlet property="generalSettingsView" destination="SaM-gg-w4c" id="xca-gq-oaG"/>
                         <outlet property="headerTitleLabel" destination="k4d-PG-3Rk" id="f76-kg-4FX"/>
                         <outlet property="headerView" destination="rPQ-Pj-GlN" id="3TJ-mV-cc2"/>
+                        <outlet property="helpLabel" destination="7kd-fQ-mpp" id="6lR-cD-1kM"/>
+                        <outlet property="helpView" destination="9n0-4H-G4n" id="g9e-Bi-uvP"/>
                         <outlet property="multiWalletLabel" destination="u4J-3R-7jr" id="ArY-4D-Xcg"/>
                         <outlet property="privacyPolicyLabel" destination="zkg-Vu-Mdy" id="lTh-ub-DA8"/>
                         <outlet property="qrView" destination="aPK-Ea-z7c" id="koh-1o-2DW"/>
                         <outlet property="referButton" destination="NUd-Fn-vaa" id="EqJ-MU-zyT"/>
                         <outlet property="supportCell" destination="a69-ZT-FSz" id="R05-TQ-5W6"/>
-                        <outlet property="supportLabel" destination="7kd-fQ-mpp" id="6lR-cD-1kM"/>
-                        <outlet property="supportView" destination="9n0-4H-G4n" id="g9e-Bi-uvP"/>
                         <outlet property="versionLabel" destination="We1-HS-Cs2" id="ocL-ba-unv"/>
                         <segue destination="IVl-ff-ggg" kind="presentation" identifier="segueToMultiWalletActivation" id="aZW-4J-STx"/>
                         <segue destination="gnP-yl-Uck" kind="presentation" identifier="segueToManageWallets" id="Yw6-SJ-yhx"/>
@@ -2100,18 +2064,17 @@ Your raw private key is not password protected, anyone with access to this priva
         </scene>
     </scenes>
     <resources>
-        <image name="atSetting" width="24" height="24"/>
         <image name="chartLine" width="30" height="30"/>
         <image name="chevron-left" width="10" height="18"/>
         <image name="chevron-right" width="10" height="18"/>
         <image name="cog" width="30" height="30"/>
         <image name="eye" width="23" height="14"/>
+        <image name="ic_general" width="24" height="24"/>
+        <image name="ic_help" width="24" height="24"/>
+        <image name="ic_security" width="24" height="24"/>
         <image name="ic_unlocked" width="16" height="16"/>
-        <image name="ic_wallet_swap" width="24" height="24"/>
         <image name="plus" width="24" height="24"/>
-        <image name="support" width="24" height="24"/>
         <image name="times" width="20" height="20"/>
-        <image name="toggle-off" width="24" height="24"/>
         <image name="trash" width="24" height="24"/>
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -49,6 +49,7 @@
 		3528396A2283BC9D00F9965A /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 352839692283BC9D00F9965A /* Settings.storyboard */; };
 		3528396C2283C9AE00F9965A /* GeneralSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3528396B2283C9AE00F9965A /* GeneralSettingsTableViewController.swift */; };
 		3528396E2283D7AD00F9965A /* HelpTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3528396D2283D7AD00F9965A /* HelpTableViewController.swift */; };
+		352839702283EBBB00F9965A /* HelpItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3528396F2283EBBB00F9965A /* HelpItemTableViewCell.swift */; };
 		353E11DD20C65CF800697359 /* MarketplaceStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E11DC20C65CF800697359 /* MarketplaceStrings.swift */; };
 		353E11E320C676E000697359 /* Landing.json in Resources */ = {isa = PBXBuildFile; fileRef = 353E11E020C676DF00697359 /* Landing.json */; };
 		353E11E420C676E000697359 /* LandingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E11E120C676DF00697359 /* LandingCollectionCell.swift */; };
@@ -459,6 +460,7 @@
 		352839692283BC9D00F9965A /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		3528396B2283C9AE00F9965A /* GeneralSettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsTableViewController.swift; sourceTree = "<group>"; };
 		3528396D2283D7AD00F9965A /* HelpTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTableViewController.swift; sourceTree = "<group>"; };
+		3528396F2283EBBB00F9965A /* HelpItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpItemTableViewCell.swift; sourceTree = "<group>"; };
 		353E11DC20C65CF800697359 /* MarketplaceStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceStrings.swift; sourceTree = "<group>"; };
 		353E11E020C676DF00697359 /* Landing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Landing.json; sourceTree = "<group>"; };
 		353E11E120C676DF00697359 /* LandingCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingCollectionCell.swift; sourceTree = "<group>"; };
@@ -1692,6 +1694,7 @@
 				35E5F60B20283AA600D65BEA /* AddressBookEntryTableViewCell.swift */,
 				352839692283BC9D00F9965A /* Settings.storyboard */,
 				3528396B2283C9AE00F9965A /* GeneralSettingsTableViewController.swift */,
+				3528396F2283EBBB00F9965A /* HelpItemTableViewCell.swift */,
 			);
 			path = SettingsMenu;
 			sourceTree = "<group>";
@@ -2054,6 +2057,7 @@
 				3522945B2111A693004A03A7 /* UnboundOng.swift in Sources */,
 				35CE4A262175CA4C00F460ED /* BadgeUIButton.swift in Sources */,
 				7513FAD71F6952B8003450ED /* TransactionCell.swift in Sources */,
+				352839702283EBBB00F9965A /* HelpItemTableViewCell.swift in Sources */,
 				6E2F264521549C1800A3DEB1 /* OrderTableViewCell.swift in Sources */,
 				6E43769A21460CB90091367A /* Dictionary+Sort.swift in Sources */,
 				35C370A9218053500023AABC /* CloudDataManager.swift in Sources */,

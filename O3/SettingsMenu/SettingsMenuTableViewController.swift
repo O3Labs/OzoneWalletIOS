@@ -16,19 +16,16 @@ import ZendeskSDK
 import Neoutils
 
 class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate {
-    @IBOutlet weak var contactView: UIView!
     @IBOutlet weak var generalSettingsCell: UITableViewCell!
-    @IBOutlet weak var contactCell: UITableViewCell!
     @IBOutlet weak var supportCell: UITableViewCell!
     @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
     
-    @IBOutlet weak var supportView: UIView!
+    @IBOutlet weak var helpView: UIView!
     @IBOutlet weak var generalSettingsView: UIView!
     
-    @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var generalSettingsLabel: UILabel!
-    @IBOutlet weak var supportLabel: UILabel!
+    @IBOutlet weak var helpLabel: UILabel!
     @IBOutlet weak var multiWalletLabel: UILabel!
     
     @IBOutlet weak var headerView: UIView!
@@ -143,7 +140,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         }
     }
     
-    @objc func rightBarButtonTapped(_ sender: Any) {
+    @objc func leftBarButtonTapped(_ sender: Any) {
         let inboxController = UIStoryboard(name: "Inbox", bundle: nil).instantiateInitialViewController()!
         self.present(inboxController, animated: true)
     }
@@ -153,7 +150,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: self.qrView.bounds.size.width, height: self.qrView.bounds.size.height)
         
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_envelope"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_envelope"), style: .plain, target: self, action: #selector(leftBarButtonTapped(_:)))
         
         setThemedElements()
         setLocalizedStrings()
@@ -163,8 +160,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
         self.headerView.addGestureRecognizer(tap)
-        contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
-        supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
+        
+        helpView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
         generalSettingsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openGeneralSettings)))
         enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
         footerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openPrivacyPolicy)))
@@ -172,11 +169,31 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.versionLabel.text = String(format: SettingsStrings.versionLabel, version)
         }
+        setNavElements()
+    }
+    
+    func setNavElements() {
+        let activeWallet = NEP6.getFromFileSystem()!.accounts.first {$0.isDefault}!.label
+        let titleViewButton = UIButton(type: .system)
+        titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
+        titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
+        titleViewButton.setTitle(activeWallet, for: .normal)
+        titleViewButton.semanticContentAttribute = .forceRightToLeft
+        titleViewButton.setImage(UIImage(named: "ic_chevron_down"), for: UIControl.State())
+        
+        titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20)
+        // Create action listener
+        titleViewButton.addTarget(self, action: #selector(openMultiWalletDisplay), for: .touchUpInside)
+        navigationItem.titleView = titleViewButton
     }
     
     @objc func openPrivacyPolicy() {
         Controller().openDappBrowserV2(url: URL(string:
             "https://o3.network/privacy/")!)
+    }
+    
+    @objc func openMultiWalletDisplay() {
+        Controller().openWalletSelector()
     }
     
     @IBAction func buyNeo(_ sender: Any) {
@@ -268,21 +285,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         let nav = UINavigationController()
         nav.viewControllers = [walletInfoModal]
         UIApplication.topViewController()!.present(nav, animated: true)
-        
-        /*let webBrowserViewController = WebBrowserViewController()
-
-        webBrowserViewController.delegate = self
-        webBrowserViewController.isToolbarHidden = true
-        webBrowserViewController.title = ""
-        webBrowserViewController.isShowURLInNavigationBarWhenLoading = false
-        webBrowserViewController.barTintColor = UserDefaultsManager.theme.backgroundColor
-        webBrowserViewController.tintColor = Theme.light.primaryColor
-        webBrowserViewController.isShowPageTitleInNavigationBar = false
-        webBrowserViewController.loadURLString("https://community.o3.network")
-        maximizeToFullScreen(allowReverse: false)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.navigationController?.pushViewController(webBrowserViewController, animated: true)
-        }*/
     }
 
     @IBAction func closeTapped(_ sender: Any) {
@@ -296,8 +298,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     
     
     func setThemedElements() {
-        let themedTitleLabels = [contactLabel, generalSettingsLabel, versionLabel, supportLabel, multiWalletLabel]
-        let themedCells = [generalSettingsCell, contactCell]
+        let themedTitleLabels = [generalSettingsLabel, versionLabel, helpLabel, multiWalletLabel]
+        let themedCells = [generalSettingsCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
             cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -345,8 +347,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
 
     func setLocalizedStrings() {
         generalSettingsLabel.text = "General"
-        contactLabel.text = SettingsStrings.contactTitle
-        supportLabel.text = SettingsStrings.supportTitle
+        helpLabel.text = "Help"
         versionLabel.text = SettingsStrings.versionLabel
         multiWalletLabel.text = SettingsStrings.manageWallets
         headerTitleLabel.text = AccountStrings.myAddressInfo

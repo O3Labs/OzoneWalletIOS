@@ -192,6 +192,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_envelope"), style: .plain, target: self, action: #selector(leftBarButtonTapped))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped))
+        self.navigationItem.leftBarButtonItem?.tintColor = Theme.light.primaryColor
+        self.navigationItem.rightBarButtonItem?.tintColor = Theme.light.primaryColor
 
         if UserDefaults.standard.string(forKey: "subscribedAddress") != Authenticated.wallet?.address {
             Channel.shared().unsubscribe(fromTopic: "*") {

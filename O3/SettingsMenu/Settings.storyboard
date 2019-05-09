@@ -589,7 +589,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Sxn-Dy-m2F">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="helpItemTableViewCell" id="Sxn-Dy-m2F" customClass="HelpItemTableViewCell" customModule="O3" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="72" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Sxn-Dy-m2F" id="wtG-bd-w8l">
@@ -608,6 +608,9 @@
                                         <constraint firstItem="cxO-1n-SUR" firstAttribute="centerY" secondItem="wtG-bd-w8l" secondAttribute="centerY" id="fgW-hy-R9f"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="titleLabel" destination="cxO-1n-SUR" id="iai-pk-YNF"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -625,7 +628,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fKr-Fk-rDJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="783" y="875"/>
+            <point key="canvasLocation" x="782.60869565217399" y="874.55357142857144"/>
         </scene>
         <!--AddressEntryTableViewController-->
         <scene sceneID="ujj-ZY-dwb">

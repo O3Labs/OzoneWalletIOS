@@ -46,11 +46,9 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
 
         let accountAssetViewController = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "AccountAssetTableViewController")
         let transactionHistory = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "TransactionHistoryTableViewController")
-        let contactsViewController = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "ContactsTableViewController")
-
+        
         self.viewControllers.append(accountAssetViewController)
         self.viewControllers.append(transactionHistory)
-        self.viewControllers.append(contactsViewController)
 
         self.dataSource = self
 
@@ -64,6 +62,10 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         self.bar.location = .top
         self.bar.style = .buttonBar
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        setNavigationItems()
+    }
+    
+    func setNavigationItems() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
         
         if let nep6 = NEP6.getFromFileSystem() {
@@ -74,7 +76,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
                 }
             }
             if numAccount > 0 {
-                navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_wallet_swap.png"), style: .plain, target: self, action: #selector(self.swapWalletTapped))
+                navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_envelope"), style: .plain, target: self, action: #selector(self.inboxTapped))
             }
         }
         
@@ -82,8 +84,26 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         #if TESTNET
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openDAppBrowser(_:)))
         #endif
+        
+        let activeWallet = NEP6.getFromFileSystem()!.accounts.first {$0.isDefault}!.label
+        let titleViewButton = UIButton(type: .system)
+        titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
+        titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
+        titleViewButton.setTitle(activeWallet, for: .normal)
+        titleViewButton.semanticContentAttribute = .forceRightToLeft
+        titleViewButton.setImage(UIImage(named: "ic_chevron_down"), for: UIControl.State())
+        
+        titleViewButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20)
+        // Create action listener
+        titleViewButton.addTarget(self, action: #selector(showMultiWalletDisplay), for: .touchUpInside)
+        navigationItem.titleView = titleViewButton
     }
 
+    @objc func showMultiWalletDisplay() {
+        Controller().openWalletSelector()
+    }
+    
     @objc func openDAppBrowser(_ sender: Any) {
         Controller().openSwitcheoDapp()
     }
@@ -105,15 +125,9 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         return nil
     }
     
-    @objc func swapWalletTapped() {
-        guard let modal = UIStoryboard(name: "AddNewMultiWallet", bundle: nil).instantiateViewController(withIdentifier: "UnlockMultiWalletTableViewController") as? UnlockMultiWalletTableViewController else {
-            fatalError("Presenting improper modal controller")
-        }
-        let modalWithNav = UINavigationController(rootViewController: modal)
-        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: modalWithNav)
-        modalWithNav.modalPresentationStyle = .custom
-        modalWithNav.transitioningDelegate = self.halfModalTransitioningDelegate
-        self.present(modalWithNav, animated: true)
+    @objc func inboxTapped() {
+        let inboxController = UIStoryboard(name: "Inbox", bundle: nil).instantiateInitialViewController()!
+        self.present(inboxController, animated: true)
     }
 
     @objc func rightBarButtonTapped(_ sender: Any) {
@@ -154,8 +168,8 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     
     func setLocalizedStrings() {
         self.bar.items = [Item(title: "Accounts".uppercased()), //TODO change this to localized string
-                          Item(title: AccountStrings.transactions),
-                          Item(title: AccountStrings.contacts)]
+                          Item(title: AccountStrings.transactions)
+                        ]
     }
 }
 
@@ -216,4 +230,5 @@ extension AccountTabViewController: QRScanDelegate {
             }
         }
     }
+    
 }
