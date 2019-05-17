@@ -73,12 +73,21 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_unlocked" translatesAutoresizingMaskIntoConstraints="NO" id="gmp-nW-SoU">
+                                            <rect key="frame" x="63" y="20" width="12" height="12"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="12" id="kLw-EQ-yzK"/>
+                                                <constraint firstAttribute="width" constant="12" id="xcD-Ye-t5E"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="OCs-f7-igh" firstAttribute="leading" secondItem="Lmd-kt-f3w" secondAttribute="leading" constant="16" id="38V-wu-IjX"/>
+                                        <constraint firstItem="gmp-nW-SoU" firstAttribute="top" secondItem="kN1-Me-erN" secondAttribute="top" constant="4" id="5XC-xe-KtU"/>
                                         <constraint firstItem="kN1-Me-erN" firstAttribute="top" secondItem="Lmd-kt-f3w" secondAttribute="top" constant="16" id="87R-9F-LGX"/>
                                         <constraint firstAttribute="trailing" secondItem="GxR-5S-ozr" secondAttribute="trailing" constant="16" id="CIz-iB-zgb"/>
                                         <constraint firstItem="GxR-5S-ozr" firstAttribute="centerY" secondItem="Lmd-kt-f3w" secondAttribute="centerY" id="F3l-7K-fwj"/>
+                                        <constraint firstItem="gmp-nW-SoU" firstAttribute="leading" secondItem="kN1-Me-erN" secondAttribute="trailing" constant="4" id="PGt-9y-8M5"/>
                                         <constraint firstItem="GxR-5S-ozr" firstAttribute="leading" secondItem="1od-XO-NaE" secondAttribute="trailing" constant="8" id="kkq-Zp-CUB"/>
                                         <constraint firstItem="1od-XO-NaE" firstAttribute="centerY" secondItem="Lmd-kt-f3w" secondAttribute="centerY" id="sbM-su-Qxk"/>
                                         <constraint firstItem="kN1-Me-erN" firstAttribute="leading" secondItem="Lmd-kt-f3w" secondAttribute="leading" constant="16" id="snv-oB-5m6"/>
@@ -88,6 +97,7 @@
                                 <connections>
                                     <outlet property="subtitleLabel" destination="OCs-f7-igh" id="PAy-p4-Kns"/>
                                     <outlet property="titleLabel" destination="kN1-Me-erN" id="IDt-gM-ikY"/>
+                                    <outlet property="unlockedIcon" destination="gmp-nW-SoU" id="JHB-IM-ced"/>
                                     <outlet property="valueLabel" destination="1od-XO-NaE" id="gIn-OR-TOf"/>
                                 </connections>
                             </tableViewCell>
@@ -135,5 +145,6 @@
     </scenes>
     <resources>
         <image name="chevron-right" width="10" height="18"/>
+        <image name="ic_unlocked" width="16" height="16"/>
     </resources>
 </document>

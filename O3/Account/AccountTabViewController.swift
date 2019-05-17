@@ -76,7 +76,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
                 }
             }
             if numAccount > 0 {
-                navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_envelope"), style: .plain, target: self, action: #selector(self.inboxTapped))
+                navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "support"), style: .plain, target: self, action: #selector(self.inboxTapped))
             }
         }
         
@@ -154,7 +154,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
             let nav = WalletHomeNavigationController(rootViewController: sendModal)
             nav.navigationBar.prefersLargeTitles = false
             nav.navigationItem.largeTitleDisplayMode = .never
-            sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
+            sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
             let transitionDelegate = DeckTransitioningDelegate()
             nav.transitioningDelegate = transitionDelegate
             nav.modalPresentationStyle = .custom

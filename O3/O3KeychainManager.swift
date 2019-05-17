@@ -183,7 +183,7 @@ class O3KeychainManager {
                 completion(.failure(error.localizedDescription))
             }
         }
-    }
+    }   
     
     static func setNep6DecryptionPassword(for address: String, pass: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
         let keychain = Keychain(service: self.keychainService)

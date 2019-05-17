@@ -141,6 +141,7 @@
 		35AF806920CA6C0100E48457 /* LoginV2TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AF806820CA6C0100E48457 /* LoginV2TableViewController.swift */; };
 		35AF806B20CA6CF700E48457 /* NEP2DetectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AF806A20CA6CF700E48457 /* NEP2DetectedViewController.swift */; };
 		35AF806D20CA6F9B00E48457 /* EnterPasswordKey.json in Resources */ = {isa = PBXBuildFile; fileRef = 35AF806C20CA6F9B00E48457 /* EnterPasswordKey.json */; };
+		35AFC252228E857B009296EC /* BuyNeoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AFC251228E857B009296EC /* BuyNeoTableViewCell.swift */; };
 		35B399D32106F65100284BFA /* TokenSaleLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B399D22106F65100284BFA /* TokenSaleLog.swift */; };
 		35B399D5210ECDB400284BFA /* OntologyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B399D4210ECDB400284BFA /* OntologyClient.swift */; };
 		35B399DF210EDE4500284BFA /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B399DE210EDE4500284BFA /* GasPrice.swift */; };
@@ -545,6 +546,7 @@
 		35AF806820CA6C0100E48457 /* LoginV2TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginV2TableViewController.swift; sourceTree = "<group>"; };
 		35AF806A20CA6CF700E48457 /* NEP2DetectedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEP2DetectedViewController.swift; sourceTree = "<group>"; };
 		35AF806C20CA6F9B00E48457 /* EnterPasswordKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EnterPasswordKey.json; sourceTree = "<group>"; };
+		35AFC251228E857B009296EC /* BuyNeoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyNeoTableViewCell.swift; sourceTree = "<group>"; };
 		35B399D22106F65100284BFA /* TokenSaleLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSaleLog.swift; sourceTree = "<group>"; };
 		35B399D4210ECDB400284BFA /* OntologyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OntologyClient.swift; sourceTree = "<group>"; };
 		35B399DE210EDE4500284BFA /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
@@ -1416,6 +1418,7 @@
 				6E40F6472119771300B2B633 /* PortfolioNotificationTableViewCell.swift */,
 				354AF80B217EC61400B82408 /* EmptyPortfolioView.xib */,
 				354AF80D217EC6E100B82408 /* EmptyPortfolioView.swift */,
+				35AFC251228E857B009296EC /* BuyNeoTableViewCell.swift */,
 			);
 			path = WalletHome;
 			sourceTree = "<group>";
@@ -2111,6 +2114,7 @@
 				3557BAD220AA9D310034937C /* Base58.swift in Sources */,
 				3557BABE20AA9D0B0034937C /* Claims.swift in Sources */,
 				3514DC62225C67B2001DCFD9 /* DappDisclaimerViewController.swift in Sources */,
+				35AFC252228E857B009296EC /* BuyNeoTableViewCell.swift in Sources */,
 				752006861F7F698300D19B5F /* O3TabBarController.swift in Sources */,
 				6E4E6F89201465BE001A5844 /* NativeAssetTableViewCell.swift in Sources */,
 				6ED5D7EC2016BFC900AF3713 /* AssetSelectorTableViewController.swift in Sources */,

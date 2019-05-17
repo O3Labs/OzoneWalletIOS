@@ -68,7 +68,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
         let password = passwordInputField.text!
         var error: NSError?
         let wif = NeoutilsNEP2Decrypt(encryptedKey, password, &error)
-        if error != nil {
+        if error != nil || wif == nil {
             OzoneAlert.alertDialog(message: MultiWalletStrings.failedToDecrypt, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
             DispatchQueue.main.async { HUD.hide() }
             return

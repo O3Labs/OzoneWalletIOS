@@ -12,6 +12,7 @@ import UIKit
 import SwiftTheme
 import KeychainAccess
 import WebBrowser
+import DeckTransition
 import ZendeskSDK
 import Neoutils
 
@@ -150,7 +151,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: self.qrView.bounds.size.width, height: self.qrView.bounds.size.height)
         
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_envelope"), style: .plain, target: self, action: #selector(leftBarButtonTapped(_:)))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "support"), style: .plain, target: self, action: #selector(leftBarButtonTapped(_:)))
         
         setThemedElements()
         setLocalizedStrings()
@@ -181,7 +182,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         titleViewButton.semanticContentAttribute = .forceRightToLeft
         titleViewButton.setImage(UIImage(named: "ic_chevron_down"), for: UIControl.State())
         
-        titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20)
+        titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20 )
         // Create action listener
         titleViewButton.addTarget(self, action: #selector(openMultiWalletDisplay), for: .touchUpInside)
         navigationItem.titleView = titleViewButton
@@ -204,7 +205,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         actionSheet.addAction(buyWithFiat)
         
         let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
-            Controller().openDappBrowserV2(url: URL(string: "https://o3.network/swap/")!)
+            Controller().openDappBrowserV2(url: URL(string: "https://swap.o3.app")!)
         }
         actionSheet.addAction(buyWithCrypto)
         
@@ -216,10 +217,10 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     @IBAction func referNeo(_ sender: Any) {
-        let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "referralNav")
-        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+        let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "referralBottomSheet")
+        let transitionDelegate = DeckTransitioningDelegate()
         nav.modalPresentationStyle = .custom
-        nav.transitioningDelegate = self.halfModalTransitioningDelegate
+        nav.transitioningDelegate = transitionDelegate
         self.present(nav, animated: true, completion: nil)
     }
     

@@ -13,15 +13,22 @@ class WalletSelectorTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var valueLabel: UILabel!
+    @IBOutlet weak var unlockedIcon: UIImageView!
     
     struct Data {
         var title = ""
         var subtitle = ""
         var value: AccountValue?
+        var isDefault: Bool = false
     }
     
     var data: Data? {
         didSet {
+            if data!.isDefault {
+                unlockedIcon.isHidden = false
+            } else {
+                unlockedIcon.isHidden = true
+            }
             titleLabel.text = data!.title
             subtitleLabel.text = data!.subtitle
             

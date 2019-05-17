@@ -57,7 +57,6 @@ class InboxDisclaimerViewController: UIViewController {
         checkboxDescription.theme_textColor = O3Theme.titleColorPicker
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
-    
 }
 
 

@@ -334,7 +334,7 @@ extension DAppBrowserViewController {
         actionSheet.addAction(buyWithFiat)
         
         let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
-            Controller().openDappBrowserV2(url: URL(string: "https://o3.network/swap/")!)
+            Controller().openDappBrowserV2(url: URL(string: "https://swap.o3.app")!)
         }
         actionSheet.addAction(buyWithCrypto)
         

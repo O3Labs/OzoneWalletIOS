@@ -10,12 +10,12 @@ import Foundation
 import UIKit
 
 class ReferralLinkViewController: UIViewController, UITextFieldDelegate {
-    @IBOutlet weak var referallTitleLabel: UILabel!
     @IBOutlet weak var referralDescriptionLabel: UILabel!
     @IBOutlet weak var learnMoreButton: UIButton!
     @IBOutlet weak var referralLinkHeaderLabel: UILabel!
     @IBOutlet weak var referralInputField: UITextField!
     @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var heroImage: UIImageView!
     
     
     override func viewDidLoad() {
@@ -41,7 +41,7 @@ class ReferralLinkViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setThemedElements() {
-        referallTitleLabel.theme_textColor = O3Theme.titleColorPicker
+        
         referralDescriptionLabel.theme_textColor = O3Theme.lightTextColorPicker
         referralLinkHeaderLabel.theme_textColor = O3Theme.titleColorPicker
         
@@ -54,7 +54,7 @@ class ReferralLinkViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setLocalizedStrings() {
-        referallTitleLabel.text = "Refer your firends and get rewarded!"
+
         referralDescriptionLabel.text = "For every friend that uses your referral code to buy NEO, O3 will give you and your friend a small gas gift"
         learnMoreButton.setTitle("Learn more here", for: UIControl.State())
         referralLinkHeaderLabel.text = "Your referral link"

@@ -167,7 +167,7 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
         DispatchQueue.global(qos: .userInitiated).async {
             if key.starts(with: "6P") {
                 let wif = NeoutilsNEP2Decrypt(key, password, &error)
-                if error != nil {
+                if error != nil || wif == nil {
                     DispatchQueue.main.async {
                         HUD.hide()
                         OzoneAlert.alertDialog("Failed to decrypt key", message: "Either the password or key is incorrect, please double check it", dismissTitle: OzoneAlert.okPositiveConfirmString) {}
@@ -214,7 +214,7 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
     
     func qrScanned(data: String) {
         keyField.text = data
-        keyFieldChanged(nil)
+        keyFieldChanged(keyField)
         invalidateFromQr = true
     }
     

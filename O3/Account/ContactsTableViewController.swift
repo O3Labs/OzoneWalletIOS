@@ -84,7 +84,7 @@ class ContactsTableViewController: UITableViewController, AddressAddDelegate {
         let nav = WalletHomeNavigationController(rootViewController: modal)
         nav.navigationBar.prefersLargeTitles = true
         nav.navigationItem.largeTitleDisplayMode = .never
-        modal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(tappedLeftBarButtonItem(_:)))
+        modal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(tappedLeftBarButtonItem(_:)))
         let transitionDelegate = DeckTransitioningDelegate()
         nav.transitioningDelegate = transitionDelegate
         nav.modalPresentationStyle = .custom

@@ -190,11 +190,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         activatedLineCenterXAnchor?.isActive = true
         homeviewModel = HomeViewModel(delegate: self)
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_envelope"), style: .plain, target: self, action: #selector(leftBarButtonTapped))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "support"), style: .plain, target: self, action: #selector(leftBarButtonTapped))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped))
         self.navigationItem.leftBarButtonItem?.tintColor = Theme.light.primaryColor
         self.navigationItem.rightBarButtonItem?.tintColor = Theme.light.primaryColor
 
+        let titleViewButton = UIButton(type: .system)
+        titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
+        titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
+        titleViewButton.setTitle("Portfolio", for: .normal)
+        titleViewButton.semanticContentAttribute = .forceRightToLeft
+        titleViewButton.setImage(UIImage(named: "ic_chevron_down"), for: UIControl.State())
+        
+        titleViewButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20)
+        // Create action listener
+        titleViewButton.addTarget(self, action: #selector(showMultiWalletDisplay), for: .touchUpInside)
+        navigationItem.titleView = titleViewButton
+        
+        
         if UserDefaults.standard.string(forKey: "subscribedAddress") != Authenticated.wallet?.address {
             Channel.shared().unsubscribe(fromTopic: "*") {
                 Channel.shared().subscribe(toTopic: (Authenticated.wallet?.address)!)
@@ -225,6 +239,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         showDisclaimer()
         super.viewDidLoad()
 
+    }
+    
+    @objc func showMultiWalletDisplay() {
+        Controller().openWalletSelector()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -286,13 +304,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-
-            guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "notification-cell") as? PortfolioNotificationTableViewCell else {
-                fatalError("Undefined Table Cell Behavior")
+            if AppState.dismissBackupNotification() == false {
+                guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "notification-cell") as? PortfolioNotificationTableViewCell else {
+                    fatalError("Undefined Table Cell Behavior")
+                }
+                cell.selectionStyle = .none
+                cell.delegate = self
+                return cell
+            } else {
+                guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "buyNeoCell") as? BuyNeoTableViewCell else {
+                    fatalError("Undefined Table Cell Behavior")
+                }
+                cell.selectionStyle = .none
+                return cell
             }
-            cell.selectionStyle = .none
-            cell.delegate = self
-            return cell
         }
         guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "portfolioAssetCell") as? PortfolioAssetCell else {
             fatalError("Undefined Table Cell Behavior")
@@ -349,14 +374,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                     addressHasBalance = true
                 }
             }
-            return AppState.dismissBackupNotification() == false /*&& addressHasBalance*/ ? 1 : 0
+            //notification area
+            return 1
         }
         return self.displayedAssets.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 116.0
+            if AppState.dismissBackupNotification() {
+                return 60.0
+            } else {
+                return 116.0
+            }
+            
         }
         return 60.0
     }
@@ -587,7 +618,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         present(modal, animated: true, completion: nil)
     }
     
-    func emptyPortfolioLeftButtonTapped()  {
+    func buyNeoButtonTapped() {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
             Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
@@ -595,7 +626,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         actionSheet.addAction(buyWithFiat)
         
         let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
-            Controller().openDappBrowserV2(url: URL(string: "https://o3.network/swap/")!)
+            Controller().openDappBrowserV2(url: URL(string: "https://swap.o3.app")!)
         }
         actionSheet.addAction(buyWithCrypto)
         
@@ -652,7 +683,7 @@ extension HomeViewController: PortfolioNotificationTableViewCellDelegate {
     func didDismiss() {
         DispatchQueue.main.async {
             AppState.setDismissBackupNotification(dismiss: true)
-            self.assetsTable.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            self.assetsTable.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         }
     }
 }

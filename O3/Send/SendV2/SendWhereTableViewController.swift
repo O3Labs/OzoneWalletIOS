@@ -61,7 +61,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
         
         enableContinueButton()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
     }
     
     @IBAction func tappedLeftBarButtonItem(_ sender: Any) {
@@ -171,7 +171,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
                 let addressSelectVC = dest.children[0] as? AddressSelectTableViewController else {
                     fatalError("Undefined Table view behavior")
             }
-            addressSelectVC.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(tappedCloseAddressSelector(_:)))
+            addressSelectVC.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(tappedCloseAddressSelector(_:)))
             addressSelectVC.delegate = self
         } else if segue.identifier == "segueToQR" {
             guard let dest = segue.destination as? QRScannerController else {

@@ -60,6 +60,6 @@ class TokenSelectionTabViewController: TabmanViewController, PageboyViewControll
     func setLocalizedStrings() {
         bar.items = [Item(title: TokenSelectionStrings.NEP5),
                      Item(title: TokenSelectionStrings.artsAndCollectibles)]
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(tappedClose(_:)))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(tappedClose(_:)))
     }
 }

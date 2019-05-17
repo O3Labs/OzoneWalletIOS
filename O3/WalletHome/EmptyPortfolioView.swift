@@ -11,7 +11,7 @@ import UIKit
 
 protocol EmptyPortfolioDelegate: AnyObject {
     func emptyPortfolioRightButtonTapped()
-    func emptyPortfolioLeftButtonTapped()
+    func buyNeoButtonTapped()
 }
 
 class EmptyPortfolioView: UIView {
@@ -43,7 +43,7 @@ class EmptyPortfolioView: UIView {
     }
     
     @IBAction func leftButtonTapped(_ sender: Any) {
-        emptyDelegate?.emptyPortfolioLeftButtonTapped()
+        emptyDelegate?.buyNeoButtonTapped()
     }
     
     @IBAction func rightButtonTapped(_ sender: Any) {

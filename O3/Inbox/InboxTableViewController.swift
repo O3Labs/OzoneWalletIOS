@@ -24,7 +24,7 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
         setThemedElements()
         setLocalizedStrings()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "times"), style: .plain, target: self, action: #selector(dismissTapped))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "close-x"), style: .plain, target: self, action: #selector(dismissTapped))
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "cog"), style: .plain, target: self, action: #selector(showSettingsMenu(_:)))
         
@@ -65,6 +65,7 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "inbox-cell") as? InboxTableViewCell else {
             fatalError("Unrecoverable error occurred")
         }
+    
         cell.data = dummyMessages[indexPath.row]
         return cell
     }

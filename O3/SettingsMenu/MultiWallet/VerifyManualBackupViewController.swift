@@ -101,13 +101,15 @@ class VerifyManualBackupViewController: UIViewController {
             if account.isDefault {
                 let prompt = String(format: OnboardingStrings.nep6AuthenticationPrompt, account.label)
                 O3KeychainManager.authenticateWithBiometricOrPass(message: prompt) { result in
-                    switch result {
-                    case .success(let _):
-                        self.keyLabel.text = (Authenticated.wallet?.wif)!
-                        self.keyQR.image = UIImage(qrData: (Authenticated.wallet?.wif)!, width: 200, height: 200, qrLogoName: "ic_QRkey")
-                        self.titleLabel.text = self.wifKeyDescriptionText
-                    case .failure(let _):
-                        sender.isOn = false
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let _):
+                            self.keyLabel.text = (Authenticated.wallet?.wif)!
+                            self.keyQR.image = UIImage(qrData: (Authenticated.wallet?.wif)!, width: 200, height: 200, qrLogoName: "ic_QRkey")
+                            self.titleLabel.text = self.wifKeyDescriptionText
+                        case .failure(let _):
+                            sender.isOn = false
+                        }
                     }
                 }
             } else {

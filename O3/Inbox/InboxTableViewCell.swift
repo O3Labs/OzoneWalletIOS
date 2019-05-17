@@ -31,9 +31,13 @@ class InboxTableViewCell: UITableViewCell {
             
             if data.action == nil {
                 actionButton.isHidden = true
+                actionButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
+                actionButton.setNeedsLayout()
             } else {
                 actionButton.isHidden = false
                 actionButton.setTitle(data.action!.title, for: UIControl.State())
+                actionButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+                actionButton.setNeedsLayout()
             }
         }
     }
