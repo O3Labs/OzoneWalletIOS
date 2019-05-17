@@ -19,12 +19,16 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
     // swiftlint:enable weak_delegate
     
+    var titleViewButton = UIButton(type: .system)
+    
     func addThemeObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.changedTheme), name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletInfo), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
     }
 
     @objc func changedTheme(_ sender: Any) {
@@ -65,6 +69,10 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         setNavigationItems()
     }
     
+    @objc func updateWalletInfo() {
+        titleViewButton.setTitle(NEP6.getFromFileSystem()!.accounts.first {$0.isDefault}!.label, for: .normal)
+    }
+    
     func setNavigationItems() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
         
@@ -86,7 +94,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         #endif
         
         let activeWallet = NEP6.getFromFileSystem()!.accounts.first {$0.isDefault}!.label
-        let titleViewButton = UIButton(type: .system)
+        
         titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
         titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
         titleViewButton.setTitle(activeWallet, for: .normal)
@@ -226,7 +234,7 @@ extension AccountTabViewController: QRScanDelegate {
             }
         } else {
             DispatchQueue.main.async {
-                self.sendTapped(qrData: data)
+                self.sendTapped()
             }
         }
     }

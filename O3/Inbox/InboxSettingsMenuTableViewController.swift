@@ -75,9 +75,7 @@ class InboxSettingsMenuTableViewController: UITableViewController {
         muteAllLabel.theme_textColor = O3Theme.titleColorPicker
         muteAllLabel.text = "Mute All"
         
-        allNotificationsSwitch.theme_thumbTintColor = O3Theme.backgroundColorPicker
-        allNotificationsSwitch.theme_tintColor = O3Theme.backgroundColorPicker
-        
+        allNotificationsSwitch.theme_backgroundColor = O3Theme.backgroundColorPicker
         
     }
 }

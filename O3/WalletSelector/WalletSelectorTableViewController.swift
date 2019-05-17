@@ -140,7 +140,7 @@ class WalletSelectorTableViewController: UITableViewController {
         combinedAccountValue = accountValue
         let indexPath = IndexPath(row: 0, section: 0)
         DispatchQueue.main.async {
-            self.tableView.reloadData()
+                self.tableView.reloadData()
         }
     }
     

@@ -41,6 +41,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var privacyPolicyLabel: UILabel!
     @IBOutlet weak var footerView: UIView!
     
+    var titleViewButton = UIButton(type: .system)
+    
     // swiftlint:disable weak_delegate
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
     // swiftlint:enable weak_delegate
@@ -128,9 +130,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
             self.addressLabel.text = (Authenticated.wallet?.address)!
             if let nep6 = NEP6.getFromFileSystem() {
                 let defaultIndex = nep6.accounts.firstIndex { $0.isDefault == true }
-                self.navigationController?.navigationBar.topItem?.title = nep6.accounts[defaultIndex!].label
-            } else {
-                self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
+                self.titleViewButton.setTitle(nep6.accounts[defaultIndex!].label, for: UIControl.State())
             }
             
             if NEP6.getFromFileSystem() == nil {
@@ -175,7 +175,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     
     func setNavElements() {
         let activeWallet = NEP6.getFromFileSystem()!.accounts.first {$0.isDefault}!.label
-        let titleViewButton = UIButton(type: .system)
         titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
         titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
         titleViewButton.setTitle(activeWallet, for: .normal)

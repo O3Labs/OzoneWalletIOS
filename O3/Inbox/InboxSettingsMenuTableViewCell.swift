@@ -19,9 +19,9 @@ class InboxSettingsMenuTableViewCell: UITableViewCell {
     }
     
     func setThemedElements() {
-        serviceSwitch.theme_thumbTintColor = O3Theme.backgroundColorPicker
-        serviceSwitch.theme_tintColor = O3Theme.backgroundColorPicker
+        serviceSwitch.theme_backgroundColor = O3Theme.backgroundColorPicker
         theme_backgroundColor = O3Theme.cardColorPicker
         serviceLabel.theme_textColor = O3Theme.titleColorPicker
+        
     }
 }
