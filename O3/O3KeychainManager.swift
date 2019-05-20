@@ -180,7 +180,13 @@ class O3KeychainManager {
                     completion(result)
                 }
             } catch let error {
-                completion(.failure(error.localizedDescription))
+                if error as! Status == Status.userCanceled {
+                    completion(.failure(error.localizedDescription))
+                } else {
+                    O3KeychainManager.inputPassword(account: account) { result in
+                        completion(result)
+                    }
+                }
             }
         }
     }   

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RXF-gX-Dph">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RXF-gX-Dph">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -355,14 +355,14 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button hidden="YES" opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpa-KN-3SZ">
-                                                    <rect key="frame" x="325" y="234" width="26" height="26"/>
+                                                    <rect key="frame" x="335" y="236" width="16" height="22"/>
                                                     <state key="normal" image="ic_watch"/>
                                                     <connections>
                                                         <action selector="revealPasswordTapped:" destination="dAX-DR-3u5" eventType="touchUpInside" id="F0L-kM-PDU"/>
                                                     </connections>
                                                 </button>
                                                 <button hidden="YES" opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Clw-li-h6x">
-                                                    <rect key="frame" x="325" y="280" width="26" height="26"/>
+                                                    <rect key="frame" x="335" y="282" width="16" height="22"/>
                                                     <state key="normal" image="ic_watch"/>
                                                     <connections>
                                                         <action selector="revealConfirmPasswordTapped:" destination="dAX-DR-3u5" eventType="touchUpInside" id="G7A-WG-tYU"/>
@@ -641,7 +641,7 @@
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                 </textField>
                                                 <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rxq-te-aC8">
-                                                    <rect key="frame" x="325" y="184" width="26" height="26"/>
+                                                    <rect key="frame" x="335" y="186" width="16" height="22"/>
                                                     <state key="normal" image="ic_watch"/>
                                                     <connections>
                                                         <action selector="revealPasswordTapped:" destination="DSE-k4-O6n" eventType="touchUpInside" id="huB-55-Mp5"/>
@@ -668,7 +668,7 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rro-nA-nc9">
-                                                    <rect key="frame" x="325" y="244" width="26" height="26"/>
+                                                    <rect key="frame" x="335" y="246" width="16" height="22"/>
                                                     <state key="normal" image="ic_watch"/>
                                                     <connections>
                                                         <action selector="revealConfirmPasswordTapped:" destination="DSE-k4-O6n" eventType="touchUpInside" id="s6c-2B-deT"/>
@@ -833,7 +833,7 @@
     </scenes>
     <resources>
         <image name="O3_logo_large_white" width="78" height="77"/>
-        <image name="ic_scan" width="52" height="52"/>
+        <image name="ic_scan" width="26" height="26"/>
         <image name="ic_unlocked" width="16" height="16"/>
         <image name="ic_walletItem" width="35" height="35"/>
         <image name="ic_watch" width="26" height="26"/>

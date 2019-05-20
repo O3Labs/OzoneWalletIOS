@@ -167,12 +167,12 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
         DispatchQueue.global(qos: .userInitiated).async {
             if key.starts(with: "6P") {
                 let wif = NeoutilsNEP2Decrypt(key, password, &error)
-                if error != nil || wif == nil {
+                if error != nil || wif == "" {
                     DispatchQueue.main.async {
                         HUD.hide()
                         OzoneAlert.alertDialog("Failed to decrypt key", message: "Either the password or key is incorrect, please double check it", dismissTitle: OzoneAlert.okPositiveConfirmString) {}
-                        return
                     }
+                    return
                 }
                 
                 wallet = Wallet(wif: wif!)
@@ -185,8 +185,8 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
                     DispatchQueue.main.async {
                         OzoneAlert.alertDialog("Failed to encrypt key", message: "Please use alphanumeric characters for your password", dismissTitle: OzoneAlert.okPositiveConfirmString) {}
                         HUD.hide()
-                        return
                     }
+                    return
                 }
                 
                 wallet = Wallet(wif: key)

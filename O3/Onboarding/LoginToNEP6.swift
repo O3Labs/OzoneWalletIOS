@@ -154,6 +154,10 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    func recoverKeys() {
+        
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "walletNameTableViewCell")
         let label = cell?.viewWithTag(1) as? UILabel
@@ -166,6 +170,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
             } else {
                 unlockedImage?.isHidden = true
             }
+            return cell!
         } else {
             label?.text = "My O3 Wallet"
             unlockedImage?.isHidden = false
@@ -178,7 +183,6 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
             loginLegacy()
             return
         }
-        
         
         let account = (nep6?.getWalletAccounts()[indexPath.row])!
         login(account: account)
