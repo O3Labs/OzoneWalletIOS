@@ -167,9 +167,21 @@ class UserDefaultsManager {
         }
     }
     
+    private static let hasAgreedInboxDisclaimerKey = "hasAgreedInbox"
+    static var hasAgreedInbox: Bool {
+        get {
+            let boolValue = UserDefaults.standard.bool(forKey: hasAgreedInboxDisclaimerKey)
+            return boolValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: hasAgreedInboxDisclaimerKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
     enum Subscriptions: String {
+        // O3 services are the equivalent of subscribing to all addresses associated with nep6
         case o3 = "o3"
-        case switcheo = "switcheo"
         case neoeconomy = "neoeconomy"
     }
     

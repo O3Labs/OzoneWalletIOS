@@ -287,7 +287,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         } else if section == sections.toolbar.rawValue {
             return 1
         } else if section == sections.inbox.rawValue {
-            return addressInbox?.items.count ?? 0
+            return 0
         }  else if section == sections.neoAssets.rawValue {
             return sectionHeaderCollapsedState[sections.neoAssets.rawValue]  == true ? 0 : 2
         } else if section == sections.ontologyAssets.rawValue {
@@ -347,14 +347,15 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
         
         if indexPath.section == sections.inbox.rawValue {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-inbox-item") as? InboxItemTableViewCell else {
+            /*guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell-inbox-item") as? InboxItemTableViewCell else {
                 let cell =  UITableViewCell(frame: CGRect.zero)
                 cell.theme_backgroundColor = O3Theme.backgroundColorPicker
                 return cell
             }
             let item = addressInbox?.items[indexPath.row]
             cell.inboxItem = item
-            return cell
+            return cell*/
+            return UITableViewCell()
         }
         
         if indexPath.section == sections.neoAssets.rawValue {

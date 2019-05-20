@@ -37,9 +37,37 @@ class InboxDisclaimerViewController: UIViewController {
         self.dismissTapped()
     }
     
+    func subscribeToDefaultO3Topic() {
+        UserDefaultsManager.subscribedServices = [UserDefaultsManager.Subscriptions.o3.rawValue]
+        DispatchQueue.global().async {
+            O3APIClient(network: AppState.network).subscribeToTopic(topic: UserDefaultsManager.Subscriptions.o3.rawValue) { result in
+                switch result {
+                case .failure(_):
+                    return
+                case .success(_):
+                    return
+                }
+            }
+        }
+        
+        for account in NEP6.getFromFileSystem()?.accounts ?? [] {
+            DispatchQueue.global().async {
+                O3APIClient(network: AppState.network).subscribeToTopic(topic: account.address) { result in
+                    switch result {
+                    case .failure(_):
+                        return
+                    case .success(_):
+                        return
+                    }
+                }
+            }
+        }
+    }
+    
     @IBAction func agreeButtonTapped(_ sender: Any) {
         if (checkbox.checkState == .checked) {
-            //O3KeychainManager.createO3KeyPair()
+            subscribeToDefaultO3Topic()
+            UserDefaultsManager.hasAgreedInbox = true
         }
         self.dismissTapped()
     }

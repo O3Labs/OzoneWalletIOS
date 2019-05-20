@@ -10,10 +10,6 @@ import Foundation
 import UIKit
 
 class InboxTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
-    var dM1 = Message(id: "abc", title: "O3 is launching a brand new feature. You can read all about it here", timestamp: "1556001529", channel: Message.Channel(service: "O3 Labs", topic: "general"), action: Message.Action(type: "browser", title: "Checkout O3 Swap", url:"https://www.o3.network/swap"))
-    
-    var dM2 = Message(id: "abc", title: "This is a really long message from O3 Labs that will take many lines to fit properly into the table cell. However the tablecell should be able to dynamically resize itself even if that is the case sweet. It also has no action associated with it", timestamp: "1556001529", channel: Message.Channel(service: "O3 Labs", topic: "general"), action: nil)
-    
     var dummyMessages = [Message]()
     
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate? = nil
@@ -28,15 +24,11 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "cog"), style: .plain, target: self, action: #selector(showSettingsMenu(_:)))
         
-        if O3KeychainManager.getO3PrivKey() == nil {
-            //do nothing
-            loadMessages()
+        if UserDefaultsManager.hasAgreedInbox == false {
             displayOptInBottomSheet()
         } else {
             loadMessages()
         }
-        
-        
     }
     
     func displayOptInBottomSheet() {
@@ -84,15 +76,22 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
     }
     
     func loadMessages() {
-        //todo: loadMessages
-        dummyMessages = [dM1,dM2,dM1,dM2,dM1,dM1,dM2,dM2]
-        tableView.reloadData()
+        let pubkey = O3KeychainManager.getO3PubKey()!
+        O3APIClient(network: AppState.network).getMessages(pubKey: pubkey) { result in
+            switch result {
+            case .failure(_) :
+                return
+            case .success(let messages):
+                self.dummyMessages = messages
+                DispatchQueue.main.async { self.tableView.reloadData() }
+            }
+        }
     }
     
     @objc func showSettingsMenu(_ sender: UIBarButtonItem) {
         let vc = UIStoryboard(name: "Inbox", bundle: nil).instantiateViewController(withIdentifier: "InboxSettingsMenuTableViewController") as! InboxSettingsMenuTableViewController
         //number of menus x cell height
-        let height = CGFloat(4 * 44.0)
+        let height = CGFloat(3 * 44.0)
         vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: height)
         vc.modalPresentationStyle = .popover
         let presentationController = vc.presentationController as! UIPopoverPresentationController

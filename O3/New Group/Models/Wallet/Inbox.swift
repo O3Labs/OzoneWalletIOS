@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Inbox: Codable {
+/*struct Inbox: Codable {
     let items: [InboxItem]
 
     enum CodingKeys: String, CodingKey {
@@ -36,4 +36,4 @@ struct InboxItem: Codable {
         case readmoreURL
         case iconURL
     }
-}
+}*/

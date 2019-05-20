@@ -19,13 +19,13 @@ class InboxTableViewCell: UITableViewCell {
     
     var data: Message! {
         didSet {
-            titleLabel.text = data.channel.service
-            subtitleLabel.text = data.title
+            titleLabel.text = data.sender.name
+            subtitleLabel.text = data.data.text
             
             let dateformatter = DateFormatter()
             dateformatter.dateStyle = .short
             dateformatter.timeStyle = .short
-            dateLabel.text = dateformatter.string(from: Date(timeIntervalSince1970: Double(data.timestamp)!))
+            dateLabel.text = dateformatter.string(from: Date(timeIntervalSince1970: Double(data.timestamp)))
             
             logoImageView.kf.setImage(with: URL(string: "https://cdn-images-1.medium.com/max/284/1*_1U2EsLEnLNQZnc-UjNd6g@2x.png")!)
             

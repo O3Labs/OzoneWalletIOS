@@ -305,7 +305,7 @@ class O3KeychainManager {
         let wallet = NeoutilsNewWallet(&error)
         let keychain = Keychain(service: self.keychainService)
         keychain[o3PubKey] = wallet!.publicKey()?.fullHexString
-        keychain[o3PrivKey] = wallet!.publicKey()?.fullHexString
+        keychain[o3PrivKey] = wallet!.privateKey()?.fullHexString
     }
     
     static public func getO3PubKey() -> String? {

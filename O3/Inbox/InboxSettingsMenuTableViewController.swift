@@ -15,7 +15,6 @@ class InboxSettingsMenuTableViewController: UITableViewController {
     @IBOutlet weak var muteAllLabel: UILabel!
     
     let services = [UserDefaultsManager.Subscriptions.o3.rawValue,
-                    UserDefaultsManager.Subscriptions.switcheo.rawValue,
                     UserDefaultsManager.Subscriptions.neoeconomy.rawValue]
     
     
@@ -41,10 +40,20 @@ class InboxSettingsMenuTableViewController: UITableViewController {
             var temp = UserDefaultsManager.subscribedServices
             temp.remove(at: temp.firstIndex(of: services[indexPath.row])!)
             UserDefaultsManager.subscribedServices = temp
+            if services[indexPath.row] == UserDefaultsManager.Subscriptions.o3.rawValue {
+                unsubscribeToO3()
+            } else {
+                unsubscribeToNeoEconomy()
+            }
         } else {
             var temp = UserDefaultsManager.subscribedServices
             temp.append(services[indexPath.row])
             UserDefaultsManager.subscribedServices = temp
+            if services[indexPath.row] == UserDefaultsManager.Subscriptions.o3.rawValue {
+                subscribeToO3()
+            } else {
+                subscribeToNeoEconomy()
+            }
         }
         tableView.reloadRows(at: [indexPath], with: .automatic)
         setFooterSwitch()
@@ -58,11 +67,95 @@ class InboxSettingsMenuTableViewController: UITableViewController {
         allNotificationsSwitch.setOn(UserDefaultsManager.subscribedServices.isEmpty, animated: true)
     }
     
+    func unsubscribeToO3() {
+        DispatchQueue.global().async {
+            O3APIClient(network: AppState.network).unsubscribeToTopic(topic: UserDefaultsManager.Subscriptions.o3.rawValue) { result in
+                switch result {
+                case .failure(_):
+                    return
+                case .success(_):
+                    return
+                }
+            }
+        }
+        
+        for account in NEP6.getFromFileSystem()?.accounts ?? [] {
+            DispatchQueue.global().async {
+                O3APIClient(network: AppState.network).unsubscribeToTopic(topic: account.address) { result in
+                    switch result {
+                    case .failure(_):
+                        return
+                    case .success(_):
+                        return
+                    }
+                }
+            }
+        }
+    }
+    
+    func subscribeToO3() {
+        DispatchQueue.global().async {
+            O3APIClient(network: AppState.network).subscribeToTopic(topic: UserDefaultsManager.Subscriptions.o3.rawValue) { result in
+                switch result {
+                case .failure(_):
+                    return
+                case .success(_):
+                    return
+                }
+            }
+        }
+        for account in NEP6.getFromFileSystem()?.accounts ?? [] {
+            DispatchQueue.global().async {
+                O3APIClient(network: AppState.network).subscribeToTopic(topic: account.address) { result in
+                    switch result {
+                    case .failure(_):
+                        return
+                    case .success(_):
+                        return
+                    }
+                }
+            }
+        }
+    }
+    
+    func unsubscribeToNeoEconomy() {
+        DispatchQueue.global().async {
+            O3APIClient(network: AppState.network).unsubscribeToTopic(topic: UserDefaultsManager.Subscriptions.neoeconomy.rawValue) { result in
+                switch result {
+                case .failure(_):
+                    return
+                case .success(_):
+                    return
+                }
+            }
+        }
+    }
+    
+    func subscribeToNeoEconomy() {
+        DispatchQueue.global().async {
+            O3APIClient(network: AppState.network).subscribeToTopic(topic: UserDefaultsManager.Subscriptions.neoeconomy.rawValue) { result in
+                switch result {
+                case .failure(_):
+                    return
+                case .success(_):
+                    return
+                }
+            }
+        }
+    }
+    
+    func unsubscribeFromAllServices() {
+        unsubscribeToNeoEconomy()
+        unsubscribeToO3()
+    }
+    
+    
     @objc func footerSelected() {
-        if allNotificationsSwitch.isOn {
+        if allNotificationsSwitch.isOn == false {
             allNotificationsSwitch.setOn(true, animated: true)
             UserDefaultsManager.subscribedServices = []
             tableView.reloadData()
+            unsubscribeFromAllServices()
         } else {
             allNotificationsSwitch.setOn(false, animated: true)
         }
