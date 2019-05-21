@@ -283,9 +283,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.assetsTable.reloadData()
             if portfolio.data.first?.average == 0.0 &&
                 portfolio.data.last?.average == 0.0 &&
-                self.homeviewModel.currentIndex == 0 {
-                self.setEmptyGraphView()
-            } else if self.homeviewModel.currentIndex == 1 && self.watchAddresses.count == 0 {
+                self.homeviewModel.currentIndex != 0 {
                 self.setEmptyGraphView()
             } else {
                 self.emptyGraphView?.isHidden = true
@@ -571,12 +569,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     
         if homeviewModel.currentIndex != 0 {
-            (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.noWatchAddresses
-            (emptyGraphView as! EmptyPortfolioView).rightActionButton.setTitle(PortfolioStrings.addWatchAddress, for: UIControl.State())
-            (emptyGraphView as! EmptyPortfolioView).leftActionButton.isHidden = true
-            (emptyGraphView as! EmptyPortfolioView).rightActionButton.isHidden = true
-            (emptyGraphView as! EmptyPortfolioView).dividerLine.isHidden = true
-        } else {
             (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.emptyBalance
             (emptyGraphView as! EmptyPortfolioView).rightActionButton.setTitle(PortfolioStrings.depositTokens, for: UIControl.State())
             (emptyGraphView as! EmptyPortfolioView).leftActionButton.setTitle("Buy NEO", for: UIControl.State())
@@ -584,7 +576,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             (emptyGraphView as! EmptyPortfolioView).rightActionButton.isHidden = false
             (emptyGraphView as! EmptyPortfolioView).dividerLine.isHidden = false
         }
-        
+    
         emptyGraphView?.isHidden = false
     }
     

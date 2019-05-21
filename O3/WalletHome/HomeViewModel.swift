@@ -58,13 +58,6 @@ class HomeViewModel {
     }
 
     func getCombinedReadOnlyAndWriteable() -> [TransferableAsset] {
-        if watchAddresses.count == 0 {
-            return [TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
-                                      decimals: 0, value: 0, assetType: .neoAsset),
-                    TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "GAS", symbol: "GAS",
-                                      decimals: 0, value: 0, assetType: .neoAsset)]
-        }
-        
         var assets: [TransferableAsset] = getWritableAssets()
         for addr in watchAddresses {
             for asset in readOnlyAssets[addr] ?? [] {

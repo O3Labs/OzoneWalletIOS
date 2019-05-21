@@ -246,6 +246,7 @@ class WalletSelectorTableViewController: UITableViewController {
                     DispatchQueue.main.async { HUD.show(.progress) }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         HUD.hide()
+                        Controller().focusOnTab(tabIndex: 1)
                         self.dismiss(animated: true)
                     }
                     
