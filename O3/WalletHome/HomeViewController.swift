@@ -485,7 +485,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, WalletHeaderCellDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var unfiltered = NEP6.getFromFileSystem()!.accounts
+        var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
         unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
         return unfiltered.count + 1
     }
@@ -501,22 +501,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         var nep6 = NEP6.getFromFileSystem()
         if indexPath.row == 0 {
             type = WalletHeaderCollectionCell.HeaderType.combined
-        } else if indexPath.row == 1 {
-            type = WalletHeaderCollectionCell.HeaderType.activeWallet
-            if nep6 != nil {
-                account = nep6!.accounts.first { $0.isDefault }!
-            }
         } else {
-            type = WalletHeaderCollectionCell.HeaderType.lockedWallet
-            account = nep6!.accounts[indexPath.row - 1]
+            type = WalletHeaderCollectionCell.HeaderType.account
+            account = nep6!.getAccounts()[indexPath.row - 1]
         }
-        
-        
         
         var data =  WalletHeaderCollectionCell.Data (
             type: type,
             account: account,
-            numWatchAddresses: watchAddresses.count,
             latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
             previousPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
             referenceCurrency: (homeviewModel?.referenceCurrency)!,

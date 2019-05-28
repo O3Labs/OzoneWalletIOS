@@ -46,7 +46,7 @@ class InboxSettingsMenuTableViewController: UITableViewController, AddressNotifi
             let titleLabel = cell.viewWithTag(1) as! UILabel
             let addressLabel = cell.viewWithTag(2) as! UILabel
             titleLabel.text = "Address Notifications"
-            let addresses = NEP6.getFromFileSystem()?.accounts.map {$0.address} ?? []
+            let addresses = NEP6.getFromFileSystem()?.getAccounts().map {$0.address} ?? []
             let subscribedAddress = UserDefaultsManager.subscribedServices.filter(addresses.contains)
             addressLabel.text = "\(subscribedAddress.count) / \(addresses.count) Active"
             titleLabel.theme_textColor = O3Theme.titleColorPicker
@@ -121,7 +121,7 @@ class InboxSettingsMenuTableViewController: UITableViewController, AddressNotifi
     }
     
     func unsubscribeAllAddresses() {
-        for account in NEP6.getFromFileSystem()?.accounts ?? [] {
+        for account in NEP6.getFromFileSystem()?.getAccounts() ?? [] {
             DispatchQueue.global().async {
                 O3APIClient(network: AppState.network).unsubscribeToTopic(topic: account.address) { result in
                     switch result {

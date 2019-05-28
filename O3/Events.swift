@@ -69,7 +69,7 @@ class MultiwalletEvent: NSObject {
         log(event: multiwalletEventName.walletAdded.rawValue,
             data: [multiWalletEventField.type.rawValue: type,
                    multiWalletEventField.method.rawValue: method,
-                   multiWalletEventField.addressCount.rawValue: NEP6.getFromFileSystem()?.accounts.count])
+                   multiWalletEventField.addressCount.rawValue: NEP6.getFromFileSystem()?.getAccounts().count])
     }
     
     func multiwalletActivated() {

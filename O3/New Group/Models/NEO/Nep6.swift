@@ -14,7 +14,7 @@ public class NEP6: Codable {
     var name: String
     var version: String
     var scrypt: ScryptParams
-    var accounts: [Account]
+    private var accounts: [Account]
     var extra: String
     
     enum NEP6Error: Error {
@@ -124,7 +124,7 @@ public class NEP6: Codable {
     
     func subscribeToAddressNotifications(address: String) {
         if UserDefaultsManager.subscribedServices.contains(UserDefaultsManager.Subscriptions.o3.rawValue) {
-            O3APIClient(network: AppState.network).unsubscribeToTopic(topic: address) { result in
+            O3APIClient(network: AppState.network).subscribeToTopic(topic: address) { result in
                 switch result {
                 case .failure(_):
                     return
@@ -134,6 +134,20 @@ public class NEP6: Codable {
                     UserDefaultsManager.subscribedServices = temp
                     return
                 }
+            }
+        }
+    }
+    
+    func unsubscribeToAddressNotifications(address: String) {
+        O3APIClient(network: AppState.network).unsubscribeToTopic(topic: address) { result in
+            switch result {
+            case .failure(_):
+                return
+            case .success(_):
+                var temp = UserDefaultsManager.subscribedServices
+                temp.remove(at: temp.firstIndex(of: address)!)
+                UserDefaultsManager.subscribedServices = temp
+                return
             }
         }
     }
@@ -170,12 +184,6 @@ public class NEP6: Codable {
         subscribeToAddressNotifications(address: address)
     }
     
-    func removeEncryptedKey(name: String) {
-        let index = accounts.firstIndex { $0.label == name }
-        if index != nil {
-            accounts.remove(at: index!)
-        }
-    }
     
     func removeEncryptedKey(address: String) {
         let index = accounts.firstIndex { $0.address == address }
@@ -183,13 +191,7 @@ public class NEP6: Codable {
             accounts.remove(at: index!)
         }
         writeToFileSystem()
-    }
-    
-    func removeEncryptedKey(key: String) {
-        let index = accounts.firstIndex { $0.key == key }
-        if index != nil {
-            accounts.remove(at: index!)
-        }
+        unsubscribeToAddressNotifications(address: address)
     }
     
     public func getWalletAccounts() -> [Account] {
@@ -212,6 +214,10 @@ public class NEP6: Codable {
             }
         }
         return watchAccounts
+    }
+    
+    public func getAccounts() -> [Account] {
+        return getWalletAccounts() + getWatchAccounts()
     }
     
     

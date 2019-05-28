@@ -129,8 +129,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
             self.qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: self.qrView.bounds.size.width, height: self.qrView.bounds.size.height)
             self.addressLabel.text = (Authenticated.wallet?.address)!
             if let nep6 = NEP6.getFromFileSystem() {
-                let defaultIndex = nep6.accounts.firstIndex { $0.isDefault == true }
-                self.titleViewButton.setTitle(nep6.accounts[defaultIndex!].label, for: UIControl.State())
+                let defaultIndex = nep6.getAccounts().firstIndex { $0.isDefault == true }
+                self.titleViewButton.setTitle(nep6.getAccounts()[defaultIndex!].label, for: UIControl.State())
             }
             
             if NEP6.getFromFileSystem() == nil {
@@ -174,7 +174,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     func setNavElements() {
-        let activeWallet = NEP6.getFromFileSystem()!.accounts.first {$0.isDefault}!.label
+        let activeWallet = NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label
         titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
         titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
         titleViewButton.setTitle(activeWallet, for: .normal)
@@ -228,7 +228,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     @objc func enableMultiWallet() {
-        if NEP6.getFromFileSystem()?.accounts == nil {
+        if NEP6.getFromFileSystem()?.getAccounts() == nil {
             self.performSegue(withIdentifier: "segueToMultiWalletActivation", sender: nil)
         } else {
             self.performSegue(withIdentifier: "segueToManageWallets", sender: nil)

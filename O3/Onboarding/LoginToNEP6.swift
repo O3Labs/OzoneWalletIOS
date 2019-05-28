@@ -114,12 +114,12 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
             return
         }
         
-        login(account: (NEP6.getFromFileSystem()?.accounts.first {$0.isDefault})!)
+        login(account: (NEP6.getFromFileSystem()?.getAccounts().first {$0.isDefault})!)
         
     }
     
     func forceMigrate() {
-        let defaultAccount = (NEP6.getFromFileSystem()?.accounts.first {$0.isDefault})!
+        let defaultAccount = (NEP6.getFromFileSystem()?.getAccounts().first {$0.isDefault})!
         O3KeychainManager.getSigningKeyPassword(with: "Security updated. Please authenticate to login again") { result in
             switch result {
             case .success(let pass):
@@ -129,7 +129,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
                         O3KeychainManager.removeLegacySigningKey { result in
                             switch result {
                             case .success:
-                                self.login(account: (NEP6.getFromFileSystem()?.accounts.first {$0.isDefault})!)
+                                self.login(account: (NEP6.getFromFileSystem()?.getAccounts().first {$0.isDefault})!)
                             case .failure(let e):
                                 return
                             }

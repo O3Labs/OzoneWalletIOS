@@ -102,7 +102,7 @@ class HomeViewModel {
 
     init(delegate: HomeViewModelDelegate) {
         self.delegate = delegate
-        var unfiltered = NEP6.getFromFileSystem()!.accounts
+        var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
         unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
         var cachedCombinedAssets = [TransferableAsset]()
         for account in unfiltered {
@@ -132,7 +132,7 @@ class HomeViewModel {
         resetReadOnlyBalances()
         accounts = []
         
-        var unfiltered = NEP6.getFromFileSystem()!.accounts
+        var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
         accounts = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
         
         for account in accounts {

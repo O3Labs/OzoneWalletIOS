@@ -21,7 +21,7 @@ class NewMultiWalletViewController: UIViewController, MFMailComposeViewControlle
     @IBOutlet weak var encryptedKeyQrImageView: UIImageView!
     
     func setEncryptedKeyInfo() {
-        let nep2String = (NEP6.getFromFileSystem()?.accounts[0].key)!
+        let nep2String = (NEP6.getFromFileSystem()?.getAccounts()[0].key)!
         encryptedKeyLabel.text = nep2String
         let image = UIImage(qrData: nep2String, width: 200, height: 200, qrLogoName: "ic_QRencryptedKey")
         encryptedKeyQrImageView.image = image
@@ -45,7 +45,7 @@ class NewMultiWalletViewController: UIViewController, MFMailComposeViewControlle
     
         let nep6 = NEP6.getFromFileSystem()!
         var nep2String = ""
-        for wallet in nep6.accounts {
+        for wallet in nep6.getAccounts() {
             if wallet.isDefault {
                 nep2String = wallet.key!
             }

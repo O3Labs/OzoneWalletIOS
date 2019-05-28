@@ -26,7 +26,7 @@ class ConnectRequestTableViewController: UITableViewController {
         self.title = "Connect request"
         //set selected one to the main active one first
         let nep6 = NEP6.getFromFileSystem()
-        let defaultAccount =  nep6?.accounts.first(where: { n -> Bool in
+        let defaultAccount =  nep6?.getAccounts().first(where: { n -> Bool in
             return n.isDefault == true
         })
         selectedAccount = defaultAccount

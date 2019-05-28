@@ -229,7 +229,7 @@
                                             <rect key="frame" x="310" y="22" width="51" height="31"/>
                                         </switch>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ioy-4F-dkI">
-                                            <rect key="frame" x="16" y="8" width="42" height="23.5"/>
+                                            <rect key="frame" x="16" y="16" width="42" height="23.5"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -243,7 +243,7 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstItem="Ioy-4F-dkI" firstAttribute="top" secondItem="8ie-RA-wQG" secondAttribute="top" constant="8" id="A4Y-L8-rZY"/>
+                                        <constraint firstItem="Ioy-4F-dkI" firstAttribute="top" secondItem="8ie-RA-wQG" secondAttribute="top" constant="16" id="A4Y-L8-rZY"/>
                                         <constraint firstItem="Dff-Og-LPl" firstAttribute="leading" secondItem="0G3-r0-WsM" secondAttribute="trailing" constant="8" id="E1S-Ge-USY"/>
                                         <constraint firstItem="0G3-r0-WsM" firstAttribute="leading" secondItem="8ie-RA-wQG" secondAttribute="leading" constant="16" id="G71-Ok-smg"/>
                                         <constraint firstItem="Ioy-4F-dkI" firstAttribute="leading" secondItem="8ie-RA-wQG" secondAttribute="leading" constant="16" id="H5N-BC-X9a"/>

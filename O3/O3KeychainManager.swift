@@ -147,7 +147,7 @@ class O3KeychainManager {
     
     
     static func getWalletForNep6(for address: String, completion: @escaping(O3KeychainResult<Wallet>) -> ()) {
-        let account = (NEP6.getFromFileSystem()?.accounts.first{ $0.address == address})!
+        let account = (NEP6.getFromFileSystem()?.getAccounts().first{ $0.address == address})!
        DispatchQueue.global(qos: .userInteractive).async {
             let keychain = Keychain(service: self.keychainService)
             let hashed = (address.data(using: .utf8)?.sha256.sha256.fullHexString)!

@@ -75,7 +75,7 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     }
     
     func addressIsNotPresent() -> Bool {
-        for account in NEP6.getFromFileSystem()!.accounts {
+        for account in NEP6.getFromFileSystem()!.getAccounts() {
             if account.address == walletInputField.text! {
                 return false
             }
@@ -84,7 +84,7 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     }
     
     func keyIsNotPresent() -> Bool {
-        for account in NEP6.getFromFileSystem()!.accounts {
+        for account in NEP6.getFromFileSystem()!.getAccounts() {
             if account.key == walletInputField.text! {
                 return false
             }

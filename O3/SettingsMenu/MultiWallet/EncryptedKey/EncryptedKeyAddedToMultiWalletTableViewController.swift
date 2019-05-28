@@ -56,7 +56,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
     @IBAction func continueTapped(_ sender: Any) {
         DispatchQueue.main.async { HUD.show(.progress) }
         let nameText = nameInputField.text?.trim() ?? ""
-        let index = NEP6.getFromFileSystem()!.accounts.firstIndex { $0.label == nameText}
+        let index = NEP6.getFromFileSystem()!.getAccounts().firstIndex { $0.label == nameText}
         if index != nil {
             OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
                 self.nameInputField.text = ""

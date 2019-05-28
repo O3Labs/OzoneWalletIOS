@@ -54,7 +54,7 @@ class InboxDisclaimerViewController: UIViewController {
             }
         }
         
-        for account in NEP6.getFromFileSystem()?.accounts ?? [] {
+        for account in NEP6.getFromFileSystem()?.getAccounts() ?? [] {
             DispatchQueue.global().async {
                 group.enter()
                 O3APIClient(network: AppState.network).subscribeToTopic(topic: account.address) { result in
@@ -63,6 +63,9 @@ class InboxDisclaimerViewController: UIViewController {
                     case .failure(_):
                         return
                     case .success(_):
+                        var temp = UserDefaultsManager.subscribedServices
+                        temp.append(account.address)
+                        UserDefaultsManager.subscribedServices = temp
                         return
                     }
                 }

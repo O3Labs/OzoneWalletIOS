@@ -65,8 +65,8 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     
     @objc func updateAccount(_ sender: Any?) {
         let nep6 = NEP6.getFromFileSystem()!
-        if let accountIndex = nep6.accounts.firstIndex(where: {$0.address == account.address}) {
-            account = nep6.accounts[accountIndex]
+        if let accountIndex = nep6.getAccounts().firstIndex(where: {$0.address == account.address}) {
+            account = nep6.getAccounts()[accountIndex]
             setWalletDetails()
         }
         tableView.reloadData()

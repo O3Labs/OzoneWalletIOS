@@ -578,8 +578,8 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     
     //MARK: -
     func setLocalizedStrings() {
-        if NEP6.getFromFileSystem()?.accounts.count ?? 0 > 0 {
-            DispatchQueue.main.async { self.navigationController?.navigationBar.topItem?.title = NEP6.getFromFileSystem()?.accounts[0].label }
+        if NEP6.getFromFileSystem()?.getAccounts().count ?? 0 > 0 {
+            DispatchQueue.main.async { self.navigationController?.navigationBar.topItem?.title = NEP6.getFromFileSystem()?.getAccounts()[0].label }
         } else {
             self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
         }

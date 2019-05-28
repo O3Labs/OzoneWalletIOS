@@ -48,7 +48,7 @@ class WalletSelectorTableViewController: UITableViewController {
         setLocalizedStrings()
 
         tableView.tableFooterView = UIView(frame: CGRect.zero)
-    }   
+    }
     
     func getCachedPortfolioValue(for address: String, indexPath: IndexPath) -> Bool {
         let accountValue = O3Cache.getCachedPortfolioValue(for: address)
@@ -176,11 +176,11 @@ class WalletSelectorTableViewController: UITableViewController {
                 return
             case .success(let accountValue):
                 O3Cache.setCachedPortfolioValue(for: address, portfolioValue: accountValue)
-                self.group.leave()
+                self.accountValues[indexPath] = accountValue
                 DispatchQueue.main.async {
-                    self.accountValues[indexPath] = accountValue
                     self.tableView.reloadRows(at: [indexPath], with: .automatic)
                 }
+                self.group.leave()
             }
         }
     }
@@ -319,15 +319,20 @@ class WalletSelectorTableViewController: UITableViewController {
     func handleWatchAddressTapped(indexPath: IndexPath) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
+        var totalTitle = "Hide from Total"
+        if indexPath.section == 3 || untrackedCount == watchAddresses.count {
+            totalTitle = "Show in Total"
+        } else {
+            let jumpPortfolioAction = UIAlertAction(title: "Jump to Portfolio", style: .default) { _ in
+                self.handlePortfolioTapped(indexPath: indexPath)
+            }
+            alert.addAction(jumpPortfolioAction)
+        }
+        
         let editNameAction = UIAlertAction(title: "Edit Name", style: .default) { _ in
             self.handleEditNameAction(indexPath: indexPath)
         }
         alert.addAction(editNameAction)
-        
-        var totalTitle = "Hide from Total"
-        if indexPath.section == 3 || untrackedCount == watchAddresses.count {
-            totalTitle = "Show in Total"
-        }
         
         let addRemoveTotalAction = UIAlertAction(title: totalTitle, style: .default) { _ in
             let isTracked = indexPath.section == 2 && UserDefaultsManager.untrackedWatchAddr.count != NEP6.getFromFileSystem()?.getWatchAccounts().count
@@ -378,11 +383,20 @@ class WalletSelectorTableViewController: UITableViewController {
         alert.addAction(addRemoveTotalAction)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
-            let nep6 = NEP6.getFromFileSystem()!
-            nep6.removeEncryptedKey(address: self.watchAddresses[indexPath.row].address)
-            Channel.shared().unsubscribe(fromTopic: self.watchAddresses[indexPath.row].address, block: {})
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                let isTracked = indexPath.section == 2 && UserDefaultsManager.untrackedWatchAddr.count != NEP6.getFromFileSystem()?.getWatchAccounts().count
+                if isTracked {
+                    self.trackedCount = self.trackedCount - 1
+                } else {
+                    self.untrackedCount = self.untrackedCount - 1
+                }
+            
+            
+                let nep6 = NEP6.getFromFileSystem()!
+                nep6.removeEncryptedKey(address: self.watchAddresses[indexPath.row].address)
+                self.watchAddresses = NEP6.getFromFileSystem()?.getWatchAccounts() ?? []
+                self.accountValues.removeValue(forKey: indexPath)
+                self.sumForCombined()
             }
         }
         alert.addAction(deleteAction)

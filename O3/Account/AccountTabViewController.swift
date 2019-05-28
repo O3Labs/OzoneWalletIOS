@@ -79,7 +79,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     }
     
     @objc func updateWalletInfo() {
-        titleViewButton.setTitle(NEP6.getFromFileSystem()!.accounts.first {$0.isDefault}!.label, for: .normal)
+        titleViewButton.setTitle(NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label, for: .normal)
     }
     
     func setNavigationItems() {
@@ -91,7 +91,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openDAppBrowser(_:)))
         #endif
         
-        let activeWallet = NEP6.getFromFileSystem()!.accounts.first {$0.isDefault}!.label
+        let activeWallet = NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label
         
         titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
         titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
@@ -99,7 +99,6 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         titleViewButton.semanticContentAttribute = .forceRightToLeft
         titleViewButton.setImage(UIImage(named: "ic_chevron_down"), for: UIControl.State())
         
-        titleViewButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20)
         // Create action listener
         titleViewButton.addTarget(self, action: #selector(showMultiWalletDisplay), for: .touchUpInside)

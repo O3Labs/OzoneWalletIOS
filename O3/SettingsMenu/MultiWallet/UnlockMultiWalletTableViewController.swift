@@ -38,7 +38,7 @@ class UnlockMultiWalletTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var accountsToDisplay = [NEP6.Account]()
-        for account in nep6.accounts {
+        for account in nep6.getAccounts() {
             if account.isDefault == false && account.key != nil {
                 accountsToDisplay.append(account)
             }

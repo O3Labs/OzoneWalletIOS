@@ -20,15 +20,13 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
     struct Data {
         var type: HeaderType
         var account: NEP6.Account?
-        var numWatchAddresses: Int
         var latestPrice: PriceData
         var previousPrice: PriceData
         var referenceCurrency: Currency
         var selectedInterval: PriceInterval
     }
     enum HeaderType {
-        case activeWallet
-        case lockedWallet
+        case account
         case combined
     }
     
@@ -41,13 +39,8 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
     
     weak var delegate: WalletHeaderCellDelegate?
     
-    func setupActiveWallet() {
-        if data?.account != nil {
-            walletHeaderLabel.text = data?.account!.label
-        } else {
-            walletHeaderLabel.text = "MY O3 Wallet"
-        }
-        
+    func setupAccount() {
+        walletHeaderLabel.text = data?.account!.label
         leftButton.isHidden = false
         rightButton.isHidden = false
         percentChangeLabel.isHidden = false
@@ -60,19 +53,11 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
         percentChangeLabel.isHidden = false
     }
     
-    func setupLockedWallet() {
-        walletHeaderLabel.text = data?.account!.label
-        rightButton.isHidden = false
-        leftButton.isHidden = false
-        percentChangeLabel.isHidden = false
-    }
-    
     
     var data: WalletHeaderCollectionCell.Data? {
         didSet {
             portfolioValueLabel.theme_textColor = O3Theme.primaryColorPicker
             guard let type = data?.type,
-                let numWatchAddresses = data?.numWatchAddresses,
                 let latestPrice = data?.latestPrice,
                 let previousPrice = data?.previousPrice,
                 let referenceCurrency = data?.referenceCurrency,
@@ -80,10 +65,8 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
                     fatalError("Cell is missing type")
             }
             switch type {
-            case .activeWallet:
-                setupActiveWallet()
-            case .lockedWallet:
-                setupLockedWallet()
+            case .account:
+                setupAccount()
             case .combined:
                 setupCombined()
             }

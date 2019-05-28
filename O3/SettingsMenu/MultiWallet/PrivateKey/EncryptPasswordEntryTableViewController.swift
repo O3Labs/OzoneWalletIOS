@@ -80,7 +80,7 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
         }
         
         let nameText = nameEntryTextField.text?.trim() ?? ""
-        let index = NEP6.getFromFileSystem()!.accounts.firstIndex { $0.label == nameText}
+        let index = NEP6.getFromFileSystem()!.getAccounts().firstIndex { $0.label == nameText}
         if index != nil {
             OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
                 self.nameEntryTextField.text = ""
@@ -101,7 +101,7 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
         do {
             var error: NSError?
             self.nep2 = NeoutilsNEP2Encrypt(self.wif, password, &error)
-            let index = NEP6.getFromFileSystem()!.accounts.firstIndex { $0.address == nep2?.address()}
+            let index = NEP6.getFromFileSystem()!.getAccounts().firstIndex { $0.address == nep2?.address()}
             if (index != nil) {
                 OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
                 }

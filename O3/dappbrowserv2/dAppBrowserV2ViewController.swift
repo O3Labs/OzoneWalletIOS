@@ -156,7 +156,7 @@ class dAppBrowserV2ViewController: UIViewController {
         
         let vc = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "ConnectWalletSelectorTableViewController") as! ConnectWalletSelectorTableViewController
         
-        let accounts = NEP6.getFromFileSystem()?.accounts.filter({ n -> Bool in
+        let accounts = NEP6.getFromFileSystem()?.getAccounts().filter({ n -> Bool in
             return n.key != nil
         })
         

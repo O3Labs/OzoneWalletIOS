@@ -14,7 +14,7 @@ protocol AddressNotificationDelegate: class {
 }
 
 class AddressNotificationTableViewController: UITableViewController {
-    var accounts = NEP6.getFromFileSystem()?.accounts ?? []
+    var accounts = NEP6.getFromFileSystem()?.getAccounts() ?? []
     weak var delegate: AddressNotificationDelegate?
     
     override func viewDidLoad() {

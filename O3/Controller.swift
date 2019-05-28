@@ -102,7 +102,7 @@ class Controller: NSObject {
             fatalError("Presenting improper view controller")
         }
         
-        walletInfoModal.account = NEP6.getFromFileSystem()?.accounts.first { $0.isDefault }!
+        walletInfoModal.account = NEP6.getFromFileSystem()?.getAccounts().first { $0.isDefault }!
         let nav = UINavigationController()
         nav.viewControllers = [walletInfoModal]
         UIApplication.topViewController()!.present(nav, animated: true)
