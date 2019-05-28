@@ -49,14 +49,24 @@ public class NEP6: Codable {
         self.init(name: name, version: version, accounts: accounts)
     }
     
-    public class Account: Codable {
+    public class Account: Codable, Hashable {
         var address: String
         var label: String
         var isDefault: Bool
         var lock: Bool
         var key: String?
         var contract: Any? = nil //contract is not necessary for our use cases at this time but we will inclide field
+        
+        public var hashValue: Int {
+            return address.hashValue
+        }
     
+        static public func ==(lhs: Account, rhs: Account) -> Bool {
+            return lhs.address == rhs.address && lhs.label == rhs.label
+                && lhs.isDefault == rhs.isDefault && lhs.lock == rhs.lock
+                && lhs.key == rhs.key
+        }
+        
         public enum CodingKeys: String, CodingKey {
             case address
             case label
@@ -112,6 +122,22 @@ public class NEP6: Codable {
     
     }
     
+    func subscribeToAddressNotifications(address: String) {
+        if UserDefaultsManager.subscribedServices.contains(UserDefaultsManager.Subscriptions.o3.rawValue) {
+            O3APIClient(network: AppState.network).unsubscribeToTopic(topic: address) { result in
+                switch result {
+                case .failure(_):
+                    return
+                case .success(_):
+                    var temp = UserDefaultsManager.subscribedServices
+                    temp.append(address)
+                    UserDefaultsManager.subscribedServices = temp
+                    return
+                }
+            }
+        }
+    }
+    
     public func addEncryptedKey(name: String, address: String, key: String) throws {
         if name == "" {
             throw NEP6Error.invalidName
@@ -133,11 +159,15 @@ public class NEP6: Codable {
         
         let newAccount = NEP6.Account(address: address, label: name, isDefault: false, lock: false, key: key)
         self.accounts.append(newAccount)
+        writeToFileSystem()
+        subscribeToAddressNotifications(address: address)
     }
     
     func addWatchAddress(address: String, name: String) {
         let newAccount = NEP6.Account(address: address, label: name, isDefault: false, lock: false, key: nil)
         self.accounts.append(newAccount)
+        writeToFileSystem()
+        subscribeToAddressNotifications(address: address)
     }
     
     func removeEncryptedKey(name: String) {
@@ -152,6 +182,7 @@ public class NEP6: Codable {
         if index != nil {
             accounts.remove(at: index!)
         }
+        writeToFileSystem()
     }
     
     func removeEncryptedKey(key: String) {
@@ -220,6 +251,7 @@ public class NEP6: Codable {
     public func editName(address: String, newName: String) {
         let currentDefaultIndex = accounts.firstIndex { $0.address == address }
         accounts[currentDefaultIndex!].label = newName
+        writeToFileSystem()
     }
     
     
@@ -253,7 +285,7 @@ public class NEP6: Codable {
         let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
         let jsonNep6 = try? Data(contentsOf: fileURL)
         if jsonNep6 == nil {
-            return nil
+           return nil
         }
         let nep6 = try? JSONDecoder().decode(NEP6.self, from: jsonNep6!)
         return nep6

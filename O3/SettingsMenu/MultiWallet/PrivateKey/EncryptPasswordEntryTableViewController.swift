@@ -109,7 +109,6 @@ class EncryptPasswordEntryTableViewController: UITableViewController {
             }
             
             try updatedNep6.addEncryptedKey(name: name, address: self.nep2!.address(), key: self.nep2!.encryptedKey())
-            updatedNep6.writeToFileSystem()
             MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
             Channel.shared().subscribe(toTopic: self.nep2!.address())
             if quickSwapSwitch.isOn {

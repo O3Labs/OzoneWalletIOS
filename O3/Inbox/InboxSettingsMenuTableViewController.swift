@@ -9,33 +9,72 @@
 import Foundation
 import UIKit
 
-class InboxSettingsMenuTableViewController: UITableViewController {
+protocol NotificationDelegate: class {
+    func loadMessages()
+}
+
+class InboxSettingsMenuTableViewController: UITableViewController, AddressNotificationDelegate {
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var allNotificationsSwitch: UISwitch!
     @IBOutlet weak var muteAllLabel: UILabel!
+    
+    weak var delegate: NotificationDelegate?
     
     let services = [UserDefaultsManager.Subscriptions.o3.rawValue,
                     UserDefaultsManager.Subscriptions.neoeconomy.rawValue]
     
     
     
+    func reloadActiveAddresses() {
+        self.tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         footerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(footerSelected)))
         setFooterSwitch()
         setThemedElements()
+
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "inboxSettingsMenuTableViewCell") as? InboxSettingsMenuTableViewCell else {
-            fatalError("Something went terribly wrong")
+        
+        if indexPath.row == 2 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "inboxSettingsAddressMenuTableViewCell") as? UITableViewCell else {
+                fatalError("Unrecoverable error occurred")
+            }
+            let titleLabel = cell.viewWithTag(1) as! UILabel
+            let addressLabel = cell.viewWithTag(2) as! UILabel
+            titleLabel.text = "Address Notifications"
+            let addresses = NEP6.getFromFileSystem()?.accounts.map {$0.address} ?? []
+            let subscribedAddress = UserDefaultsManager.subscribedServices.filter(addresses.contains)
+            addressLabel.text = "\(subscribedAddress.count) / \(addresses.count) Active"
+            titleLabel.theme_textColor = O3Theme.titleColorPicker
+            addressLabel.theme_textColor = O3Theme.lightTextColorPicker
+            cell.theme_backgroundColor = O3Theme.cardColorPicker
+            return cell
+            
+        } else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "inboxSettingsMenuTableViewCell") as? InboxSettingsMenuTableViewCell else {
+                fatalError("Something went terribly wrong")
+            }
+            cell.serviceLabel.text = services[indexPath.row]
+            cell.serviceSwitch.setOn(UserDefaultsManager.subscribedServices.contains(services[indexPath.row]), animated: true)
+            return cell
         }
-        cell.serviceLabel.text = services[indexPath.row]
-        cell.serviceSwitch.setOn(UserDefaultsManager.subscribedServices.contains(services[indexPath.row]), animated: true)
-        return cell
+
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60.0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 2 {
+            self.performSegue(withIdentifier: "segueToAddressManagement", sender: nil)
+            return
+        }
+        
         if UserDefaultsManager.subscribedServices.contains(services[indexPath.row]) {
             var temp = UserDefaultsManager.subscribedServices
             temp.remove(at: temp.firstIndex(of: services[indexPath.row])!)
@@ -60,7 +99,7 @@ class InboxSettingsMenuTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return services.count
+        return services.count + 1
     }
     
     func setFooterSwitch() {
@@ -70,6 +109,7 @@ class InboxSettingsMenuTableViewController: UITableViewController {
     func unsubscribeToO3() {
         DispatchQueue.global().async {
             O3APIClient(network: AppState.network).unsubscribeToTopic(topic: UserDefaultsManager.Subscriptions.o3.rawValue) { result in
+                self.delegate?.loadMessages()
                 switch result {
                 case .failure(_):
                     return
@@ -78,7 +118,9 @@ class InboxSettingsMenuTableViewController: UITableViewController {
                 }
             }
         }
-        
+    }
+    
+    func unsubscribeAllAddresses() {
         for account in NEP6.getFromFileSystem()?.accounts ?? [] {
             DispatchQueue.global().async {
                 O3APIClient(network: AppState.network).unsubscribeToTopic(topic: account.address) { result in
@@ -94,8 +136,11 @@ class InboxSettingsMenuTableViewController: UITableViewController {
     }
     
     func subscribeToO3() {
+        var group = DispatchGroup()
         DispatchQueue.global().async {
+            group.enter()
             O3APIClient(network: AppState.network).subscribeToTopic(topic: UserDefaultsManager.Subscriptions.o3.rawValue) { result in
+                group.leave()
                 switch result {
                 case .failure(_):
                     return
@@ -104,18 +149,8 @@ class InboxSettingsMenuTableViewController: UITableViewController {
                 }
             }
         }
-        for account in NEP6.getFromFileSystem()?.accounts ?? [] {
-            DispatchQueue.global().async {
-                O3APIClient(network: AppState.network).subscribeToTopic(topic: account.address) { result in
-                    switch result {
-                    case .failure(_):
-                        return
-                    case .success(_):
-                        return
-                    }
-                }
-            }
-        }
+        group.wait()
+        self.delegate?.loadMessages()
     }
     
     func unsubscribeToNeoEconomy() {
@@ -134,6 +169,7 @@ class InboxSettingsMenuTableViewController: UITableViewController {
     func subscribeToNeoEconomy() {
         DispatchQueue.global().async {
             O3APIClient(network: AppState.network).subscribeToTopic(topic: UserDefaultsManager.Subscriptions.neoeconomy.rawValue) { result in
+                self.delegate?.loadMessages()
                 switch result {
                 case .failure(_):
                     return
@@ -147,6 +183,7 @@ class InboxSettingsMenuTableViewController: UITableViewController {
     func unsubscribeFromAllServices() {
         unsubscribeToNeoEconomy()
         unsubscribeToO3()
+        unsubscribeAllAddresses()
     }
     
     
@@ -158,6 +195,16 @@ class InboxSettingsMenuTableViewController: UITableViewController {
             unsubscribeFromAllServices()
         } else {
             allNotificationsSwitch.setOn(false, animated: true)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueToAddressManagement" {
+            guard let dest = segue.destination as? UINavigationController,
+                let addressController = dest.children.first as? AddressNotificationTableViewController  else {
+                    return
+                }
+            addressController.delegate = self
         }
     }
     

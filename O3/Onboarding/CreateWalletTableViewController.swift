@@ -28,7 +28,7 @@ class CreateWalletTableViewController: UITableViewController, UITextFieldDelegat
     @IBOutlet weak var confirmPasswordButton: UIButton!
     
     
-    let lottieView = LOTAnimationView(name: "an_create_wallet")
+    let lottieView = LOTAnimationView(name: "wallet_generated")
 
     override func viewDidLoad() {
         super.viewDidLoad()

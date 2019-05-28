@@ -241,7 +241,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="Ioy-4F-dkI" firstAttribute="top" secondItem="8ie-RA-wQG" secondAttribute="top" constant="8" id="A4Y-L8-rZY"/>
                                         <constraint firstItem="Dff-Og-LPl" firstAttribute="leading" secondItem="0G3-r0-WsM" secondAttribute="trailing" constant="8" id="E1S-Ge-USY"/>
@@ -813,7 +813,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="B8f-Ft-Q8N" secondAttribute="trailing" constant="16" id="1ec-g8-VSz"/>
                                         <constraint firstItem="8cL-VM-7ZW" firstAttribute="leading" secondItem="PUK-Wt-qAy" secondAttribute="leading" constant="16" id="4Kx-1K-gzb"/>

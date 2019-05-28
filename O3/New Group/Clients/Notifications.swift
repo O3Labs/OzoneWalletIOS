@@ -180,25 +180,29 @@ public struct Message: Codable {
     public struct SenderInfo: Codable {
         var publicKey: String
         var name: String
+        var imageURL: String
         
         enum CodingKeys: String, CodingKey {
             case publicKey
             case name
+            case imageURL
         }
         
-        public init(publicKey: String, name: String) {
+        public init(publicKey: String, name: String, imageURL: String) {
             self.name = name
             self.publicKey = publicKey
+            self.imageURL = imageURL
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let pubkey = try container.decode(String.self, forKey: .publicKey)
             var name = try? container.decode(String.self, forKey: .name)
+            var imageURL = try? container.decode(String.self, forKey: .imageURL)
             if name == nil {
                 name = "Unknown Sender"
             }
-            self.init(publicKey: pubkey, name: name!)
+            self.init(publicKey: pubkey, name: name!, imageURL: imageURL!)
         }
     }
     
@@ -224,9 +228,9 @@ public struct Message: Codable {
 extension O3APIClient {
     func subscribeToPush(deviceToken: String, completion: @escaping(O3APIClientResult<Bool>) -> Void) {
         let endpoint = "/\(O3KeychainManager.getO3PubKey()!)/devices"
-        let fullURL = "http://35.187.212.119:4444" + endpoint
+        let fullURL = "https://inbox.o3.network/api/v1" + endpoint
         
-        let timestamp = String(Date().timeIntervalSince1970)
+        let timestamp = String(Int(Date().timeIntervalSince1970))
         let objectToSign = PushUnsignedRequest(timestamp: timestamp, platform: "iOS", deviceToken: deviceToken)
         let encoder = JSONEncoder()
         encoder.outputFormatting = .sortedKeys
@@ -252,9 +256,9 @@ extension O3APIClient {
     
     func subscribeToTopic(topic: String, completion: @escaping(O3APIClientResult<Bool>) -> Void) {
         let endpoint = "/\(O3KeychainManager.getO3PubKey()!)/subscribe"
-        let fullURL = "http://35.187.212.119:4444" + endpoint
+        let fullURL = "https://inbox.o3.network/api/v1" + endpoint
         
-        let timestamp = String(Date().timeIntervalSince1970)
+        let timestamp = String(Int(Date().timeIntervalSince1970))
         let objectToSign = NotificationSubscriptionUnsignedRequest(timestamp: timestamp, topic: topic)
         let encoder = JSONEncoder()
         encoder.outputFormatting = .sortedKeys
@@ -280,11 +284,11 @@ extension O3APIClient {
     
     func unsubscribeToTopic(topic: String, completion: @escaping(O3APIClientResult<Bool>) -> Void) {
         let endpoint = "/\(O3KeychainManager.getO3PubKey()!)/unsubscribe"
-        let fullURL = "http://35.187.212.119:4444" + endpoint
+        let fullURL = "https://inbox.o3.network/api/v1" + endpoint
         
         let encoder = JSONEncoder()
         encoder.outputFormatting = .sortedKeys
-        let timestamp = String(Date().timeIntervalSince1970)
+        let timestamp = String(Int(Date().timeIntervalSince1970))
         let objectToSign = NotificationSubscriptionUnsignedRequest(timestamp: timestamp, topic: topic)
         let dataToSign = try? encoder.encode(objectToSign)
         
@@ -308,7 +312,7 @@ extension O3APIClient {
     func getMessages(pubKey: String, sequence: Int? = nil, completion: @escaping(O3APIClientResult<[Message]>) -> Void) {
         let endpoint = "/\(O3KeychainManager.getO3PubKey()!)/notifications"
         
-        let fullURL = "http://35.187.212.119:4444" + endpoint
+        let fullURL = "https://inbox.o3.network/api/v1" + endpoint
         var params = [String: String]()
         if sequence != nil {
             params = ["sequence": String(sequence!)]

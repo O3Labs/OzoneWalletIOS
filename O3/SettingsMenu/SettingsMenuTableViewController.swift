@@ -193,18 +193,21 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     @objc func openMultiWalletDisplay() {
-        Controller().openWalletSelector()
+        Controller().openWalletSelector(isPortfolio: false)
     }
     
     @IBAction func buyNeo(_ sender: Any) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
             Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
+            RevenueEvent.shared.buyInitiated(buyWith: "fiat", source: "settings")
         }
         actionSheet.addAction(buyWithFiat)
         
         let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
             Controller().openDappBrowserV2(url: URL(string: "https://swap.o3.app")!)
+            RevenueEvent.shared.buyInitiated(buyWith: "crypto", source: "settings")
+
         }
         actionSheet.addAction(buyWithCrypto)
         
@@ -216,6 +219,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     @IBAction func referNeo(_ sender: Any) {
+        RevenueEvent.shared.shareReferral()
         let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "referralBottomSheet")
         let transitionDelegate = DeckTransitioningDelegate()
         nav.modalPresentationStyle = .custom
@@ -242,6 +246,16 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         checkCongestion()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if UserDefaultsManager.needsInboxBadge {
+            self.navigationItem.leftBarButtonItem!.setBadge(text: " ")
+        } else {
+            self.navigationItem.leftBarButtonItem!.setBadge(text: "")
+        }
+        
     }
     
     

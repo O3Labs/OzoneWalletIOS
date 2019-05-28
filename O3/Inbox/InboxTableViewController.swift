@@ -9,13 +9,16 @@
 import Foundation
 import UIKit
 
-class InboxTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
+class InboxTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate,
+    NotificationDelegate {
     var dummyMessages = [Message]()
     
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        UserDefaultsManager.needsInboxBadge = false
         applyNavBarTheme()
         setThemedElements()
         setLocalizedStrings()
@@ -29,11 +32,15 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
         } else {
             loadMessages()
         }
+        
+        UserDefaultsManager.lastInboxOpen = Int(Date().timeIntervalSince1970)
+        tableView.tableFooterView = UIView(frame: .zero)
     }
     
     func displayOptInBottomSheet() {
-        let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "inboxDisclaimerNav")
+        let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "inboxDisclaimerNav") as! UINavigationController
         self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+        (nav.children.first as! InboxDisclaimerViewController).delegate = self
         nav.modalPresentationStyle = .custom
         nav.transitioningDelegate = self.halfModalTransitioningDelegate
         self.present(nav, animated: true, completion: nil)
@@ -55,9 +62,9 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "inbox-cell") as? InboxTableViewCell else {
-            fatalError("Unrecoverable error occurred")
+                fatalError("Unrecoverable error occurred")
         }
-    
+            
         cell.data = dummyMessages[indexPath.row]
         return cell
     }
@@ -71,7 +78,12 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
             return
         }
         if action.type == "browser" {
-            Controller().openDappBrowserV2(url: URL(string: action.url)!)
+            if action.url.starts(with: "o3network") {
+                self.dismiss(animated: true)
+                Router.parseO3NetworkScheme(url: URL(string: action.url)!)
+            } else {
+                Controller().openDappBrowserV2(url: URL(string: action.url)!)
+            }
         }
     }
     
@@ -88,10 +100,12 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
         }
     }
     
+    
     @objc func showSettingsMenu(_ sender: UIBarButtonItem) {
         let vc = UIStoryboard(name: "Inbox", bundle: nil).instantiateViewController(withIdentifier: "InboxSettingsMenuTableViewController") as! InboxSettingsMenuTableViewController
+        vc.delegate = self
         //number of menus x cell height
-        let height = CGFloat(3 * 44.0)
+        let height = CGFloat(4 * 60.0)
         vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: height)
         vc.modalPresentationStyle = .popover
         let presentationController = vc.presentationController as! UIPopoverPresentationController

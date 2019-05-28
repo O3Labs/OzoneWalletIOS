@@ -14,14 +14,10 @@ class O3Cache {
     static let storageName: String = "O3Cache"
     
     enum keys: String {
-        case gas
-        case neo
-        case tokens
-        case ontology
-        case readOnlyGas
-        case readOnlyNeo
-        case readOnlyTokens
-        case readOnlyOntologyAssets
+        case gasForAddress
+        case neoForAddress
+        case tokensForAddress
+        case ontologyForAddress
         case portfolioValue
     }
     
@@ -55,138 +51,67 @@ class O3Cache {
         ((try? portfolioStorage?.removeAll()) as ()??)
     }
     
-    // MARK: Cache Setters for Writable Balances
-    static func setNEOForSession(neoBalance: Int) {
-        let neoAsset = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
-                                         decimals: 8, value: Double(neoBalance), assetType: .neoAsset)
-        ((try? storage?.setObject(neoAsset, forKey: keys.neo.rawValue)) as ()??)
-    }
-    
-    static func setGASForSession(gasBalance: Double) {
-        let gasAsset = TransferableAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
-                                         decimals: 8, value: gasBalance, assetType: .neoAsset)
-        ((try? storage?.setObject(gasAsset, forKey: keys.gas.rawValue)) as ()??)
-        
-    }
-    
-    static func setTokenAssetsForSession(tokens: [TransferableAsset]) {
-        ((try? arrayStorage?.setObject(tokens, forKey: keys.tokens.rawValue)) as ()??)
-        
-    }
-    
-    static func setOntologyAssetsForSession(tokens: [TransferableAsset]) {
-        ((try? arrayStorage?.setObject(tokens, forKey: keys.ontology.rawValue)) as ()??)
-    }
-    
     // MARK: Cache Setters for Read Only Balances
-    static func setReadOnlyNEOForSession(neoBalance: Int, address: String) {
+    static func setNeoBalance(neoBalance: Int, address: String) {
         
         let neoAsset = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
                                          decimals: 8, value: Double(neoBalance), assetType: .neoAsset)
-        ((try? storage?.setObject(neoAsset, forKey: address + "_" + keys.readOnlyNeo.rawValue)) as ()??)
+        ((try? storage?.setObject(neoAsset, forKey: address + "_" + keys.neoForAddress.rawValue)) as ()??)
         
     }
     
-    static func setReadOnlyGasForSession(gasBalance: Double, address: String) {
+    static func setGasBalance(gasBalance: Double, address: String) {
         let gasAsset = TransferableAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
                                          decimals: 8, value: gasBalance, assetType: .neoAsset)
-        ((try? storage?.setObject(gasAsset, forKey: address + "_" + keys.readOnlyGas.rawValue)) as ()??)
+        ((try? storage?.setObject(gasAsset, forKey: address + "_" + keys.gasForAddress.rawValue)) as ()??)
         
     }
     
-    static func setReadOnlyTokensForSession(tokens: [TransferableAsset], address: String) {
-        ((try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.readOnlyTokens.rawValue)) as ()??)
+    static func setTokensBalance(tokens: [TransferableAsset], address: String) {
+        ((try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.tokensForAddress.rawValue)) as ()??)
     }
     
-    static func setReadOnlyOntologyAssetsForSession(tokens: [TransferableAsset], address: String) {
-        ((try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.readOnlyOntologyAssets.rawValue)) as ()??)
-    }
-
-    
-    // MARK: Cache Getters for Writable Balances
-    static func gas() -> TransferableAsset {
-        var cachedGASBalance = TransferableAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
-                                                 decimals: 8, value: 0, assetType: .neoAsset)
-        
-        do {
-            cachedGASBalance = try storage?.object(forKey: keys.gas.rawValue) ?? cachedGASBalance
-        } catch {
-            
-        }
-        
-        return cachedGASBalance
-    }
-    
-    static func neo() -> TransferableAsset {
-        var cachedNEOBalance = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
-                                                 decimals: 0, value: 0, assetType: .neoAsset)
-        
-        do {
-            cachedNEOBalance = try storage?.object(forKey: keys.neo.rawValue) ?? cachedNEOBalance
-        } catch {
-            
-        }
-        
-        return cachedNEOBalance
-    }
-    
-    static func tokenAssets() -> [TransferableAsset] {
-        var cachedTokens = [TransferableAsset]()
-        do {
-            cachedTokens = try arrayStorage?.object(forKey: keys.tokens.rawValue) ?? cachedTokens
-        } catch {
-            
-        }
-        return cachedTokens
-    }
-    
-    static func ontologyAssets() -> [TransferableAsset] {
-        var cachedTokens = [TransferableAsset]()
-        do {
-            cachedTokens = try arrayStorage?.object(forKey: keys.ontology.rawValue) ?? cachedTokens
-        } catch {
-            
-        }
-        return cachedTokens
+    static func setOntologyBalance(tokens: [TransferableAsset], address: String) {
+        ((try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.ontologyForAddress.rawValue)) as ()??)
     }
     
     // MARK: Cache Getters For Read Only Balances
-    static func readOnlyGas(address: String) -> TransferableAsset {
+    static func gasBalance(for address: String) -> TransferableAsset {
         var cachedGASBalance = TransferableAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
                                                  decimals: 8, value: 0, assetType: .neoAsset )
         do {
-           cachedGASBalance = try storage?.object(forKey: address + "_" + keys.readOnlyGas.rawValue) ?? cachedGASBalance
+           cachedGASBalance = try storage?.object(forKey: address + "_" + keys.gasForAddress.rawValue) ?? cachedGASBalance
         } catch {
             
         }
         return cachedGASBalance
     }
     
-    static func readOnlyNeo(address: String) -> TransferableAsset {
+    static func neoBalance(for address: String) -> TransferableAsset {
         var cachedNEOBalance = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
                                                  decimals: 8, value: 0, assetType: .neoAsset)
         do {
-            cachedNEOBalance = try storage?.object(forKey: address + "_" + keys.readOnlyNeo.rawValue) ?? cachedNEOBalance
+            cachedNEOBalance = try storage?.object(forKey: address + "_" + keys.neoForAddress.rawValue) ?? cachedNEOBalance
         } catch {
             
         }
         return cachedNEOBalance
     }
     
-    static func readOnlyTokens(address: String) -> [TransferableAsset] {
+    static func tokensBalance(for address: String) -> [TransferableAsset] {
         var cachedTokens = [TransferableAsset]()
         do {
-           cachedTokens = try arrayStorage?.object(forKey: address + "_" + keys.readOnlyTokens.rawValue) ?? cachedTokens
+           cachedTokens = try arrayStorage?.object(forKey: address + "_" + keys.tokensForAddress.rawValue) ?? cachedTokens
         } catch {
             
         }
         return cachedTokens
     }
     
-    static func readOnlyOntologyAssets(address: String) -> [TransferableAsset] {
+    static func ontologyBalances(for address: String) -> [TransferableAsset] {
         var cachedTokens = [TransferableAsset]()
         do {
-            cachedTokens = try arrayStorage?.object(forKey: address + "_" + keys.readOnlyOntologyAssets.rawValue) ?? cachedTokens
+            cachedTokens = try arrayStorage?.object(forKey: address + "_" + keys.ontologyForAddress.rawValue) ?? cachedTokens
         } catch {
             
         }

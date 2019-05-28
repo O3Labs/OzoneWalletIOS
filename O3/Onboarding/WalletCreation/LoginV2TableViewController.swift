@@ -37,7 +37,7 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
     @IBOutlet weak var confirmPasswordRevealButton: UIButton!
     
     @IBOutlet weak var containerView: UIView!
-    let lottieAnimation = LOTAnimationView(name: "an_create_wallet")
+    let lottieAnimation = LOTAnimationView(name: "wallet_generated")
     
     var alreadyScanned = false
     var qrView: UIView!

@@ -212,11 +212,11 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
                 var selected: TransferableAsset?
                 
                 if asset?.lowercased() == "neo" || asset == AssetId.neoAssetId.rawValue {
-                    selected = O3Cache.neo()
+                    selected = O3Cache.neoBalance(for: Authenticated.wallet!.address)
                 } else if asset?.lowercased() == "gas" || asset == AssetId.gasAssetId.rawValue {
-                    selected = O3Cache.gas()
+                    selected = O3Cache.gasBalance(for: Authenticated.wallet!.address)
                 } else {
-                    let tokenAssets = O3Cache.tokenAssets()
+                    let tokenAssets = O3Cache.tokensBalance(for: Authenticated.wallet!.address)
                     let assetIndex = tokenAssets.firstIndex(where: { (item) -> Bool in
                         item.id.range(of: asset!) != nil
                      })

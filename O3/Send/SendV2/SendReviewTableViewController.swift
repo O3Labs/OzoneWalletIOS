@@ -111,7 +111,7 @@ class SendReviewTableViewController: UITableViewController {
     
     
     func sendOntology(assetSymbol: String, amount: Double, toAddress: String) {
-        let ong = O3Cache.ontologyAssets().first { t -> Bool in
+        let ong = O3Cache.ontologyBalances(for: Authenticated.wallet!.address).first { t -> Bool in
             return t.symbol.uppercased() == "ONG"
         }
         

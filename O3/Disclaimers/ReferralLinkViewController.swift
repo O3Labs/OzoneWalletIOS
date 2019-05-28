@@ -37,7 +37,7 @@ class ReferralLinkViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func learnMoreTapped(_ sender: Any) {
-        Controller().openDappBrowserV2(url: URL(string: "https://www.o3.network")!)
+        Controller().openDappBrowserV2(url: URL(string: "https://medium.com/o3-labs/refer-friends-get-rewards-with-o3-2852ebcc6b45")!)
     }
     
     func setThemedElements() {

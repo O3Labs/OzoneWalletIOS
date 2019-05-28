@@ -141,7 +141,7 @@ extension TransferableAsset {
             name: "NEO",
             symbol: "NEO",
             decimals: 0,
-            value: O3Cache.neo().value,
+            value: O3Cache.neoBalance(for: Authenticated.wallet!.address).value,
             assetType: .neoAsset)
     }
 
@@ -161,7 +161,7 @@ extension TransferableAsset {
             name: "GAS",
             symbol: "GAS",
             decimals: 8,
-            value: O3Cache.gas().value,
+            value: O3Cache.gasBalance(for: Authenticated.wallet!.address).value,
             assetType: .neoAsset)
     }
 

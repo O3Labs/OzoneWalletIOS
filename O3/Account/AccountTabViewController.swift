@@ -69,24 +69,22 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         setNavigationItems()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if UserDefaultsManager.needsInboxBadge {
+            self.navigationItem.leftBarButtonItem!.setBadge(text: " ")
+        } else {
+            self.navigationItem.leftBarButtonItem!.setBadge(text: "")
+        }
+    }
+    
     @objc func updateWalletInfo() {
         titleViewButton.setTitle(NEP6.getFromFileSystem()!.accounts.first {$0.isDefault}!.label, for: .normal)
     }
     
     func setNavigationItems() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
-        
-        if let nep6 = NEP6.getFromFileSystem() {
-            var numAccount = 0
-            for account in nep6.accounts {
-                if account.isDefault == false && account.key != nil {
-                    numAccount += 1
-                }
-            }
-            if numAccount > 0 {
-                navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "support"), style: .plain, target: self, action: #selector(self.inboxTapped))
-            }
-        }
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "support"), style: .plain, target: self, action: #selector(self.inboxTapped))
         
         
         #if TESTNET
@@ -109,7 +107,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     }
 
     @objc func showMultiWalletDisplay() {
-        Controller().openWalletSelector()
+        Controller().openWalletSelector(isPortfolio: false)
     }
     
     @objc func openDAppBrowser(_ sender: Any) {

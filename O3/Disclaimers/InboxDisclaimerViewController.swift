@@ -21,6 +21,7 @@ class InboxDisclaimerViewController: UIViewController {
     @IBOutlet weak var checkboxDescription: UILabel!
     let checkbox = M13Checkbox(frame: CGRect(x: 0.0, y: 0.0, width: 24.0, height: 24.0))
     
+    weak var delegate: NotificationDelegate?
     
     
     override func viewDidLoad() {
@@ -39,8 +40,11 @@ class InboxDisclaimerViewController: UIViewController {
     
     func subscribeToDefaultO3Topic() {
         UserDefaultsManager.subscribedServices = [UserDefaultsManager.Subscriptions.o3.rawValue]
+        var group = DispatchGroup()
         DispatchQueue.global().async {
+            group.enter()
             O3APIClient(network: AppState.network).subscribeToTopic(topic: UserDefaultsManager.Subscriptions.o3.rawValue) { result in
+                group.leave()
                 switch result {
                 case .failure(_):
                     return
@@ -52,7 +56,9 @@ class InboxDisclaimerViewController: UIViewController {
         
         for account in NEP6.getFromFileSystem()?.accounts ?? [] {
             DispatchQueue.global().async {
+                group.enter()
                 O3APIClient(network: AppState.network).subscribeToTopic(topic: account.address) { result in
+                    group.leave()
                     switch result {
                     case .failure(_):
                         return
@@ -62,6 +68,8 @@ class InboxDisclaimerViewController: UIViewController {
                 }
             }
         }
+        group.wait()
+        delegate?.loadMessages()
     }
     
     @IBAction func agreeButtonTapped(_ sender: Any) {

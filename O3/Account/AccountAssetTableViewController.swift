@@ -38,10 +38,10 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     var isClaimingNeo: Bool = false
     var isClaimingOnt: Bool = false
     
-    var tokenAssets = O3Cache.tokenAssets()
-    var neoBalance: Int = Int(O3Cache.neo().value)
-    var gasBalance: Double = O3Cache.gas().value
-    var ontologyAssets: [TransferableAsset] = O3Cache.ontologyAssets()
+    var tokenAssets = O3Cache.tokensBalance(for: Authenticated.wallet!.address)
+    var neoBalance: Int = Int(O3Cache.neoBalance(for: Authenticated.wallet!.address).value)
+    var gasBalance: Double = O3Cache.gasBalance(for: Authenticated.wallet!.address).value
+    var ontologyAssets: [TransferableAsset] = O3Cache.ontologyBalances(for: Authenticated.wallet!.address)
     var mostRecentClaimAmount = 0.0
     var tradingAccount: TradingAccount?
     var addressInbox: Inbox?
@@ -92,7 +92,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         sectionHeaderCollapsedState[sections.tradingAccountSection.rawValue] = true
         
         //load everything from cache first
-        self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neo(), O3Cache.gas()] + O3Cache.ontologyAssets() + O3Cache.tokenAssets())
+        self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neoBalance(for: Authenticated.wallet!.address), O3Cache.gasBalance(for: Authenticated.wallet!.address)] + O3Cache.ontologyBalances(for: Authenticated.wallet!.address) + O3Cache.tokensBalance(for: Authenticated.wallet!.address))
         loadAccountState()
         
         self.loadInbox()
@@ -249,14 +249,14 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         for token in accountState.nep5Tokens {
             tokenAssets.append(token)
         }
-        O3Cache.setGASForSession(gasBalance: gasBalance)
-        O3Cache.setNEOForSession(neoBalance: neoBalance)
-        O3Cache.setTokenAssetsForSession(tokens: tokenAssets)
-        O3Cache.setOntologyAssetsForSession(tokens: ontologyAssets)
+        O3Cache.setGasBalance(gasBalance: gasBalance, address: Authenticated.wallet!.address)
+        O3Cache.setNeoBalance(neoBalance: neoBalance, address: Authenticated.wallet!.address)
+        O3Cache.setTokensBalance(tokens: tokenAssets, address: Authenticated.wallet!.address)
+        O3Cache.setOntologyBalance(tokens: ontologyAssets, address: Authenticated.wallet!.address)
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
-        self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neo(), O3Cache.gas()] + self.ontologyAssets + self.tokenAssets)
+        self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neoBalance(for: Authenticated.wallet!.address), O3Cache.gasBalance(for: Authenticated.wallet!.address)] + self.ontologyAssets + self.tokenAssets)
     }
     
     func loadAccountState() {

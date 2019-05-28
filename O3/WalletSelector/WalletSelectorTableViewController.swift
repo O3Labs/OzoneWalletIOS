@@ -27,6 +27,18 @@ class WalletSelectorTableViewController: UITableViewController {
     
     var group: DispatchGroup = DispatchGroup()
     
+    var isPortfolio = true
+    var walletSectionNum: Int {
+        get {
+            if isPortfolio == true {
+                return 1
+            } else {
+                return 0
+            }
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismissTapped))
@@ -34,7 +46,9 @@ class WalletSelectorTableViewController: UITableViewController {
         loadPortfoliosForAll()
         setThemedElements()
         setLocalizedStrings()
-    }
+
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
+    }   
     
     func getCachedPortfolioValue(for address: String, indexPath: IndexPath) -> Bool {
         let accountValue = O3Cache.getCachedPortfolioValue(for: address)
@@ -52,71 +66,81 @@ class WalletSelectorTableViewController: UITableViewController {
         watchAddresses = NEP6.getFromFileSystem()?.getWatchAccounts() ?? []
     }
     
-    func loadPortfoliosForAll() {
-            for i in 0..<self.wallets.count {
-                let indexPath = IndexPath(row: i, section: 1)
-                if self.getCachedPortfolioValue(for: self.wallets[i].address, indexPath: indexPath) == false {
-                    DispatchQueue.global().async {
-                        self.group.enter()
-                        O3APIClient(network: AppState.network).getAccountState(address: self.wallets[i].address) { result in
-                            switch result {
-                            case .failure:
-                                self.group.leave()
-                                return
-                            case .success(let accountState):
-                                self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.wallets[i].address)
-                            }
+    func loadWalletPortfolios() {
+        for i in 0..<self.wallets.count {
+            let indexPath = IndexPath(row: i, section: walletSectionNum)
+            if self.getCachedPortfolioValue(for: self.wallets[i].address, indexPath: indexPath) == false {
+                DispatchQueue.global().async {
+                    self.group.enter()
+                    O3APIClient(network: AppState.network).getAccountState(address: self.wallets[i].address) { result in
+                        switch result {
+                        case .failure:
+                            self.group.leave()
+                            return
+                        case .success(let accountState):
+                            self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.wallets[i].address)
                         }
                     }
                 }
             }
-            
-            self.trackedCount = 0
-            self.untrackedCount = 0
-            for i in 0..<self.watchAddresses.count {
-                var indexPath: IndexPath
-                if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddresses[i].address) {
-                    if UserDefaultsManager.untrackedWatchAddr.count == NEP6.getFromFileSystem()?.getWatchAccounts().count {
-                        indexPath = IndexPath(row: self.untrackedCount, section: 2)
-                    } else {
-                        indexPath = IndexPath(row: self.untrackedCount, section: 3)
-                    }
-                    
-                    self.untrackedCount = self.untrackedCount + 1
+        }
+    }
+    
+    func loadWatchAddressPortfolios() {
+        self.trackedCount = 0
+        self.untrackedCount = 0
+        for i in 0..<self.watchAddresses.count {
+            var indexPath: IndexPath
+            if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddresses[i].address) {
+                if UserDefaultsManager.untrackedWatchAddr.count == NEP6.getFromFileSystem()?.getWatchAccounts().count {
+                    indexPath = IndexPath(row: self.untrackedCount, section: 2)
                 } else {
-                    indexPath = IndexPath(row: self.trackedCount, section: 2)
-                    self.trackedCount = self.trackedCount + 1
+                    indexPath = IndexPath(row: self.untrackedCount, section: 3)
                 }
-                self.watchAddrs[indexPath] = self.watchAddresses[i]
-                if self.getCachedPortfolioValue(for: self.watchAddresses[i].address, indexPath: indexPath) == false {
-                    DispatchQueue.global().async {
-                        self.group.enter()
-                        O3APIClient(network: AppState.network).getAccountState(address: self.watchAddresses[i].address) { result in
-                            switch result {
-                            case .failure:
-                                self.group.leave()
-                                return
-                            case .success(let accountState):
-                                if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddresses[i].address) {
-                                    if UserDefaultsManager.untrackedWatchAddr.count == NEP6.getFromFileSystem()?.getWatchAccounts().count {
-                                        indexPath = IndexPath(row: self.untrackedCount, section: 2)
-                                    } else {
-                                        indexPath = IndexPath(row: self.untrackedCount, section: 3)
-                                    }
-                                    self.untrackedCount = self.untrackedCount + 1
+                
+                self.untrackedCount = self.untrackedCount + 1
+            } else {
+                indexPath = IndexPath(row: self.trackedCount, section: 2)
+                self.trackedCount = self.trackedCount + 1
+            }
+            self.watchAddrs[indexPath] = self.watchAddresses[i]
+            if self.getCachedPortfolioValue(for: self.watchAddresses[i].address, indexPath: indexPath) == false {
+                DispatchQueue.global().async {
+                    self.group.enter()
+                    O3APIClient(network: AppState.network).getAccountState(address: self.watchAddresses[i].address) { result in
+                        switch result {
+                        case .failure:
+                            self.group.leave()
+                            return
+                        case .success(let accountState):
+                            if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddresses[i].address) {
+                                if UserDefaultsManager.untrackedWatchAddr.count == NEP6.getFromFileSystem()?.getWatchAccounts().count {
+                                    indexPath = IndexPath(row: self.untrackedCount, section: 2)
                                 } else {
-                                    indexPath = IndexPath(row: self.trackedCount, section: 2)
-                                    self.trackedCount = self.trackedCount + 1
+                                    indexPath = IndexPath(row: self.untrackedCount, section: 3)
                                 }
-                                self.watchAddrs[indexPath] = self.watchAddresses[i]
-                                self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.watchAddresses[i].address)
+                                self.untrackedCount = self.untrackedCount + 1
+                            } else {
+                                indexPath = IndexPath(row: self.trackedCount, section: 2)
+                                self.trackedCount = self.trackedCount + 1
                             }
+                            self.watchAddrs[indexPath] = self.watchAddresses[i]
+                            self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.watchAddresses[i].address)
                         }
                     }
                 }
             }
+        }
+
+    }
+    
+    func loadPortfoliosForAll() {
+        loadWalletPortfolios()
+        if isPortfolio {
+            loadWatchAddressPortfolios()
             self.group.wait()
             self.sumForCombined()
+        }
     }
     
     func sumForCombined() {
@@ -162,17 +186,24 @@ class WalletSelectorTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if trackedCount == 0 && untrackedCount == 0 {
-            return 2
-        } else if trackedCount > 0 && untrackedCount == 0 {
-            return 3
-        } else if trackedCount == 0 && untrackedCount > 0 {
-            return 3
+        if isPortfolio {
+            if trackedCount == 0 && untrackedCount == 0 {
+                return 2
+            } else if trackedCount > 0 && untrackedCount == 0 {
+                return 3
+            } else if trackedCount == 0 && untrackedCount > 0 {
+                return 3
+            }
+            return 4
         }
-        return 4
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isPortfolio == false {
+            return wallets.count
+        }
+        
         if section == 0 {
             return 1
         } else if section == 1 {
@@ -203,13 +234,18 @@ class WalletSelectorTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "walletSelectorTableViewCell") as? WalletSelectorTableViewCell else {
             fatalError("Something went terribly Wrong")
         }
-        if indexPath.section == 0 {
-            cell.data = WalletSelectorTableViewCell.Data(title: "Total", subtitle: "Wallets + Watch Addresses", value: combinedAccountValue, isDefault: false)
-        } else if indexPath.section == 1 {
-            cell.data = WalletSelectorTableViewCell.Data(title: wallets[indexPath.row].label, subtitle: wallets[indexPath.row].address, value: accountValues[indexPath], isDefault: wallets[indexPath.row].isDefault)
+        
+        if isPortfolio {
+            if indexPath.section == 0 {
+                cell.data = WalletSelectorTableViewCell.Data(title: "Total", subtitle: "Wallets + Watch Addresses", value: combinedAccountValue, isDefault: false)
+            } else if indexPath.section == 1 {
+                cell.data = WalletSelectorTableViewCell.Data(title: wallets[indexPath.row].label, subtitle: wallets[indexPath.row].address, value: accountValues[indexPath], isDefault: wallets[indexPath.row].isDefault)
+            } else {
+                cell.data = WalletSelectorTableViewCell.Data(title: watchAddrs[indexPath]!.label, subtitle: watchAddrs[indexPath]!.address, value: accountValues[indexPath],
+                                                             isDefault: false)
+            }
         } else {
-            cell.data = WalletSelectorTableViewCell.Data(title: watchAddrs[indexPath]!.label, subtitle: watchAddrs[indexPath]!.address, value: accountValues[indexPath],
-                                                         isDefault: false)
+            cell.data = WalletSelectorTableViewCell.Data(title: wallets[indexPath.row].label, subtitle: wallets[indexPath.row].address, value: accountValues[indexPath], isDefault: wallets[indexPath.row].isDefault)
         }
         return cell
     }
@@ -263,7 +299,6 @@ class WalletSelectorTableViewController: UITableViewController {
             let inputNewName = alertController.textFields?[0].text!
             let nep6 = NEP6.getFromFileSystem()!
             nep6.editName(address: self.watchAddresses[indexPath.row].address   , newName: inputNewName!)
-            nep6.writeToFileSystem()
             self.updateWallets()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -345,7 +380,6 @@ class WalletSelectorTableViewController: UITableViewController {
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
             let nep6 = NEP6.getFromFileSystem()!
             nep6.removeEncryptedKey(address: self.watchAddresses[indexPath.row].address)
-            nep6.writeToFileSystem()
             Channel.shared().unsubscribe(fromTopic: self.watchAddresses[indexPath.row].address, block: {})
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -358,15 +392,30 @@ class WalletSelectorTableViewController: UITableViewController {
         }
         alert.addAction(cancel)
         
+        
         present(alert, animated: true, completion: nil)
+    }
+    
+    func handlePortfolioTapped(indexPath: IndexPath) {
+        var absoluteIndex = indexPath.row
+        for section in 0..<indexPath.section {
+            absoluteIndex += tableView.numberOfRows(inSection: section)
+        }
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "jumpToPortfolio"), object: nil, userInfo: ["portfolioIndex": absoluteIndex])
+        self.dismiss(animated: true)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // wallet
-        if indexPath.section == 1 {
+        if isPortfolio == false {
             handleWalletTapped(indexPath: indexPath)
-        } else if indexPath.section == 2  || indexPath.section == 3 {
-            handleWatchAddressTapped(indexPath: indexPath)
+        } else {
+            if indexPath.section == 1 || indexPath.section == 0 {
+                handlePortfolioTapped(indexPath: indexPath)
+            } else if indexPath.section == 2  || indexPath.section == 3 {
+                handleWatchAddressTapped(indexPath: indexPath)
+            }
         }
     }
     

@@ -24,10 +24,10 @@ class InboxTableViewCell: UITableViewCell {
             
             let dateformatter = DateFormatter()
             dateformatter.dateStyle = .short
-            dateformatter.timeStyle = .short
+            dateformatter.timeStyle = .none
             dateLabel.text = dateformatter.string(from: Date(timeIntervalSince1970: Double(data.timestamp)))
             
-            logoImageView.kf.setImage(with: URL(string: "https://cdn-images-1.medium.com/max/284/1*_1U2EsLEnLNQZnc-UjNd6g@2x.png")!)
+            logoImageView.kf.setImage(with: URL(string: data.sender.imageURL))
             
             if data.action == nil {
                 actionButton.isHidden = true

@@ -104,6 +104,9 @@
 		356F1B07218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */; };
 		356F1B0921901AA30004C088 /* EncryptPasswordEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */; };
 		356F1B0B219049130004C088 /* EncyptionCompletedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B0A219049130004C088 /* EncyptionCompletedViewController.swift */; };
+		3573425E229BC5AA00BE7F5E /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573425D229BC5AA00BE7F5E /* UIBarButtonItem.swift */; };
+		35734260229CC76000BE7F5E /* AddressNotificationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573425F229CC76000BE7F5E /* AddressNotificationTableViewController.swift */; };
+		35734262229D08BA00BE7F5E /* luna_bobbing.json in Resources */ = {isa = PBXBuildFile; fileRef = 35734261229D08BA00BE7F5E /* luna_bobbing.json */; };
 		357D28C22122E16700DA67A0 /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 357D28C12122E16700DA67A0 /* Amplitude.framework */; };
 		357D28C32122E16700DA67A0 /* Amplitude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 357D28C12122E16700DA67A0 /* Amplitude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35809D9821E6EB5000E1D277 /* M13Checkbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35809D9721E6EB5000E1D277 /* M13Checkbox.framework */; };
@@ -511,6 +514,9 @@
 		356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewCell.swift; sourceTree = "<group>"; };
 		356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptPasswordEntryTableViewController.swift; sourceTree = "<group>"; };
 		356F1B0A219049130004C088 /* EncyptionCompletedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncyptionCompletedViewController.swift; sourceTree = "<group>"; };
+		3573425D229BC5AA00BE7F5E /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
+		3573425F229CC76000BE7F5E /* AddressNotificationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressNotificationTableViewController.swift; sourceTree = "<group>"; };
+		35734261229D08BA00BE7F5E /* luna_bobbing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = luna_bobbing.json; sourceTree = "<group>"; };
 		357D28C12122E16700DA67A0 /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
 		35809D9721E6EB5000E1D277 /* M13Checkbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = M13Checkbox.framework; path = Carthage/Build/iOS/M13Checkbox.framework; sourceTree = "<group>"; };
 		35809D9A21E6EBD600E1D277 /* VerifyManualBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyManualBackupViewController.swift; sourceTree = "<group>"; };
@@ -1031,6 +1037,7 @@
 				35A37C35226D9FAA00473895 /* InboxTableViewCell.swift */,
 				35A37C39226EBF6100473895 /* InboxSettingsMenuTableViewController.swift */,
 				35A37C3B226EBF8E00473895 /* InboxSettingsMenuTableViewCell.swift */,
+				3573425F229CC76000BE7F5E /* AddressNotificationTableViewController.swift */,
 			);
 			path = Inbox;
 			sourceTree = "<group>";
@@ -1589,6 +1596,7 @@
 				6E8B0A54215905BE00E8A2E5 /* Date.swift */,
 				35CE4A332175DF0C00F460ED /* UIDevice.swift */,
 				35A37C3F2270072C00473895 /* tableView.swift */,
+				3573425D229BC5AA00BE7F5E /* UIBarButtonItem.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1637,6 +1645,7 @@
 			isa = PBXGroup;
 			children = (
 				350E18762186F99B00AA10CE /* RocketSplash.json */,
+				35734261229D08BA00BE7F5E /* luna_bobbing.json */,
 				35AF806C20CA6F9B00E48457 /* EnterPasswordKey.json */,
 				353E799820C68CA800B9AB1F /* WalletCreation */,
 				353E11E620C676E300697359 /* Landing */,
@@ -1829,6 +1838,7 @@
 				6E8B0A4F21587AD700E8A2E5 /* PriceInputToolbar.xib in Resources */,
 				6E64C0DE215B89C2002B1366 /* PriceInputToggleToolbar.xib in Resources */,
 				35AD2B66209179010024A900 /* zh-Hans.lproj in Resources */,
+				35734262229D08BA00BE7F5E /* luna_bobbing.json in Resources */,
 				35A37C32226D9ED200473895 /* Inbox.storyboard in Resources */,
 				35C370B22182A8080023AABC /* AddNewMultiWallet.storyboard in Resources */,
 				6E713ACC219BE5B200CFAE3C /* ZendeskSDKStrings.bundle in Resources */,
@@ -2030,6 +2040,7 @@
 				3514DC5E225C30D8001DCFD9 /* dapiDelegate.swift in Sources */,
 				35B399D5210ECDB400284BFA /* OntologyClient.swift in Sources */,
 				35AD2B70209312600024A900 /* OnboardingStrings.swift in Sources */,
+				35734260229CC76000BE7F5E /* AddressNotificationTableViewController.swift in Sources */,
 				35ACAF192277F25000B67AFA /* WalletSelectorTableViewCell.swift in Sources */,
 				35A8464E2214FFF400E95F48 /* ContractDetailsTableViewController.swift in Sources */,
 				35DBABCA2098028D009BE767 /* PortfolioStrings.swift in Sources */,
@@ -2085,6 +2096,7 @@
 				6E9129772164C287006826A0 /* ThemedUIView.swift in Sources */,
 				6EF59C8B21A2A25900087D72 /* dAppMessage.swift in Sources */,
 				751666B01F80C190009ACC07 /* TransactionWebViewController.swift in Sources */,
+				3573425E229BC5AA00BE7F5E /* UIBarButtonItem.swift in Sources */,
 				7550940D1F779EEE00127B4F /* WalletHeaderCollectionCell.swift in Sources */,
 				6E2F26412154845800A3DEB1 /* TradingOrder.swift in Sources */,
 				6E8B0A55215905BE00E8A2E5 /* Date.swift in Sources */,

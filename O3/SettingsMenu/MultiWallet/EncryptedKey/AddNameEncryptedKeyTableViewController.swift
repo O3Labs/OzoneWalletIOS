@@ -44,7 +44,6 @@ class AddNameEncryptedKeyTableViewController: UITableViewController {
         var updatedNep6 = NEP6.getFromFileSystem()!
         do {
             try updatedNep6.addEncryptedKey(name: nameInputField.text!, address: address, key: encryptedKey)
-                updatedNep6.writeToFileSystem()
                 MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
                 Channel.shared().subscribe(toTopic: address)
                 UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)

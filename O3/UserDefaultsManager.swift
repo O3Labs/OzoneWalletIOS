@@ -212,4 +212,36 @@ class UserDefaultsManager {
             UserDefaults.standard.synchronize()
         }
     }
+    
+    private static let lastInboxOpenKey = "lastInboxOpen"
+    static var lastInboxOpen: Int {
+        get {
+            guard let intValue = UserDefaults.standard.integer(forKey: lastInboxOpenKey) as? Int else {
+                return 0
+            }
+            return intValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: lastInboxOpenKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    private static let needsInboxBadgeKey = "needsInboxBadge"
+    static var needsInboxBadge: Bool {
+        get {
+            if UserDefaultsManager.hasAgreedInbox == false {
+                return true
+            }
+            
+            guard let boolValue = UserDefaults.standard.bool(forKey: needsInboxBadgeKey) as? Bool else {
+                return false
+            }
+            return boolValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: needsInboxBadgeKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
 }
