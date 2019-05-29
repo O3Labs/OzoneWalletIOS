@@ -318,7 +318,20 @@ extension O3APIClient {
             params = ["sequence": String(sequence!)]
         }
         
-        sendRESTAPIRequest(endpoint, data: nil, requestType: "GET", params: params, overrideURL: fullURL) { result in
+        
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        let timestamp = String(Int(Date().timeIntervalSince1970))
+        let objectToSign = MessagesUnsignedRequest(timestamp: timestamp)
+        let dataToSign = try? encoder.encode(objectToSign)
+        
+        var error: NSError?
+        let signature = (NeoutilsSign(dataToSign, O3KeychainManager.getO3PrivKey()!, &error)?.fullHexString)!
+        
+        let signedObject = MessagesSignedRequest(data: objectToSign, signature: signature)
+        let signedData = try! encoder.encode(signedObject)
+        
+        sendRESTAPIRequest(endpoint, data: signedData, requestType: "POST", params: params, overrideURL: fullURL) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))

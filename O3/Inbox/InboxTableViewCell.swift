@@ -17,27 +17,37 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var subtitleLabel: UILabel!
     
-    var data: Message! {
+    
+    var data: Message? {
         didSet {
-            titleLabel.text = data.sender.name
-            subtitleLabel.text = data.data.text
+            guard let dataUnwrapped = data else {
+                return
+            }
+            titleLabel.text = dataUnwrapped.sender.name
+            subtitleLabel.text = dataUnwrapped.data.text
             
             let dateformatter = DateFormatter()
             dateformatter.dateStyle = .short
             dateformatter.timeStyle = .none
-            dateLabel.text = dateformatter.string(from: Date(timeIntervalSince1970: Double(data.timestamp)))
+            dateLabel.text = dateformatter.string(from: Date(timeIntervalSince1970: Double(dataUnwrapped.timestamp)))
             
-            logoImageView.kf.setImage(with: URL(string: data.sender.imageURL))
+            logoImageView.kf.setImage(with: URL(string: dataUnwrapped.sender.imageURL))
             
-            if data.action == nil {
-                actionButton.isHidden = true
-                actionButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
-                actionButton.setNeedsLayout()
-            } else {
-                actionButton.isHidden = false
-                actionButton.setTitle(data.action!.title, for: UIControl.State())
-                actionButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
-                actionButton.setNeedsLayout()
+            DispatchQueue.main.async {
+                if dataUnwrapped.action == nil {
+                    
+                    self.actionButton.isHidden = true
+                    
+                   // self.buttonToSubtitleVerticalConstraint.isActive = false
+                    self.setNeedsLayout()
+                    self.layoutIfNeeded()
+                } else {
+                    self.actionButton.isHidden = false
+                    self.actionButton.setTitle(dataUnwrapped.action!.title, for: UIControl.State())
+
+                    self.setNeedsLayout()
+                    self.layoutIfNeeded()
+                }
             }
         }
     }
@@ -46,6 +56,7 @@ class InboxTableViewCell: UITableViewCell {
         super.awakeFromNib()
         setThemedElements()
     }
+    
     
     func setThemedElements() {
         theme_backgroundColor = O3Theme.backgroundColorPicker
