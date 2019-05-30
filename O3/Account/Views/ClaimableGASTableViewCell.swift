@@ -264,7 +264,7 @@ class ClaimableGASTableViewCell: UITableViewCell {
         let remark = String(format: "O3XFORCLAIM")
         customAttributes.append(TransactionAttritbute(remark: remark))
 
-        Authenticated.wallet?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: O3Cache.neo().value, toAddress: (Authenticated.wallet?.address)!, attributes: customAttributes) { txid, _ in
+        Authenticated.wallet?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: O3Cache.neoBalance(for: Authenticated.wallet!.address).value, toAddress: (Authenticated.wallet?.address)!, attributes: customAttributes) { txid, _ in
             if txid == nil {
                 self.delegate?.setIsClaimingNeo(false)
                 //if sending failed then show error message and load the claimable gas again to reset the state

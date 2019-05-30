@@ -61,7 +61,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
         
         enableContinueButton()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
     }
     
     @IBAction func tappedLeftBarButtonItem(_ sender: Any) {
@@ -171,7 +171,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
                 let addressSelectVC = dest.children[0] as? AddressSelectTableViewController else {
                     fatalError("Undefined Table view behavior")
             }
-            addressSelectVC.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(tappedCloseAddressSelector(_:)))
+            addressSelectVC.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(tappedCloseAddressSelector(_:)))
             addressSelectVC.delegate = self
         } else if segue.identifier == "segueToQR" {
             guard let dest = segue.destination as? QRScannerController else {
@@ -212,11 +212,11 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
                 var selected: TransferableAsset?
                 
                 if asset?.lowercased() == "neo" || asset == AssetId.neoAssetId.rawValue {
-                    selected = O3Cache.neo()
+                    selected = O3Cache.neoBalance(for: Authenticated.wallet!.address)
                 } else if asset?.lowercased() == "gas" || asset == AssetId.gasAssetId.rawValue {
-                    selected = O3Cache.gas()
+                    selected = O3Cache.gasBalance(for: Authenticated.wallet!.address)
                 } else {
-                    let tokenAssets = O3Cache.tokenAssets()
+                    let tokenAssets = O3Cache.tokensBalance(for: Authenticated.wallet!.address)
                     let assetIndex = tokenAssets.firstIndex(where: { (item) -> Bool in
                         item.id.range(of: asset!) != nil
                      })

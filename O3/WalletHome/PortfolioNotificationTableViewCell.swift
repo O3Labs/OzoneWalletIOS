@@ -53,7 +53,7 @@ class PortfolioNotificationTableViewCell: UITableViewCell, MFMailComposeViewCont
         
         let nep6 = NEP6.getFromFileSystem()!
         var nep2String = ""
-        for wallet in nep6.accounts {
+        for wallet in nep6.getAccounts() {
             if wallet.isDefault {
                 nep2String = wallet.key!
             }

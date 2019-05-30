@@ -30,8 +30,8 @@ class Router: NSObject {
                     return
                 case .success(let accountState):
 
-                    var neoBalance: Int = Int(O3Cache.neo().value)
-                    var gasBalance: Double = O3Cache.gas().value
+                    var neoBalance: Int = Int(O3Cache.neoBalance(for: Authenticated.wallet!.address).value)
+                    var gasBalance: Double = O3Cache.gasBalance(for: Authenticated.wallet!.address).value
 
                     for asset in accountState.assets {
                         if asset.id.contains(AssetId.neoAssetId.rawValue) {
@@ -41,8 +41,7 @@ class Router: NSObject {
                         }
                     }
 
-                    var tokenAssets = O3Cache.tokenAssets()
-
+                    var tokenAssets = O3Cache.tokensBalance(for: Authenticated.wallet!.address)
                     var selectedAsset: TransferableAsset?
                     for token in accountState.nep5Tokens {
                         tokenAssets.append(token)
@@ -50,10 +49,10 @@ class Router: NSObject {
                             selectedAsset = token
                         }
                     }
-                    O3Cache.setGASForSession(gasBalance: gasBalance)
-                    O3Cache.setNEOForSession(neoBalance: neoBalance)
-                    O3Cache.setTokenAssetsForSession(tokens: tokenAssets)
-                    O3Cache.setOntologyAssetsForSession(tokens: accountState.ontology)
+                    O3Cache.setGasBalance(gasBalance: gasBalance, address: Authenticated.wallet!.address)
+                    O3Cache.setNeoBalance(neoBalance: neoBalance, address: Authenticated.wallet!.address)
+                    O3Cache.setTokensBalance(tokens: tokenAssets, address: Authenticated.wallet!.address)
+                    O3Cache.setOntologyBalance(tokens:accountState.ontology, address: Authenticated.wallet!.address)
 
                     if asset?.lowercased() == "neo" {
                         Controller().openSend(to: address!, selectedAsset: TransferableAsset.NEO(), amount: amount)
@@ -73,9 +72,9 @@ class Router: NSObject {
             Controller().focusOnTab(tabIndex: 0)
         case "wallet":
             Controller().focusOnTab(tabIndex: 1)
-        case "news":
-            Controller().focusOnTab(tabIndex: 2)
         case "marketplace":
+            Controller().focusOnTab(tabIndex: 2)
+        case "news":
             Controller().focusOnTab(tabIndex: 3)
         case "settings":
             Controller().focusOnTab(tabIndex: 4)

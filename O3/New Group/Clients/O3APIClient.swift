@@ -65,9 +65,14 @@ class O3APIClient: NSObject {
         return components?.url?.absoluteString
     }
     
-    func sendRESTAPIRequest(_ resourceEndpoint: String, data: Data?, requestType: String = "GET", params: [String: String] = [:], completion :@escaping (O3APIClientResult<JSONDictionary>) -> Void) {
+    func sendRESTAPIRequest(_ resourceEndpoint: String, data: Data?, requestType: String = "GET", params: [String: String] = [:],
+                            overrideURL: String? = nil, completion :@escaping (O3APIClientResult<JSONDictionary>) -> Void) {
 
         var fullURL = useCache ? apiWithCacheBaseEndpoint + resourceEndpoint : apiBaseEndpoint + resourceEndpoint
+        if overrideURL != nil {
+            fullURL = overrideURL!
+        }
+        
         var updatedParams = params
         if network == .test {
             updatedParams["network"] = "test"
@@ -84,7 +89,7 @@ class O3APIClient: NSObject {
         request.httpBody = data
 
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, result, err) in
-            #if DEGUB
+            #if DEBUG
             print(result)
             #endif
             if err != nil {

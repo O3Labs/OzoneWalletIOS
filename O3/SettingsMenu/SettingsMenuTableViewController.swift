@@ -12,42 +12,36 @@ import UIKit
 import SwiftTheme
 import KeychainAccess
 import WebBrowser
+import DeckTransition
 import ZendeskSDK
 import Neoutils
 
 class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate {
-    @IBOutlet weak var contactView: UIView!
-    @IBOutlet weak var themeCell: UITableViewCell!
-    @IBOutlet weak var currencyCell: UITableViewCell!
-    @IBOutlet weak var contactCell: UITableViewCell!
+    @IBOutlet weak var generalSettingsCell: UITableViewCell!
     @IBOutlet weak var supportCell: UITableViewCell!
     @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
-    @IBOutlet weak var idCell: UITableViewCell!
-    @IBOutlet weak var buyCell: UITableViewCell!
     
-    @IBOutlet weak var supportView: UIView!
-    @IBOutlet weak var currencyView: UIView!
-    @IBOutlet weak var themeView: UIView!
-    @IBOutlet weak var buyView: UITableViewCell!
+    @IBOutlet weak var helpView: UIView!
+    @IBOutlet weak var generalSettingsView: UIView!
     
-    @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
-    @IBOutlet weak var themeLabel: UILabel!
-    @IBOutlet weak var currencyLabel: UILabel!
-    @IBOutlet weak var supportLabel: UILabel!
+    @IBOutlet weak var generalSettingsLabel: UILabel!
+    @IBOutlet weak var helpLabel: UILabel!
     @IBOutlet weak var multiWalletLabel: UILabel!
-    @IBOutlet weak var idLabel: UILabel!
-    @IBOutlet weak var buyLabel: UILabel!
     
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
     @IBOutlet weak var qrView: UIImageView!
     @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var shareButton: UIButton!
-    @IBOutlet weak var walletNameLabel: UILabel!
 
     @IBOutlet weak var congestionIcon: UIImageView!
+    @IBOutlet weak var buyButton: UIButton!
+    @IBOutlet weak var referButton: UIButton!
     
+    @IBOutlet weak var privacyPolicyLabel: UILabel!
+    @IBOutlet weak var footerView: UIView!
+    
+    var titleViewButton = UIButton(type: .system)
     
     // swiftlint:disable weak_delegate
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
@@ -113,20 +107,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         }
     }
     
-    
-    var themeString = UserDefaultsManager.themeIndex == 0 ? SettingsStrings.classicTheme: SettingsStrings.darkTheme {
-        didSet {
-            self.setThemeLabel()
-        }
-    }
-
-    func setThemeLabel() {
-        guard let label = themeCell.viewWithTag(1) as? UILabel else {
-            fatalError("Undefined behavior with table view")
-        }
-        DispatchQueue.main.async { label.text = self.themeString }
-    }
-    
     func checkCongestion() {
         NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight() { (result) in
             switch result {
@@ -149,10 +129,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
             self.qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: self.qrView.bounds.size.width, height: self.qrView.bounds.size.height)
             self.addressLabel.text = (Authenticated.wallet?.address)!
             if let nep6 = NEP6.getFromFileSystem() {
-                let defaultIndex = nep6.accounts.firstIndex { $0.isDefault == true }
-                self.navigationController?.navigationBar.topItem?.title = nep6.accounts[defaultIndex!].label
-            } else {
-                self.navigationController?.navigationBar.topItem?.title = "My O3 Wallet"
+                let defaultIndex = nep6.getAccounts().firstIndex { $0.isDefault == true }
+                self.titleViewButton.setTitle(nep6.getAccounts()[defaultIndex!].label, for: UIControl.State())
             }
             
             if NEP6.getFromFileSystem() == nil {
@@ -161,12 +139,19 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
                 self.multiWalletLabel.text = SettingsStrings.manageWallets
             }
         }
-        
+    }
+    
+    @objc func leftBarButtonTapped(_ sender: Any) {
+        let inboxController = UIStoryboard(name: "Inbox", bundle: nil).instantiateInitialViewController()!
+        self.present(inboxController, animated: true)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: self.qrView.bounds.size.width, height: self.qrView.bounds.size.height)
+        
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "support"), style: .plain, target: self, action: #selector(leftBarButtonTapped(_:)))
         
         setThemedElements()
         setLocalizedStrings()
@@ -176,28 +161,53 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     
         let tap = UITapGestureRecognizer(target: self, action: #selector(showActionSheet))
         self.headerView.addGestureRecognizer(tap)
-        contactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sendMail)))
-        buyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buyNeo)))
-        supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
-        themeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTheme)))
+        
+        helpView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
+        generalSettingsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openGeneralSettings)))
         enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
-        idCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openIdentity)))
-        setThemeLabel()
+        footerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openPrivacyPolicy)))
         
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.versionLabel.text = String(format: SettingsStrings.versionLabel, version)
         }
+        setNavElements()
     }
     
-    @objc func buyNeo() {
+    func setNavElements() {
+        let activeWallet = NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label
+        titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
+        titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
+        titleViewButton.setTitle(activeWallet, for: .normal)
+        titleViewButton.semanticContentAttribute = .forceRightToLeft
+        titleViewButton.setImage(UIImage(named: "ic_chevron_down"), for: UIControl.State())
+        
+        titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20 )
+        // Create action listener
+        titleViewButton.addTarget(self, action: #selector(openMultiWalletDisplay), for: .touchUpInside)
+        navigationItem.titleView = titleViewButton
+    }
+    
+    @objc func openPrivacyPolicy() {
+        Controller().openDappBrowserV2(url: URL(string:
+            "https://o3.network/privacy/")!)
+    }
+    
+    @objc func openMultiWalletDisplay() {
+        Controller().openWalletSelector(isPortfolio: false)
+    }
+    
+    @IBAction func buyNeo(_ sender: Any) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
             Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
+            RevenueEvent.shared.buyInitiated(buyWith: "fiat", source: "settings")
         }
         actionSheet.addAction(buyWithFiat)
         
         let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
-            Controller().openDappBrowserV2(url: URL(string: "https://o3.network/swap/")!)
+            Controller().openDappBrowserV2(url: URL(string: "https://swap.o3.app")!)
+            RevenueEvent.shared.buyInitiated(buyWith: "crypto", source: "settings")
+
         }
         actionSheet.addAction(buyWithCrypto)
         
@@ -208,12 +218,17 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         present(actionSheet, animated: true, completion: nil)
     }
     
-    @objc func openIdentity() {
-        self.performSegue(withIdentifier: "segueToIdentitiesList", sender: nil)
+    @IBAction func referNeo(_ sender: Any) {
+        RevenueEvent.shared.shareReferral()
+        let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "referralBottomSheet")
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.modalPresentationStyle = .custom
+        nav.transitioningDelegate = transitionDelegate
+        self.present(nav, animated: true, completion: nil)
     }
     
     @objc func enableMultiWallet() {
-        if NEP6.getFromFileSystem()?.accounts == nil {
+        if NEP6.getFromFileSystem()?.getAccounts() == nil {
             self.performSegue(withIdentifier: "segueToMultiWalletActivation", sender: nil)
         } else {
             self.performSegue(withIdentifier: "segueToManageWallets", sender: nil)
@@ -231,37 +246,38 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         checkCongestion()
-        currencyLabel.text = String(format: SettingsStrings.currencyTitle, UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased())
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if UserDefaultsManager.needsInboxBadge {
+            self.navigationItem.leftBarButtonItem!.setBadge(text: " ")
+        } else {
+            self.navigationItem.leftBarButtonItem!.setBadge(text: "")
+        }
+        
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        DispatchQueue.main.async { self.setGradients() }
     }
 
     @objc func maximize(_ sender: Any) {
         maximizeToFullScreen()
     }
 
-    @objc func changeTheme() {
-        let optionMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let lightThemeAction = UIAlertAction(title: SettingsStrings.classicTheme, style: .default) { _ in
-            UserDefaultsManager.themeIndex = 0
-            ThemeManager.setTheme(index: 0)
-            self.themeString = SettingsStrings.classicTheme
+    @objc func openGeneralSettings() {
+        guard let walletInfoModal = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(withIdentifier: "generalSettingsTableViewController") as? GeneralSettingsTableViewController else {
+            
+            fatalError("Presenting improper view controller")
         }
-
-        let darkThemeAction = UIAlertAction(title: SettingsStrings.darkTheme, style: .default) { _ in
-            UserDefaultsManager.themeIndex = 1
-            ThemeManager.setTheme(index: 1)
-            self.themeString = SettingsStrings.darkTheme
-        }
-
-        let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
-        }
-
-        optionMenu.addAction(lightThemeAction)
-        optionMenu.addAction(darkThemeAction)
-        optionMenu.addAction(cancelAction)
-
-        optionMenu.popoverPresentationController?.sourceView = themeView
-        present(optionMenu, animated: true, completion: nil)
+        
+    
+        let nav = UINavigationController()
+        nav.viewControllers = [walletInfoModal]
+        UIApplication.topViewController()!.present(nav, animated: true)
     }
 
     @objc func sendMail() {
@@ -274,20 +290,15 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
 
     @objc func openSupportForum() {
-        let webBrowserViewController = WebBrowserViewController()
-
-        webBrowserViewController.delegate = self
-        webBrowserViewController.isToolbarHidden = true
-        webBrowserViewController.title = ""
-        webBrowserViewController.isShowURLInNavigationBarWhenLoading = false
-        webBrowserViewController.barTintColor = UserDefaultsManager.theme.backgroundColor
-        webBrowserViewController.tintColor = Theme.light.primaryColor
-        webBrowserViewController.isShowPageTitleInNavigationBar = false
-        webBrowserViewController.loadURLString("https://community.o3.network")
-        maximizeToFullScreen(allowReverse: false)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.navigationController?.pushViewController(webBrowserViewController, animated: true)
+        guard let walletInfoModal = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(withIdentifier: "helpTableViewController") as? HelpTableViewController else {
+            
+            fatalError("Presenting improper view controller")
         }
+        
+        
+        let nav = UINavigationController()
+        nav.viewControllers = [walletInfoModal]
+        UIApplication.topViewController()!.present(nav, animated: true)
     }
 
     @IBAction func closeTapped(_ sender: Any) {
@@ -299,9 +310,10 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    
     func setThemedElements() {
-        let themedTitleLabels = [contactLabel, themeLabel, currencyLabel, versionLabel, supportLabel, multiWalletLabel, walletNameLabel, idLabel]
-        let themedCells = [themeCell, currencyCell, contactCell, idCell, buyCell]
+        let themedTitleLabels = [generalSettingsLabel, versionLabel, helpLabel, multiWalletLabel]
+        let themedCells = [generalSettingsCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
             cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -310,27 +322,49 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         for label in themedTitleLabels {
             label?.theme_textColor = O3Theme.titleColorPicker
         }
-        buyLabel.theme_textColor = O3Theme.positiveGainColorPicker
         versionLabel?.theme_textColor = O3Theme.lightTextColorPicker
         tableView.theme_separatorColor = O3Theme.tableSeparatorColorPicker
         tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         headerView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        
+        
     }
     
+    func setGradients() {
+        buyButton.setTitle("Buy NEO Today!", for: UIControl.State())
+        referButton.setTitle("Refer friends and get rewards!", for: UIControl.State())
+        
+        let gradientBuy = CAGradientLayer()
+        gradientBuy.frame = CGRect(x: 0, y: 0, width: buyButton.bounds.width, height: buyButton.bounds.height)
+        gradientBuy.colors = [
+            UIColor(red:0.57, green:0.88, blue:0, alpha:1).cgColor,
+            UIColor(red:0.35, green:0.75, blue:0, alpha:1).cgColor]
+        gradientBuy.locations = [0, 1]
+        gradientBuy.startPoint = CGPoint(x: 1.0, y: 0.5)
+        gradientBuy.endPoint = CGPoint(x: 0.5, y: 1)
+        gradientBuy.cornerRadius = buyButton.cornerRadius
+        buyButton.layer.insertSublayer(gradientBuy, at: 0)
+        
+        let gradientRefer = CAGradientLayer()
+        gradientRefer.frame = CGRect(x: 0, y: 0, width: referButton.bounds.width, height: referButton.bounds.height)
+        gradientRefer.colors = [
+            UIColor(red:0.98, green:0.85, blue:0.38, alpha:1).cgColor,
+            UIColor(red:0.97, green:0.45, blue:0.13, alpha:1).cgColor,
+            UIColor(red:0.97, green:0.42, blue:0.11, alpha:1).cgColor
+        ]
+        gradientRefer.locations = [0, 0.93623286, 1]
+        gradientRefer.startPoint = CGPoint(x: 1, y: 0.28)
+        gradientRefer.endPoint = CGPoint(x: 0.42, y: 1)
+        gradientRefer.cornerRadius = buyButton.cornerRadius
+        referButton.layer.insertSublayer(gradientRefer, at: 0)
+    }
 
     func setLocalizedStrings() {
-        themeLabel.text = SettingsStrings.themeTitle
-        currencyLabel.text = SettingsStrings.currencyTitle + UserDefaultsManager.referenceFiatCurrency.rawValue.uppercased()
-        contactLabel.text = SettingsStrings.contactTitle
-        supportLabel.text = SettingsStrings.supportTitle
+        generalSettingsLabel.text = "General"
+        helpLabel.text = "Help"
         versionLabel.text = SettingsStrings.versionLabel
-        buyLabel.text = "Get NEO Today"
-        idLabel.text = SettingsStrings.idLabel
-        if NEP6.getFromFileSystem() == nil {
-            multiWalletLabel.text = SettingsStrings.enableMultiWallet
-        } else {
-            multiWalletLabel.text = SettingsStrings.manageWallets
-        }
+        multiWalletLabel.text = SettingsStrings.manageWallets
         headerTitleLabel.text = AccountStrings.myAddressInfo
+        privacyPolicyLabel.text = "Terms and privacy policy"
     }
 }

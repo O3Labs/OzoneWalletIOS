@@ -65,7 +65,7 @@ class InvokeRequestTableViewController: UITableViewController {
     }
     
     func buildData() {
-        let account = NEP6.getFromFileSystem()?.accounts.first(where: { n -> Bool in
+        let account = NEP6.getFromFileSystem()?.getAccounts().first(where: { n -> Bool in
             return n.address == selectedWallet.address
         })
         data.append(info(key: dataKey.with.rawValue, value: String(format: "%@", account?.label ?? "My O3 Wallet"), data: nil))

@@ -145,7 +145,7 @@
 "MULTIWALLET_show_raw_key" = "Show Raw Private Key";
 
 /* title for manage wallets bottom sehet */
-"MULTIWALLET_wallets" = "Manage Wallets";
+"MULTIWALLET_wallets" = "Wallet Security Center";
 
 /* A description to display after a watch address has been successfully added */
 "MULTIWALLET_watch_address_added" = "A watch address has been added. You can unlock this address at ay time via settings > manage wallet and entering a private or encrypted key";
@@ -625,7 +625,7 @@
 "SETTINGS_Logout_Warning" = "Are you sure you wish to clear all O3 app data? This includes all Private and Encrypted keys stored on this device. Please make sure your keys are backed up. You cannot undo this action.";
 
 /* settings item to manage existing wallets */
-"SETTINGS_manage_wallets" = "Manage Wallets";
+"SETTINGS_manage_wallets" = "Wallet Security Center";
 
 /* Settings Menu Title for Private Key */
 "SETTINGS_My_Private_Key" = "My Private Key";

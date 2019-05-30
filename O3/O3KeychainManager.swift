@@ -26,6 +26,10 @@ class O3KeychainManager {
     //legacy not used any more, maintain for backwards compatibility, if active in keychain, user will be prompted to upgrade
     private static let wifKey = "ozonePrivateKey"
     
+    //O3 Keys for protected auth to o3 services
+    private static let o3PrivKey = "o3PrivKey"
+    private static let o3PubKey = "o3PubKey"
+    
     static func getSigningKeyPassword(with prompt: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
             let keychain = Keychain(service: self.keychainService)
@@ -143,7 +147,7 @@ class O3KeychainManager {
     
     
     static func getWalletForNep6(for address: String, completion: @escaping(O3KeychainResult<Wallet>) -> ()) {
-        let account = (NEP6.getFromFileSystem()?.accounts.first{ $0.address == address})!
+        let account = (NEP6.getFromFileSystem()?.getAccounts().first{ $0.address == address})!
        DispatchQueue.global(qos: .userInteractive).async {
             let keychain = Keychain(service: self.keychainService)
             let hashed = (address.data(using: .utf8)?.sha256.sha256.fullHexString)!
@@ -176,10 +180,16 @@ class O3KeychainManager {
                     completion(result)
                 }
             } catch let error {
-                completion(.failure(error.localizedDescription))
+                if error as! Status == Status.userCanceled {
+                    completion(.failure(error.localizedDescription))
+                } else {
+                    O3KeychainManager.inputPassword(account: account) { result in
+                        completion(result)
+                    }
+                }
             }
         }
-    }
+    }   
     
     static func setNep6DecryptionPassword(for address: String, pass: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
         let keychain = Keychain(service: self.keychainService)
@@ -293,6 +303,25 @@ class O3KeychainManager {
         // we know that the key is present, but you cannot interact with
         // it without authentication. Otherwise, we assume the key is not present.
         return status == errSecInteractionNotAllowed
+    }
+    
+    static public func createO3KeyPair() {
+        //use neo format for generating pub/priv key
+        var error: NSError? = nil
+        let wallet = NeoutilsNewWallet(&error)
+        let keychain = Keychain(service: self.keychainService)
+        keychain[o3PubKey] = wallet!.publicKey()?.fullHexString
+        keychain[o3PrivKey] = wallet!.privateKey()?.fullHexString
+    }
+    
+    static public func getO3PubKey() -> String? {
+        let keychain = Keychain(service: self.keychainService)
+        return keychain[o3PubKey]
+    }
+    
+    static public func getO3PrivKey() -> String? {
+        let keychain = Keychain(service: self.keychainService)
+        return keychain[o3PrivKey]
     }
 }
 

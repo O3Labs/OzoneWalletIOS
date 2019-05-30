@@ -62,10 +62,10 @@ class SendWhatTableViewController: UITableViewController {
         
         //default to NEO
         if selectedAsset == nil {
-            self.selectedAsset = O3Cache.neo()
-            self.assetSelected(selected: O3Cache.neo(), gasBalance: O3Cache.gas().value)
+            self.selectedAsset = O3Cache.neoBalance(for: Authenticated.wallet!.address)
+            self.assetSelected(selected: O3Cache.neoBalance(for: Authenticated.wallet!.address), gasBalance: O3Cache.gasBalance(for: Authenticated.wallet!.address).value)
         } else {
-            self.assetSelected(selected: selectedAsset!, gasBalance: O3Cache.gas().value)
+            self.assetSelected(selected: selectedAsset!, gasBalance: O3Cache.gasBalance(for: Authenticated.wallet!.address).value)
         }
         
         if selectedAmount != 0 {

@@ -286,4 +286,8 @@ class O3Theme {
                                                    Theme.dark.backgroundColor.hexString(false),
                                                    Theme.dark.backgroundColor.hexString(false))
     
+    static let backgroundSectionHeader = ThemeColorPicker(colors: "#FAFAFAFF",
+                                                      Theme.dark.cardColor.hexString(false),
+                                                      Theme.dark.cardColor.hexString(false))
+    
 }

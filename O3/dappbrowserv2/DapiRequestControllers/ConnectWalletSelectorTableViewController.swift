@@ -14,7 +14,7 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
     
     var accounts: [NEP6.Account]! {
         //only account with encrypted key
-        return NEP6.getFromFileSystem()?.accounts.filter({ n -> Bool in
+        return NEP6.getFromFileSystem()?.getAccounts().filter({ n -> Bool in
             return n.key != nil
         })
     }

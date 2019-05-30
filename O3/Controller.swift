@@ -102,7 +102,7 @@ class Controller: NSObject {
             fatalError("Presenting improper view controller")
         }
         
-        walletInfoModal.account = NEP6.getFromFileSystem()?.accounts.first { $0.isDefault }!
+        walletInfoModal.account = NEP6.getFromFileSystem()?.getAccounts().first { $0.isDefault }!
         let nav = UINavigationController()
         nav.viewControllers = [walletInfoModal]
         UIApplication.topViewController()!.present(nav, animated: true)
@@ -124,5 +124,16 @@ class Controller: NSObject {
             return
         }
         tabbar.selectedIndex = tabIndex
+    }
+    
+    func openWalletSelector(isPortfolio: Bool = true ) {
+        let modal = UIStoryboard(name: "WalletSelector", bundle: nil).instantiateInitialViewController() as! UINavigationController
+        (modal.children.first as! WalletSelectorTableViewController).isPortfolio = isPortfolio
+        UIApplication.topViewController()!.present(modal, animated: true, completion: nil)
+    }
+    
+    func openAddNewWallet() {
+        let modal = UIStoryboard(name: "AddNewMultiWallet", bundle: nil).instantiateInitialViewController()
+        UIApplication.topViewController()!.present(modal!, animated: true, completion: nil)
     }
 }

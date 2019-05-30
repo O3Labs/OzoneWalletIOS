@@ -33,7 +33,7 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
         lottieView.loopAnimation = true
         lottieView.play()
         addWalletButton.isEnabled = false
-        let buttonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(dismissPage(_:)))
+        let buttonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismissPage(_:)))
         buttonItem.tintColor = Theme.light.primaryColor
         navigationItem.leftBarButtonItem = buttonItem
     }
@@ -75,7 +75,7 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     }
     
     func addressIsNotPresent() -> Bool {
-        for account in NEP6.getFromFileSystem()!.accounts {
+        for account in NEP6.getFromFileSystem()!.getAccounts() {
             if account.address == walletInputField.text! {
                 return false
             }
@@ -84,7 +84,7 @@ class AddWalletTableViewController: UITableViewController, QRScanDelegate {
     }
     
     func keyIsNotPresent() -> Bool {
-        for account in NEP6.getFromFileSystem()!.accounts {
+        for account in NEP6.getFromFileSystem()!.getAccounts() {
             if account.key == walletInputField.text! {
                 return false
             }

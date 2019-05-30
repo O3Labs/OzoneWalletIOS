@@ -33,7 +33,7 @@ class AddNameEncryptedKeyTableViewController: UITableViewController {
     
     @IBAction func finishButtonTapped(_ sender: Any) {
         let nameText = nameInputField.text?.trim() ?? ""
-        let index = NEP6.getFromFileSystem()!.accounts.firstIndex { $0.label == nameText}
+        let index = NEP6.getFromFileSystem()!.getAccounts().firstIndex { $0.label == nameText}
         if index != nil {
             OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
                 self.nameInputField.text = ""
@@ -44,7 +44,6 @@ class AddNameEncryptedKeyTableViewController: UITableViewController {
         var updatedNep6 = NEP6.getFromFileSystem()!
         do {
             try updatedNep6.addEncryptedKey(name: nameInputField.text!, address: address, key: encryptedKey)
-                updatedNep6.writeToFileSystem()
                 MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
                 Channel.shared().subscribe(toTopic: address)
                 UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)

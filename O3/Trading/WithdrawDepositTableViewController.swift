@@ -72,18 +72,18 @@ class WithdrawDepositTableViewController: UITableViewController {
         if selectedAction == Action.Deposit {
             
             //append two native assets
-            if O3Cache.neo().value > 0 {
-                depositableAssets?.append(O3Cache.neo().toTradableAsset())
+            if O3Cache.neoBalance(for: Authenticated.wallet!.address).value > 0 {
+                depositableAssets?.append(O3Cache.neoBalance(for: Authenticated.wallet!.address).toTradableAsset())
             }
-            if O3Cache.gas().value > 0 {
-                depositableAssets?.append(O3Cache.gas().toTradableAsset())
+            if O3Cache.gasBalance(for: Authenticated.wallet!.address).value > 0 {
+                depositableAssets?.append(O3Cache.gasBalance(for: Authenticated.wallet!.address).toTradableAsset())
             }
             Switcheo.shared?.exchangeTokens(completion: { result in
                 switch result {
                 case .failure(let error):
                     print(error)
                 case .success(let response):
-                    for token in O3Cache.tokenAssets() {
+                    for token in O3Cache.tokensBalance(for: Authenticated.wallet!.address) {
                         if response[token.symbol.uppercased()] != nil {
                             self.depositableAssets?.append(token.toTradableAsset())
                         }

@@ -128,7 +128,7 @@ class SendRequestTableViewController: UITableViewController {
         
         //get wallet label from the address
         //this should never be error
-        let account = NEP6.getFromFileSystem()?.accounts.first(where: { n -> Bool in
+        let account = NEP6.getFromFileSystem()?.getAccounts().first(where: { n -> Bool in
             return n.address == request.fromAddress
         })
         data.append(info(key: dataKey.from.rawValue, value: String(format: "%@", account?.label ?? "My O3 Wallet"), data: nil))

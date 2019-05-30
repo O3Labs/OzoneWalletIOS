@@ -69,7 +69,7 @@ class MultiwalletEvent: NSObject {
         log(event: multiwalletEventName.walletAdded.rawValue,
             data: [multiWalletEventField.type.rawValue: type,
                    multiWalletEventField.method.rawValue: method,
-                   multiWalletEventField.addressCount.rawValue: NEP6.getFromFileSystem()?.accounts.count])
+                   multiWalletEventField.addressCount.rawValue: NEP6.getFromFileSystem()?.getAccounts().count])
     }
     
     func multiwalletActivated() {
@@ -267,6 +267,35 @@ class dapiEvent: NSObject {
                                                                        dapiEventField.net.rawValue: net,
                                                                        dapiEventField.url.rawValue: url,
                                                                        dapiEventField.domain.rawValue: domain])
+    }
+}
+
+class RevenueEvent: NSObject {
+    private var amplitude: Amplitude! = Amplitude.instance()
+    static let shared: RevenueEvent! = RevenueEvent()
+    
+    enum revenueEventName: String {
+        case buyInitiated = "buy_neo_initiated"
+        case shareReferral = "share_referral"
+    }
+    
+    enum revenueEventField: String {
+        case buyWith
+        case source
+    }
+    
+    func log(event: String, data: [String: Any]) {
+        amplitude.logEvent(event, withEventProperties: data)
+    }
+    
+    func buyInitiated(buyWith: String, source: String) {
+        log(event: revenueEventName.buyInitiated.rawValue, data: [
+            revenueEventField.buyWith.rawValue: buyWith,
+            revenueEventField.source.rawValue: source])
+    }
+    
+    func shareReferral() {
+        log(event: revenueEventName.buyInitiated.rawValue, data: [:])
     }
 }
 

@@ -51,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             "numOrdersKey": 0
         ]
         UserDefaults.standard.register(defaults: userDefaultsDefaults)
+        
     }
 
     let alertController = UIAlertController(title: OzoneAlert.noInternetError, message: nil, preferredStyle: .alert)
@@ -91,6 +92,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        O3APIClient(network: AppState.network).subscribeToPush(deviceToken: token) { result in
+            switch result {
+            case .success:
+                return
+            case .failure:
+                return
+            }
+        }
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
             ////If your plist contain root as Dictionary
@@ -120,6 +133,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         #else
         Fabric.with([Crashlytics.self])
         #endif
+        
+        if O3KeychainManager.getO3PubKey() == nil {
+            O3KeychainManager.createO3KeyPair()
+        }
 
         let center = UNUserNotificationCenter.current()
         center.delegate = self

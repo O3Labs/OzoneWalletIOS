@@ -65,43 +65,47 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if NEP6.getFromFileSystem() == nil {
             return []
         } else {
-            let nep6Accounts = NEP6.getFromFileSystem()!.accounts
-            var watchAddrs = [NEP6.Account]()
-            for account in nep6Accounts {
-                if account.isDefault {
-                    continue
-                }
-                watchAddrs.append(account)
-            }
-            return watchAddrs
+            var unfiltered = NEP6.getFromFileSystem()!.getWatchAccounts()
+            unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address)}
+            return unfiltered
         }
     }
     
-    @objc func updateWatchAddresses() {
-        var prevWatchAddrNum = watchAddresses.count
-        watchAddresses = loadWatchAddresses()
-        //subtracted watch addr need to update the index in model to roll back one
-        if prevWatchAddrNum > watchAddresses.count {
-            homeviewModel.currentIndex = homeviewModel.currentIndex - 1
+    @objc func jumpToPortfolio(_ notification: NSNotification) {
+        if let portfolioIndex = notification.userInfo?["portfolioIndex"] as? Int {
+            walletHeaderCollectionView.reloadData()
+            homeviewModel.currentIndex = portfolioIndex
+            self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: portfolioIndex, section: 0), at: .left, animated: false)
+            getBalance()
         }
-        
-        if watchAddresses.count > 0 && homeviewModel.currentIndex > 0 {
-            emptyGraphView?.isHidden = true
-        }
-        
-        if watchAddresses.count == 0 {
-            self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: false)
-            homeviewModel.currentIndex = 0
-        }
-        
-        
-        walletHeaderCollectionView.reloadData()
-        getBalance()
     }
 
     @objc func getBalance() {
         homeviewModel.reloadBalances()
     }
+    
+    func loadInbox() {
+        let pubkey = O3KeychainManager.getO3PubKey()!
+        O3APIClient(network: AppState.network).getMessages(pubKey: pubkey) { result in
+            if UserDefaultsManager.needsInboxBadge == true {
+                DispatchQueue.main.async { self.navigationItem.leftBarButtonItem!.setBadge(text: " ") }
+            }
+            switch result {
+            case .failure(_) :
+                return
+            case .success(let messages):
+                if messages.isEmpty == false {
+                    if messages.first!.timestamp > UserDefaultsManager.lastInboxOpen {
+                        DispatchQueue.main.async {
+                            self.navigationItem.leftBarButtonItem!.setBadge(text: " ")
+                            UserDefaultsManager.needsInboxBadge = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     @objc func updateGraphAppearance(_ sender: Any) {
         DispatchQueue.main.async {
@@ -147,7 +151,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NotificationCenter.default.addObserver(self, selector: #selector(self.resetPage(_:)), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("ChangedNetwork"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("ChangedReferenceCurrency"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWatchAddresses), name: Notification.Name("UpdatedWatchOnlyAddress"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.jumpToPortfolio(_:)), name: Notification.Name("jumpToPortfolio"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.removeObservers), name: Notification.Name("loggedOut"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateGraphAppearance(_:)), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
@@ -155,7 +159,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @objc func removeObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.removeObservers), name: Notification.Name("loggedOut"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name("ChangedNetwork"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("UpdatedWatchOnlyAddress"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("jumpToPortfolio"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name("ChangedReferenceCurrency"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
@@ -180,6 +184,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     override func viewDidLoad() {
+        
         watchAddresses = loadWatchAddresses()
         setLocalizedStrings()
         ThemeManager.setTheme(index: UserDefaultsManager.themeIndex)
@@ -189,7 +194,27 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         activatedLineCenterXAnchor = activatedLine.centerXAnchor.constraint(equalTo: fifteenMinButton.centerXAnchor, constant: 0)
         activatedLineCenterXAnchor?.isActive = true
         homeviewModel = HomeViewModel(delegate: self)
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "support"), style: .plain, target: self, action: #selector(leftBarButtonTapped))
+        loadInbox()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped))
+        self.navigationItem.leftBarButtonItem?.tintColor = Theme.light.primaryColor
+        self.navigationItem.rightBarButtonItem?.tintColor = Theme.light.primaryColor
 
+        let titleViewButton = UIButton(type: .system)
+        titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
+        titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
+        titleViewButton.setTitle("Portfolio", for: .normal)
+        titleViewButton.semanticContentAttribute = .forceRightToLeft
+        titleViewButton.setImage(UIImage(named: "ic_chevron_down"), for: UIControl.State())
+        
+        titleViewButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20)
+        // Create action listener
+        titleViewButton.addTarget(self, action: #selector(showMultiWalletDisplay), for: .touchUpInside)
+        navigationItem.titleView = titleViewButton
+        
+        
         if UserDefaults.standard.string(forKey: "subscribedAddress") != Authenticated.wallet?.address {
             Channel.shared().unsubscribe(fromTopic: "*") {
                 Channel.shared().subscribe(toTopic: (Authenticated.wallet?.address)!)
@@ -221,11 +246,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
 
     }
+    
+    @objc func showMultiWalletDisplay() {
+        Controller().openWalletSelector()
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !firstTimeViewLoad {
             self.getBalance()
+            if UserDefaultsManager.needsInboxBadge {
+                self.navigationItem.leftBarButtonItem!.setBadge(text: " ")
+            } else {
+                self.navigationItem.leftBarButtonItem!.setBadge(text: "")
+            }
         }
         firstTimeViewLoad = false
     }
@@ -262,8 +296,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 portfolio.data.last?.average == 0.0 &&
                 self.homeviewModel.currentIndex == 0 {
                 self.setEmptyGraphView()
-            } else if self.homeviewModel.currentIndex == 1 && self.watchAddresses.count == 0 {
-                self.setEmptyGraphView()
             } else {
                 self.emptyGraphView?.isHidden = true
             }
@@ -281,13 +313,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-
-            guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "notification-cell") as? PortfolioNotificationTableViewCell else {
-                fatalError("Undefined Table Cell Behavior")
+            if AppState.dismissBackupNotification() == false {
+                guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "notification-cell") as? PortfolioNotificationTableViewCell else {
+                    fatalError("Undefined Table Cell Behavior")
+                }
+                cell.selectionStyle = .none
+                cell.delegate = self
+                return cell
+            } else {
+                guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "buyNeoCell") as? BuyNeoTableViewCell else {
+                    fatalError("Undefined Table Cell Behavior")
+                }
+                cell.selectionStyle = .none
+                return cell
             }
-            cell.selectionStyle = .none
-            cell.delegate = self
-            return cell
         }
         guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "portfolioAssetCell") as? PortfolioAssetCell else {
             fatalError("Undefined Table Cell Behavior")
@@ -344,14 +383,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                     addressHasBalance = true
                 }
             }
-            return AppState.dismissBackupNotification() == false /*&& addressHasBalance*/ ? 1 : 0
+            //notification area
+            return 1
         }
         return self.displayedAssets.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 116.0
+            if AppState.dismissBackupNotification() {
+                return 60.0
+            } else {
+                return 116.0
+            }
+            
         }
         return 60.0
     }
@@ -398,7 +443,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func setLocalizedStrings() {
-        self.navigationController?.isNavigationBarHidden = true
+        
         self.navigationController?.navigationBar.topItem?.title = PortfolioStrings.portfolio
         fiveMinButton.setTitle(PortfolioStrings.sixHourInterval, for: UIControl.State())
         fifteenMinButton.setTitle(PortfolioStrings.oneDayInterval, for: UIControl.State())
@@ -417,15 +462,32 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.present(nav, animated: true, completion: nil)
         }
     }
+    
+    @objc func leftBarButtonTapped() {
+        let inboxController = UIStoryboard(name: "Inbox", bundle: nil).instantiateInitialViewController()!
+        self.present(inboxController, animated: true)
+    }
+    
+    @objc func rightBarButtonTapped() {
+        guard let modal = UIStoryboard(name: "QR", bundle: nil).instantiateInitialViewController() as? QRScannerController else {
+            fatalError("Presenting improper modal controller")
+        }
+        modal.delegate = self
+        let nav = WalletHomeNavigationController(rootViewController: modal)
+        nav.navigationBar.prefersLargeTitles = false
+        nav.setNavigationBarHidden(true, animated: false)
+        let transitionDelegate = DeckTransitioningDelegate()
+        nav.transitioningDelegate = transitionDelegate
+        nav.modalPresentationStyle = .custom
+        self.present(nav, animated: true, completion: nil)
+    }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, WalletHeaderCellDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if watchAddresses.count == 0 {
-            return 2
-        } else {
-            return 2 + watchAddresses.count
-        }
+        var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
+        unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
+        return unfiltered.count + 1
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -438,23 +500,15 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         var type: WalletHeaderCollectionCell.HeaderType
         var nep6 = NEP6.getFromFileSystem()
         if indexPath.row == 0 {
-            type = WalletHeaderCollectionCell.HeaderType.activeWallet
-            if nep6 != nil {
-                account = nep6!.accounts[indexPath.row]
-            }
-        } else if indexPath.row <= watchAddresses.count {
-            type = WalletHeaderCollectionCell.HeaderType.lockedWallet
-            account = nep6!.accounts[indexPath.row]
-        } else {
             type = WalletHeaderCollectionCell.HeaderType.combined
+        } else {
+            type = WalletHeaderCollectionCell.HeaderType.account
+            account = nep6!.getAccounts()[indexPath.row - 1]
         }
-        
-        
         
         var data =  WalletHeaderCollectionCell.Data (
             type: type,
             account: account,
-            numWatchAddresses: watchAddresses.count,
             latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
             previousPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
             referenceCurrency: (homeviewModel?.referenceCurrency)!,
@@ -499,11 +553,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let visibleIndexPath: IndexPath? = walletHeaderCollectionView.indexPathForItem(at: visiblePoint)
         if visibleIndexPath != nil {
             self.homeviewModel?.setCurrentIndex(visibleIndexPath!.row)
-            if self.watchAddresses.count == 0 && visibleIndexPath!.row == 1 {
-                self.setEmptyGraphView()
-            } else {
-                emptyGraphView?.isHidden = true
-            }
         }
     }
     
@@ -514,22 +563,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             graphViewContainer.embed(emptyGraphView!)
             graphViewContainer.bringSubviewToFront(emptyGraphView!)
         }
+
+        (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.emptyBalance
+        (emptyGraphView as! EmptyPortfolioView).rightActionButton.setTitle(PortfolioStrings.depositTokens, for: UIControl.State())
+        (emptyGraphView as! EmptyPortfolioView).leftActionButton.setTitle("Buy NEO", for: UIControl.State())
+        (emptyGraphView as! EmptyPortfolioView).leftActionButton.isHidden = false
+        (emptyGraphView as! EmptyPortfolioView).rightActionButton.isHidden = false
+        (emptyGraphView as! EmptyPortfolioView).dividerLine.isHidden = false
     
-        if homeviewModel.currentIndex != 0 {
-            (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.noWatchAddresses
-            (emptyGraphView as! EmptyPortfolioView).rightActionButton.setTitle(PortfolioStrings.addWatchAddress, for: UIControl.State())
-            (emptyGraphView as! EmptyPortfolioView).leftActionButton.isHidden = true
-            (emptyGraphView as! EmptyPortfolioView).rightActionButton.isHidden = true
-            (emptyGraphView as! EmptyPortfolioView).dividerLine.isHidden = true
-        } else {
-            (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.emptyBalance
-            (emptyGraphView as! EmptyPortfolioView).rightActionButton.setTitle(PortfolioStrings.depositTokens, for: UIControl.State())
-            (emptyGraphView as! EmptyPortfolioView).leftActionButton.setTitle("Buy NEO", for: UIControl.State())
-            (emptyGraphView as! EmptyPortfolioView).leftActionButton.isHidden = false
-            (emptyGraphView as! EmptyPortfolioView).rightActionButton.isHidden = false
-            (emptyGraphView as! EmptyPortfolioView).dividerLine.isHidden = false
-        }
-        
         emptyGraphView?.isHidden = false
     }
     
@@ -563,7 +604,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         present(modal, animated: true, completion: nil)
     }
     
-    func emptyPortfolioLeftButtonTapped()  {
+    func buyNeoButtonTapped() {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
             Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
@@ -571,7 +612,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         actionSheet.addAction(buyWithFiat)
         
         let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
-            Controller().openDappBrowserV2(url: URL(string: "https://o3.network/swap/")!)
+            Controller().openDappBrowserV2(url: URL(string: "https://swap.o3.app")!)
         }
         actionSheet.addAction(buyWithCrypto)
         
@@ -591,18 +632,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch (homeviewModel?.referenceCurrency)! {
-        case .btc:
-            homeviewModel?.setReferenceCurrency(UserDefaultsManager.referenceFiatCurrency)
-        default:
-            homeviewModel?.setReferenceCurrency(.btc)
-        }
+        Controller().openWalletSelector()
 
-        DispatchQueue.main.async {
-            collectionView.reloadData()
-            self.assetsTable.reloadData()
-            self.graphView.reload()
-        }
     }
 
     func didTapLeft() {
@@ -610,11 +641,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let index = self.walletHeaderCollectionView.indexPathsForVisibleItems[0].row
             self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: index - 1, section: 0), at: .left, animated: true)
             self.homeviewModel?.setCurrentIndex(index - 1)
-            if self.watchAddresses.count == 0 && index + 1  == 1 {
-                self.setEmptyGraphView()
-            } else {
-                self.emptyGraphView?.isHidden = true
-            }
         }
     }
 
@@ -624,11 +650,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row:
                  index + 1, section: 0), at: .right, animated: true)
             self.homeviewModel?.setCurrentIndex(index + 1)
-            if self.watchAddresses.count == 0 && index + 1  == 1 {
-                self.setEmptyGraphView()
-            } else {
-                self.emptyGraphView?.isHidden = true
-            }
         }
     }
 }
@@ -638,7 +659,22 @@ extension HomeViewController: PortfolioNotificationTableViewCellDelegate {
     func didDismiss() {
         DispatchQueue.main.async {
             AppState.setDismissBackupNotification(dismiss: true)
-            self.assetsTable.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            self.assetsTable.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        }
+    }
+}
+
+extension HomeViewController: QRScanDelegate {
+    func qrScanned(data: String) {
+        //if there is more type of string we have to check it here
+        if data.hasPrefix("neo") {
+            DispatchQueue.main.async {
+                //Controller().openSend(to:)
+            }
+        } else if (URL(string: data) != nil) {
+            Controller().openDappBrowserV2(url: URL(string: data)!)
+        } else {
+            //Controller().openSend()
         }
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 import WebBrowser
 
-class InboxItemTableViewCell: UITableViewCell {
+/*class InboxItemTableViewCell: UITableViewCell {
 
     var inboxItem: InboxItem? {
         didSet {
@@ -63,4 +63,4 @@ class InboxItemTableViewCell: UITableViewCell {
             return
         }
     }
-}
+}*/

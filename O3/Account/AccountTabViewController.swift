@@ -19,12 +19,16 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
     // swiftlint:enable weak_delegate
     
+    var titleViewButton = UIButton(type: .system)
+    
     func addThemeObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.changedTheme), name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletInfo), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
     }
 
     @objc func changedTheme(_ sender: Any) {
@@ -46,11 +50,9 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
 
         let accountAssetViewController = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "AccountAssetTableViewController")
         let transactionHistory = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "TransactionHistoryTableViewController")
-        let contactsViewController = UIStoryboard(name: "Account", bundle: nil).instantiateViewController(withIdentifier: "ContactsTableViewController")
-
+        
         self.viewControllers.append(accountAssetViewController)
         self.viewControllers.append(transactionHistory)
-        self.viewControllers.append(contactsViewController)
 
         self.dataSource = self
 
@@ -64,26 +66,49 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         self.bar.location = .top
         self.bar.style = .buttonBar
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
-        
-        if let nep6 = NEP6.getFromFileSystem() {
-            var numAccount = 0
-            for account in nep6.accounts {
-                if account.isDefault == false && account.key != nil {
-                    numAccount += 1
-                }
-            }
-            if numAccount > 0 {
-                navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_wallet_swap.png"), style: .plain, target: self, action: #selector(self.swapWalletTapped))
-            }
+        setNavigationItems()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if UserDefaultsManager.needsInboxBadge {
+            self.navigationItem.leftBarButtonItem!.setBadge(text: " ")
+        } else {
+            self.navigationItem.leftBarButtonItem!.setBadge(text: "")
         }
+    }
+    
+    @objc func updateWalletInfo() {
+        titleViewButton.setTitle(NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label, for: .normal)
+    }
+    
+    func setNavigationItems() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "support"), style: .plain, target: self, action: #selector(self.inboxTapped))
         
         
         #if TESTNET
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openDAppBrowser(_:)))
         #endif
+        
+        let activeWallet = NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label
+        
+        titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
+        titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
+        titleViewButton.setTitle(activeWallet, for: .normal)
+        titleViewButton.semanticContentAttribute = .forceRightToLeft
+        titleViewButton.setImage(UIImage(named: "ic_chevron_down"), for: UIControl.State())
+        
+        titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20)
+        // Create action listener
+        titleViewButton.addTarget(self, action: #selector(showMultiWalletDisplay), for: .touchUpInside)
+        navigationItem.titleView = titleViewButton
     }
 
+    @objc func showMultiWalletDisplay() {
+        Controller().openWalletSelector(isPortfolio: false)
+    }
+    
     @objc func openDAppBrowser(_ sender: Any) {
         Controller().openSwitcheoDapp()
     }
@@ -105,15 +130,9 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         return nil
     }
     
-    @objc func swapWalletTapped() {
-        guard let modal = UIStoryboard(name: "AddNewMultiWallet", bundle: nil).instantiateViewController(withIdentifier: "UnlockMultiWalletTableViewController") as? UnlockMultiWalletTableViewController else {
-            fatalError("Presenting improper modal controller")
-        }
-        let modalWithNav = UINavigationController(rootViewController: modal)
-        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: modalWithNav)
-        modalWithNav.modalPresentationStyle = .custom
-        modalWithNav.transitioningDelegate = self.halfModalTransitioningDelegate
-        self.present(modalWithNav, animated: true)
+    @objc func inboxTapped() {
+        let inboxController = UIStoryboard(name: "Inbox", bundle: nil).instantiateInitialViewController()!
+        self.present(inboxController, animated: true)
     }
 
     @objc func rightBarButtonTapped(_ sender: Any) {
@@ -140,7 +159,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
             let nav = WalletHomeNavigationController(rootViewController: sendModal)
             nav.navigationBar.prefersLargeTitles = false
             nav.navigationItem.largeTitleDisplayMode = .never
-            sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "times"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
+            sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))
             let transitionDelegate = DeckTransitioningDelegate()
             nav.transitioningDelegate = transitionDelegate
             nav.modalPresentationStyle = .custom
@@ -154,8 +173,8 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     
     func setLocalizedStrings() {
         self.bar.items = [Item(title: "Accounts".uppercased()), //TODO change this to localized string
-                          Item(title: AccountStrings.transactions),
-                          Item(title: AccountStrings.contacts)]
+                          Item(title: AccountStrings.transactions)
+                        ]
     }
 }
 
@@ -212,8 +231,9 @@ extension AccountTabViewController: QRScanDelegate {
             }
         } else {
             DispatchQueue.main.async {
-                self.sendTapped(qrData: data)
+                self.sendTapped()
             }
         }
     }
+    
 }

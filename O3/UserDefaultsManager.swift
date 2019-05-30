@@ -165,5 +165,83 @@ class UserDefaultsManager {
             UserDefaults.standard.set(newValue, forKey: hasAgreedAnalyticsDisclaimerKey)
             UserDefaults.standard.synchronize()
         }
-    }   
+    }
+    
+    private static let hasAgreedInboxDisclaimerKey = "hasAgreedInbox"
+    static var hasAgreedInbox: Bool {
+        get {
+            let boolValue = UserDefaults.standard.bool(forKey: hasAgreedInboxDisclaimerKey)
+            return boolValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: hasAgreedInboxDisclaimerKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    enum Subscriptions: String {
+        // O3 services are the equivalent of subscribing to all addresses associated with nep6
+        case o3 = "o3"
+        case neoeconomy = "neoeconomy"
+    }
+    
+    private static let subscribedServicesKey = "SubscribedServices"
+    static var subscribedServices: [String] {
+        get {
+            guard let arrayValue = UserDefaults.standard.array(forKey: subscribedServicesKey) as? [String] else {
+                return []
+            }
+            return arrayValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: subscribedServicesKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    private static let untrackedWatchAddrKey = "untrackedWatchAddr"
+    static var untrackedWatchAddr: [String] {
+        get {
+            guard let arrayValue = UserDefaults.standard.array(forKey: untrackedWatchAddrKey) as? [String] else {
+                return []
+            }
+            return arrayValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: untrackedWatchAddrKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    private static let lastInboxOpenKey = "lastInboxOpen"
+    static var lastInboxOpen: Int {
+        get {
+            guard let intValue = UserDefaults.standard.integer(forKey: lastInboxOpenKey) as? Int else {
+                return 0
+            }
+            return intValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: lastInboxOpenKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    private static let needsInboxBadgeKey = "needsInboxBadge"
+    static var needsInboxBadge: Bool {
+        get {
+            if UserDefaultsManager.hasAgreedInbox == false {
+                return true
+            }
+            
+            guard let boolValue = UserDefaults.standard.bool(forKey: needsInboxBadgeKey) as? Bool else {
+                return false
+            }
+            return boolValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: needsInboxBadgeKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
 }

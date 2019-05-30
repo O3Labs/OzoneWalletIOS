@@ -65,8 +65,8 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     
     @objc func updateAccount(_ sender: Any?) {
         let nep6 = NEP6.getFromFileSystem()!
-        if let accountIndex = nep6.accounts.firstIndex(where: {$0.address == account.address}) {
-            account = nep6.accounts[accountIndex]
+        if let accountIndex = nep6.getAccounts().firstIndex(where: {$0.address == account.address}) {
+            account = nep6.getAccounts()[accountIndex]
             setWalletDetails()
         }
         tableView.reloadData()
@@ -128,7 +128,6 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
             let inputNewName = alertController.textFields?[0].text!
             let nep6 = NEP6.getFromFileSystem()!
             nep6.editName(address: self.account.address, newName: inputNewName!)
-            nep6.writeToFileSystem()
         }
         
         let cancelAction = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { (_) in }
@@ -208,7 +207,6 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
     func deleteWatchAddress() {
         let nep6 = NEP6.getFromFileSystem()!
         nep6.removeEncryptedKey(address: account.address)
-        nep6.writeToFileSystem()
         Channel.shared().unsubscribe(fromTopic: account.address, block: {})
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
     }
@@ -218,7 +216,6 @@ class ManageWalletTableViewController: UITableViewController, MFMailComposeViewC
         OzoneAlert.confirmDialog(deleteString   , message: MultiWalletStrings.deleteEncryptedConfirm, cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.confirmPositiveConfirmString, didCancel: {}) {
                 let nep6 = NEP6.getFromFileSystem()!
                 nep6.removeEncryptedKey(address: self.account.address)
-                nep6.writeToFileSystem()
                 Channel.shared().unsubscribe(fromTopic: self.account.address, block: {})
             
                 UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)

@@ -56,7 +56,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
     @IBAction func continueTapped(_ sender: Any) {
         DispatchQueue.main.async { HUD.show(.progress) }
         let nameText = nameInputField.text?.trim() ?? ""
-        let index = NEP6.getFromFileSystem()!.accounts.firstIndex { $0.label == nameText}
+        let index = NEP6.getFromFileSystem()!.getAccounts().firstIndex { $0.label == nameText}
         if index != nil {
             OzoneAlert.alertDialog(message: MultiWalletStrings.cannotAddDuplicate, dismissTitle: OzoneAlert.okPositiveConfirmString) {
                 self.nameInputField.text = ""
@@ -68,7 +68,7 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
         let password = passwordInputField.text!
         var error: NSError?
         let wif = NeoutilsNEP2Decrypt(encryptedKey, password, &error)
-        if error != nil {
+        if error != nil || wif == nil {
             OzoneAlert.alertDialog(message: MultiWalletStrings.failedToDecrypt, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
             DispatchQueue.main.async { HUD.hide() }
             return
@@ -79,7 +79,6 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
         var updatedNep6 = NEP6.getFromFileSystem()!
         do {
             try updatedNep6.addEncryptedKey(name: nameInputField.text!, address: address, key: encryptedKey)
-            updatedNep6.writeToFileSystem()
             MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
             Channel.shared().subscribe(toTopic: address)
             if quickSwapSwitch.isOn {

@@ -22,15 +22,15 @@ class ManageWalletsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1 + nep6!.accounts.count
+        return 1 + nep6!.getAccounts().count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == nep6!.accounts.count {
+        if indexPath.row == nep6!.getAccounts().count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "addWalletTableViewCell") as! AddWalletTableViewCell
             return cell
         } else {
-            let account = nep6!.accounts[indexPath.row]
+            let account = nep6!.getAccounts()[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: "manageWalletTableViewCell") as! ManageWalletTableViewCell
             cell.walletLabel.text = account.label
             cell.addressLabel.text = account.address
@@ -52,10 +52,10 @@ class ManageWalletsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         DispatchQueue.main.async {
-            if indexPath.row == self.nep6!.accounts.count {
+            if indexPath.row == self.nep6!.getAccounts().count {
                 self.performSegue(withIdentifier: "segueToAddItemToMultiWallet", sender: nil)
             } else {
-                self.selectedAccount = self.nep6!.accounts[indexPath.row]
+                self.selectedAccount = self.nep6!.getAccounts()[indexPath.row]
                 self.performSegue(withIdentifier: "segueToManageWallet", sender: nil)
             }
         }

@@ -15,7 +15,7 @@ class WalletHomeNavigationController: UINavigationController {
             UIApplication.shared.theme_setStatusBarStyle(ThemeStatusBarStylePicker(styles: Theme.light.statusBarStyle, Theme.dark.statusBarStyle), animated: true)
             self.setNeedsStatusBarAppearanceUpdate()
             self.navigationController?.hideHairline()
-            self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
+            self.navigationController?.navigationItem.largeTitleDisplayMode = .never
         }
         super.viewDidLoad()
     }
