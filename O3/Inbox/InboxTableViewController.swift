@@ -35,6 +35,7 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
         
         UserDefaultsManager.lastInboxOpen = Int(Date().timeIntervalSince1970)
         tableView.tableFooterView = UIView(frame: .zero)
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     func displayOptInBottomSheet() {
@@ -64,13 +65,9 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "inbox-cell") as? InboxTableViewCell else {
                 fatalError("Unrecoverable error occurred")
         }
-            
+    
         cell.data = dummyMessages[indexPath.row]
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -95,7 +92,10 @@ class InboxTableViewController: UITableViewController, UIPopoverPresentationCont
                 return
             case .success(let messages):
                 self.dummyMessages = messages
-                DispatchQueue.main.async { self.tableView.reloadData() }
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.tableView.layoutSubviews()
+                }
             }
         }
     }

@@ -26,6 +26,7 @@ class WalletSelectorTableViewController: UITableViewController {
     var selectedWatchAddr = ""
     
     var group: DispatchGroup = DispatchGroup()
+    var insertSection = false
     
     var isPortfolio = true
     var walletSectionNum: Int {
@@ -113,17 +114,6 @@ class WalletSelectorTableViewController: UITableViewController {
                             self.group.leave()
                             return
                         case .success(let accountState):
-                            if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddresses[i].address) {
-                                if UserDefaultsManager.untrackedWatchAddr.count == NEP6.getFromFileSystem()?.getWatchAccounts().count {
-                                    indexPath = IndexPath(row: self.untrackedCount, section: 2)
-                                } else {
-                                    indexPath = IndexPath(row: self.untrackedCount, section: 3)
-                                }
-                                self.untrackedCount = self.untrackedCount + 1
-                            } else {
-                                indexPath = IndexPath(row: self.trackedCount, section: 2)
-                                self.trackedCount = self.trackedCount + 1
-                            }
                             self.watchAddrs[indexPath] = self.watchAddresses[i]
                             self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.watchAddresses[i].address)
                         }
@@ -135,6 +125,10 @@ class WalletSelectorTableViewController: UITableViewController {
     }
     
     func loadPortfoliosForAll() {
+        accountValues = [:]
+        watchAddrs = [:]
+        self.trackedCount = 0
+        self.untrackedCount = 0
         loadWalletPortfolios()
         if isPortfolio {
             loadWatchAddressPortfolios()
@@ -164,7 +158,11 @@ class WalletSelectorTableViewController: UITableViewController {
         combinedAccountValue = accountValue
         let indexPath = IndexPath(row: 0, section: 0)
         DispatchQueue.main.async {
-                self.tableView.reloadData()
+            if self.insertSection {
+                self.tableView.insertSections(IndexSet(integer: 2), with: .automatic)
+                self.insertSection = false
+            }
+            self.tableView.reloadData()
         }
     }
     
@@ -237,7 +235,7 @@ class WalletSelectorTableViewController: UITableViewController {
         
         if isPortfolio {
             if indexPath.section == 0 {
-                cell.data = WalletSelectorTableViewCell.Data(title: "Total", subtitle: "Wallets + Watch Addresses", value: combinedAccountValue, isDefault: false)
+                cell.data = WalletSelectorTableViewCell.Data(title: "Total", subtitle: "\(self.trackedCount + self.wallets.count) Addresses", value: combinedAccountValue, isDefault: false)
             } else if indexPath.section == 1 {
                 cell.data = WalletSelectorTableViewCell.Data(title: wallets[indexPath.row].label, subtitle: wallets[indexPath.row].address, value: accountValues[indexPath], isDefault: wallets[indexPath.row].isDefault)
             } else {
@@ -298,7 +296,7 @@ class WalletSelectorTableViewController: UITableViewController {
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
             let inputNewName = alertController.textFields?[0].text!
             let nep6 = NEP6.getFromFileSystem()!
-            nep6.editName(address: self.watchAddresses[indexPath.row].address   , newName: inputNewName!)
+            nep6.editName(address: self.watchAddresses[indexPath.row].address, newName: inputNewName!)
             self.updateWallets()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -339,47 +337,16 @@ class WalletSelectorTableViewController: UITableViewController {
             
             if isTracked {
                 UserDefaultsManager.untrackedWatchAddr = UserDefaultsManager.untrackedWatchAddr + [self.watchAddrs[indexPath]!.address]
-                
-                self.trackedCount = self.trackedCount - 1
-                self.untrackedCount = self.untrackedCount + 1
-                var section = 2
-                if self.trackedCount != 0 {
-                    section = 3
-                }
-                let newIndex = IndexPath(row: self.untrackedCount - 1, section: section)
-
-                let value = self.watchAddrs[indexPath]!
-                self.watchAddrs.removeValue(forKey: indexPath)
-                self.watchAddrs[newIndex] = value
-                
-                let accountValue = self.accountValues[indexPath]!
-                self.accountValues.removeValue(forKey: indexPath)
-                self.accountValues[newIndex] = accountValue
-                self.sumForCombined()
-                
+                self.handlePortfolioTapped(indexPath: IndexPath(row: 0, section: 0))
             } else {
+                
                 var newUntracked = UserDefaultsManager.untrackedWatchAddr
                 newUntracked.remove(at: newUntracked.firstIndex {$0 == self.watchAddrs[indexPath]!.address }!)
                 UserDefaultsManager.untrackedWatchAddr = newUntracked
-            
-                let newIndex = IndexPath(row: self.trackedCount, section: 2)
-                self.trackedCount = self.trackedCount + 1
-                self.untrackedCount = self.untrackedCount - 1
-                
-                let value = self.watchAddrs[indexPath]!
-                self.watchAddrs.removeValue(forKey: indexPath)
-                self.watchAddrs[newIndex] = value
-                
-                let accountValue = self.accountValues[indexPath]!
-                self.accountValues.removeValue(forKey: indexPath)
-                self.accountValues[newIndex] = accountValue
-                self.sumForCombined()
-
+                self.handlePortfolioTapped(indexPath: IndexPath(row: 0, section: 0))
             }
-           // DispatchQueue.main.async { self.tableView.reloadData() }
-            
-
         }
+        
         alert.addAction(addRemoveTotalAction)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in

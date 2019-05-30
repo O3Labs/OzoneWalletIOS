@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Kingfisher
 
+
 class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var logoImageView: UIImageView!
@@ -17,7 +18,7 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var subtitleLabel: UILabel!
     
-    
+    @IBOutlet weak var buttonHeight: NSLayoutConstraint!
     var data: Message? {
         didSet {
             guard let dataUnwrapped = data else {
@@ -33,21 +34,13 @@ class InboxTableViewCell: UITableViewCell {
             
             logoImageView.kf.setImage(with: URL(string: dataUnwrapped.sender.imageURL))
             
-            DispatchQueue.main.async {
-                if dataUnwrapped.action == nil {
-                    
-                    self.actionButton.isHidden = true
-                    
-                   // self.buttonToSubtitleVerticalConstraint.isActive = false
-                    self.setNeedsLayout()
-                    self.layoutIfNeeded()
-                } else {
-                    self.actionButton.isHidden = false
-                    self.actionButton.setTitle(dataUnwrapped.action!.title, for: UIControl.State())
-
-                    self.setNeedsLayout()
-                    self.layoutIfNeeded()
-                }
+            if dataUnwrapped.action == nil {
+                self.buttonHeight.constant = 0
+                self.actionButton.isHidden = true
+            } else {
+                self.actionButton.isHidden = false
+                self.buttonHeight.constant = 44
+                self.actionButton.setTitle(dataUnwrapped.action!.title, for: UIControl.State())
             }
         }
     }
