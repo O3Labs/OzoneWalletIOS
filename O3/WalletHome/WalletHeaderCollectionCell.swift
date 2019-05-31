@@ -42,7 +42,6 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
     func setupAccount() {
         walletHeaderLabel.text = data?.account!.label
         leftButton.isHidden = false
-        rightButton.isHidden = false
         percentChangeLabel.isHidden = false
     }
 

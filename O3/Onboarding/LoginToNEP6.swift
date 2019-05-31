@@ -65,15 +65,10 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     
     
     func loginLegacy() {
-        O3KeychainManager.getWifKey { result in
-            switch result {
-            case .success(let wif):
-                let wallet = Wallet(wif: wif)!
-                Authenticated.wallet = wallet
-                self.enterPortfolio()
-            case .failure(_):
-                return
-            }
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "activateMultiWalletTableViewController") as? ActivateMultiWalletTableViewController {
+            let vcWithNav = (UINavigationController(rootViewController: vc))
+            self.present(vcWithNav, animated: true, completion: {})
+            return
         }
     }
     
@@ -112,10 +107,9 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
         if NEP6.getFromFileSystem() == nil {
             loginLegacy()
             return
+        } else {
+            login(account: (NEP6.getFromFileSystem()?.getAccounts().first {$0.isDefault})!)
         }
-        
-        login(account: (NEP6.getFromFileSystem()?.getAccounts().first {$0.isDefault})!)
-        
     }
     
     func forceMigrate() {

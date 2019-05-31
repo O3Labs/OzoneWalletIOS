@@ -184,6 +184,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     override func viewDidLoad() {
+        //Force update users to NEP6
+        
         
         watchAddresses = loadWatchAddresses()
         setLocalizedStrings()
@@ -233,15 +235,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         //control the size of the graph area here
         self.assetsTable.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height * 0.45)
         setupGraphView()
-        
-        //Force update users to NEP6
-        if NEP6.getFromFileSystem() == nil {
-            if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "activateMultiWalletTableViewController") as? ActivateMultiWalletTableViewController {
-                let vcWithNav = (UINavigationController(rootViewController: vc))
-                self.present(vcWithNav, animated: true, completion: {})
-            }
-        }
-        
         showDisclaimer()
         super.viewDidLoad()
 
@@ -498,12 +491,21 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
         var account: NEP6.Account? = nil
         var type: WalletHeaderCollectionCell.HeaderType
-        var nep6 = NEP6.getFromFileSystem()
+        var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
+        unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
+        
         if indexPath.row == 0 {
             type = WalletHeaderCollectionCell.HeaderType.combined
         } else {
             type = WalletHeaderCollectionCell.HeaderType.account
-            account = nep6!.getAccounts()[indexPath.row - 1]
+            account = unfiltered[indexPath.row - 1]
+        }
+        
+        
+        if indexPath.row == unfiltered.count {
+            cell.rightButton.isHidden = true
+        } else {
+            cell.rightButton.isHidden = false
         }
         
         var data =  WalletHeaderCollectionCell.Data (

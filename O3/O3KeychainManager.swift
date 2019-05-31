@@ -165,15 +165,18 @@ class O3KeychainManager {
                     let currtime = Date().timeIntervalSince1970
                     let wif: String? = ""
         
-                    let wallet = Wallet(wallet: NeoutilsNEP2DecryptToWallet(account.key, keyPass, &error))!
-                    guard error == nil else {
-                        completion(.failure(error!.localizedDescription))
+                    if let wallet = Wallet(wallet: NeoutilsNEP2DecryptToWallet(account.key, keyPass, &error)) {
+                        guard error == nil else {
+                            completion(.failure(error!.localizedDescription))
+                            return
+                        }
+                        DispatchQueue.main.async { HUD.hide() }
+                        print(Date().timeIntervalSince1970 - currtime)
+                        completion(.success(wallet))
                         return
+                    } else {
+                        completion(.failure(error!.localizedDescription))
                     }
-                    DispatchQueue.main.async { HUD.hide() }
-                    print(Date().timeIntervalSince1970 - currtime)
-                    completion(.success(wallet))
-                    return
                 }
                 
                 O3KeychainManager.inputPassword(account: account) { result in
