@@ -81,7 +81,7 @@ class ContactsTableViewController: UITableViewController, AddressAddDelegate {
             fatalError("Unsupported Segue")
         }
         modal.addressToSend = selectedAddress
-        let nav = WalletHomeNavigationController(rootViewController: modal)
+        let nav = NoHairlineNavigationController(rootViewController: modal)
         nav.navigationBar.prefersLargeTitles = true
         nav.navigationItem.largeTitleDisplayMode = .never
         modal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(tappedLeftBarButtonItem(_:)))

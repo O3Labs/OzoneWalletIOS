@@ -635,10 +635,10 @@
             </objects>
             <point key="canvasLocation" x="2688" y="117"/>
         </scene>
-        <!--Wallet Home Navigation Controller-->
+        <!--No Hairline Navigation Controller-->
         <scene sceneID="biH-0S-AIy">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="F25-Yg-MOz" customClass="WalletHomeNavigationController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="F25-Yg-MOz" customClass="NoHairlineNavigationController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="chartLine" id="nox-LR-9V3">
                         <inset key="imageInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-10"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
@@ -1035,8 +1035,8 @@
                         <outlet property="supportCell" destination="a69-ZT-FSz" id="R05-TQ-5W6"/>
                         <outlet property="versionLabel" destination="We1-HS-Cs2" id="ocL-ba-unv"/>
                         <segue destination="IVl-ff-ggg" kind="presentation" identifier="segueToMultiWalletActivation" id="aZW-4J-STx"/>
-                        <segue destination="gnP-yl-Uck" kind="presentation" identifier="segueToManageWallets" id="Yw6-SJ-yhx"/>
                         <segue destination="Amo-hC-YJu" kind="presentation" identifier="segueToIdentitiesList" id="ivA-BW-zX6"/>
+                        <segue destination="v1Y-Uo-9z4" kind="presentation" identifier="segueToSecurityCenter" id="u1C-Vv-MZq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tyb-lI-4RW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1324,112 +1324,6 @@
             </objects>
             <point key="canvasLocation" x="6452" y="1090.704647676162"/>
         </scene>
-        <!--AddNewMultiWallet-->
-        <scene sceneID="ote-TG-N4L">
-            <objects>
-                <viewControllerPlaceholder storyboardName="AddNewMultiWallet" id="oun-UV-eDF" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="9fz-oT-d0h"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SpQ-jN-Brh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6300" y="1571.5142428785609"/>
-        </scene>
-        <!--Manage Wallets Table View Controller-->
-        <scene sceneID="UH1-k3-OMa">
-            <objects>
-                <tableViewController storyboardIdentifier="manageWalletsTableViewController" id="TMZ-mi-25d" customClass="ManageWalletsTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="RnU-8y-arg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="Pt3-9j-sqo">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="10"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </view>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="manageWalletTableViewCell" id="T2V-Q4-P18" customClass="ManageWalletTableViewCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="38" width="320" height="60"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="T2V-Q4-P18" id="icd-lG-uHX">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFv-1m-Us0">
-                                            <rect key="frame" x="20" y="8" width="41.5" height="23.5"/>
-                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_unlocked" translatesAutoresizingMaskIntoConstraints="NO" id="9RM-PM-LaM">
-                                            <rect key="frame" x="69.5" y="13" width="14" height="14"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="14" id="2vl-0i-M7o"/>
-                                                <constraint firstAttribute="height" constant="14" id="MKg-L5-Tvw"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hae-k1-cvL">
-                                            <rect key="frame" x="20" y="31.5" width="32" height="18"/>
-                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="Hae-k1-cvL" firstAttribute="top" secondItem="nFv-1m-Us0" secondAttribute="bottom" id="4ar-JY-OkS"/>
-                                        <constraint firstItem="Hae-k1-cvL" firstAttribute="leading" secondItem="nFv-1m-Us0" secondAttribute="leading" id="CIB-Bx-rbz"/>
-                                        <constraint firstItem="9RM-PM-LaM" firstAttribute="centerY" secondItem="nFv-1m-Us0" secondAttribute="centerY" id="D0i-Hh-68r"/>
-                                        <constraint firstItem="nFv-1m-Us0" firstAttribute="top" secondItem="icd-lG-uHX" secondAttribute="top" constant="8" id="J04-m1-R8k"/>
-                                        <constraint firstItem="nFv-1m-Us0" firstAttribute="leading" secondItem="icd-lG-uHX" secondAttribute="leading" constant="20" id="cZ8-mi-a3C"/>
-                                        <constraint firstItem="9RM-PM-LaM" firstAttribute="leading" secondItem="nFv-1m-Us0" secondAttribute="trailing" constant="8" id="gCI-9c-aKa"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="addressLabel" destination="Hae-k1-cvL" id="mxH-7n-cvF"/>
-                                    <outlet property="walletIsDefaultView" destination="9RM-PM-LaM" id="EIu-vv-YFZ"/>
-                                    <outlet property="walletLabel" destination="nFv-1m-Us0" id="lEz-Bo-xfO"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="addWalletTableViewCell" id="2Ux-uE-9QW" customClass="AddWalletTableViewCell" customModule="O3" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="98" width="320" height="60"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2Ux-uE-9QW" id="wHi-8R-Jft">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FzI-fO-sV8">
-                                            <rect key="frame" x="142" y="20" width="36.5" height="20.5"/>
-                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="FzI-fO-sV8" firstAttribute="centerX" secondItem="wHi-8R-Jft" secondAttribute="centerX" id="T7e-ex-8Ac"/>
-                                        <constraint firstItem="FzI-fO-sV8" firstAttribute="centerY" secondItem="wHi-8R-Jft" secondAttribute="centerY" id="upT-tO-O5X"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="addWalletLabel" destination="FzI-fO-sV8" id="1Gc-8b-5lH"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="TMZ-mi-25d" id="TOA-RQ-crh"/>
-                            <outlet property="delegate" destination="TMZ-mi-25d" id="iTi-QA-Rgq"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="lfu-tv-NQ1"/>
-                    <connections>
-                        <outlet property="headerView" destination="Pt3-9j-sqo" id="g0K-NF-FfQ"/>
-                        <segue destination="oun-UV-eDF" kind="presentation" identifier="segueToAddItemToMultiWallet" id="A4q-EJ-1YO"/>
-                        <segue destination="v1Y-Uo-9z4" kind="presentation" identifier="segueToManageWallet" id="Eyk-IP-u7n"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KFd-vD-4AM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5196" y="1556.6716641679161"/>
-        </scene>
         <!--Private Key-->
         <scene sceneID="1Aw-Wd-cew">
             <objects>
@@ -1705,10 +1599,10 @@
             </objects>
             <point key="canvasLocation" x="5103.1999999999998" y="2292.5037481259374"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--No Hairline Navigation Controller-->
         <scene sceneID="gYX-N7-ZKv">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="d6f-ly-42d" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="d6f-ly-42d" customClass="NoHairlineNavigationController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" selectedImage="cog" id="MY0-uR-Mag"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="L1H-N2-bPT">
@@ -1864,24 +1758,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qon-9R-SNM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7391.1999999999998" y="1897.6011994002999"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="TLq-cv-OAd">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gnP-yl-Uck" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Nt2-2o-dOv">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="TMZ-mi-25d" kind="relationship" relationship="rootViewController" id="xVi-zh-uWj"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VLd-m9-otE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4472.8000000000002" y="1539.5802098950526"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Tkc-M1-DNn">
@@ -2115,7 +1991,6 @@ Your raw private key is not password protected, anyone with access to this priva
         <image name="ic_general" width="24" height="24"/>
         <image name="ic_help" width="24" height="24"/>
         <image name="ic_security" width="24" height="24"/>
-        <image name="ic_unlocked" width="16" height="16"/>
         <image name="plus" width="24" height="24"/>
         <image name="times" width="20" height="20"/>
         <image name="trash" width="24" height="24"/>

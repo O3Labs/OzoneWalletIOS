@@ -33,12 +33,10 @@ extension UIViewController {
     }
 
     func applyNavBarTheme() {
-        DispatchQueue.main.async {
-            UIApplication.shared.theme_setStatusBarStyle(ThemeStatusBarStylePicker(styles: Theme.light.statusBarStyle, Theme.dark.statusBarStyle), animated: true)
-            self.setNeedsStatusBarAppearanceUpdate()
-            self.navigationController?.hideHairline()
-            self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
-        }
+        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+        UIApplication.shared.theme_setStatusBarStyle(ThemeStatusBarStylePicker(styles: Theme.light.statusBarStyle, Theme.dark.statusBarStyle), animated: true)
+        self.setNeedsStatusBarAppearanceUpdate()
+        self.navigationController?.navigationItem.largeTitleDisplayMode = .never
     }
     
     @objc func dismissTapped() {

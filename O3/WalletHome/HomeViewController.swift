@@ -351,7 +351,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             return
         }
 
-        let asset = homeviewModel.getTransferableAssets()[indexPath.row]
+        let asset = self.displayedAssets[indexPath.row]
         var chain = "neo"
         if asset.assetType == TransferableAsset.AssetType.ontologyAsset {
             chain = "ont"
@@ -466,7 +466,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             fatalError("Presenting improper modal controller")
         }
         modal.delegate = self
-        let nav = WalletHomeNavigationController(rootViewController: modal)
+        let nav = NoHairlineNavigationController(rootViewController: modal)
         nav.navigationBar.prefersLargeTitles = false
         nav.setNavigationBarHidden(true, animated: false)
         let transitionDelegate = DeckTransitioningDelegate()

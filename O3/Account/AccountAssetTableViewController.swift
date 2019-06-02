@@ -607,7 +607,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
             fatalError("Presenting improper modal controller")
         }
         modal.delegate = self
-        let nav = WalletHomeNavigationController(rootViewController: modal)
+        let nav = NoHairlineNavigationController(rootViewController: modal)
         nav.navigationBar.prefersLargeTitles = false
         nav.setNavigationBarHidden(true, animated: false)
         let transitionDelegate = DeckTransitioningDelegate()
@@ -622,7 +622,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                 fatalError("Presenting improper modal controller")
             }
             sendModal.incomingQRData = qrData
-            let nav = WalletHomeNavigationController(rootViewController: sendModal)
+            let nav = NoHairlineNavigationController(rootViewController: sendModal)
             nav.navigationBar.prefersLargeTitles = false
             nav.navigationItem.largeTitleDisplayMode = .never
             sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))

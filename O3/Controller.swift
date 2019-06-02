@@ -79,7 +79,7 @@ class Controller: NSObject {
                 return
             }
 
-            let nav = WalletHomeNavigationController(rootViewController: sendModal)
+            let nav = NoHairlineNavigationController(rootViewController: sendModal)
 
             //This is to use current tabbar to hold strong reference of the deck transition's animation
             //otherwise, it won't open with deck transition

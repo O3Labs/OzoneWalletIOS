@@ -19,8 +19,6 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
     // swiftlint:enable weak_delegate
     
-    var titleViewButton = UIButton(type: .system)
-    
     func addThemeObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.changedTheme), name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletInfo), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
@@ -45,6 +43,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        applyNavBarTheme()
         setLocalizedStrings()
         addThemeObserver()
 
@@ -78,21 +77,9 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         }
     }
     
-    @objc func updateWalletInfo() {
-        titleViewButton.setTitle(NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label, for: .normal)
-    }
-    
-    func setNavigationItems() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "support"), style: .plain, target: self, action: #selector(self.inboxTapped))
-        
-        
-        #if TESTNET
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openDAppBrowser(_:)))
-        #endif
-        
+    func setTitleButton() {
+        let titleViewButton = UIButton(type: .system    )
         let activeWallet = NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label
-        
         titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
         titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
         titleViewButton.setTitle(activeWallet, for: .normal)
@@ -104,6 +91,20 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
         titleViewButton.addTarget(self, action: #selector(showMultiWalletDisplay), for: .touchUpInside)
         navigationItem.titleView = titleViewButton
     }
+    
+    @objc func updateWalletInfo() {
+        setTitleButton()
+    }
+    
+    func setNavigationItems() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_scan"), style: .plain, target: self, action: #selector(rightBarButtonTapped(_:)))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "support"), style: .plain, target: self, action: #selector(self.inboxTapped))
+        setTitleButton()
+        
+        #if TESTNET
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Browser", style: .plain, target: self, action: #selector(openDAppBrowser(_:)))
+        #endif
+    }
 
     @objc func showMultiWalletDisplay() {
         Controller().openWalletSelector(isPortfolio: false)
@@ -114,7 +115,6 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        applyNavBarTheme()
         super.viewWillAppear(animated)
     }
 
@@ -141,7 +141,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
             fatalError("Presenting improper modal controller")
         }
         modal.delegate = self
-        let nav = WalletHomeNavigationController(rootViewController: modal)
+        let nav = NoHairlineNavigationController(rootViewController: modal)
         nav.navigationBar.prefersLargeTitles = false
         nav.setNavigationBarHidden(true, animated: false)
         let transitionDelegate = DeckTransitioningDelegate()
@@ -156,7 +156,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
                 fatalError("Presenting improper modal controller")
             }
             sendModal.incomingQRData = qrData
-            let nav = WalletHomeNavigationController(rootViewController: sendModal)
+            let nav = NoHairlineNavigationController(rootViewController: sendModal)
             nav.navigationBar.prefersLargeTitles = false
             nav.navigationItem.largeTitleDisplayMode = .never
             sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(self.tappedLeftBarButtonItem(_:)))

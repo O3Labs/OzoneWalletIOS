@@ -9,14 +9,13 @@
 import UIKit
 import SwiftTheme
 
-class WalletHomeNavigationController: UINavigationController {
+class NoHairlineNavigationController: UINavigationController {
     override func viewDidLoad() {
-        DispatchQueue.main.async {
-            UIApplication.shared.theme_setStatusBarStyle(ThemeStatusBarStylePicker(styles: Theme.light.statusBarStyle, Theme.dark.statusBarStyle), animated: true)
+        UIApplication.shared.theme_setStatusBarStyle(ThemeStatusBarStylePicker(styles: Theme.light.statusBarStyle, Theme.dark.statusBarStyle), animated: true)
             self.setNeedsStatusBarAppearanceUpdate()
-            self.navigationController?.hideHairline()
+          self.navigationController?.hideHairline()
             self.navigationController?.navigationItem.largeTitleDisplayMode = .never
-        }
+        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
         super.viewDidLoad()
     }
 }

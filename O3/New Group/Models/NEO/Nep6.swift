@@ -260,6 +260,11 @@ public class NEP6: Codable {
         writeToFileSystem()
     }
     
+    public func getDefaultAccount() -> NEP6.Account {
+        let currentDefaultIndex = self.accounts.firstIndex { $0.isDefault }!
+        return self.accounts[currentDefaultIndex]
+    }
+    
     
     static public func makeNewDefault(key: String, wallet: Wallet) {
         let nep6 = getFromFileSystem()!
