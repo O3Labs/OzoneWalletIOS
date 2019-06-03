@@ -310,6 +310,13 @@ public class NEP6: Codable {
         return jsonNep6
     }
     
+    static public func getFromFileSystemAsURL() -> URL {
+        let fileName = "O3Wallet"
+        let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
+        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
+        return fileURL
+    }
+    
     public func writeToFileSystem() {
         let nep6Data = try! JSONEncoder().encode(self)
         let fileName = "O3Wallet"

@@ -11,7 +11,6 @@ import UIKit
 import Neoutils
 import SwiftTheme
 import KeychainAccess
-import Channel
 import PKHUD
 import SkyFloatingLabelTextField
 import DeckTransition

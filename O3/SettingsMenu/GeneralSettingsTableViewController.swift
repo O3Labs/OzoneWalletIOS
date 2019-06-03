@@ -22,6 +22,8 @@ class GeneralSettingsTableViewController: UITableViewController {
     @IBOutlet weak var manageCell: UITableViewCell!
     @IBOutlet weak var currencyCell: UITableViewCell!
     @IBOutlet weak var themeCell: UITableViewCell!
+    @IBOutlet weak var exportCell: UITableViewCell!
+    @IBOutlet weak var exportCellLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,10 +51,16 @@ class GeneralSettingsTableViewController: UITableViewController {
         currencyLabel.text = "Currency"
         themeLabel.text = "Night Mode"
         title = "General"
+        exportCellLabel.text = "Export NEP6 File"
     }
     
     @IBAction func closeTapped(_ sender: Any) {
         self.dismiss(animated: true)
+    }
+    
+    func exportBackupData() {
+        let vc = UIActivityViewController(activityItems: [NEP6.getFromFileSystemAsURL()], applicationActivities: [])
+        present(vc, animated: true, completion: nil)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -70,6 +78,8 @@ class GeneralSettingsTableViewController: UITableViewController {
                 1 : 0
             ThemeManager.setTheme(index: themeSwitch.isOn ?
                 1 : 0)
+        } else if indexPath.row == 3 {
+            exportBackupData()
         }
     }
     
@@ -83,6 +93,7 @@ class GeneralSettingsTableViewController: UITableViewController {
         manageCell.theme_backgroundColor = O3Theme.backgroundColorPicker
         themeCell.theme_backgroundColor = O3Theme.backgroundColorPicker
         currencyCell.theme_backgroundColor = O3Theme.backgroundColorPicker
+        exportCell.theme_backgroundColor = O3Theme.backgroundColorPicker
         activeCurrencyLabel.theme_textColor = O3Theme.lightTextColorPicker
     }
 }

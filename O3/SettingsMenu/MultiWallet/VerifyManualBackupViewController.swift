@@ -149,7 +149,7 @@ class VerifyManualBackupViewController: UIViewController {
             types.append(AppState.verificationType.other)
         }
         AppState.setManualVerifyType(address: account.address, types: types)
-        
+        UserDefaultsManager.setWalletBackupTime(address: self.account.address, timeStamp: Int(Date().timeIntervalSince1970))
         self.dismiss(animated: true)
     }
     

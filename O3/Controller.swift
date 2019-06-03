@@ -97,8 +97,9 @@ class Controller: NSObject {
         }
     }
     
-    func openWalletInfoPage() {
-        guard let walletInfoModal = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "manageWalletTableViewController") as? ManageWalletTableViewController else {
+    func openSecurityCenter() {
+        focusOnTab(tabIndex: 4)
+        guard let walletInfoModal = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "manageWalletTableViewController") as? SecurityCenterTableViewController else {
             fatalError("Presenting improper view controller")
         }
         

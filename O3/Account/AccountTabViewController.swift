@@ -180,40 +180,9 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
 
 extension AccountTabViewController: QRScanDelegate {
     
-    func postToChannel(channel: String) {
-        let headers = ["content-type": "application/json"]
-        let parameters = ["address": Authenticated.wallet!.address,
-                          "device": "iOS" ] as [String: Any]
-        
-        let postData = try? JSONSerialization.data(withJSONObject: parameters, options: [])
-        
-        let request = NSMutableURLRequest(url: NSURL(string: "https://platform.o3.network/api/v1/channel/" + channel)! as URL,
-                                          cachePolicy: .useProtocolCachePolicy,
-                                          timeoutInterval: 10.0)
-        request.httpMethod = "POST"
-        request.allHTTPHeaderFields = headers
-        request.httpBody = postData
-        
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (_, response, error) -> Void in
-            if error != nil {
-                return
-            } else {
-                _ = response as? HTTPURLResponse
-            }
-        })
-        
-        dataTask.resume()
-    }
-    
     func qrScanned(data: String) {
         //if there is more type of string we have to check it here
-        if data.hasPrefix("o3://channel") {
-            //post to utility communication channel
-            let channel = URL(string: data)?.lastPathComponent
-            postToChannel(channel: channel!)
-            return
-        } else if data.hasPrefix("neo") {
+        if data.hasPrefix("neo") {
             DispatchQueue.main.async {
                 self.sendTapped(qrData: data)
             }

@@ -225,7 +225,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let nav = segue.destination as? UINavigationController,
-            let child = nav.children[0] as? ManageWalletTableViewController else {
+            let child = nav.children[0] as? SecurityCenterTableViewController else {
                 fatalError("Something went terribly wrong")
         }
         child.account = NEP6.getFromFileSystem()!.getDefaultAccount()

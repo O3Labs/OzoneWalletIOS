@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import ScrollableGraphView
-import Channel
 import PKHUD
 import SwiftTheme
 import DeckTransition
@@ -215,15 +214,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Create action listener
         titleViewButton.addTarget(self, action: #selector(showMultiWalletDisplay), for: .touchUpInside)
         navigationItem.titleView = titleViewButton
-        
-        
-        if UserDefaults.standard.string(forKey: "subscribedAddress") != Authenticated.wallet?.address {
-            Channel.shared().unsubscribe(fromTopic: "*") {
-                Channel.shared().subscribe(toTopic: (Authenticated.wallet?.address)!)
-                UserDefaults.standard.set(Authenticated.wallet?.address, forKey: "subscribedAddress")
-                UserDefaults.standard.synchronize()
-            }
-        }
 
         walletHeaderCollectionView.delegate = self
         walletHeaderCollectionView.dataSource = self
@@ -363,8 +353,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        //news
-        //assets
         return 2
     }
 
@@ -582,7 +570,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         watchAddress.address = address
         watchAddress.nickName = nickName
         UIApplication.appDelegate.saveContext()
-        Channel.shared().subscribe(toTopic: watchAddress.address!)
         NotificationCenter.default.post(name: Notification.Name("UpdatedWatchOnlyAddress"), object: nil)
     }
     
