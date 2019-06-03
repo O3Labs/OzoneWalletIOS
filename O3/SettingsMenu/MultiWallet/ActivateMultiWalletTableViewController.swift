@@ -95,30 +95,13 @@ class ActivateMultiWalletTableViewController: UITableViewController {
     
     
     
-    @IBAction func passwordInputShowButtonTapped(_ sender: Any) {
-        passwordInputIsSecure = !passwordInputIsSecure
-        passwordInputField.isSecureTextEntry = passwordInputIsSecure
-        let tmp = passwordInputField.text
-        passwordInputField.text = ""
-        passwordInputField.text = tmp
-        if passwordInputIsSecure {
-            passwordInputShowButton.alpha = CGFloat(0.3)
-        } else {
-            passwordInputShowButton.alpha = CGFloat(1.0)
-        }
-    }
-    
-    @IBAction func generateEncryptedKeyTapped(_ sender: Any) {
-        if !validatePassword() {
-            return
-        }
+    func completeEncryption(wif: String) {
         var error: NSError?
-        let nep2 = NeoutilsNEP2Encrypt(Authenticated.wallet!.wif, self.passwordInputField.text, &error)
-        let newAccount = NEP6.Account(address: Authenticated.wallet!.address,
-                                          label: "My O3 Wallet", isDefault: true, lock: false,
-                                          key: nep2!.encryptedKey())
+        let nep2 = NeoutilsNEP2Encrypt(wif, self.passwordInputField.text, &error)
+        let newAccount = NEP6.Account(address: nep2!.address(),
+                                      label: "My O3 Wallet", isDefault: true, lock: false,
+                                      key: nep2!.encryptedKey())
         let nep6 = NEP6(name: "Registered O3 Accounts", version: "1.0", accounts: [newAccount])
-        
         O3KeychainManager.setNep6DecryptionPassword(for: newAccount.address, pass: self.passwordInputField.text!) { result in
             switch result {
             case .success:
@@ -131,6 +114,20 @@ class ActivateMultiWalletTableViewController: UITableViewController {
                         return
                     }
                 }
+            case .failure:
+                return
+            }
+        }
+    }
+    
+    @IBAction func generateEncryptedKeyTapped(_ sender: Any) {
+        if !validatePassword() {
+            return
+        }
+        O3KeychainManager.getWifKey { result in
+            switch result {
+            case .success(let wif):
+                self.completeEncryption(wif: wif)
             case .failure:
                 return
             }

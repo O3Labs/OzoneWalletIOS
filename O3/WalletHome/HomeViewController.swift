@@ -351,7 +351,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             return
         }
 
-        let asset = homeviewModel.getTransferableAssets()[indexPath.row]
+        let asset = self.displayedAssets[indexPath.row]
         var chain = "neo"
         if asset.assetType == TransferableAsset.AssetType.ontologyAsset {
             chain = "ont"
