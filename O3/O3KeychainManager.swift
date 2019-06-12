@@ -30,6 +30,8 @@ class O3KeychainManager {
     private static let o3PrivKey = "o3PrivKey"
     private static let o3PubKey = "o3PubKey"
     
+    private static let coinbaseEncryptionPass = "coinbaseEncryptionPass"
+    
     static func getSigningKeyPassword(with prompt: String, completion: @escaping(O3KeychainResult<String>) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
             let keychain = Keychain(service: self.keychainService)
@@ -325,6 +327,18 @@ class O3KeychainManager {
     static public func getO3PrivKey() -> String? {
         let keychain = Keychain(service: self.keychainService)
         return keychain[o3PrivKey]
+    }
+    
+    static public func setCoinbaseEncryptionPass() {
+        var error: NSError? = nil
+        let keychain = Keychain(service: self.keychainService)
+        let wallet = NeoutilsNewWallet(&error)
+        keychain[coinbaseEncryptionPass] = wallet!.privateKey()?.fullHexString
+    }
+    
+    static public func getCoinbaseEncryptionPass() -> String? {
+        let keychain = Keychain(service: self.keychainService)
+        return keychain[coinbaseEncryptionPass]
     }
 }
 
