@@ -247,7 +247,7 @@ class UserDefaultsManager {
     
     private static let walletBackupTimeKey = "walletBackupTimeKey"
     static func getWalletBackupTime(address: String) -> Int? {
-        let intValue = UserDefaults.standard.integer(forKey: "address_" + walletBackupTimeKey)
+        let intValue = UserDefaults.standard.integer(forKey: "\(address)_" + walletBackupTimeKey)
         if intValue == 0 {
             return nil
         } else {
@@ -256,7 +256,7 @@ class UserDefaultsManager {
     }
     
     static func setWalletBackupTime(address: String, timeStamp: Int) {
-        UserDefaults.standard.set(timeStamp, forKey: "address_" + walletBackupTimeKey)
+        UserDefaults.standard.set(timeStamp, forKey: "\(address)_" + walletBackupTimeKey)
         UserDefaults.standard.synchronize()
     }
 }
