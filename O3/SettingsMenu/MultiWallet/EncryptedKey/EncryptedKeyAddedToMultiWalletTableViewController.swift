@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import Lottie
 import Neoutils
-import Channel
 import PKHUD
 
 class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
@@ -80,7 +79,6 @@ class EncryptedKeyAddedToMultiWalletTableViewController: UITableViewController {
         do {
             try updatedNep6.addEncryptedKey(name: nameInputField.text!, address: address, key: encryptedKey)
             MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
-            Channel.shared().subscribe(toTopic: address)
             if quickSwapSwitch.isOn {
                 O3KeychainManager.setNep6DecryptionPassword(for: address, pass: password ) { result in
                     DispatchQueue.main.async {

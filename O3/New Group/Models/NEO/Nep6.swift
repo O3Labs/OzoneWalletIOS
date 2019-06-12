@@ -260,6 +260,11 @@ public class NEP6: Codable {
         writeToFileSystem()
     }
     
+    public func getDefaultAccount() -> NEP6.Account {
+        let currentDefaultIndex = self.accounts.firstIndex { $0.isDefault }!
+        return self.accounts[currentDefaultIndex]
+    }
+    
     
     static public func makeNewDefault(key: String, wallet: Wallet) {
         let nep6 = getFromFileSystem()!
@@ -303,6 +308,13 @@ public class NEP6: Codable {
         let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
         let jsonNep6 = try! Data(contentsOf: fileURL)
         return jsonNep6
+    }
+    
+    static public func getFromFileSystemAsURL() -> URL {
+        let fileName = "O3Wallet"
+        let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
+        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
+        return fileURL
     }
     
     public func writeToFileSystem() {

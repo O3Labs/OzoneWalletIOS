@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Channel
 import CoreData
 import Reachability
 import Fabric
@@ -21,14 +20,9 @@ import ZendeskCoreSDK
 import ZendeskProviderSDK
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
-
-    func setupChannel() {
-        //O3 Development on Channel app_gUHDmimXT8oXRSpJvCxrz5DZvUisko_mliB61uda9iY
-        Channel.setup(withApplicationId: "app_gUHDmimXT8oXRSpJvCxrz5DZvUisko_mliB61uda9iY")
-    }
 
     static func setNavbarAppearance() {
         UINavigationBar.appearance().theme_largeTitleTextAttributes = O3Theme.largeTitleAttributesPicker
@@ -147,7 +141,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         self.registerDefaults()
-        self.setupChannel()
         self.setupReachability()
         AppDelegate.setNavbarAppearance()
 

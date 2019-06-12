@@ -12,7 +12,6 @@ import AVFoundation
 import Neoutils
 import SwiftTheme
 import KeychainAccess
-import Channel
 
 class ConvertToWalletTableViewController: UITableViewController, AVCaptureMetadataOutputObjectsDelegate, Nep2PasswordDelegate, UITextViewDelegate {
 

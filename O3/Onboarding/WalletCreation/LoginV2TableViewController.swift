@@ -11,7 +11,6 @@ import UIKit
 import Neoutils
 import SwiftTheme
 import KeychainAccess
-import Channel
 import PKHUD
 import SkyFloatingLabelTextField
 import DeckTransition
@@ -203,7 +202,7 @@ class LoginV2TableViewController: UITableViewController, UITextFieldDelegate, QR
             fatalError("Presenting improper modal controller")
         }
         modal.delegate = self
-        let nav = WalletHomeNavigationController(rootViewController: modal)
+        let nav = NoHairlineNavigationController(rootViewController: modal)
         nav.navigationBar.prefersLargeTitles = false
         nav.setNavigationBarHidden(true, animated: false)
         let transitionDelegate = DeckTransitioningDelegate()

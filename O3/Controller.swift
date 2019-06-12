@@ -79,7 +79,7 @@ class Controller: NSObject {
                 return
             }
 
-            let nav = WalletHomeNavigationController(rootViewController: sendModal)
+            let nav = NoHairlineNavigationController(rootViewController: sendModal)
 
             //This is to use current tabbar to hold strong reference of the deck transition's animation
             //otherwise, it won't open with deck transition
@@ -97,8 +97,9 @@ class Controller: NSObject {
         }
     }
     
-    func openWalletInfoPage() {
-        guard let walletInfoModal = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "manageWalletTableViewController") as? ManageWalletTableViewController else {
+    func openSecurityCenter() {
+        focusOnTab(tabIndex: 4)
+        guard let walletInfoModal = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "manageWalletTableViewController") as? SecurityCenterTableViewController else {
             fatalError("Presenting improper view controller")
         }
         

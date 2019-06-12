@@ -138,7 +138,7 @@ class VerifyManualBackupViewController: UIViewController {
     
     @IBAction func verifyTapped(_ sender: Any) {
         AppState.setDismissBackupNotification(dismiss: true)
-        var types = [AppState.verificationType]()
+            var types = [AppState.verificationType]()
         if screenshotCheckbox.checkState == .checked {
             types.append(AppState.verificationType.screenshot)
         }
@@ -149,7 +149,7 @@ class VerifyManualBackupViewController: UIViewController {
             types.append(AppState.verificationType.other)
         }
         AppState.setManualVerifyType(address: account.address, types: types)
-        
+        UserDefaultsManager.setWalletBackupTime(address: self.account.address, timeStamp: Int(Date().timeIntervalSince1970))
         self.dismiss(animated: true)
     }
     

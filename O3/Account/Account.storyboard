@@ -1373,10 +1373,10 @@ Get started by depositing some tokens from your wallet!</string>
             </objects>
             <point key="canvasLocation" x="4927" y="279"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--No Hairline Navigation Controller-->
         <scene sceneID="qlo-af-wal">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="n0F-4W-k6A" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="n0F-4W-k6A" customClass="NoHairlineNavigationController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="wallet" id="993-w6-2wb">
                         <inset key="imageInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-10"/>
                     </tabBarItem>

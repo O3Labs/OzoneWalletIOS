@@ -41,8 +41,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var privacyPolicyLabel: UILabel!
     @IBOutlet weak var footerView: UIView!
     
-    var titleViewButton = UIButton(type: .system)
-    
     // swiftlint:disable weak_delegate
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
     // swiftlint:enable weak_delegate
@@ -124,20 +122,28 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         }
     }
     
+    func setTitleButton() {
+        var titleViewButton = UIButton(type: .system)
+        let activeWallet = NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label
+        titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
+        titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
+        titleViewButton.setTitle(activeWallet, for: .normal)
+        titleViewButton.semanticContentAttribute = .forceRightToLeft
+        titleViewButton.setImage(UIImage(named: "ic_chevron_down"), for: UIControl.State())
+        
+        titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20 )
+        // Create action listener
+        titleViewButton.addTarget(self, action: #selector(openMultiWalletDisplay), for: .touchUpInside)
+        navigationItem.titleView = titleViewButton
+    }
+    
     @objc func updateWalletInfo(_ sender: Any?) {
         DispatchQueue.main.async {
             self.qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: self.qrView.bounds.size.width, height: self.qrView.bounds.size.height)
             self.addressLabel.text = (Authenticated.wallet?.address)!
-            if let nep6 = NEP6.getFromFileSystem() {
-                let defaultIndex = nep6.getAccounts().firstIndex { $0.isDefault == true }
-                self.titleViewButton.setTitle(nep6.getAccounts()[defaultIndex!].label, for: UIControl.State())
-            }
+            self.setTitleButton()
             
-            if NEP6.getFromFileSystem() == nil {
-                self.multiWalletLabel.text = SettingsStrings.enableMultiWallet
-            } else {
-                self.multiWalletLabel.text = SettingsStrings.manageWallets
-            }
+            self.multiWalletLabel.text = SettingsStrings.manageWallets
         }
     }
     
@@ -164,27 +170,13 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         
         helpView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
         generalSettingsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openGeneralSettings)))
-        enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(enableMultiWallet)))
+        enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToSecurityCenter)))
         footerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openPrivacyPolicy)))
         
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.versionLabel.text = String(format: SettingsStrings.versionLabel, version)
         }
-        setNavElements()
-    }
-    
-    func setNavElements() {
-        let activeWallet = NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label
-        titleViewButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
-        titleViewButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 16)!
-        titleViewButton.setTitle(activeWallet, for: .normal)
-        titleViewButton.semanticContentAttribute = .forceRightToLeft
-        titleViewButton.setImage(UIImage(named: "ic_chevron_down"), for: UIControl.State())
-        
-        titleViewButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20 )
-        // Create action listener
-        titleViewButton.addTarget(self, action: #selector(openMultiWalletDisplay), for: .touchUpInside)
-        navigationItem.titleView = titleViewButton
+        setTitleButton()
     }
     
     @objc func openPrivacyPolicy() {
@@ -227,20 +219,16 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.present(nav, animated: true, completion: nil)
     }
     
-    @objc func enableMultiWallet() {
-        if NEP6.getFromFileSystem()?.getAccounts() == nil {
-            self.performSegue(withIdentifier: "segueToMultiWalletActivation", sender: nil)
-        } else {
-            self.performSegue(withIdentifier: "segueToManageWallets", sender: nil)
-        }
+    @objc func goToSecurityCenter() {
+        self.performSegue(withIdentifier: "segueToSecurityCenter", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "segueToManageWallets" || segue.identifier == "segueToIdentitiesList" {
-            self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: segue.destination)
-            segue.destination.modalPresentationStyle = .custom
-            segue.destination.transitioningDelegate = self.halfModalTransitioningDelegate
+        guard let nav = segue.destination as? UINavigationController,
+            let child = nav.children[0] as? SecurityCenterTableViewController else {
+                fatalError("Something went terribly wrong")
         }
+        child.account = NEP6.getFromFileSystem()!.getDefaultAccount()
     }
 
     override func viewWillAppear(_ animated: Bool) {

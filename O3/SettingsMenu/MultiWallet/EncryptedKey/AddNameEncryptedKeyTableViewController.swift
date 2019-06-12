@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import Lottie
-import Channel
 
 class AddNameEncryptedKeyTableViewController: UITableViewController {
     @IBOutlet weak var titleLabel: UILabel!
@@ -45,7 +44,6 @@ class AddNameEncryptedKeyTableViewController: UITableViewController {
         do {
             try updatedNep6.addEncryptedKey(name: nameInputField.text!, address: address, key: encryptedKey)
                 MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
-                Channel.shared().subscribe(toTopic: address)
                 UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
         } catch {
             OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: OzoneAlert.okPositiveConfirmString) {}

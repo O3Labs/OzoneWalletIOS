@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import PKHUD
-import Channel
 
 class WalletSelectorTableViewController: UITableViewController {
     
