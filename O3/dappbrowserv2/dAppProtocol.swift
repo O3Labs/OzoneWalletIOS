@@ -28,7 +28,8 @@ public class dAppProtocol: NSObject {
                                               "invokeRead",
                                               "invoke",
                                               "disconnect",
-                                              "send"]
+                                              "send",
+                                              "connect"]
     
     static let needAuthorizationCommands: [String] = ["getAccount", "getAddress", "invoke", "send"]
     

@@ -336,9 +336,15 @@ class O3KeychainManager {
         keychain[coinbaseEncryptionPass] = wallet!.privateKey()?.fullHexString
     }
     
-    static public func getCoinbaseEncryptionPass() -> String? {
+    static public func getCoinbaseEncryptionPass() -> String {
         let keychain = Keychain(service: self.keychainService)
-        return keychain[coinbaseEncryptionPass]
+        let pass = keychain[coinbaseEncryptionPass]
+        if pass == nil {
+            setCoinbaseEncryptionPass()
+            return keychain[coinbaseEncryptionPass]!
+        } else {
+            return pass!
+        }
     }
 }
 

@@ -876,7 +876,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="MNX-oG-Dku">
-                            <rect key="frame" x="0.0" y="498" width="320" height="95"/>
+                            <rect key="frame" x="0.0" y="542" width="320" height="95"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="O3 Wallet Version 0.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="We1-HS-Cs2">
@@ -973,8 +973,41 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="a69-ZT-FSz">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="VRV-ar-OVT">
                                         <rect key="frame" x="0.0" y="454" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VRV-ar-OVT" id="F1Q-4G-N5e">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coinbase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JmW-df-bto">
+                                                    <rect key="frame" x="46" y="0.0" width="234" height="44"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
+                                                    <color key="textColor" red="0.058823529409999999" green="0.062745098040000002" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_coinbase" translatesAutoresizingMaskIntoConstraints="NO" id="3IF-e5-3Za">
+                                                    <rect key="frame" x="16" y="12" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="EtB-lJ-YPI"/>
+                                                        <constraint firstAttribute="width" constant="20" id="HjK-Ar-rVd"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="JmW-df-bto" firstAttribute="top" secondItem="F1Q-4G-N5e" secondAttribute="top" id="9mU-PR-Spr"/>
+                                                <constraint firstAttribute="bottom" secondItem="JmW-df-bto" secondAttribute="bottom" id="WKq-Mv-5xW"/>
+                                                <constraint firstItem="JmW-df-bto" firstAttribute="leading" secondItem="3IF-e5-3Za" secondAttribute="trailing" constant="10" id="XOs-hx-x1s"/>
+                                                <constraint firstItem="3IF-e5-3Za" firstAttribute="leading" secondItem="F1Q-4G-N5e" secondAttribute="leading" constant="16" id="c3p-37-odF"/>
+                                                <constraint firstAttribute="trailing" secondItem="JmW-df-bto" secondAttribute="trailing" constant="40" id="eae-8o-fgz"/>
+                                                <constraint firstItem="3IF-e5-3Za" firstAttribute="centerY" secondItem="F1Q-4G-N5e" secondAttribute="centerY" id="m79-OI-bm4"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="a69-ZT-FSz">
+                                        <rect key="frame" x="0.0" y="498" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="a69-ZT-FSz" id="9n0-4H-G4n">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1028,6 +1061,8 @@
                         <outlet property="headerView" destination="rPQ-Pj-GlN" id="3TJ-mV-cc2"/>
                         <outlet property="helpLabel" destination="7kd-fQ-mpp" id="6lR-cD-1kM"/>
                         <outlet property="helpView" destination="9n0-4H-G4n" id="g9e-Bi-uvP"/>
+                        <outlet property="manageCoinbaseLabel" destination="JmW-df-bto" id="fmK-2f-v9o"/>
+                        <outlet property="manageCoinbaseTableViewCell" destination="VRV-ar-OVT" id="Rj5-kN-tge"/>
                         <outlet property="multiWalletLabel" destination="u4J-3R-7jr" id="ArY-4D-Xcg"/>
                         <outlet property="privacyPolicyLabel" destination="zkg-Vu-Mdy" id="lTh-ub-DA8"/>
                         <outlet property="qrView" destination="aPK-Ea-z7c" id="koh-1o-2DW"/>
@@ -1037,11 +1072,20 @@
                         <segue destination="IVl-ff-ggg" kind="presentation" identifier="segueToMultiWalletActivation" id="aZW-4J-STx"/>
                         <segue destination="Amo-hC-YJu" kind="presentation" identifier="segueToIdentitiesList" id="ivA-BW-zX6"/>
                         <segue destination="v1Y-Uo-9z4" kind="presentation" identifier="segueToSecurityCenter" id="u1C-Vv-MZq"/>
+                        <segue destination="Nbm-bN-2Jp" kind="presentation" identifier="segueToManageCoinbase" id="MBg-92-kDv"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tyb-lI-4RW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3699.375" y="1539.0845070422536"/>
+        </scene>
+        <!--manageCoinbaseNav-->
+        <scene sceneID="ywx-8M-GjF">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" referencedIdentifier="manageCoinbaseNav" id="Nbm-bN-2Jp" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UPV-li-NXm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4317" y="1711"/>
         </scene>
         <!--Security Center Table View Controller-->
         <scene sceneID="4rt-fu-LdR">
@@ -1358,14 +1402,14 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iXm-ae-KqO">
-                                    <rect key="frame" x="272" y="163.5" width="16" height="22"/>
+                                    <rect key="frame" x="265" y="163.5" width="23" height="22"/>
                                     <state key="normal" image="eye"/>
                                     <connections>
                                         <action selector="passwordInputShowButtonTapped:" destination="1Kv-SZ-EK8" eventType="touchUpInside" id="2U6-qd-EL5"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CeY-GK-HhR">
-                                    <rect key="frame" x="272" y="223.5" width="16" height="22"/>
+                                    <rect key="frame" x="265" y="223.5" width="23" height="22"/>
                                     <state key="normal" image="eye"/>
                                     <connections>
                                         <action selector="passwordVerifyShowButtonTapped:" destination="1Kv-SZ-EK8" eventType="touchUpInside" id="jmS-na-6I9"/>
@@ -1891,6 +1935,7 @@ Your raw private key is not password protected, anyone with access to this priva
         <image name="chevron-right" width="10" height="18"/>
         <image name="cog" width="30" height="30"/>
         <image name="eye" width="23" height="14"/>
+        <image name="ic_coinbase" width="24" height="24"/>
         <image name="ic_general" width="24" height="24"/>
         <image name="ic_help" width="24" height="24"/>
         <image name="ic_security" width="24" height="24"/>

@@ -80,8 +80,6 @@
 		3557BA9D20AA9C870034937C /* AssetIdConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BA9B20AA9C870034937C /* AssetIdConstants.swift */; };
 		3557BAA220AA9C930034937C /* ScriptBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BA9F20AA9C930034937C /* ScriptBuilder.swift */; };
 		3557BAA320AA9C930034937C /* OpCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAA020AA9C930034937C /* OpCodes.swift */; };
-		3557BAAD20AA9CB20034937C /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAA820AA9CB20034937C /* AES.swift */; };
-		3557BAAE20AA9CB20034937C /* SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAA920AA9CB20034937C /* SHA256.swift */; };
 		3557BAB220AA9CEE0034937C /* nodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 3557BAB120AA9CEE0034937C /* nodes.json */; };
 		3557BABD20AA9D0B0034937C /* Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAB420AA9D0A0034937C /* Balance.swift */; };
 		3557BABE20AA9D0B0034937C /* Claims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAB520AA9D0A0034937C /* Claims.swift */; };
@@ -90,7 +88,6 @@
 		3557BAC520AA9D0B0034937C /* NeoScanTransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BABC20AA9D0A0034937C /* NeoScanTransactionHistory.swift */; };
 		3557BAC820AA9D180034937C /* NeoScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAC620AA9D180034937C /* NeoScan.swift */; };
 		3557BAC920AA9D180034937C /* NeoClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BAC720AA9D180034937C /* NeoClient.swift */; };
-		3557BACB20AA9D260034937C /* WIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACA20AA9D260034937C /* WIF.swift */; };
 		3557BAD220AA9D310034937C /* Base58.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACC20AA9D300034937C /* Base58.swift */; };
 		3557BAD320AA9D310034937C /* validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACD20AA9D300034937C /* validator.swift */; };
 		3557BAD420AA9D310034937C /* Array+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557BACE20AA9D300034937C /* Array+Util.swift */; };
@@ -100,6 +97,12 @@
 		35585F8F21F59F3100BA39C6 /* dAppBrowserTrading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35585F8E21F59F3100BA39C6 /* dAppBrowserTrading.swift */; };
 		355D466F22B0D815006DE02B /* ExternalAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D466E22B0D815006DE02B /* ExternalAccounts.swift */; };
 		355D467122B0E53A006DE02B /* CoinbaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D467022B0E53A006DE02B /* CoinbaseClient.swift */; };
+		355D467422B1DFAE006DE02B /* ManageCoinbaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D467322B1DFAE006DE02B /* ManageCoinbaseTableViewController.swift */; };
+		355D467622B1F475006DE02B /* CoinbaseDapiHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D467522B1F475006DE02B /* CoinbaseDapiHandlers.swift */; };
+		355D467822B1F481006DE02B /* PayDapiHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D467722B1F481006DE02B /* PayDapiHandlers.swift */; };
+		355D467C22B221E1006DE02B /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D467B22B221E1006DE02B /* AES.swift */; };
+		355D468122B22777006DE02B /* WIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D467F22B22777006DE02B /* WIF.swift */; };
+		355D468222B22777006DE02B /* SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D468022B22777006DE02B /* SHA256.swift */; };
 		356F1B05218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */; };
 		356F1B07218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */; };
 		356F1B0921901AA30004C088 /* EncryptPasswordEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */; };
@@ -486,8 +489,6 @@
 		3557BA9B20AA9C870034937C /* AssetIdConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetIdConstants.swift; sourceTree = "<group>"; };
 		3557BA9F20AA9C930034937C /* ScriptBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptBuilder.swift; sourceTree = "<group>"; };
 		3557BAA020AA9C930034937C /* OpCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodes.swift; sourceTree = "<group>"; };
-		3557BAA820AA9CB20034937C /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
-		3557BAA920AA9CB20034937C /* SHA256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256.swift; sourceTree = "<group>"; };
 		3557BAB120AA9CEE0034937C /* nodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = nodes.json; sourceTree = "<group>"; };
 		3557BAB420AA9D0A0034937C /* Balance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Balance.swift; sourceTree = "<group>"; };
 		3557BAB520AA9D0A0034937C /* Claims.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Claims.swift; sourceTree = "<group>"; };
@@ -496,7 +497,6 @@
 		3557BABC20AA9D0A0034937C /* NeoScanTransactionHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeoScanTransactionHistory.swift; sourceTree = "<group>"; };
 		3557BAC620AA9D180034937C /* NeoScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoScan.swift; sourceTree = "<group>"; };
 		3557BAC720AA9D180034937C /* NeoClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoClient.swift; sourceTree = "<group>"; };
-		3557BACA20AA9D260034937C /* WIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WIF.swift; sourceTree = "<group>"; };
 		3557BACC20AA9D300034937C /* Base58.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58.swift; sourceTree = "<group>"; };
 		3557BACD20AA9D300034937C /* validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = validator.swift; sourceTree = "<group>"; };
 		3557BACE20AA9D300034937C /* Array+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Util.swift"; sourceTree = "<group>"; };
@@ -507,6 +507,12 @@
 		35585F8E21F59F3100BA39C6 /* dAppBrowserTrading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dAppBrowserTrading.swift; sourceTree = "<group>"; };
 		355D466E22B0D815006DE02B /* ExternalAccounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalAccounts.swift; sourceTree = "<group>"; };
 		355D467022B0E53A006DE02B /* CoinbaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinbaseClient.swift; sourceTree = "<group>"; };
+		355D467322B1DFAE006DE02B /* ManageCoinbaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCoinbaseTableViewController.swift; sourceTree = "<group>"; };
+		355D467522B1F475006DE02B /* CoinbaseDapiHandlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinbaseDapiHandlers.swift; sourceTree = "<group>"; };
+		355D467722B1F481006DE02B /* PayDapiHandlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayDapiHandlers.swift; sourceTree = "<group>"; };
+		355D467B22B221E1006DE02B /* AES.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
+		355D467F22B22777006DE02B /* WIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WIF.swift; path = "New Group/Crypto/WIF.swift"; sourceTree = "<group>"; };
+		355D468022B22777006DE02B /* SHA256.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SHA256.swift; path = "New Group/Crypto/SHA256.swift"; sourceTree = "<group>"; };
 		356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewController.swift; sourceTree = "<group>"; };
 		356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewCell.swift; sourceTree = "<group>"; };
 		356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptPasswordEntryTableViewController.swift; sourceTree = "<group>"; };
@@ -962,7 +968,6 @@
 				3557BAB320AA9D010034937C /* Models */,
 				3557BAD820AA9D3E0034937C /* Util */,
 				3557BAB020AA9CE50034937C /* Data */,
-				3557BAAF20AA9CBC0034937C /* Crypto */,
 				3557BAA420AA9C980034937C /* Contracts */,
 			);
 			name = API;
@@ -976,16 +981,6 @@
 				3557BA9F20AA9C930034937C /* ScriptBuilder.swift */,
 			);
 			path = Contracts;
-			sourceTree = "<group>";
-		};
-		3557BAAF20AA9CBC0034937C /* Crypto */ = {
-			isa = PBXGroup;
-			children = (
-				3557BACA20AA9D260034937C /* WIF.swift */,
-				3557BAA820AA9CB20034937C /* AES.swift */,
-				3557BAA920AA9CB20034937C /* SHA256.swift */,
-			);
-			path = Crypto;
 			sourceTree = "<group>";
 		};
 		3557BAB020AA9CE50034937C /* Data */ = {
@@ -1029,6 +1024,14 @@
 				355D466E22B0D815006DE02B /* ExternalAccounts.swift */,
 			);
 			path = FileSystemAccounts;
+			sourceTree = "<group>";
+		};
+		355D467222B1DEC8006DE02B /* ExternalAccounts */ = {
+			isa = PBXGroup;
+			children = (
+				355D467322B1DFAE006DE02B /* ManageCoinbaseTableViewController.swift */,
+			);
+			path = ExternalAccounts;
 			sourceTree = "<group>";
 		};
 		35A37C30226D9EB600473895 /* Inbox */ = {
@@ -1365,6 +1368,8 @@
 				6EF59C8A21A2A25900087D72 /* dAppMessage.swift */,
 				6E58720721A6A489007F1EC6 /* dAppMetadata.swift */,
 				35585F8C21F59E4600BA39C6 /* dAppBrowserViewModel.swift */,
+				355D467522B1F475006DE02B /* CoinbaseDapiHandlers.swift */,
+				355D467722B1F481006DE02B /* PayDapiHandlers.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1506,6 +1511,9 @@
 		7575ADC41F6006AC0077007B /* O3 */ = {
 			isa = PBXGroup;
 			children = (
+				355D468022B22777006DE02B /* SHA256.swift */,
+				355D467F22B22777006DE02B /* WIF.swift */,
+				355D467B22B221E1006DE02B /* AES.swift */,
 				355D466D22B0D7B1006DE02B /* FileSystemAccounts */,
 				35ACAF132277F21600B67AFA /* WalletSelector */,
 				35A37C30226D9EB600473895 /* Inbox */,
@@ -1698,6 +1706,7 @@
 		75DA58F91F7A67690065FE0D /* SettingsMenu */ = {
 			isa = PBXGroup;
 			children = (
+				355D467222B1DEC8006DE02B /* ExternalAccounts */,
 				354394D4218BF121000C1D8C /* Identities */,
 				35C370AA21815D4F0023AABC /* MultiWallet */,
 				35AD2B71209317950024A900 /* SettingsStrings.swift */,
@@ -1947,6 +1956,7 @@
 				35B426C520982D7B00957211 /* Nep5SelectionCollectionViewController.swift in Sources */,
 				6EA09E4E212B942900BBD04A /* Transaction.xcdatamodeld in Sources */,
 				6E5FDFE72167233A00C1A6B5 /* FixedDecimalTextField.swift in Sources */,
+				355D467422B1DFAE006DE02B /* ManageCoinbaseTableViewController.swift in Sources */,
 				3557BAD420AA9D310034937C /* Array+Util.swift in Sources */,
 				3528396E2283D7AD00F9965A /* HelpTableViewController.swift in Sources */,
 				3557BABD20AA9D0B0034937C /* Balance.swift in Sources */,
@@ -1991,7 +2001,6 @@
 				6E7F3D8D20B5419A00835963 /* AppState.swift in Sources */,
 				75E14E541F7D27F900BEAE22 /* O3.xcdatamodeld in Sources */,
 				35A37C3C226EBF8E00473895 /* InboxSettingsMenuTableViewCell.swift in Sources */,
-				3557BAAE20AA9CB20034937C /* SHA256.swift in Sources */,
 				6EC4838C21634044002CBF76 /* ThemedUITableView.swift in Sources */,
 				75DA59091F7A815E0065FE0D /* OzoneAlert.swift in Sources */,
 				35AD2B74209320140024A900 /* TabbarStrings.swift in Sources */,
@@ -2095,6 +2104,7 @@
 				6E4E6F9420146BEC001A5844 /* TransactionHistoryTableViewController.swift in Sources */,
 				358E95D9200358AA00A1878B /* NewsFeed.swift in Sources */,
 				6E64C0D02159CE19002B1366 /* Account+Switcheo.swift in Sources */,
+				355D468122B22777006DE02B /* WIF.swift in Sources */,
 				3527F8CF20C539A500C2FCB9 /* MarketplaceController.swift in Sources */,
 				3514C1DF225ED4D900E5BB23 /* O3KeychainManager.swift in Sources */,
 				35E5F60C20283AA600D65BEA /* AddressBookEntryTableViewCell.swift in Sources */,
@@ -2103,13 +2113,13 @@
 				354394D6218BF16B000C1D8C /* IdentitiesTableViewController.swift in Sources */,
 				75E28F311F9B3B34006C6E37 /* ThemeManager.swift in Sources */,
 				6E64C0D62159CE19002B1366 /* RequestTransaction.swift in Sources */,
+				355D467822B1F481006DE02B /* PayDapiHandlers.swift in Sources */,
 				35AD2B6C2093087C0024A900 /* SendStrings.swift in Sources */,
 				35585F8F21F59F3100BA39C6 /* dAppBrowserTrading.swift in Sources */,
 				35C370B02181ABD40023AABC /* NewMultiWalletViewController.swift in Sources */,
 				354394D3218979AE000C1D8C /* ConvertToWalletTableViewController.swift in Sources */,
 				35A37C3E2270016B00473895 /* InboxDisclaimerViewController.swift in Sources */,
 				6E60CC6C20CF884E0062F1CE /* Controller.swift in Sources */,
-				3557BAAD20AA9CB20034937C /* AES.swift in Sources */,
 				3557BA9D20AA9C870034937C /* AssetIdConstants.swift in Sources */,
 				3557BAD220AA9D310034937C /* Base58.swift in Sources */,
 				3557BABE20AA9D0B0034937C /* Claims.swift in Sources */,
@@ -2129,6 +2139,7 @@
 				752586B11F77DD9800ED5312 /* OzoneGraphView.swift in Sources */,
 				6E1ACFE621BA365A0079E752 /* dAppBrowserMenuTableViewController.swift in Sources */,
 				6E97C4B51F7FBAA300526FF0 /* AssetView.swift in Sources */,
+				355D468222B22777006DE02B /* SHA256.swift in Sources */,
 				35AF806920CA6C0100E48457 /* LoginV2TableViewController.swift in Sources */,
 				6EF59C9421A3994F00087D72 /* ConnectRequestTableViewController.swift in Sources */,
 				35E5F6102029412900D65BEA /* PortfolioAssetCell.swift in Sources */,
@@ -2142,6 +2153,7 @@
 				35CCEF642182DB44005EF03C /* EncryptedKeyAddedToMultiWalletTableViewController.swift in Sources */,
 				6ED600201F765C9C006760E6 /* NoHairlineNavigationController.swift in Sources */,
 				35A37C2F226D70CB00473895 /* Notifications.swift in Sources */,
+				355D467622B1F475006DE02B /* CoinbaseDapiHandlers.swift in Sources */,
 				350E187F21884F7700AA10CE /* AddWalletTableViewCell.swift in Sources */,
 				356F1B07218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift in Sources */,
 				750E17431F6FD560001F62FD /* GraphPanView.swift in Sources */,
@@ -2157,7 +2169,6 @@
 				6E61BBD11F729D3B00D2B30B /* Money.swift in Sources */,
 				3514C1DB225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift in Sources */,
 				6E5FDFEB2167250600C1A6B5 /* ShadowedButton.swift in Sources */,
-				3557BACB20AA9D260034937C /* WIF.swift in Sources */,
 				35CCEF662182F383005EF03C /* AddNameEncryptedKeyTableViewController.swift in Sources */,
 				3549458E203FD4D000332E53 /* Decimal.swift in Sources */,
 				6E64C0CA2159CE19002B1366 /* Offer.swift in Sources */,
@@ -2169,6 +2180,7 @@
 				35A37C402270072C00473895 /* tableView.swift in Sources */,
 				353F36522003842F002B4FE1 /* NewsItemViewController.swift in Sources */,
 				6E4E6F9820147868001A5844 /* ContactsTableViewController.swift in Sources */,
+				355D467C22B221E1006DE02B /* AES.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

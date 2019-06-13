@@ -20,6 +20,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var generalSettingsCell: UITableViewCell!
     @IBOutlet weak var supportCell: UITableViewCell!
     @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
+    @IBOutlet weak var manageCoinbaseTableViewCell: UITableViewCell!
     
     @IBOutlet weak var helpView: UIView!
     @IBOutlet weak var generalSettingsView: UIView!
@@ -28,6 +29,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     @IBOutlet weak var generalSettingsLabel: UILabel!
     @IBOutlet weak var helpLabel: UILabel!
     @IBOutlet weak var multiWalletLabel: UILabel!
+    @IBOutlet weak var manageCoinbaseLabel: UILabel!
     
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
@@ -105,23 +107,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         }
     }
     
-    func checkCongestion() {
-        NeoClient(seed: AppState.bestSeedNodeURL).getMempoolHeight() { (result) in
-            switch result {
-            case .failure(let error):
-                return
-            case .success(let pending):
-                DispatchQueue.main.async {
-                    if pending > 1000 {
-                        self.congestionIcon.isHidden = false
-                        self.headerTitleLabel.text = String(format: SettingsStrings.congestionWarning, pending)
-                        self.headerTitleLabel.textColor = Theme.light.accentColor
-                    }
-                }
-            }
-        }
-    }
-    
     func setTitleButton() {
         var titleViewButton = UIButton(type: .system)
         let activeWallet = NEP6.getFromFileSystem()!.getAccounts().first {$0.isDefault}!.label
@@ -171,6 +156,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         helpView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSupportForum)))
         generalSettingsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openGeneralSettings)))
         enableMultiWalletCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToSecurityCenter)))
+        manageCoinbaseTableViewCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToManageCoinbase)))
         footerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openPrivacyPolicy)))
         
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -223,17 +209,22 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.performSegue(withIdentifier: "segueToSecurityCenter", sender: nil)
     }
     
+    @objc func goToManageCoinbase() {
+        self.performSegue(withIdentifier: "segueToManageCoinbase", sender: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let nav = segue.destination as? UINavigationController,
-            let child = nav.children[0] as? SecurityCenterTableViewController else {
+        guard let nav = segue.destination as? UINavigationController else {
                 fatalError("Something went terribly wrong")
         }
-        child.account = NEP6.getFromFileSystem()!.getDefaultAccount()
+        
+        if let child = nav.children[0] as? SecurityCenterTableViewController {
+            child.account = NEP6.getFromFileSystem()!.getDefaultAccount()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        checkCongestion()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -300,8 +291,8 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     
     
     func setThemedElements() {
-        let themedTitleLabels = [generalSettingsLabel, versionLabel, helpLabel, multiWalletLabel]
-        let themedCells = [generalSettingsCell]
+        let themedTitleLabels = [generalSettingsLabel, versionLabel, helpLabel, multiWalletLabel, manageCoinbaseLabel]
+        let themedCells = [generalSettingsCell, manageCoinbaseTableViewCell]
         for cell in themedCells {
             cell?.contentView.theme_backgroundColor = O3Theme.backgroundColorPicker
             cell?.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -354,5 +345,6 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         multiWalletLabel.text = SettingsStrings.manageWallets
         headerTitleLabel.text = AccountStrings.myAddressInfo
         privacyPolicyLabel.text = "Terms and privacy policy"
+        manageCoinbaseLabel.text = "Manage Coinbase Account"
     }
 }

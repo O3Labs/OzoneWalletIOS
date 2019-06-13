@@ -56,8 +56,15 @@ class dAppBrowserViewModel: NSObject {
         self.delegate?.error(message: message, error: error)
     }
     
-    func proceedMessage(message: dAppMessage) {
-        
+    func processCoinbaseMessage(message: dAppMessage) {
+        if message.command.lowercased() == "connect".lowercased() {
+            handleCoinbaseConnect(message: message)
+        }
+    }
+    
+    func processPayMessage(message: dAppMessage) {}
+    
+    func processBlockchainMessage(message: dAppMessage) {
         if message.command.lowercased() == "getAccount".lowercased() {
             if unlockedWallet == nil {
                 
@@ -77,7 +84,7 @@ class dAppBrowserViewModel: NSObject {
             self.delegate?.didFinishMessage(message: message, response: response.dictionary)
             return
         }
-
+        
         
         if message.command.lowercased() == "getNetworks".lowercased() {
             let response = dAppProtocol.GetNetworksResponse(networks: ["MainNet", "TestNet", "PrivateNet"])
@@ -184,7 +191,16 @@ class dAppBrowserViewModel: NSObject {
                 self.delegate?.didFinishMessage(message: message, response: JSONDictionary())
             }
         }
-
+    }
+    
+    func proceedMessage(message: dAppMessage) {
+        if message.blockchain == "COINBASE" {
+            processCoinbaseMessage(message: message)
+        } else if message.blockchain == "PAY" {
+            processPayMessage(message: message)
+        } else {
+            processBlockchainMessage(message: message)
+        }
     }
     
     func changeActiveAccount(account: NEP6.Account? ,wallet: Wallet) {

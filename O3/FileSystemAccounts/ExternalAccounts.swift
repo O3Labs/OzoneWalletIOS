@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Security
 
 public class ExternalAccounts: Codable {
     static var file_on_disk_name = "O3_connected_accounts"
@@ -16,6 +17,9 @@ public class ExternalAccounts: Codable {
     var name: String
     private var accounts: [Account]
     
+    public enum Platforms: String {
+        case COINBASE
+    }
     
     public enum CodingKeys: String, CodingKey {
         case name
@@ -37,9 +41,9 @@ public class ExternalAccounts: Codable {
     public class Account: Codable, Hashable {
         var platform: String
         var algorithm: String
-       // var iv: IV
+        var iv: IV
         var token: String
-        var accountMetaData: Data? = nil
+        var accountMetaData: AnyCodable? = nil
         
         public var hashValue: Int {
             return platform.hashValue
@@ -53,16 +57,17 @@ public class ExternalAccounts: Codable {
         public enum CodingKeys: String, CodingKey {
             case platform
             case algorithm
-            //case iv
+            case iv
             case token
             case accountMetaData
         }
         
-        public init(platform: String, algorithm: String, token: String, accountMetaData: Data?) {
+        init(platform: String, algorithm: String, token: String, accountMetaData: AnyCodable?, iv: IV) {
             self.platform = platform
             self.algorithm = algorithm
             self.token = token
             self.accountMetaData = accountMetaData
+            self.iv = iv
         }
         
         required public convenience init(from decoder: Decoder) throws {
@@ -70,16 +75,61 @@ public class ExternalAccounts: Codable {
             let platform: String = try container.decode(String.self, forKey: .platform)
             let algorithm: String = try container.decode(String.self, forKey: .algorithm)
             let token: String = try container.decode(String.self, forKey: .token)
-            let accountMetaData: Data? = nil //try container.decode(Any?.self, forKey: .accountMetaData)
-            self.init(platform: platform, algorithm: algorithm, token: token, accountMetaData: accountMetaData)
+            let iv: IV = try container.decode(IV.self, forKey: .iv)
+            let accountMetaData: AnyCodable? = try container.decode(AnyCodable?.self, forKey: .accountMetaData)
+            self.init(platform: platform, algorithm: algorithm, token: token, accountMetaData: accountMetaData, iv: iv)
+        }
+        
+        struct IV: Codable {
+            var type: String
+            var data: String
         }
     }
     
-    func getCoinbaseToken() -> String { return "" }
+    func getCoinbaseTokenFromDisk() -> String? {
+        let index = accounts.firstIndex { $0.platform.lowercased() == Platforms.COINBASE.rawValue }
+        if index == nil {
+            return nil
+        }
+        let pass = O3KeychainManager.getCoinbaseEncryptionPass()
+        let account = accounts[index!]
+        let decryptedTokenHexData = AES.decrypt(bytes: account.token.dataWithHexString().bytes,
+                                            key: pass.dataWithHexString().bytes, keySize: .keySize256, pkcs7Padding: false, iv: account.iv.data.hexadecimal()!.bytes).fullHexString.dataWithHexString()
+        let decryptedRawToken = String(decoding: decryptedTokenHexData, as: UTF8.self)
+        return decryptedRawToken
+    }
     
-    func setAccount(platform: String, unencryptedToken: String, scope: String, accountMetaData: Data?) {}
+    func setAccount(platform: ExternalAccounts.Platforms, unencryptedToken: String, scope: String, accountMetaData: AnyCodable?) {
+        let dataToEncrypt = Data(unencryptedToken.utf8)
+        
+        let pass = O3KeychainManager.getCoinbaseEncryptionPass()
+        
+        var iv: [UInt8] = Array(repeatElement(0, count: 32))
+        _ = SecRandomCopyBytes(kSecRandomDefault, 32, &iv)
+        
+        let encryptedToken = AES.encrypt(bytes: dataToEncrypt.bytes, key: pass.dataWithHexString().bytes, keySize: .keySize256, pkcs7Padding: false, iv: iv).fullHexString
+        let account = Account(platform: platform.rawValue, algorithm: "AES256", token: encryptedToken,
+                              accountMetaData: accountMetaData, iv: Account.IV(type: "byteArray", data: iv.fullHexString))
     
-    func removeAccount(platform: String) {}
+        let index = accounts.firstIndex { $0.platform == platform.rawValue }
+        if index == nil {
+            accounts.append(account)
+        } else {
+            accounts[index!] = account
+        }
+        writeToFileSystem()
+    }
+    
+    func getAccounts() -> [Account] {
+        return accounts
+    }
+    
+    func removeAccount(platform: ExternalAccounts.Platforms) {
+        let index = accounts.firstIndex { $0.platform == Platforms.COINBASE.rawValue }
+        if index != nil {
+            accounts.remove(at: index!)
+        }
+    }
     
     public func writeToFileSystem() {
         let nep6Data = try! JSONEncoder().encode(self)
@@ -98,16 +148,32 @@ public class ExternalAccounts: Codable {
     }
     
     
-    static func getCoinbaseTokenFromMemory() -> String? { return nil }
-    static func setCoinbaseTokenForSession(token: String, expiryTime: Int) {}
-    static func getFromFileSystem() -> ExternalAccounts? {
+    static func getCoinbaseTokenFromMemory() -> String? {
+        if Int(Date().timeIntervalSince1970) > coinbaseTokenExpiryTime ?? 0 {
+            coinbaseTokenForSession = nil
+            coinbaseTokenExpiryTime = nil
+            return nil
+        }
+    
+        return coinbaseTokenForSession
+    }
+    
+    static func setCoinbaseTokenForSession(token: String, expiryTime: Int) {
+        coinbaseTokenForSession = token
+        coinbaseTokenExpiryTime = expiryTime
+    }
+    
+    static func getFromFileSystem() -> ExternalAccounts {
         let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
         let fileURL = DocumentDirURL.appendingPathComponent(file_on_disk_name).appendingPathExtension("json")
         let jsonExternalAccounts = try? Data(contentsOf: fileURL)
         if jsonExternalAccounts == nil {
-            return nil
+            ExternalAccounts(name: "O3 Connected Accounts", accounts: []).writeToFileSystem()
+            return getFromFileSystem()
+        } else {
+            let externalAccounts = try? JSONDecoder().decode(ExternalAccounts.self, from: jsonExternalAccounts!)
+            return externalAccounts!
         }
-        let externalAccounts = try? JSONDecoder().decode(ExternalAccounts.self, from: jsonExternalAccounts!)
-        return externalAccounts
+        
     }
 }
