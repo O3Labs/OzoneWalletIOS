@@ -23,7 +23,7 @@ extension dAppBrowserViewModel {
                         self.delegate?.error(message: message, error: e.localizedDescription)
                     case .success(let userData):
                         ExternalAccounts.getFromFileSystem().setAccount(platform: ExternalAccounts.Platforms.COINBASE, unencryptedToken: token.refresh_token,
-                                                                        scope: token.scope, accountMetaData: nil)
+                                                                        scope: token.scope, accountMetaData: userData)
                         self.delegate?.didFinishMessage(message: message, response: true)
                     }
                 }

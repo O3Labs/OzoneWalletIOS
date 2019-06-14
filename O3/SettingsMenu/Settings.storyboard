@@ -775,7 +775,7 @@
                     <navigationItem key="navigationItem" id="REK-FY-eYX">
                         <barButtonItem key="leftBarButtonItem" image="times" id="Q8p-ry-MPC">
                             <connections>
-                                <action selector="closeTapped:" destination="ebx-SZ-hT7" id="xSP-7o-6dj"/>
+                                <action selector="closeTapped:" destination="ebx-SZ-hT7" id="BZJ-BG-sCf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

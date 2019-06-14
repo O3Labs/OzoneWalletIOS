@@ -10,7 +10,7 @@ import Foundation
 
 public enum CoinbaseClientResult<T> {
     case success(T)
-    case failure(CoinbaseClientError)
+    case failure(Error)
 }
 struct CoinbaseTokenResponse: Codable {
     var access_token: String
@@ -50,9 +50,12 @@ public enum CoinbaseClientError: Error {
         case .invalidData:
             return "Invalid response data"
         case .invalidRequest:
-            return "Invalid server request"
-        }
+            return "Invalid server request"        }
     }
+}
+
+public struct CoinbaseSpecificError: Error {
+    var localizedDescription: String
 }
 
 
@@ -65,7 +68,7 @@ class CoinbaseClient {
         case POST
     }
     
-    func sendRequest(_ endpointURL: String, method: HTTPMethod, data: [String: Any?]?,
+    func sendRequest(_ endpointURL: String, method: HTTPMethod, data: [String: Any?]?, headers: [String: String],
                       completion: @escaping (CoinbaseClientResult<JSONDictionary>) -> Void) {
         
         let url = URL(string: endpointURL)
@@ -74,26 +77,32 @@ class CoinbaseClient {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("O3iOS", forHTTPHeaderField: "User-Agent")
         request.setValue(CoinbaseClient.CB_VERSION, forHTTPHeaderField: "CB_VERSION")
+        for header in headers {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+        
         if data != nil {
             guard let body = try? JSONSerialization.data(withJSONObject: data!, options: []) else {
-                completion(.failure(.invalidBodyRequest))
+                completion(.failure(CoinbaseClientError.invalidBodyRequest))
                 return
             }
             request.httpBody = body
         }
         
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, err) in
+            print(response.debugDescription)
             if err != nil {
-                completion(.failure(.invalidRequest))
+                completion(.failure(CoinbaseClientError.invalidRequest))
                 return
             }
             
             guard let dataUnwrapped = data,
                 let json = (try? JSONSerialization.jsonObject(with: dataUnwrapped, options: [])) as? JSONDictionary else {
-                    completion(.failure(.invalidData))
+                    completion(.failure(CoinbaseClientError.invalidData))
                     return
             }
             
+            print (json)
             let result = CoinbaseClientResult.success(json)
             completion(result)
         }
@@ -105,7 +114,7 @@ class CoinbaseClient {
         let queryString = "?grant_type=\(grant_type)&data=\(code)"
         let url = "https://coinbase-oauth.o3.app/\(queryString)"
 
-        sendRequest(url, method: .POST, data: [:]) { result in
+        sendRequest(url, method: .POST, data: [:], headers: [:]) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
@@ -113,9 +122,11 @@ class CoinbaseClient {
                 let decoder = JSONDecoder()
                 guard let data = try? JSONSerialization.data(withJSONObject: result, options: .prettyPrinted),
                     let tokenResponse = try? decoder.decode(CoinbaseTokenResponse.self, from: data) else {
-                        completion(.failure(.invalidData))
+                        completion(.failure(CoinbaseClientError.invalidData))
                         return
                 }
+                print (tokenResponse
+                )
                 completion(.success(tokenResponse))
             }
         }
@@ -123,19 +134,19 @@ class CoinbaseClient {
         
     func refreshToken(completion: @escaping (CoinbaseClientResult<CoinbaseTokenResponse>) -> Void) {
         let grant_type = "refresh_token"
-        let token = ExternalAccounts.getFromFileSystem().getCoinbaseTokenFromDisk()!
+        let token = ExternalAccounts.getCoinbaseTokenFromDisk()!
         let queryString = "?grant_type=\(grant_type)&data=\(token)"
         let url = "https://coinbase-oauth.o3.app/\(queryString)"
-        
-        sendRequest(url, method: .POST, data: [:]) { result in
+        print(queryString)
+        sendRequest(url, method: .POST, data: [:], headers: [:]) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))
             case .success(let response):
                 let decoder = JSONDecoder()
-                guard let data = try? JSONSerialization.data(withJSONObject: result, options: .prettyPrinted),
+                guard let data = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted),
                     let tokenResponse = try? decoder.decode(CoinbaseTokenResponse.self, from: data) else {
-                        completion(.failure(.invalidData))
+                        completion(.failure(CoinbaseClientError.invalidData))
                         return
                 }
                 let account = ExternalAccounts.getFromFileSystem().getAccounts().first {
@@ -149,16 +160,41 @@ class CoinbaseClient {
         }
     }
     
-    private func getUserWithToken() {}
-    func getUser(completion: @escaping (CoinbaseClientResult<Bool>) -> Void) {
+    private func getUserWithToken(completion: @escaping (CoinbaseClientResult<[String: String]>) -> Void) {
+        let url = "https://api.coinbase.com/v2/user"
+        let headers = ["Authorization" : "Bearer \(ExternalAccounts.getCoinbaseTokenFromMemory()!)"]
+        sendRequest(url, method: .GET, data: nil, headers: headers) { result in
+            switch result {
+                case .failure(let e):
+                    completion(.failure(e))
+                case .success(let response):
+                    let data = response["data"] as! JSONDictionary
+                    if data.keys.contains("error") {
+                        completion(.failure(CoinbaseSpecificError(localizedDescription: data["error"] as! String)))
+                    } else {
+                        let email = data["email"] as! String
+                        let id = data["id"] as! String
+                        completion(.success(["email": email, "id": id]))
+                }
+            }
+        }
+    }
+    
+    func getUser(completion: @escaping (CoinbaseClientResult<[String: String]>) -> Void) {
         if ExternalAccounts.getCoinbaseTokenFromMemory() == nil {
             refreshToken { result in
                 switch result {
                 case .failure(let e):
-                    return
-                case .success(let tokenResponse):
-                    return
+                    completion(.failure(e))
+                case .success(_):
+                    self.getUserWithToken { result in
+                        completion(result)
+                    }
                 }
+            }
+        } else {
+            self.getUserWithToken { result in
+                completion(result)
             }
         }
     }

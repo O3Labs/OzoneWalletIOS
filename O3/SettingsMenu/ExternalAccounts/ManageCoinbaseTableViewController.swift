@@ -29,6 +29,21 @@ class ManageCoinbaseTableViewController: UITableViewController {
         super.viewDidLoad()
         setThemedElements()
         setLocalizedStrings()
+        if ExternalAccounts.getCoinbaseTokenFromDisk() != nil {
+            loadCoinbaseAccountDetails()
+        }
+        
+    }
+    
+    func loadCoinbaseAccountDetails() {
+        CoinbaseClient.shared.getUser { result in
+            switch result {
+            case .failure(let e):
+                return
+            case .success(let user):
+                DispatchQueue.main.async { self.connectedAccountValueLabel.text = user["email"] }
+            }
+        }
     }
     
     func setLocalizedStrings() {
@@ -57,4 +72,9 @@ class ManageCoinbaseTableViewController: UITableViewController {
             //do somethin
         }
     }
+    
+    @IBAction func closeTapped(_ sender: Any) {
+        dismissTapped()
+    }
+    
 }
