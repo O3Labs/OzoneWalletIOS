@@ -299,4 +299,73 @@ class CoinbaseClient {
             }
         }
     }
+    
+    func sendWithToken(amount: String, to: String, currency: String, idem: String? = nil, description: String? = nil,
+              toInstitution: Bool? = false, institutionWebsite: String? = nil, twoFactorToken: String? = nil,
+              completion: @escaping (CoinbaseClientResult<Bool>) -> Void) {
+        getWalletAccount(currency: currency) { result in
+            switch result {
+            case .failure(let e):
+                completion(.failure(e))
+            case .success(let account):
+                let url = "https://api.coinbase.com/v2/accounts/\(account.id)/transactions"
+                var parameters: [String: String] = ["type": "send",
+                                                    "to": to,
+                                                    "amount": amount,
+                                                    "currency": currency]
+                if idem != nil {
+                    parameters["idem"] = idem
+                }
+                
+                if description != nil {
+                    parameters["description"] = description
+                }
+                
+                if toInstitution == true {
+                    parameters["to_financial_institution"] = "true"
+                    parameters["financial_institution_website"] = institutionWebsite
+                }
+                
+                var headers: [String: String] = ["Authorization" : "Bearer \(ExternalAccounts.getCoinbaseTokenFromMemory()!)"]
+                if twoFactorToken != nil {
+                    headers["CB-2FA-TOKEN"] = twoFactorToken
+                }
+                
+                self.sendRequest(url, method: .POST, data: parameters, headers: headers) { result in
+                    switch result {
+                    case .failure(let e):
+                        completion(.failure(e))
+                    case .success(let response):
+                        completion(.success(true))
+                    }
+                }
+            }
+        }
+    }
+    
+    func send(amount: String, to: String, currency: String, idem: String? = nil, description: String? = nil,
+              toInstitution: Bool? = false, institutionWebsite: String? = nil, twoFactorToken: String? = nil,
+              completion: @escaping (CoinbaseClientResult<Bool>) -> Void) {
+        
+        if ExternalAccounts.getCoinbaseTokenFromMemory() == nil {
+            refreshToken { result in
+                switch result {
+                case .failure(let e):
+                    completion(.failure(e))
+                case .success(_):
+                    self.sendWithToken(amount: amount, to: to, currency: currency,
+                                       idem: idem, description: description, toInstitution: toInstitution,
+                                       institutionWebsite: institutionWebsite, twoFactorToken: twoFactorToken) { result in
+                        completion(result)
+                    }
+                }
+            }
+        } else {
+            self.sendWithToken(amount: amount, to: to, currency: currency,
+                               idem: idem, description: description, toInstitution: toInstitution,
+                               institutionWebsite: institutionWebsite, twoFactorToken: twoFactorToken) { result in
+                completion(result)
+            }
+        }
+    }
 }

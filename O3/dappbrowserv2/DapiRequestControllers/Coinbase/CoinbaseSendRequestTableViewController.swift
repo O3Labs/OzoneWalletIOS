@@ -36,7 +36,7 @@ class CoinbaseSendRequestTableViewController: UITableViewController {
         super.viewDidLoad()
         buildData()
         tableView.reloadData()
-        CoinbaseClient.shared.getWalletAccount(currency: "BTC") { result in
+        CoinbaseClient.shared.send(amount: request.amount, to: request.to, currency: request.asset.symbol) { result in
             switch result {
             case .failure(let e):
                 print (e)
