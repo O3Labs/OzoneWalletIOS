@@ -143,6 +143,28 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
         }
         self.present(nav, animated: true, completion: nil)
     }
+    
+    func onCoinbaseSendRequest(message: dAppMessage, request: dAppProtocol.CoinbaseSendRequest, didCancel: @escaping (dAppMessage, dAppProtocol.CoinbaseSendRequest) -> Void, onCompleted: @escaping (dAppProtocol.CoinbaseSendResponse?, dAppProtocol.errorResponse?) -> Void) {
+        let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "CoinbaseSendRequestTableViewControllerNav")
+        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+        nav.modalPresentationStyle = .custom
+        nav.transitioningDelegate = self.halfModalTransitioningDelegate
+        if let vc = nav.children.first as? CoinbaseSendRequestTableViewController {
+            vc.url = self.viewModel.url
+            vc.dappMetadata = self.viewModel.dappMetadata
+            vc.request = request
+            /*vc.message = message
+            vc.selectedWallet = self.viewModel.unlockedWallet
+            
+            vc.onCompleted = nil
+            
+            vc.onCancel = nil
+            
+            
+            vc.request = request*/
+        }
+        self.present(nav, animated: true, completion: nil)
+    }
 
 }
 

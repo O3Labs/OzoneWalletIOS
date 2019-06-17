@@ -62,7 +62,11 @@ class dAppBrowserViewModel: NSObject {
         }
     }
     
-    func processPayMessage(message: dAppMessage) {}
+    func processPayMessage(message: dAppMessage) {
+        if message.command == "send" {
+            handleCoinbasePay(message: message)
+        }
+    }
     
     func processBlockchainMessage(message: dAppMessage) {
         if message.command.lowercased() == "getAccount".lowercased() {

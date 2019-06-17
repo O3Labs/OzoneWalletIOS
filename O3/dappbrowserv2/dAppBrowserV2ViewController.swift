@@ -18,6 +18,8 @@ protocol dAppBrowserDelegate {
    
     func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.SendResponse?, _ error: dAppProtocol.errorResponse?) -> Void)
     
+    func onCoinbaseSendRequest(message: dAppMessage, request: dAppProtocol.CoinbaseSendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.CoinbaseSendRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.CoinbaseSendResponse?, _ error: dAppProtocol.errorResponse?) -> Void)
+    
     func onInvokeRequest(message: dAppMessage, request: dAppProtocol.InvokeRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.InvokeRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.InvokeResponse?, _ error: dAppProtocol.errorResponse?) -> Void)
     
     func error(message: dAppMessage, error: String)

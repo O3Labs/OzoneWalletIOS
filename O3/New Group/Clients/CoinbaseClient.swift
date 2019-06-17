@@ -40,6 +40,59 @@ struct CoinbaseTokenResponse: Codable {
     }
 }
 
+struct CurrencyAccount: Codable {
+    var id: String
+    var name: String
+    var primary: Bool
+    var type: String
+    var balance: Balance
+    var created_at: String?
+    var updated_at: String?
+    var resource: String
+    var resource_path: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case primary
+        case type
+        case balance
+        case created_at
+        case updated_at
+        case resource
+        case resource_path
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        primary = try container.decode(Bool.self, forKey: .primary)
+        type = try container.decode(String.self, forKey: .type)
+        balance = try container.decode(Balance.self, forKey: .balance)
+        created_at = try? container.decode(String.self, forKey: .created_at)
+        updated_at = try? container.decode(String.self, forKey: .updated_at)
+        resource = try container.decode(String.self, forKey: .resource)
+        resource_path = try container.decode(String.self, forKey: .resource_path)
+    }
+    
+    struct Balance: Codable {
+        var amount: String
+        var currency: String
+        
+        enum CodingKeys: String, CodingKey {
+            case amount
+            case currency
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            amount = try container.decode(String.self, forKey: .amount)
+            currency = try container.decode(String.self, forKey: .currency)
+        }
+    }
+}
+
 public enum CoinbaseClientError: Error {
     case invalidBodyRequest, invalidData, invalidRequest
     
@@ -156,6 +209,7 @@ class CoinbaseClient {
                 ExternalAccounts.getFromFileSystem().setAccount(platform: ExternalAccounts.Platforms.COINBASE, unencryptedToken: tokenResponse.refresh_token, scope: tokenResponse.scope, accountMetaData: account.accountMetaData)
                 let expiryTime = Int(Date().timeIntervalSince1970) + tokenResponse.expires_in
                 ExternalAccounts.setCoinbaseTokenForSession(token: tokenResponse.access_token, expiryTime: expiryTime)
+                completion(.success(tokenResponse))
             }
         }
     }
@@ -194,6 +248,53 @@ class CoinbaseClient {
             }
         } else {
             self.getUserWithToken { result in
+                completion(result)
+            }
+        }
+    }
+    
+    func getWalletAccountWithToken(currency: String, completion: @escaping (CoinbaseClientResult<CurrencyAccount>) -> Void) {
+        let url = "https://api.coinbase.com/v2/accounts"
+        let headers = ["Authorization" : "Bearer \(ExternalAccounts.getCoinbaseTokenFromMemory()!)"]
+        sendRequest(url, method: .GET, data: nil, headers: headers) { result in
+            switch result {
+            case .failure(let e):
+                completion(.failure(e))
+            case .success(let response):
+                if response.keys.contains("error") {
+                    completion(.failure(CoinbaseSpecificError(localizedDescription: response["error"] as! String)))
+                } else {
+                    let decoder = JSONDecoder()
+                    guard let data = try? JSONSerialization.data(withJSONObject: response["data"], options: .prettyPrinted),
+                        let currencyAccounts = try? decoder.decode([CurrencyAccount].self, from: data) else {
+                            completion(.failure(CoinbaseClientError.invalidData))
+                            return
+                    }
+                    let index = currencyAccounts.firstIndex {$0.type == "wallet" && $0.balance.currency.lowercased() == currency.lowercased() }
+                    if index == nil {
+                        completion(.failure(CoinbaseSpecificError(localizedDescription: "User does not have this wallet in their coinbase account")))
+                    } else {
+                        completion(.success(currencyAccounts[index!]))
+                    }
+                }
+            }
+        }
+    }
+    
+    func getWalletAccount(currency: String, completion: @escaping (CoinbaseClientResult<CurrencyAccount>) -> Void) {
+        if ExternalAccounts.getCoinbaseTokenFromMemory() == nil {
+            refreshToken { result in
+                switch result {
+                case .failure(let e):
+                    completion(.failure(e))
+                case .success(_):
+                    self.getWalletAccountWithToken(currency: currency) { result in
+                        completion(result)
+                    }
+                }
+            }
+        } else {
+            self.getWalletAccountWithToken(currency: currency) { result in
                 completion(result)
             }
         }
