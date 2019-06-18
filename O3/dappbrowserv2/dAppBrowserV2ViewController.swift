@@ -326,7 +326,7 @@ extension dAppBrowserV2ViewController: WKScriptMessageHandler {
             return
         }
         dapiEvent.shared.methodCall(method: message.command, url: self.viewModel.url.absoluteString, domain: self.viewModel.url.host ?? "")
-        if dAppProtocol.needAuthorizationCommands.contains(message.command) && self.viewModel.isConnected == false {
+        if message.blockchain == "NEO" && dAppProtocol.needAuthorizationCommands.contains(message.command) && self.viewModel.isConnected == false {
             self.viewModel.requestToConnect(message: message, didCancel: { m in
                 //cancel
                 self.viewModel.responseWithError(message: message, error: "CONNECTION_DENIED")

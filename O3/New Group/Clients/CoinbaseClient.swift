@@ -108,7 +108,8 @@ public enum CoinbaseClientError: Error {
 }
 
 public struct CoinbaseSpecificError: Error {
-    var localizedDescription: String
+    var id: String
+    var message: String
 }
 
 
@@ -224,7 +225,7 @@ class CoinbaseClient {
                 case .success(let response):
                     let data = response["data"] as! JSONDictionary
                     if data.keys.contains("error") {
-                        completion(.failure(CoinbaseSpecificError(localizedDescription: data["error"] as! String)))
+                        completion(.failure(CoinbaseSpecificError(id: "coinbase_error", message: data["error"] as! String)))
                     } else {
                         let email = data["email"] as! String
                         let id = data["id"] as! String
@@ -262,7 +263,7 @@ class CoinbaseClient {
                 completion(.failure(e))
             case .success(let response):
                 if response.keys.contains("error") {
-                    completion(.failure(CoinbaseSpecificError(localizedDescription: response["error"] as! String)))
+                    completion(.failure(CoinbaseSpecificError(id: "coinbase_error", message: response["error"] as! String)))
                 } else {
                     let decoder = JSONDecoder()
                     guard let data = try? JSONSerialization.data(withJSONObject: response["data"], options: .prettyPrinted),
@@ -272,7 +273,7 @@ class CoinbaseClient {
                     }
                     let index = currencyAccounts.firstIndex {$0.type == "wallet" && $0.balance.currency.lowercased() == currency.lowercased() }
                     if index == nil {
-                        completion(.failure(CoinbaseSpecificError(localizedDescription: "User does not have this wallet in their coinbase account")))
+                        completion(.failure(CoinbaseSpecificError(id: "wallet_error", message: "User does not have this wallet in their coinbase account")))
                     } else {
                         completion(.success(currencyAccounts[index!]))
                     }
@@ -336,7 +337,12 @@ class CoinbaseClient {
                     case .failure(let e):
                         completion(.failure(e))
                     case .success(let response):
-                        completion(.success(true))
+                        if let data = (response["errors"] as? NSArray)?.firstObject as? JSONDictionary {
+                            let coinbaseError = CoinbaseSpecificError(id: data["id"] as! String, message: data["message"] as! String)
+                            completion(.failure(coinbaseError))
+                        } else {
+                            completion(.success(true))
+                        }
                     }
                 }
             }

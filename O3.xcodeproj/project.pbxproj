@@ -104,6 +104,9 @@
 		355D468122B22777006DE02B /* WIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D467F22B22777006DE02B /* WIF.swift */; };
 		355D468222B22777006DE02B /* SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D468022B22777006DE02B /* SHA256.swift */; };
 		355D468522B3734B006DE02B /* CoinbaseSendRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D468422B3734B006DE02B /* CoinbaseSendRequestTableViewController.swift */; };
+		355D468722B77C94006DE02B /* CoinbaseTwoFactorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D468622B77C94006DE02B /* CoinbaseTwoFactorTableViewController.swift */; };
+		355D468922B88761006DE02B /* Transaction_Sent.json in Resources */ = {isa = PBXBuildFile; fileRef = 355D468822B88761006DE02B /* Transaction_Sent.json */; };
+		355D468B22B88D23006DE02B /* coinbase_error.json in Resources */ = {isa = PBXBuildFile; fileRef = 355D468A22B88D22006DE02B /* coinbase_error.json */; };
 		356F1B05218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */; };
 		356F1B07218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */; };
 		356F1B0921901AA30004C088 /* EncryptPasswordEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */; };
@@ -515,6 +518,9 @@
 		355D467F22B22777006DE02B /* WIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WIF.swift; path = "New Group/Crypto/WIF.swift"; sourceTree = "<group>"; };
 		355D468022B22777006DE02B /* SHA256.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SHA256.swift; path = "New Group/Crypto/SHA256.swift"; sourceTree = "<group>"; };
 		355D468422B3734B006DE02B /* CoinbaseSendRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinbaseSendRequestTableViewController.swift; sourceTree = "<group>"; };
+		355D468622B77C94006DE02B /* CoinbaseTwoFactorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinbaseTwoFactorTableViewController.swift; sourceTree = "<group>"; };
+		355D468822B88761006DE02B /* Transaction_Sent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Transaction_Sent.json; sourceTree = "<group>"; };
+		355D468A22B88D22006DE02B /* coinbase_error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = coinbase_error.json; sourceTree = "<group>"; };
 		356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewController.swift; sourceTree = "<group>"; };
 		356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewCell.swift; sourceTree = "<group>"; };
 		356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptPasswordEntryTableViewController.swift; sourceTree = "<group>"; };
@@ -1041,6 +1047,7 @@
 			isa = PBXGroup;
 			children = (
 				355D468422B3734B006DE02B /* CoinbaseSendRequestTableViewController.swift */,
+				355D468622B77C94006DE02B /* CoinbaseTwoFactorTableViewController.swift */,
 			);
 			path = Coinbase;
 			sourceTree = "<group>";
@@ -1361,6 +1368,8 @@
 		6EF59C8221A27B6500087D72 /* dappbrowserv2 */ = {
 			isa = PBXGroup;
 			children = (
+				355D468A22B88D22006DE02B /* coinbase_error.json */,
+				355D468822B88761006DE02B /* Transaction_Sent.json */,
 				3514DC5C225C2F8E001DCFD9 /* Toolbars */,
 				3514DC5B225C2EA8001DCFD9 /* DapiRequestControllers */,
 				6EF59C8921A2A1FA00087D72 /* Models */,
@@ -1853,6 +1862,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				355D468922B88761006DE02B /* Transaction_Sent.json in Resources */,
 				35AD2B64209179010024A900 /* Base.lproj in Resources */,
 				6E60CC6020CE38630062F1CE /* AccountAssets.xcassets in Resources */,
 				6E5B1074215DF9F600D076C6 /* Tokens.xcassets in Resources */,
@@ -1898,6 +1908,7 @@
 				6E7C927C1F7A6B1400F8D7AA /* Account.storyboard in Resources */,
 				35AF806D20CA6F9B00E48457 /* EnterPasswordKey.json in Resources */,
 				3557BAB220AA9CEE0034937C /* nodes.json in Resources */,
+				355D468B22B88D23006DE02B /* coinbase_error.json in Resources */,
 				75D5BFC21F6D196200E64855 /* OnboardingAssets.xcassets in Resources */,
 				75BEB2681F8A068100DC20E9 /* HUD.xcassets in Resources */,
 				3514C1DD225D823A00E5BB23 /* Disclaimers.storyboard in Resources */,
@@ -2081,6 +2092,7 @@
 				7513FAD71F6952B8003450ED /* TransactionCell.swift in Sources */,
 				352839702283EBBB00F9965A /* HelpItemTableViewCell.swift in Sources */,
 				355D467122B0E53A006DE02B /* CoinbaseClient.swift in Sources */,
+				355D468722B77C94006DE02B /* CoinbaseTwoFactorTableViewController.swift in Sources */,
 				6E2F264521549C1800A3DEB1 /* OrderTableViewCell.swift in Sources */,
 				6E43769A21460CB90091367A /* Dictionary+Sort.swift in Sources */,
 				35C370A9218053500023AABC /* CloudDataManager.swift in Sources */,

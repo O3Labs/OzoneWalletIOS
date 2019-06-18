@@ -153,15 +153,15 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
             vc.url = self.viewModel.url
             vc.dappMetadata = self.viewModel.dappMetadata
             vc.request = request
-            /*vc.message = message
-            vc.selectedWallet = self.viewModel.unlockedWallet
+            vc.message = message
             
-            vc.onCompleted = nil
+            vc.onCompleted = { response, err in
+                onCompleted(response,err)
+            }
             
-            vc.onCancel = nil
-            
-            
-            vc.request = request*/
+            vc.onCancel = { m, r in
+                didCancel(m,r)
+            }
         }
         self.present(nav, animated: true, completion: nil)
     }

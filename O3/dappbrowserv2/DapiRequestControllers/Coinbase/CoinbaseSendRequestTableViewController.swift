@@ -13,6 +13,14 @@ class CoinbaseSendRequestTableViewController: UITableViewController {
     var dappMetadata: dAppMetadata!
     var url: URL!
     var request: dAppProtocol.CoinbaseSendRequest!
+    var message: dAppMessage!
+
+    
+    var onCancel: ((_ message: dAppMessage, _ request: dAppProtocol.CoinbaseSendRequest)->())?
+    var onCompleted: ((_ response: dAppProtocol.CoinbaseSendResponse?, _ error: dAppProtocol.errorResponse?)->())?
+    
+    var sendResultState: CoinbaseTwoFactorTableViewController.TwoFactorState?
+    var sendResultError: String?
     
     struct info {
         var key: String
@@ -25,7 +33,7 @@ class CoinbaseSendRequestTableViewController: UITableViewController {
     
     var data: [info]! = []
     
-    enum dataKey: String{
+    enum dataKey: String {
         case total = "total"
         case from = "from"
         case to = "to"
@@ -36,16 +44,6 @@ class CoinbaseSendRequestTableViewController: UITableViewController {
         super.viewDidLoad()
         buildData()
         tableView.reloadData()
-        CoinbaseClient.shared.send(amount: request.amount, to: request.to, currency: request.asset.symbol) { result in
-            switch result {
-            case .failure(let e):
-                print (e)
-                return
-            case .success(let response):
-                print (response)
-                return
-            }
-        }
     }
     
     func buildData() {
@@ -90,6 +88,60 @@ class CoinbaseSendRequestTableViewController: UITableViewController {
             cell.keyLabel.text = String(format:"%@", info.title)
             cell.valueLabel.text = String(format:"%@", info.value)
             return cell
+        }
+    }
+    
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        onCancel?(message, request)
+        self.dismiss(animated: true)
+    }
+    
+    @IBAction func sendTapped(_ sender: Any) {
+        CoinbaseClient.shared.send(amount: request.amount, to: request.to, currency: request.asset.symbol) { result in
+            switch result {
+            case .failure(let e):
+                if let specificError = e as? CoinbaseSpecificError  {
+                    if specificError.id == "two_factor_required" {
+                        DispatchQueue.main.async {
+                            self.sendResultState = .NEED2FA
+                            self.performSegue(withIdentifier: "segueToTwoFactor", sender: nil)
+                        }
+                    } else {
+                        self.sendResultState = .FAIL
+                        self.sendResultError = specificError.message
+                        DispatchQueue.main.async {
+                            self.performSegue(withIdentifier: "segueToTwoFactor", sender: nil)
+                        }
+                    }
+                } else {
+                    self.sendResultState = .FAIL
+                    self.sendResultError = e.localizedDescription
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "segueToTwoFactor", sender: nil)
+                    }
+                }
+            case .success(let response):
+                self.sendResultState = .SUCCESS
+                let dapiResult = dAppProtocol.CoinbaseSendResponse(result: response, txid: nil)
+                self.onCompleted?(dapiResult, nil)
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "segueToTwoFactor", sender: nil)
+                }
+            }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueToTwoFactor" {
+            guard let dest = segue.destination as? CoinbaseTwoFactorTableViewController else {
+                fatalError("Something Went Terribly Wrong")
+            }
+            dest.state = sendResultState!
+            dest.errorMessage = sendResultError
+            dest.request = request
+            dest.message = message
+            dest.onCompleted = onCompleted
+            dest.onCancel = onCancel
         }
     }
 }
