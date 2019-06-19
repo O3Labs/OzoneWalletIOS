@@ -14,9 +14,6 @@ class PortfolioSelectorTableViewController: UITableViewController {
     var wallets = NEP6.getFromFileSystem()?.getWalletAccounts() ?? []
     var watchAddresses = NEP6.getFromFileSystem()?.getWatchAccounts() ?? []
     
-    var trackedCount = 0
-    var untrackedCount = 0
-    
     var accountValues: [IndexPath: AccountValue] = [:]
     var watchAddrs: [IndexPath: NEP6.Account] = [:]
     var combinedAccountValue: AccountValue?
@@ -32,10 +29,10 @@ class PortfolioSelectorTableViewController: UITableViewController {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(dismissTapped))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_add_wallet"), style: .plain, target: self, action: #selector(openAddWallet))
+        sortWatchAddresses()
         loadPortfoliosForAll()
         setThemedElements()
         setLocalizedStrings()
-        
         tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
     
@@ -50,9 +47,39 @@ class PortfolioSelectorTableViewController: UITableViewController {
         }
     }
     
+    func sortWatchAddresses() {
+        var sorted = [NEP6.Account]()
+        for account in watchAddresses {
+            if UserDefaultsManager.untrackedWatchAddr.contains(account.address) {
+                continue
+            }
+            sorted.append(account)
+        }
+        
+        for account in watchAddresses {
+            if UserDefaultsManager.untrackedWatchAddr.contains(account.address) == false {
+                continue
+            }
+            sorted.append(account)
+        }
+        watchAddresses = sorted
+    }
+    
+    func getTrackedWatchAddrCount() -> Int {
+        var count = 0
+        for account in watchAddresses {
+            if UserDefaultsManager.untrackedWatchAddr.contains(account.address) {
+                continue
+            }
+            count += 1
+        }
+        return count
+    }
+    
     func updateWallets() {
         wallets = NEP6.getFromFileSystem()?.getWalletAccounts() ?? []
         watchAddresses = NEP6.getFromFileSystem()?.getWatchAccounts() ?? []
+        sortWatchAddresses()
     }
     
     func loadWalletPortfolios() {
@@ -76,16 +103,10 @@ class PortfolioSelectorTableViewController: UITableViewController {
     }
     
     func loadWatchAddressPortfolios() {
-        self.trackedCount = 0
-        self.untrackedCount = 0
         for i in 0..<self.watchAddresses.count {
             var indexPath: IndexPath
-            indexPath = IndexPath(row: self.untrackedCount, section: 2)
-            if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddresses[i].address) {
-                self.untrackedCount = self.untrackedCount + 1
-            } else {
-                self.trackedCount = self.trackedCount + 1
-            }
+            indexPath = IndexPath(row: i, section: 2)
+
             self.watchAddrs[indexPath] = self.watchAddresses[i]
             if self.getCachedPortfolioValue(for: self.watchAddresses[i].address, indexPath: indexPath) == false {
                 DispatchQueue.global().async {
@@ -109,8 +130,6 @@ class PortfolioSelectorTableViewController: UITableViewController {
     func loadPortfoliosForAll() {
         accountValues = [:]
         watchAddrs = [:]
-        self.trackedCount = 0
-        self.untrackedCount = 0
         loadWalletPortfolios()
         loadWatchAddressPortfolios()
         self.group.wait()
@@ -164,15 +183,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if trackedCount == 0 && untrackedCount == 0 {
-            return 2
-        } else {
-            return 3
-        }
-        /*} else if trackedCount == 0 && untrackedCount > 0 {
-            return 3
-        }
-        return 4*/
+        return 3
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -180,6 +191,8 @@ class PortfolioSelectorTableViewController: UITableViewController {
             return 1
         } else if section == 1 {
             return wallets.count
+        } else if watchAddresses.count == 0 {
+            return 1
         } else {
             return watchAddresses.count
         }
@@ -202,14 +215,31 @@ class PortfolioSelectorTableViewController: UITableViewController {
         }
         
         if indexPath.section == 0 {
-            cell.data = PortfolioSelectorTableViewCell.Data(title: "Total", subtitle: "\(self.trackedCount + self.wallets.count) Addresses", value: combinedAccountValue, isDefault: false)
+            let trackedWalletCount = self.wallets.count + getTrackedWatchAddrCount()
+            cell.data = PortfolioSelectorTableViewCell.Data(title: "Total", subtitle: "\(trackedWalletCount) Addresses", value: combinedAccountValue, isDefault: false)
+            return cell
         } else if indexPath.section == 1 {
             cell.data = PortfolioSelectorTableViewCell.Data(title: wallets[indexPath.row].label, subtitle: wallets[indexPath.row].address, value: accountValues[indexPath], isDefault: wallets[indexPath.row].isDefault)
+            return cell
         } else {
-            cell.data = PortfolioSelectorTableViewCell.Data(title: watchAddrs[indexPath]!.label, subtitle: watchAddrs[indexPath]!.address, value: accountValues[indexPath],
-                                                         isDefault: false)
+            if watchAddresses.count > 0 {
+                var addressSubtitle = watchAddrs[indexPath]!.address
+                if UserDefaultsManager.untrackedWatchAddr.contains(watchAddrs[indexPath]!.address) {
+                    addressSubtitle = addressSubtitle + " (Hidden)"
+                }
+            
+                cell.data = PortfolioSelectorTableViewCell.Data(title: watchAddrs[indexPath]!.label, subtitle: addressSubtitle, value: accountValues[indexPath],
+                                                                isDefault: false)
+                return cell
+            } else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "noPortfolioTableViewCell") as? NoPortfolioTableViewCell else {
+                    fatalError("Something went terribly Wrong")
+                }
+                let button = cell.viewWithTag(1) as! UIButton
+                button.setTitle("+ Add Watch Address", for: UIControl.State())
+                return cell
+            }
         }
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -275,9 +305,10 @@ class PortfolioSelectorTableViewController: UITableViewController {
     
     func handleWatchAddressTapped(indexPath: IndexPath) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let isTracked = UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddrs[indexPath]!.address) == false
         
         var totalTitle = "Hide from Total"
-        if indexPath.section == 3 || untrackedCount == watchAddresses.count {
+        if isTracked == false {
             totalTitle = "Show in Total"
         } else {
             let jumpPortfolioAction = UIAlertAction(title: "Jump to Portfolio", style: .default) { _ in
@@ -292,8 +323,6 @@ class PortfolioSelectorTableViewController: UITableViewController {
         alert.addAction(editNameAction)
         
         let addRemoveTotalAction = UIAlertAction(title: totalTitle, style: .default) { _ in
-            let isTracked = indexPath.section == 2 && UserDefaultsManager.untrackedWatchAddr.count != NEP6.getFromFileSystem()?.getWatchAccounts().count
-            
             if isTracked {
                 UserDefaultsManager.untrackedWatchAddr = UserDefaultsManager.untrackedWatchAddr + [self.watchAddrs[indexPath]!.address]
                 self.handlePortfolioTapped(indexPath: IndexPath(row: 0, section: 0))
@@ -310,14 +339,6 @@ class PortfolioSelectorTableViewController: UITableViewController {
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
             DispatchQueue.main.async {
-                let isTracked = indexPath.section == 2 && UserDefaultsManager.untrackedWatchAddr.count != NEP6.getFromFileSystem()?.getWatchAccounts().count
-                if isTracked {
-                    self.trackedCount = self.trackedCount - 1
-                } else {
-                    self.untrackedCount = self.untrackedCount - 1
-                }
-                
-                
                 let nep6 = NEP6.getFromFileSystem()!
                 nep6.removeEncryptedKey(address: self.watchAddresses[indexPath.row].address)
                 self.watchAddresses = NEP6.getFromFileSystem()?.getWatchAccounts() ?? []
@@ -350,7 +371,11 @@ class PortfolioSelectorTableViewController: UITableViewController {
         if indexPath.section == 1 || indexPath.section == 0 {
             handlePortfolioTapped(indexPath: indexPath)
         } else if indexPath.section == 2  {
-            handleWatchAddressTapped(indexPath: indexPath)
+            if watchAddresses.count > 0 {
+                handleWatchAddressTapped(indexPath: indexPath)
+            } else {
+                Controller().openAddNewWallet()
+            }
         }
     }
     
