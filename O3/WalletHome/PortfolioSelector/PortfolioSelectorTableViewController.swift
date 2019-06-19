@@ -24,6 +24,9 @@ class PortfolioSelectorTableViewController: UITableViewController {
     var insertSection = false
     var walletSectionNum = 1
     
+    var coinbase_dapp_url = URL(string:"https://coinbase-oauth-redirect.o3.app/?coinbaseurl=https%3A%2F%2Fwww.coinbase.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26account%3Dall%26meta%5Bsend_limit_amount%5D%3D1%26meta%5Bsend_limit_currency%5D%3DUSD%26meta%5Bsend_limit_period%5D%3Dday%26client_id%3Db48a163039580762e2267c2821a5d03eeda2dde2d3053d63dd1873809ee21df6%26redirect_uri%3Dhttps%253A%252F%252Fcoinbase-oauth-redirect.o3.app%252F%26scope%3Dwallet%253Aaccounts%253Aread%252Cwallet%253Atransactions%253Aread%252Cwallet%253Atransactions%253Asend%252Cwallet%253Auser%253Aread%252Cwallet%253Auser%253Aemail")!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,6 +105,40 @@ class PortfolioSelectorTableViewController: UITableViewController {
         }
     }
     
+    func loadConnectedAccountPortfolios() {
+        var indexPath: IndexPath
+        indexPath = IndexPath(row: 0, section: 3)
+        if ExternalAccounts.getCoinbaseTokenFromDisk() != nil {
+            if self.getCachedPortfolioValue(for: ExternalAccounts.Platforms.COINBASE.rawValue, indexPath: indexPath) == false {
+                DispatchQueue.global().async {
+                    self.group.enter()
+                    CoinbaseClient.shared.getAllPortfolioAssets { result in
+                        switch result {
+                        case .failure:
+                            self.group.leave()
+                            return
+                        case .success(let assets):
+                            O3Client().getCoinbaseAccountValue(assets) { result in
+                                switch result {
+                                case .failure:
+                                    self.group.leave()
+                                    return
+                                case .success(let accountValue):
+                                    O3Cache.setCachedPortfolioValue(for: ExternalAccounts.Platforms.COINBASE.rawValue, portfolioValue: accountValue)
+                                    self.accountValues[indexPath] = accountValue
+                                    DispatchQueue.main.async {
+                                        self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                                    }
+                                    self.group.leave()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func loadWatchAddressPortfolios() {
         for i in 0..<self.watchAddresses.count {
             var indexPath: IndexPath
@@ -132,6 +169,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
         watchAddrs = [:]
         loadWalletPortfolios()
         loadWatchAddressPortfolios()
+        loadConnectedAccountPortfolios()
         self.group.wait()
         self.sumForCombined()
     }
@@ -165,6 +203,10 @@ class PortfolioSelectorTableViewController: UITableViewController {
         }
     }
     
+    func loadPortfolioAccountValues() {
+        
+    }
+    
     func getPortfolioForAccountState(indexPath: IndexPath, accountState: AccountState, address: String) {
         O3Client().getAccountValue(accountState.assets + accountState.nep5Tokens + accountState.ontology) { result in
             switch result {
@@ -183,7 +225,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -191,11 +233,16 @@ class PortfolioSelectorTableViewController: UITableViewController {
             return 1
         } else if section == 1 {
             return wallets.count
-        } else if watchAddresses.count == 0 {
-            return 1
+        } else if section == 2 {
+            if watchAddresses.count == 0 {
+                return 1
+            } else {
+                return watchAddresses.count
+            }
         } else {
-            return watchAddresses.count
+            return 1
         }
+        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -209,36 +256,81 @@ class PortfolioSelectorTableViewController: UITableViewController {
         return 26.0
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func getCombinedCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "portfolioSelectorTableViewCell") as? PortfolioSelectorTableViewCell else {
             fatalError("Something went terribly Wrong")
         }
+        let trackedWalletCount = self.wallets.count + getTrackedWatchAddrCount()
+        cell.data = PortfolioSelectorTableViewCell.Data(title: "Total", subtitle: "\(trackedWalletCount) Addresses", value: combinedAccountValue, isDefault: false)
+        return cell
         
-        if indexPath.section == 0 {
-            let trackedWalletCount = self.wallets.count + getTrackedWatchAddrCount()
-            cell.data = PortfolioSelectorTableViewCell.Data(title: "Total", subtitle: "\(trackedWalletCount) Addresses", value: combinedAccountValue, isDefault: false)
-            return cell
-        } else if indexPath.section == 1 {
-            cell.data = PortfolioSelectorTableViewCell.Data(title: wallets[indexPath.row].label, subtitle: wallets[indexPath.row].address, value: accountValues[indexPath], isDefault: wallets[indexPath.row].isDefault)
+    }
+    
+    func getWalletCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "portfolioSelectorTableViewCell") as? PortfolioSelectorTableViewCell else {
+            fatalError("Something went terribly Wrong")
+        }
+        cell.data = PortfolioSelectorTableViewCell.Data(title: wallets[indexPath.row].label, subtitle: wallets[indexPath.row].address, value: accountValues[indexPath], isDefault: wallets[indexPath.row].isDefault)
+        
+        return cell
+    }
+    
+    func getWatchAddressCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if watchAddresses.count > 0 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "portfolioSelectorTableViewCell") as? PortfolioSelectorTableViewCell else {
+                fatalError("Something went terribly Wrong")
+            }
+            
+            var addressSubtitle = watchAddrs[indexPath]!.address
+            if UserDefaultsManager.untrackedWatchAddr.contains(watchAddrs[indexPath]!.address) {
+                addressSubtitle = addressSubtitle + " (Hidden)"
+            }
+            
+            cell.data = PortfolioSelectorTableViewCell.Data(title: watchAddrs[indexPath]!.label, subtitle: addressSubtitle, value: accountValues[indexPath],
+                                                            isDefault: false)
             return cell
         } else {
-            if watchAddresses.count > 0 {
-                var addressSubtitle = watchAddrs[indexPath]!.address
-                if UserDefaultsManager.untrackedWatchAddr.contains(watchAddrs[indexPath]!.address) {
-                    addressSubtitle = addressSubtitle + " (Hidden)"
-                }
-            
-                cell.data = PortfolioSelectorTableViewCell.Data(title: watchAddrs[indexPath]!.label, subtitle: addressSubtitle, value: accountValues[indexPath],
-                                                                isDefault: false)
-                return cell
-            } else {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "noPortfolioTableViewCell") as? NoPortfolioTableViewCell else {
-                    fatalError("Something went terribly Wrong")
-                }
-                let button = cell.viewWithTag(1) as! UIButton
-                button.setTitle("+ Add Watch Address", for: UIControl.State())
-                return cell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "noPortfolioTableViewCell") as? NoPortfolioTableViewCell else {
+                fatalError("Something went terribly Wrong")
             }
+            let button = cell.viewWithTag(1) as! UIButton
+            button.setTitle("+ Add Watch Address", for: UIControl.State())
+            return cell
+        }
+    }
+    
+    func getConnectedAccountCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if ExternalAccounts.getCoinbaseTokenFromDisk() == nil {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "noPortfolioTableViewCell") as? NoPortfolioTableViewCell else {
+                fatalError("Something went terribly Wrong")
+            }
+            let button = cell.viewWithTag(1) as! UIButton
+            button.setTitle("+ Add Coinbase Account", for: UIControl.State())
+            return cell
+        } else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "portfolioSelectorTableViewCell") as? PortfolioSelectorTableViewCell else {
+                fatalError("Something went terribly Wrong")
+            }
+            let metadata = ExternalAccounts.getFromFileSystem().getAccountMetadata(ExternalAccounts.Platforms.COINBASE)
+            var email = ""
+            if metadata?.keys.contains("email") ?? false {
+                email = metadata?["email"] ?? ""
+            }
+            cell.data = PortfolioSelectorTableViewCell.Data(title: "Coinbase", subtitle: email, value: accountValues[indexPath],
+                                                            isDefault: false)
+            return cell
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            return getCombinedCell(tableView, cellForRowAt: indexPath)
+        } else if indexPath.section == 1 {
+            return getWalletCell(tableView, cellForRowAt: indexPath)
+        } else if indexPath.section == 2 {
+            return getWatchAddressCell(tableView, cellForRowAt: indexPath)
+        } else {
+            return getConnectedAccountCell(tableView, cellForRowAt: indexPath)
         }
     }
     
@@ -251,6 +343,8 @@ class PortfolioSelectorTableViewController: UITableViewController {
             titleLabel.text = "Wallets"
         } else if section == 2 {
             titleLabel.text = "Watch Addresses"
+        } else if section == 3 {
+            titleLabel.text = "Connected Accounts"
         }
         
         titleLabel.theme_textColor = O3Theme.titleColorPicker
@@ -375,6 +469,12 @@ class PortfolioSelectorTableViewController: UITableViewController {
                 handleWatchAddressTapped(indexPath: indexPath)
             } else {
                 Controller().openAddNewWallet()
+            }
+        } else if indexPath.section == 3 {
+            if ExternalAccounts.getCoinbaseTokenFromDisk() != nil {
+                // do something else
+            } else {
+                Controller().openDappBrowserV2(url: coinbase_dapp_url)
             }
         }
     }

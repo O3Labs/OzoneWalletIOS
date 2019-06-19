@@ -121,6 +121,15 @@ public class ExternalAccounts: Codable {
         writeToFileSystem()
     }
     
+    func getAccountMetadata(_ platform: ExternalAccounts.Platforms) -> [String: String]? {
+        let index = accounts.firstIndex { $0.platform == Platforms.COINBASE.rawValue }
+        if index == nil {
+            return nil
+        } else {
+            return accounts[index!].accountMetaData
+        }
+    }
+    
     func getAccounts() -> [Account] {
         return accounts
     }
