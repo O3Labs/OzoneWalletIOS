@@ -68,7 +68,7 @@ class Controller: NSObject {
         top!.present(nav!, animated: true, completion: nil)
     }
 
-    func openSend(to: String, selectedAsset: TransferableAsset, amount: String?) {
+    func openSend(to: String, selectedAsset: O3WalletNativeAsset, amount: String?) {
 
         guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "sendWhereTableViewController") as? SendWhereTableViewController else {
             fatalError("Presenting improper modal controller")
@@ -130,6 +130,11 @@ class Controller: NSObject {
     func openWalletSelector(isPortfolio: Bool = true ) {
         let modal = UIStoryboard(name: "WalletSelector", bundle: nil).instantiateInitialViewController() as! UINavigationController
         (modal.children.first as! WalletSelectorTableViewController).isPortfolio = isPortfolio
+        UIApplication.topViewController()!.present(modal, animated: true, completion: nil)
+    }
+    
+    func openPortfolioSelector(isPortfolio: Bool = true ) {
+        let modal = UIStoryboard(name: "PortfolioSelector", bundle: nil).instantiateInitialViewController() as! UINavigationController
         UIApplication.topViewController()!.present(modal, animated: true, completion: nil)
     }
     

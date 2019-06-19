@@ -41,7 +41,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
     var tokenAssets = O3Cache.tokensBalance(for: Authenticated.wallet!.address)
     var neoBalance: Int = Int(O3Cache.neoBalance(for: Authenticated.wallet!.address).value)
     var gasBalance: Double = O3Cache.gasBalance(for: Authenticated.wallet!.address).value
-    var ontologyAssets: [TransferableAsset] = O3Cache.ontologyBalances(for: Authenticated.wallet!.address)
+    var ontologyAssets: [O3WalletNativeAsset] = O3Cache.ontologyBalances(for: Authenticated.wallet!.address)
     var mostRecentClaimAmount = 0.0
     var tradingAccount: TradingAccount?
     var addressInbox: Inbox?
@@ -106,7 +106,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         setLocalizedStrings()
     }
     
-    private func loadAccountValue(account: accounts,  list: [TransferableAsset]) {
+    private func loadAccountValue(account: accounts,  list: [O3WalletNativeAsset]) {
         
         if list.count == 0 {
             let fiat = Fiat(amount: 0.0)
@@ -166,7 +166,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
                 DispatchQueue.main.async {
                     self.tradingAccount = tradingAccount
                     self.tableView.reloadSections([sections.tradingAccountSection.rawValue], with: .automatic)
-                    var list: [TransferableAsset] = []
+                    var list: [O3WalletNativeAsset] = []
                     for v in self.tradingAccount!.switcheo.confirmed{
                         list.append(v.toTransferableAsset())
                     }
@@ -474,7 +474,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
         
         if section == sections.tradingAccountSection.rawValue {
-            var list: [TransferableAsset] = []
+            var list: [O3WalletNativeAsset] = []
             if self.tradingAccount != nil {
                 for v in self.tradingAccount!.switcheo.confirmed {
                     list.append(v.toTransferableAsset())

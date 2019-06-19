@@ -28,7 +28,7 @@ class SendWhatTableViewController: UITableViewController {
     
     var selectedAddress = ""
     var gasBalance: Double = 0.0
-    var selectedAsset: TransferableAsset?
+    var selectedAsset: O3WalletNativeAsset?
     var selectedAmount: NSNumber = 0.0
     var toSendAlias = ""
     var toSendAliasImage: UIImage?
@@ -210,7 +210,7 @@ class SendWhatTableViewController: UITableViewController {
 
 
 extension SendWhatTableViewController: AssetSelectorDelegate {
-    func assetSelected(selected: TransferableAsset, gasBalance: Double) {
+    func assetSelected(selected: O3WalletNativeAsset, gasBalance: Double) {
         DispatchQueue.main.async {
             if selected.id.contains("0000000") {
                 self.showNetworkFeeLabel()

@@ -21,7 +21,7 @@ extension Array where Element == TradableAsset {
     func defaultAcceptedAsset() -> TradableAsset? {
         //find either NEO or GAS as a default one
         for v in self {
-            if v.symbol.uppercased() == TransferableAsset.NEO().symbol.uppercased() || v.symbol.uppercased() == TransferableAsset.GAS().symbol.uppercased() {
+            if v.symbol.uppercased() == O3WalletNativeAsset.NEO().symbol.uppercased() || v.symbol.uppercased() == O3WalletNativeAsset.GAS().symbol.uppercased() {
                 return v
             }
         }
@@ -138,18 +138,18 @@ extension TradableAsset {
         return String(format: "%@", amountFormatter.string(from: NSNumber(value: self.amountInDouble()))!)
     }
     
-    func toTransferableAsset() -> TransferableAsset {
-        var assetType = TransferableAsset.AssetType.neoAsset
+    func toTransferableAsset() -> O3WalletNativeAsset {
+        var assetType = O3WalletNativeAsset.AssetType.neoAsset
         
-        if self.symbol.uppercased() != TransferableAsset.NEO().symbol.uppercased() || self.symbol.uppercased() != TransferableAsset.GAS().symbol.uppercased() {
-            assetType = TransferableAsset.AssetType.nep5Token
+        if self.symbol.uppercased() != O3WalletNativeAsset.NEO().symbol.uppercased() || self.symbol.uppercased() != O3WalletNativeAsset.GAS().symbol.uppercased() {
+            assetType = O3WalletNativeAsset.AssetType.nep5Token
         }
         
-       return TransferableAsset(id: self.id, name: self.name, symbol: self.symbol, decimals: self.decimals, value: self.amountInDouble(), assetType: assetType)
+       return O3WalletNativeAsset(id: self.id, name: self.name, symbol: self.symbol, decimals: self.decimals, value: self.amountInDouble(), assetType: assetType)
     }
 }
 
-extension TransferableAsset {
+extension O3WalletNativeAsset {
     func toTradableAsset() -> TradableAsset {
         let valueDouble = round(NSDecimalNumber(decimal: Decimal(self.value * pow(10, Double(self.decimals)))).doubleValue)
         return TradableAsset(id: self.id, name: self.name, symbol: self.symbol, decimals: self.decimals, value: String(format:"%0f",valueDouble), precision: self.decimals)

@@ -21,26 +21,26 @@ class O3Cache {
         case portfolioValue
     }
     
-    static var storage: Storage<TransferableAsset>? {
+    static var storage: Storage<O3WalletNativeAsset>? {
         let diskConfig = DiskConfig(name: storageName)
         let memoryConfig = MemoryConfig(expiry: .never, countLimit: 10, totalCostLimit: 10)
         
         let storage = try? Storage(
             diskConfig: diskConfig,
             memoryConfig: memoryConfig,
-            transformer: TransformerFactory.forCodable(ofType: TransferableAsset.self)
+            transformer: TransformerFactory.forCodable(ofType: O3WalletNativeAsset.self)
         )
         return storage
     }
     
-    static var arrayStorage: Storage<[TransferableAsset]>? {
+    static var arrayStorage: Storage<[O3WalletNativeAsset]>? {
         let diskConfig = DiskConfig(name: storageName)
         let memoryConfig = MemoryConfig(expiry: .never, countLimit: 10, totalCostLimit: 10)
         
         let storage = try? Storage(
             diskConfig: diskConfig,
             memoryConfig: memoryConfig,
-            transformer: TransformerFactory.forCodable(ofType: [TransferableAsset].self)
+            transformer: TransformerFactory.forCodable(ofType: [O3WalletNativeAsset].self)
         )
         return storage
     }
@@ -54,30 +54,30 @@ class O3Cache {
     // MARK: Cache Setters for Read Only Balances
     static func setNeoBalance(neoBalance: Int, address: String) {
         
-        let neoAsset = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
+        let neoAsset = O3WalletNativeAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
                                          decimals: 8, value: Double(neoBalance), assetType: .neoAsset)
         ((try? storage?.setObject(neoAsset, forKey: address + "_" + keys.neoForAddress.rawValue)) as ()??)
         
     }
     
     static func setGasBalance(gasBalance: Double, address: String) {
-        let gasAsset = TransferableAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
+        let gasAsset = O3WalletNativeAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
                                          decimals: 8, value: gasBalance, assetType: .neoAsset)
         ((try? storage?.setObject(gasAsset, forKey: address + "_" + keys.gasForAddress.rawValue)) as ()??)
         
     }
     
-    static func setTokensBalance(tokens: [TransferableAsset], address: String) {
+    static func setTokensBalance(tokens: [O3WalletNativeAsset], address: String) {
         ((try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.tokensForAddress.rawValue)) as ()??)
     }
     
-    static func setOntologyBalance(tokens: [TransferableAsset], address: String) {
+    static func setOntologyBalance(tokens: [O3WalletNativeAsset], address: String) {
         ((try? arrayStorage?.setObject(tokens, forKey: address + "_" + keys.ontologyForAddress.rawValue)) as ()??)
     }
     
     // MARK: Cache Getters For Read Only Balances
-    static func gasBalance(for address: String) -> TransferableAsset {
-        var cachedGASBalance = TransferableAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
+    static func gasBalance(for address: String) -> O3WalletNativeAsset {
+        var cachedGASBalance = O3WalletNativeAsset(id: AssetId.gasAssetId.rawValue, name: "GAS", symbol: "GAS",
                                                  decimals: 8, value: 0, assetType: .neoAsset )
         do {
            cachedGASBalance = try storage?.object(forKey: address + "_" + keys.gasForAddress.rawValue) ?? cachedGASBalance
@@ -87,8 +87,8 @@ class O3Cache {
         return cachedGASBalance
     }
     
-    static func neoBalance(for address: String) -> TransferableAsset {
-        var cachedNEOBalance = TransferableAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
+    static func neoBalance(for address: String) -> O3WalletNativeAsset {
+        var cachedNEOBalance = O3WalletNativeAsset(id: AssetId.neoAssetId.rawValue, name: "NEO", symbol: "NEO",
                                                  decimals: 8, value: 0, assetType: .neoAsset)
         do {
             cachedNEOBalance = try storage?.object(forKey: address + "_" + keys.neoForAddress.rawValue) ?? cachedNEOBalance
@@ -98,8 +98,8 @@ class O3Cache {
         return cachedNEOBalance
     }
     
-    static func tokensBalance(for address: String) -> [TransferableAsset] {
-        var cachedTokens = [TransferableAsset]()
+    static func tokensBalance(for address: String) -> [O3WalletNativeAsset] {
+        var cachedTokens = [O3WalletNativeAsset]()
         do {
            cachedTokens = try arrayStorage?.object(forKey: address + "_" + keys.tokensForAddress.rawValue) ?? cachedTokens
         } catch {
@@ -108,8 +108,8 @@ class O3Cache {
         return cachedTokens
     }
     
-    static func ontologyBalances(for address: String) -> [TransferableAsset] {
-        var cachedTokens = [TransferableAsset]()
+    static func ontologyBalances(for address: String) -> [O3WalletNativeAsset] {
+        var cachedTokens = [O3WalletNativeAsset]()
         do {
             cachedTokens = try arrayStorage?.object(forKey: address + "_" + keys.ontologyForAddress.rawValue) ?? cachedTokens
         } catch {

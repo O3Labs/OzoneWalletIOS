@@ -374,4 +374,74 @@ class CoinbaseClient {
             }
         }
     }
+    
+    
+    struct CoinbasePortfolioAccount: PortfolioAsset {
+        var symbol: String
+        var name: String
+        var balance: String
+    }
+    
+    func converToPortfolioAccounts(accounts: [CurrencyAccount]) -> [CoinbasePortfolioAccount] {
+        var supportedCurrencies = ["BTC": "Bitcoin", "ETH": "Ethereum"]
+        var convertedAccounts = [CoinbasePortfolioAccount]()
+        for account in accounts {
+            if let walletAccountIndex = convertedAccounts.firstIndex(where: { $0.name == account.balance.currency}) {
+                var newBalance = (Double(convertedAccounts[walletAccountIndex].balance) ?? 0.0) + (Double(account.balance.amount) ?? 0.0)
+                convertedAccounts[walletAccountIndex].balance = String(newBalance)
+                
+            } else {
+                if Double(account.balance.amount) ?? 0.0 > 0 && account.type == "wallet" {
+                    convertedAccounts.append(CoinbasePortfolioAccount(symbol: account.balance.currency,
+                                                                      name: account.balance.currency,
+                                                                      balance: account.balance.amount))
+                }
+            }
+        }
+        
+        return convertedAccounts
+    }
+    
+    func getAllPortfolioAssetsWithToken(completion: @escaping (CoinbaseClientResult<[CoinbasePortfolioAccount]>) -> Void) {
+        let url = "https://api.coinbase.com/v2/accounts"
+        let headers = ["Authorization" : "Bearer \(ExternalAccounts.getCoinbaseTokenFromMemory()!)"]
+        sendRequest(url, method: .GET, data: nil, headers: headers) { result in
+            switch result {
+            case .failure(let e):
+                completion(.failure(e))
+            case .success(let response):
+                if response.keys.contains("error") {
+                    completion(.failure(CoinbaseSpecificError(id: "coinbase_error", message: response["error"] as! String)))
+                } else {
+                    let decoder = JSONDecoder()
+                    guard let data = try? JSONSerialization.data(withJSONObject: response["data"], options: .prettyPrinted),
+                        let currencyAccounts = try? decoder.decode([CurrencyAccount].self, from: data) else {
+                            completion(.failure(CoinbaseClientError.invalidData))
+                            return
+                    }
+                    let accounts = self.converToPortfolioAccounts(accounts: currencyAccounts)
+                    completion(.success(accounts))
+                }
+            }
+        }
+    }
+
+    func getAllPortfolioAssets(completion: @escaping (CoinbaseClientResult<[CoinbasePortfolioAccount]>) -> Void) {
+        if ExternalAccounts.getCoinbaseTokenFromMemory() == nil {
+            refreshToken { result in
+                switch result {
+                case .failure(let e):
+                    completion(.failure(e))
+                case .success(_):
+                    self.getAllPortfolioAssetsWithToken { result in
+                        completion(result)
+                    }
+                }
+            }
+        } else {
+            getAllPortfolioAssetsWithToken { result in
+                completion(result)
+            }
+        }
+    }
 }

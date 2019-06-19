@@ -17,7 +17,7 @@ class AssetIconsTableViewCell: UITableViewCell {
     }
     
     @IBOutlet var horizontalStackView: UIStackView?
-    var list: [TransferableAsset]? {
+    var list: [O3WalletNativeAsset]? {
         didSet {
             self.setupView()
         }

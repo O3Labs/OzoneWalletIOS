@@ -25,7 +25,7 @@ class AssetInputToolbar: UIView {
     @IBOutlet var messageLabel: UILabel?
     weak var delegate: AssetInputToolbarDelegate?
 
-    var asset: TransferableAsset? {
+    var asset: O3WalletNativeAsset? {
         didSet {
             if asset == nil {
                 return

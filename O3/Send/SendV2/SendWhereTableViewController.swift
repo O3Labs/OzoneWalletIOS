@@ -36,7 +36,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
     var addressToSend = ""
     var addressAlias = ""
     var addressAliasImage: UIImage?
-    var selectedAsset: TransferableAsset?
+    var selectedAsset: O3WalletNativeAsset?
     var selectedAmount: Double?
 
 
@@ -209,7 +209,7 @@ class SendWhereTableViewController: UITableViewController, QRScanDelegate, Addre
             enableContinueButton()
 
             if asset != "" {
-                var selected: TransferableAsset?
+                var selected: O3WalletNativeAsset?
                 
                 if asset?.lowercased() == "neo" || asset == AssetId.neoAssetId.rawValue {
                     selected = O3Cache.neoBalance(for: Authenticated.wallet!.address)

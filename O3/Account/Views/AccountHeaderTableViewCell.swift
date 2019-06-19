@@ -23,7 +23,7 @@ class AccountHeaderTableViewCell: UITableViewCell {
     var sectionIndex: Int? = 0
     
     @IBOutlet var horizontalStackView: UIStackView?
-    var list: [TransferableAsset]? {
+    var list: [O3WalletNativeAsset]? {
         didSet {
             self.setupView()
         }

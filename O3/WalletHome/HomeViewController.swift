@@ -40,8 +40,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var firstTimeViewLoad = true
     var homeviewModel: HomeViewModel!
     var selectedPrice: PriceData?
-    var displayedAssets = [TransferableAsset]()
+    var displayedAssets = [O3WalletNativeAsset]()
     var watchAddresses = [NEP6.Account]()
+    
+    var coinbaseAssets = [PortfolioAsset]()
     
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
 
@@ -227,7 +229,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupGraphView()
         showDisclaimer()
         super.viewDidLoad()
-
+        loadCoinbase()
+    
     }
     
     @objc func showMultiWalletDisplay() {
@@ -260,7 +263,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
-    func updateWithBalanceData(_ assets: [TransferableAsset]) {
+    func updateWithBalanceData(_ assets: [O3WalletNativeAsset]) {
         self.displayedAssets = assets
         DispatchQueue.main.async {
             self.assetsTable.delegate = self
@@ -314,24 +317,36 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "portfolioAssetCell") as? PortfolioAssetCell else {
             fatalError("Undefined Table Cell Behavior")
         }
-        let asset = self.displayedAssets[indexPath.row]
-        guard let latestPrice = portfolio?.price[asset.symbol],
-            let firstPrice = portfolio?.firstPrice[asset.symbol] else {
-                cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
-                                                    amount: Double(truncating: asset.value as NSNumber),
-                                                    referenceCurrency: (homeviewModel?.referenceCurrency)!,
-                                                    latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
-                                                    firstPrice: PriceData(average: 0, averageBTC: 0, time: "24h"))
-                return cell
+        if indexPath.section == 1 {
+            let asset = self.displayedAssets[indexPath.row]
+            guard let latestPrice = portfolio?.price[asset.symbol],
+                let firstPrice = portfolio?.firstPrice[asset.symbol] else {
+                    cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
+                                                        amount: Double(truncating: asset.value as NSNumber),
+                                                        referenceCurrency: (homeviewModel?.referenceCurrency)!,
+                                                        latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
+                                                        firstPrice: PriceData(average: 0, averageBTC: 0, time: "24h"))
+                    return cell
+            }
+            
+            cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
+                                                amount: Double(truncating: asset.value as NSNumber),
+                                                referenceCurrency: (homeviewModel?.referenceCurrency)!,
+                                                latestPrice: latestPrice,
+                                                firstPrice: firstPrice)
+            cell.selectionStyle = .none
+            return cell
+        } else {
+            let asset = self.coinbaseAssets[indexPath.row]
+            cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
+                                                amount: Double((asset as! CoinbaseClient.CoinbasePortfolioAccount).balance) ?? 0,
+                                                referenceCurrency: (homeviewModel?.referenceCurrency)!,
+                                                latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
+                                                firstPrice: PriceData(average: 0, averageBTC: 0, time: "24h"))
+            cell.selectionStyle = .none
+            return cell
         }
-
-        cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
-                                            amount: Double(truncating: asset.value as NSNumber),
-                                            referenceCurrency: (homeviewModel?.referenceCurrency)!,
-                                            latestPrice: latestPrice,
-                                            firstPrice: firstPrice)
-        cell.selectionStyle = .none
-        return cell
+        
     }
 
 
@@ -343,7 +358,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         let asset = self.displayedAssets[indexPath.row]
         var chain = "neo"
-        if asset.assetType == TransferableAsset.AssetType.ontologyAsset {
+        if asset.assetType == O3WalletNativeAsset.AssetType.ontologyAsset {
             chain = "ont"
         }
         let url = URL(string: String(format: "https://public.o3.network/%@/assets/%@?address=%@", chain, asset.symbol, Authenticated.wallet!.address))
@@ -353,7 +368,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -366,8 +381,24 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             //notification area
             return 1
+        } else if section == 2 {
+            return self.coinbaseAssets.count
         }
         return self.displayedAssets.count
+    }
+    
+    func loadCoinbase() {
+        CoinbaseClient.shared.getAllPortfolioAssets { result in
+            switch result {
+            case .failure(_):
+                return
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.coinbaseAssets = response
+                    self.assetsTable.reloadData()
+                }
+            }
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -621,7 +652,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        Controller().openWalletSelector()
+        Controller().openPortfolioSelector()
 
     }
 

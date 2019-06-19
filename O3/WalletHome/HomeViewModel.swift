@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol HomeViewModelDelegate: class {
-    func updateWithBalanceData(_ assets: [TransferableAsset])
+    func updateWithBalanceData(_ assets: [O3WalletNativeAsset])
     func updateWithPortfolioData(_ portfolio: PortfolioValue)
     func showLoadingIndicator()
     func hideLoadingIndicator()
@@ -23,7 +23,7 @@ struct WatchAddr: Hashable {
 
 class HomeViewModel {
     weak var delegate: HomeViewModelDelegate?
-    var accountBalances  = [NEP6.Account: [TransferableAsset]]()
+    var accountBalances  = [NEP6.Account: [O3WalletNativeAsset]]()
     
     var addressCount = 0
     var currentIndex = 0
@@ -55,9 +55,9 @@ class HomeViewModel {
         self.referenceCurrency = currency
     }
 
-    func getCombinedAccounts() -> [TransferableAsset] {
+    func getCombinedAccounts() -> [O3WalletNativeAsset] {
         
-        var assets = [TransferableAsset]()
+        var assets = [O3WalletNativeAsset]()
         for addr in accounts {
             for asset in accountBalances[addr] ?? [] {
                 if let index = assets.firstIndex(where: { (item) -> Bool in item.name == asset.name }) {
@@ -70,19 +70,19 @@ class HomeViewModel {
         return assets
     }
 
-    func getAccountAssets(address: NEP6.Account) -> [TransferableAsset] {
+    func getAccountAssets(address: NEP6.Account) -> [O3WalletNativeAsset] {
         return accountBalances[address] ?? []
     }
 
-    func getTransferableAssets() -> [TransferableAsset] {
-        var transferableAssetsToReturn: [TransferableAsset]  = []
+    func getTransferableAssets() -> [O3WalletNativeAsset] {
+        var transferableAssetsToReturn: [O3WalletNativeAsset]  = []
         switch currentIndex {
         case 0: transferableAssetsToReturn = getCombinedAccounts()
         default: transferableAssetsToReturn = accountBalances[accounts[currentIndex - 1]] ?? []
         }
 
         //Put NEO + GAS at the top
-        var sortedAssets = [TransferableAsset]()
+        var sortedAssets = [O3WalletNativeAsset]()
         if let indexNEO = transferableAssetsToReturn.firstIndex(where: { (item) -> Bool in
             item.symbol == "NEO"
         }) {
@@ -104,9 +104,9 @@ class HomeViewModel {
         self.delegate = delegate
         var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
         unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
-        var cachedCombinedAssets = [TransferableAsset]()
+        var cachedCombinedAssets = [O3WalletNativeAsset]()
         for account in unfiltered {
-            var totalAssets: [TransferableAsset] = [O3Cache.neoBalance(for: account.address)] +
+            var totalAssets: [O3WalletNativeAsset] = [O3Cache.neoBalance(for: account.address)] +
                 [O3Cache.gasBalance(for: account.address)] + O3Cache.ontologyBalances(for: account.address) +
                 O3Cache.tokensBalance(for: account.address)
             for asset in totalAssets ?? [] {
@@ -168,7 +168,7 @@ class HomeViewModel {
         O3Cache.setOntologyAssetsForSession(tokens: accountState.ontology)
     }*/
 
-    func addTokenBalance(_ token: TransferableAsset, account: NEP6.Account) {
+    func addTokenBalance(_ token: O3WalletNativeAsset, account: NEP6.Account) {
         if accountBalances[account] == nil {
             accountBalances[account] = []
         }

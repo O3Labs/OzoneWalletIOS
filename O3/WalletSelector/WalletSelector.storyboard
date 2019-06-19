@@ -108,21 +108,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="5v3-9l-spT"/>
-                    <connections>
-                        <segue destination="RkL-G4-Q7K" kind="show" identifier="segueToConvertWallet" id="jcL-1W-FNp"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cwB-SO-wdw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1030.4347826086957" y="-185.49107142857142"/>
-        </scene>
-        <!--convertToWalletTableViewController-->
-        <scene sceneID="1QH-9n-K0K">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="Main" storyboardName="Main" referencedIdentifier="convertToWalletTableViewController" id="RkL-G4-Q7K" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4pp-yp-Pyy" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1811" y="-339"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="9Sx-ul-mEE">

@@ -42,7 +42,7 @@ class Router: NSObject {
                     }
 
                     var tokenAssets = O3Cache.tokensBalance(for: Authenticated.wallet!.address)
-                    var selectedAsset: TransferableAsset?
+                    var selectedAsset: O3WalletNativeAsset?
                     for token in accountState.nep5Tokens {
                         tokenAssets.append(token)
                         if token.id == asset {
@@ -55,9 +55,9 @@ class Router: NSObject {
                     O3Cache.setOntologyBalance(tokens:accountState.ontology, address: Authenticated.wallet!.address)
 
                     if asset?.lowercased() == "neo" {
-                        Controller().openSend(to: address!, selectedAsset: TransferableAsset.NEO(), amount: amount)
+                        Controller().openSend(to: address!, selectedAsset: O3WalletNativeAsset.NEO(), amount: amount)
                     } else if asset?.lowercased() == "gas" {
-                        Controller().openSend(to: address!, selectedAsset: TransferableAsset.GAS(), amount: amount)
+                        Controller().openSend(to: address!, selectedAsset: O3WalletNativeAsset.GAS(), amount: amount)
                     } else if selectedAsset != nil {
                         Controller().openSend(to: address!, selectedAsset: selectedAsset!, amount: amount)
                     }
