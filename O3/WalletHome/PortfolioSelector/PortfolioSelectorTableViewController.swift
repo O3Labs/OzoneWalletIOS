@@ -80,16 +80,10 @@ class PortfolioSelectorTableViewController: UITableViewController {
         self.untrackedCount = 0
         for i in 0..<self.watchAddresses.count {
             var indexPath: IndexPath
+            indexPath = IndexPath(row: self.untrackedCount, section: 2)
             if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddresses[i].address) {
-                if UserDefaultsManager.untrackedWatchAddr.count == NEP6.getFromFileSystem()?.getWatchAccounts().count {
-                    indexPath = IndexPath(row: self.untrackedCount, section: 2)
-                } else {
-                    indexPath = IndexPath(row: self.untrackedCount, section: 3)
-                }
-                
                 self.untrackedCount = self.untrackedCount + 1
             } else {
-                indexPath = IndexPath(row: self.trackedCount, section: 2)
                 self.trackedCount = self.trackedCount + 1
             }
             self.watchAddrs[indexPath] = self.watchAddresses[i]
@@ -172,12 +166,13 @@ class PortfolioSelectorTableViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         if trackedCount == 0 && untrackedCount == 0 {
             return 2
-        } else if trackedCount > 0 && untrackedCount == 0 {
-            return 3
-        } else if trackedCount == 0 && untrackedCount > 0 {
+        } else {
             return 3
         }
-        return 4
+        /*} else if trackedCount == 0 && untrackedCount > 0 {
+            return 3
+        }
+        return 4*/
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -185,14 +180,8 @@ class PortfolioSelectorTableViewController: UITableViewController {
             return 1
         } else if section == 1 {
             return wallets.count
-        } else if section == 2 {
-            if trackedCount > 0 {
-                return trackedCount
-            } else {
-                return untrackedCount
-            }
         } else {
-            return untrackedCount
+            return watchAddresses.count
         }
     }
     
@@ -230,15 +219,10 @@ class PortfolioSelectorTableViewController: UITableViewController {
             return UIView()
         } else if section == 1 {
             titleLabel.text = "Wallets"
-        }else if section == 2 {
-            if trackedCount > 0 {
-                titleLabel.text = "Watch Addresses"
-            } else {
-                titleLabel.text = "Watch Addresses (Hidden)"
-            }
-        } else {
-            titleLabel.text = "Watch Addresses (Hidden)"
+        } else if section == 2 {
+            titleLabel.text = "Watch Addresses"
         }
+        
         titleLabel.theme_textColor = O3Theme.titleColorPicker
         cell?.theme_backgroundColor = O3Theme.backgroundLightgrey
         cell?.contentView.theme_backgroundColor = O3Theme.backgroundSectionHeader
@@ -365,7 +349,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 || indexPath.section == 0 {
             handlePortfolioTapped(indexPath: indexPath)
-        } else if indexPath.section == 2  || indexPath.section == 3 {
+        } else if indexPath.section == 2  {
             handleWatchAddressTapped(indexPath: indexPath)
         }
     }

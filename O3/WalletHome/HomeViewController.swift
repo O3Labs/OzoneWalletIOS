@@ -234,7 +234,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func showMultiWalletDisplay() {
-        Controller().openWalletSelector()
+        Controller().openPortfolioSelector()
     }
 
     override func viewDidAppear(_ animated: Bool) {
