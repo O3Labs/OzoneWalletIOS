@@ -171,7 +171,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     @objc func openMultiWalletDisplay() {
-        Controller().openWalletSelector(isPortfolio: false)
+        Controller().openWalletSelector()
     }
     
     @IBAction func buyNeo(_ sender: Any) {

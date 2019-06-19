@@ -127,9 +127,8 @@ class Controller: NSObject {
         tabbar.selectedIndex = tabIndex
     }
     
-    func openWalletSelector(isPortfolio: Bool = true ) {
+    func openWalletSelector() {
         let modal = UIStoryboard(name: "WalletSelector", bundle: nil).instantiateInitialViewController() as! UINavigationController
-        (modal.children.first as! WalletSelectorTableViewController).isPortfolio = isPortfolio
         UIApplication.topViewController()!.present(modal, animated: true, completion: nil)
     }
     
