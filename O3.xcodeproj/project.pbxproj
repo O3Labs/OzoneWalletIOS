@@ -111,6 +111,9 @@
 		355D469022B9CBC8006DE02B /* PortfolioSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D468F22B9CBC8006DE02B /* PortfolioSelectorTableViewCell.swift */; };
 		355D469222B9CBE1006DE02B /* PortfolioSelector.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 355D469122B9CBE1006DE02B /* PortfolioSelector.storyboard */; };
 		355D469422B9DA6A006DE02B /* NoPortfolioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D469322B9DA6A006DE02B /* NoPortfolioTableViewCell.swift */; };
+		355D469822BA1308006DE02B /* PortfolioHeaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D469722BA1308006DE02B /* PortfolioHeaderDelegate.swift */; };
+		355D469A22BA1396006DE02B /* PortfolioGraphDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D469922BA1396006DE02B /* PortfolioGraphDelegate.swift */; };
+		355D469C22BA155D006DE02B /* AssetTableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D469B22BA155D006DE02B /* AssetTableDelegate.swift */; };
 		356F1B05218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */; };
 		356F1B07218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */; };
 		356F1B0921901AA30004C088 /* EncryptPasswordEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */; };
@@ -529,6 +532,9 @@
 		355D468F22B9CBC8006DE02B /* PortfolioSelectorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioSelectorTableViewCell.swift; sourceTree = "<group>"; };
 		355D469122B9CBE1006DE02B /* PortfolioSelector.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PortfolioSelector.storyboard; sourceTree = "<group>"; };
 		355D469322B9DA6A006DE02B /* NoPortfolioTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPortfolioTableViewCell.swift; sourceTree = "<group>"; };
+		355D469722BA1308006DE02B /* PortfolioHeaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioHeaderDelegate.swift; sourceTree = "<group>"; };
+		355D469922BA1396006DE02B /* PortfolioGraphDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioGraphDelegate.swift; sourceTree = "<group>"; };
+		355D469B22BA155D006DE02B /* AssetTableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTableDelegate.swift; sourceTree = "<group>"; };
 		356F1B04218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewController.swift; sourceTree = "<group>"; };
 		356F1B06218FD3E00004C088 /* UnlockMultiWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockMultiWalletTableViewCell.swift; sourceTree = "<group>"; };
 		356F1B0821901AA30004C088 /* EncryptPasswordEntryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptPasswordEntryTableViewController.swift; sourceTree = "<group>"; };
@@ -1063,12 +1069,36 @@
 		355D468C22B9CB64006DE02B /* PortfolioSelector */ = {
 			isa = PBXGroup;
 			children = (
+				7550940C1F779EEE00127B4F /* WalletHeaderCollectionCell.swift */,
 				355D468D22B9CBB6006DE02B /* PortfolioSelectorTableViewController.swift */,
 				355D468F22B9CBC8006DE02B /* PortfolioSelectorTableViewCell.swift */,
 				355D469122B9CBE1006DE02B /* PortfolioSelector.storyboard */,
 				355D469322B9DA6A006DE02B /* NoPortfolioTableViewCell.swift */,
+				355D469722BA1308006DE02B /* PortfolioHeaderDelegate.swift */,
 			);
 			path = PortfolioSelector;
+			sourceTree = "<group>";
+		};
+		355D469522BA11AD006DE02B /* AssetTable */ = {
+			isa = PBXGroup;
+			children = (
+				6E40F6472119771300B2B633 /* PortfolioNotificationTableViewCell.swift */,
+				35AFC251228E857B009296EC /* BuyNeoTableViewCell.swift */,
+				35E5F60F2029412900D65BEA /* PortfolioAssetCell.swift */,
+				355D469B22BA155D006DE02B /* AssetTableDelegate.swift */,
+			);
+			path = AssetTable;
+			sourceTree = "<group>";
+		};
+		355D469622BA120E006DE02B /* AssetGraph */ = {
+			isa = PBXGroup;
+			children = (
+				354AF80D217EC6E100B82408 /* EmptyPortfolioView.swift */,
+				354AF80B217EC61400B82408 /* EmptyPortfolioView.xib */,
+				752586B01F77DD9800ED5312 /* OzoneGraphView.swift */,
+				355D469922BA1396006DE02B /* PortfolioGraphDelegate.swift */,
+			);
+			path = AssetGraph;
 			sourceTree = "<group>";
 		};
 		35A37C30226D9EB600473895 /* Inbox */ = {
@@ -1460,19 +1490,13 @@
 		755D8F541F665F5D00058434 /* WalletHome */ = {
 			isa = PBXGroup;
 			children = (
-				355D468C22B9CB64006DE02B /* PortfolioSelector */,
-				6E1BBF7E1F77BEE30095F466 /* WalletHomeAssets.xcassets */,
 				35DBABC92098028D009BE767 /* PortfolioStrings.swift */,
-				752586B01F77DD9800ED5312 /* OzoneGraphView.swift */,
-				7550940C1F779EEE00127B4F /* WalletHeaderCollectionCell.swift */,
+				6E1BBF7E1F77BEE30095F466 /* WalletHomeAssets.xcassets */,
+				355D469622BA120E006DE02B /* AssetGraph */,
+				355D469522BA11AD006DE02B /* AssetTable */,
+				355D468C22B9CB64006DE02B /* PortfolioSelector */,
 				755D8F551F665F8200058434 /* HomeViewController.swift */,
-				6ED6001F1F765C9C006760E6 /* NoHairlineNavigationController.swift */,
-				35E5F60F2029412900D65BEA /* PortfolioAssetCell.swift */,
 				35E5F6112029477400D65BEA /* HomeViewModel.swift */,
-				6E40F6472119771300B2B633 /* PortfolioNotificationTableViewCell.swift */,
-				354AF80B217EC61400B82408 /* EmptyPortfolioView.xib */,
-				354AF80D217EC6E100B82408 /* EmptyPortfolioView.swift */,
-				35AFC251228E857B009296EC /* BuyNeoTableViewCell.swift */,
 			);
 			path = WalletHome;
 			sourceTree = "<group>";
@@ -1714,6 +1738,7 @@
 		75D5BFC51F6D1D2B00E64855 /* UIControls */ = {
 			isa = PBXGroup;
 			children = (
+				6ED6001F1F765C9C006760E6 /* NoHairlineNavigationController.swift */,
 				6E5FDFEC216725B300C1A6B5 /* NoActionUITextField.swift */,
 				6E5FDFEA2167250500C1A6B5 /* ShadowedButton.swift */,
 				6E5FDFE62167233A00C1A6B5 /* FixedDecimalTextField.swift */,
@@ -2125,6 +2150,7 @@
 				6E58720821A6A489007F1EC6 /* dAppMetadata.swift in Sources */,
 				35A37C3A226EBF6100473895 /* InboxSettingsMenuTableViewController.swift in Sources */,
 				350E18792186FB1400AA10CE /* LoginToNEP6.swift in Sources */,
+				355D469822BA1308006DE02B /* PortfolioHeaderDelegate.swift in Sources */,
 				6E4F4410222E119E008B9BFC /* Shortcut.swift in Sources */,
 				6E64C0D22159CE19002B1366 /* RequestCandlesticks.swift in Sources */,
 				6EB311AE21AB8323008EACD9 /* dAppMetaDataTableViewCell.swift in Sources */,
@@ -2164,6 +2190,7 @@
 				35AD2B6C2093087C0024A900 /* SendStrings.swift in Sources */,
 				35585F8F21F59F3100BA39C6 /* dAppBrowserTrading.swift in Sources */,
 				35C370B02181ABD40023AABC /* NewMultiWalletViewController.swift in Sources */,
+				355D469A22BA1396006DE02B /* PortfolioGraphDelegate.swift in Sources */,
 				354394D3218979AE000C1D8C /* ConvertToWalletTableViewController.swift in Sources */,
 				35A37C3E2270016B00473895 /* InboxDisclaimerViewController.swift in Sources */,
 				6E60CC6C20CF884E0062F1CE /* Controller.swift in Sources */,
@@ -2174,6 +2201,7 @@
 				35AFC252228E857B009296EC /* BuyNeoTableViewCell.swift in Sources */,
 				752006861F7F698300D19B5F /* O3TabBarController.swift in Sources */,
 				6E4E6F89201465BE001A5844 /* NativeAssetTableViewCell.swift in Sources */,
+				355D469C22BA155D006DE02B /* AssetTableDelegate.swift in Sources */,
 				6ED5D7EC2016BFC900AF3713 /* AssetSelectorTableViewController.swift in Sources */,
 				356F1B05218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift in Sources */,
 				6E64C0CF2159CE19002B1366 /* TokenDetail.swift in Sources */,

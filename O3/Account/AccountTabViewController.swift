@@ -204,5 +204,4 @@ extension AccountTabViewController: QRScanDelegate {
             }
         }
     }
-    
 }

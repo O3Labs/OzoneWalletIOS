@@ -379,7 +379,7 @@ class CoinbaseClient {
     struct CoinbasePortfolioAccount: PortfolioAsset {
         var symbol: String
         var name: String
-        var balance: String
+        var value: Double
     }
     
     func converToPortfolioAccounts(accounts: [CurrencyAccount]) -> [CoinbasePortfolioAccount] {
@@ -387,14 +387,14 @@ class CoinbaseClient {
         var convertedAccounts = [CoinbasePortfolioAccount]()
         for account in accounts {
             if let walletAccountIndex = convertedAccounts.firstIndex(where: { $0.name == account.balance.currency}) {
-                var newBalance = (Double(convertedAccounts[walletAccountIndex].balance) ?? 0.0) + (Double(account.balance.amount) ?? 0.0)
-                convertedAccounts[walletAccountIndex].balance = String(newBalance)
+                var newBalance = convertedAccounts[walletAccountIndex].value + (Double(account.balance.amount) ?? 0.0)
+                convertedAccounts[walletAccountIndex].value = newBalance
                 
             } else {
-                if Double(account.balance.amount) ?? 0.0 > 0 && account.type == "wallet" {
+                if Double(account.balance.amount) ?? 0.0 > 0 && account.type == "wallet" && account.balance.currency != "BCH" {
                     convertedAccounts.append(CoinbasePortfolioAccount(symbol: account.balance.currency,
                                                                       name: account.balance.currency,
-                                                                      balance: account.balance.amount))
+                                                                      value: Double(account.balance.amount) ?? 0.0))
                 }
             }
         }

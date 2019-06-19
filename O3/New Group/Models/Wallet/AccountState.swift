@@ -13,6 +13,7 @@ typealias O3WalletNativeAsset = AccountState.O3WalletNativeAsset
 protocol PortfolioAsset {
     var name: String { get set }
     var symbol: String { get set }
+    var value: Double {get set}
 }
 
 

@@ -118,7 +118,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
                             self.group.leave()
                             return
                         case .success(let assets):
-                            O3Client().getCoinbaseAccountValue(assets) { result in
+                            O3Client().getAccountValue(assets) { result in
                                 switch result {
                                 case .failure:
                                     self.group.leave()
