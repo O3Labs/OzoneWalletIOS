@@ -121,7 +121,7 @@ public class O3Client {
         }
     }
 
-    func getPortfolioValue(_ assets: [O3WalletNativeAsset], interval: String, completion: @escaping (O3ClientResult<PortfolioValue>) -> Void) {
+    func getPortfolioValue(_ assets: [PortfolioAsset], interval: String, completion: @escaping (O3ClientResult<PortfolioValue>) -> Void) {
 
         var queryString = String(format: "?i=%@", interval)
         for asset in assets {

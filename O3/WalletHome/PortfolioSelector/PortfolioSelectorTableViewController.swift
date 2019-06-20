@@ -294,6 +294,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
                 fatalError("Something went terribly Wrong")
             }
             let button = cell.viewWithTag(1) as! UIButton
+            cell.theme_backgroundColor = O3Theme.backgroundColorPicker
             button.setTitle("+ Add Watch Address", for: UIControl.State())
             return cell
         }
@@ -305,6 +306,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
                 fatalError("Something went terribly Wrong")
             }
             let button = cell.viewWithTag(1) as! UIButton
+            cell.theme_backgroundColor = O3Theme.backgroundColorPicker
             button.setTitle("+ Add Coinbase Account", for: UIControl.State())
             return cell
         } else {

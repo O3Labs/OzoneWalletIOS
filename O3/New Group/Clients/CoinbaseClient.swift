@@ -198,6 +198,17 @@ class CoinbaseClient {
                 completion(.failure(error))
             case .success(let response):
                 let decoder = JSONDecoder()
+                if let data = (response["errors"] as? NSArray)?.firstObject as? JSONDictionary {
+                    let coinbaseError = CoinbaseSpecificError(id: data["id"] as! String, message: data["message"] as! String)
+                    if data["id"] as! String == "revoked_token" {
+                        let externalAccounts = ExternalAccounts.getFromFileSystem()
+                        externalAccounts.removeAccount(platform: ExternalAccounts.Platforms.COINBASE)
+                        externalAccounts.writeToFileSystem()
+                        completion(.failure(coinbaseError))
+                        return
+                    }
+                }
+                
                 guard let data = try? JSONSerialization.data(withJSONObject: response, options: .prettyPrinted),
                     let tokenResponse = try? decoder.decode(CoinbaseTokenResponse.self, from: data) else {
                         completion(.failure(CoinbaseClientError.invalidData))
@@ -206,10 +217,10 @@ class CoinbaseClient {
                 let account = ExternalAccounts.getFromFileSystem().getAccounts().first {
                     $0.platform == ExternalAccounts.Platforms.COINBASE.rawValue
                 }!
-                
-                ExternalAccounts.getFromFileSystem().setAccount(platform: ExternalAccounts.Platforms.COINBASE, unencryptedToken: tokenResponse.refresh_token, scope: tokenResponse.scope, accountMetaData: account.accountMetaData)
                 let expiryTime = Int(Date().timeIntervalSince1970) + tokenResponse.expires_in
                 ExternalAccounts.setCoinbaseTokenForSession(token: tokenResponse.access_token, expiryTime: expiryTime)
+                
+                ExternalAccounts.getFromFileSystem().setAccount(platform: ExternalAccounts.Platforms.COINBASE, unencryptedToken: tokenResponse.refresh_token, scope: tokenResponse.scope, accountMetaData: account.accountMetaData)
                 completion(.success(tokenResponse))
             }
         }
@@ -391,7 +402,7 @@ class CoinbaseClient {
                 convertedAccounts[walletAccountIndex].value = newBalance
                 
             } else {
-                if Double(account.balance.amount) ?? 0.0 > 0 && account.type == "wallet" && account.balance.currency != "BCH" {
+                if Double(account.balance.amount) ?? 0.0 > 0 && account.type == "wallet" {
                     convertedAccounts.append(CoinbasePortfolioAccount(symbol: account.balance.currency,
                                                                       name: account.balance.currency,
                                                                       value: Double(account.balance.amount) ?? 0.0))

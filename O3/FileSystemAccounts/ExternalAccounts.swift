@@ -155,6 +155,8 @@ public class ExternalAccounts: Codable {
         
         let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
         try! nep6Data.write(to: fileURL, options: [.atomic, .completeFileProtection])
+        //trigger protfolio cha ges when new account added
+        NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
     }
     
     

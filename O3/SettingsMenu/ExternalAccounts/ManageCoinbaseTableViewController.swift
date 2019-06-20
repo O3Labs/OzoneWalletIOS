@@ -29,10 +29,13 @@ class ManageCoinbaseTableViewController: UITableViewController {
         super.viewDidLoad()
         setThemedElements()
         setLocalizedStrings()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         if ExternalAccounts.getCoinbaseTokenFromDisk() != nil {
             loadCoinbaseAccountDetails()
         }
-        
+        super.viewWillAppear(true)
     }
     
     func loadCoinbaseAccountDetails() {
@@ -69,7 +72,13 @@ class ManageCoinbaseTableViewController: UITableViewController {
         } else if indexPath.row == 1 {
             Controller().openDappBrowserV2(url: coinbase_dapp_url)
         } else if indexPath.row == 2 {
-            //do somethin
+            var externalAccounts = ExternalAccounts.getFromFileSystem()
+            externalAccounts.removeAccount(platform: ExternalAccounts.Platforms.COINBASE)
+            externalAccounts.writeToFileSystem()
+            DispatchQueue.main.async {
+                //trigger this to reload the portfolio screen
+                self.dismiss(animated: true)
+            }
         }
     }
     

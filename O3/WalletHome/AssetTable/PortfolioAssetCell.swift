@@ -19,8 +19,7 @@ class PortfolioAssetCell: UITableViewCell {
     @IBOutlet weak var assetIcon: UIImageView!
 
     struct Data {
-        var assetName: String
-        var amount: Double
+        var asset: PortfolioAsset
         var referenceCurrency: Currency
         var latestPrice: PriceData
         var firstPrice: PriceData
@@ -39,23 +38,23 @@ class PortfolioAssetCell: UITableViewCell {
 
     var data: PortfolioAssetCell.Data? {
         didSet {
-            guard let assetName = data?.assetName,
-                let amount = data?.amount,
+            guard let asset = data?.asset,
                 let referenceCurrency = data?.referenceCurrency,
                 let latestPrice = data?.latestPrice,
                 let firstPrice = data?.firstPrice else {
                     fatalError("undefined data set")
             }
-            assetTitleLabel.text = assetName
-
+            assetTitleLabel.text = asset.symbol 
+            let amountDouble = Double(truncating: asset.value as NSNumber)
+            
             let precision = referenceCurrency == .btc ? Precision.btc : Precision.usd
             let referencePrice = referenceCurrency == .btc ? latestPrice.averageBTC : latestPrice.average
             let referenceFirstPrice = referenceCurrency == .btc ? firstPrice.averageBTC : firstPrice.average
-            assetAmountLabel.text = amount.string(8, removeTrailing: true)
+            assetAmountLabel.text = amountDouble.string(8, removeTrailing: true)
             if referenceCurrency == .btc {
                 assetFiatAmountLabel.text = "₿"+latestPrice.averageBTC.string(Precision.btc, removeTrailing: true)
             } else {
-                assetFiatAmountLabel.text = Fiat(amount: Float(referencePrice) * Float(amount)).formattedString()
+                assetFiatAmountLabel.text = Fiat(amount: Float(referencePrice) * Float(amountDouble)).formattedString()
             }
 
             //format USD properly
@@ -79,7 +78,13 @@ class PortfolioAssetCell: UITableViewCell {
                 }
             }
 
-            let logoURL = String(format: "https://cdn.o3.network/img/neo/%@.png", assetName.uppercased())
+            var logoURL = ""
+            if let walletAsset = asset as? O3WalletNativeAsset {
+                logoURL = String(format: "https://cdn.o3.network/img/neo/%@.png", asset.symbol.uppercased())
+            } else {
+                logoURL = String(format: "https://cdn.o3.app/img/assets/%@.png", asset.symbol.uppercased())
+            }
+            
             assetIcon.kf.setImage(with: URL(string: logoURL))
         }
     }

@@ -33,19 +33,17 @@ extension HomeViewController {
             fatalError("Undefined Table Cell Behavior")
         }
         
-        let asset = self.displayedAssets[indexPath.row]
+        let asset = self.walletAssets[indexPath.row]
         guard let latestPrice = portfolio?.price[asset.symbol],
             let firstPrice = portfolio?.firstPrice[asset.symbol] else {
-                cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
-                                                    amount: Double(truncating: asset.value as NSNumber),
+                cell.data = PortfolioAssetCell.Data(asset: asset,
                                                     referenceCurrency: (homeviewModel?.referenceCurrency)!,
                                                     latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
                                                     firstPrice: PriceData(average: 0, averageBTC: 0, time: "24h"))
                 return cell
         }
         
-        cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
-                                            amount: Double(truncating: asset.value as NSNumber),
+        cell.data = PortfolioAssetCell.Data(asset: asset,
                                             referenceCurrency: (homeviewModel?.referenceCurrency)!,
                                             latestPrice: latestPrice,
                                             firstPrice: firstPrice)
@@ -53,17 +51,27 @@ extension HomeViewController {
         return cell
     }
     
+    
+    
     func getLinkedAccountCell(indexPath: IndexPath) -> UITableViewCell {
         guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "portfolioAssetCell") as? PortfolioAssetCell else {
             fatalError("Undefined Table Cell Behavior")
         }
         
         let asset = self.coinbaseAssets[indexPath.row]
-        cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
-                                            amount: (asset as! CoinbaseClient.CoinbasePortfolioAccount).value,
+        guard let latestPrice = portfolio?.price[asset.symbol],
+            let firstPrice = portfolio?.firstPrice[asset.symbol] else {
+                cell.data = PortfolioAssetCell.Data(asset: asset,
+                                                    referenceCurrency: (homeviewModel?.referenceCurrency)!,
+                                                    latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
+                                                    firstPrice: PriceData(average: 0, averageBTC: 0, time: "24h"))
+                return cell
+        }
+        
+        cell.data = PortfolioAssetCell.Data(asset: asset,
                                             referenceCurrency: (homeviewModel?.referenceCurrency)!,
-                                            latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
-                                            firstPrice: PriceData(average: 0, averageBTC: 0, time: "24h"))
+                                            latestPrice: latestPrice,
+                                            firstPrice: firstPrice)
         cell.selectionStyle = .none
         return cell
     }
@@ -87,15 +95,72 @@ extension HomeViewController {
             return
         }
         
-        let asset = self.displayedAssets[indexPath.row]
-        var chain = "neo"
-        if asset.assetType == O3WalletNativeAsset.AssetType.ontologyAsset {
-            chain = "ont"
+        var asset: PortfolioAsset
+        if indexPath.section == 1 {
+            asset = self.walletAssets[indexPath.row]
+        } else {
+            asset = self.coinbaseAssets[indexPath.row]
         }
-        let url = URL(string: String(format: "https://public.o3.network/%@/assets/%@?address=%@", chain, asset.symbol, Authenticated.wallet!.address))
+        
+        var urlString = ""
+        
+        if let o3NativeAsset = asset as? O3WalletNativeAsset {
+            var chain = "neo"
+            if o3NativeAsset.assetType == O3WalletNativeAsset.AssetType.ontologyAsset {
+                chain = "ont"
+            }
+            urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", chain, asset.symbol, Authenticated.wallet!.address)
+        } else {
+            urlString = "https://www.coinbase.com/price/\(asset.symbol.lowercased())"
+        }
+    
         DispatchQueue.main.async {
-            Controller().openDappBrowserV2(url: url!, assetSymbol: asset.symbol)
+            Controller().openDappBrowserV2(url: URL(string: urlString)!, assetSymbol: asset.symbol)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if homeviewModel.currentIndex != 0 {
+            return 0.0
+        }
+        
+        if section == 0 {
+            return 0
+        } else if section == 1 {
+            if walletAssets.count == 0 {
+                return 0.0
+            } else {
+                return 30.0
+            }
+        } else {
+            if coinbaseAssets.count == 0 {
+                return 0.0
+            } else {
+                return 30.0
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if homeviewModel.currentIndex != 0 {
+            return UIView()
+        }
+
+        let sectionHeader = tableView.dequeueReusableCell(withIdentifier: "sectionHeader") as! UITableViewCell
+        sectionHeader.theme_backgroundColor = O3Theme.backgroundSectionHeader
+        
+        if section == 0 {
+            return UIView()
+        } else if section == 1 {
+            (sectionHeader.viewWithTag(1) as! UILabel).text = "Wallets"
+            (sectionHeader.viewWithTag(1) as! UILabel).theme_textColor = O3Theme.titleColorPicker
+            return sectionHeader
+        } else {
+            (sectionHeader.viewWithTag(1) as! UILabel).text = "Connected Accounts"
+            (sectionHeader.viewWithTag(1) as! UILabel).theme_textColor = O3Theme.titleColorPicker
+            return sectionHeader
+        }
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -115,7 +180,7 @@ extension HomeViewController {
         } else if section == 2 {
             return self.coinbaseAssets.count
         }
-        return self.displayedAssets.count
+        return self.walletAssets.count
     }
 
 }

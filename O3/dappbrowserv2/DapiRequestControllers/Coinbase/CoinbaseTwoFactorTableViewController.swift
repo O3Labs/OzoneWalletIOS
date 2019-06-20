@@ -72,13 +72,14 @@ class CoinbaseTwoFactorTableViewController: UITableViewController {
     
     func showErrorState(errorMessage: String) {
         DispatchQueue.main.async {
+            self.dismissKeyboard()
             self.resultAnimationContainerView.embed(self.failureAnimation)
             self.sendResultContainerView.theme_backgroundColor = O3Theme.backgroundColorPicker
             self.sendResultContainerView.isHidden = false
             self.resultTitleLabel.text = "Transaction Failed"
             self.resultSubtitleLabel.text = errorMessage
             self.resultTitleLabel.theme_textColor = O3Theme.negativeLossColorPicker
-            self.resultSubtitleLabel.theme_textColor = O3Theme.negativeLossColorPicker
+            self.resultSubtitleLabel.theme_textColor = O3Theme.titleColorPicker
             self.headerView.bringSubviewToFront(self.sendResultContainerView)
             self.failureAnimation.loopAnimation = false
             self.failureAnimation.play()
@@ -88,6 +89,7 @@ class CoinbaseTwoFactorTableViewController: UITableViewController {
     
     func showSuccessState() {
         DispatchQueue.main.async {
+            self.dismissKeyboard()
             self.resultAnimationContainerView.embed(self.successAnimation)
             self.sendResultContainerView.theme_backgroundColor = O3Theme.backgroundColorPicker
             self.sendResultContainerView.isHidden = false
@@ -146,6 +148,7 @@ class CoinbaseTwoFactorTableViewController: UITableViewController {
     func setThemedElements() {
         sendResultContainerView.theme_backgroundColor = O3Theme.backgroundColorPicker
         twoFactorTitleLabel.theme_textColor = O3Theme.titleColorPicker
-        
+        headerView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        tableView.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
 }

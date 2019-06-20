@@ -11,9 +11,11 @@ import UIKit
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, WalletHeaderCellDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
-        unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
-        return unfiltered.count + 1
+        var filteredBlockchainAddrs = NEP6.getFromFileSystem()!.getAccounts()
+        filteredBlockchainAddrs = filteredBlockchainAddrs.filter {
+            UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false
+        }
+        return filteredBlockchainAddrs.count + ExternalAccounts.getFromFileSystem().getAccounts().count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -22,20 +24,29 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
         cell.delegate = self
         
-        var account: NEP6.Account? = nil
+        var blockchainAccount: NEP6.Account? = nil
+        var externalAccount: ExternalAccounts.Account? = nil
+        
         var type: WalletHeaderCollectionCell.HeaderType
-        var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
-        unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
+        var filteredBlockchainAddrs = NEP6.getFromFileSystem()!.getAccounts()
+        filteredBlockchainAddrs = filteredBlockchainAddrs.filter {
+            UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false
+        }
+        
+        var externalAccounts = ExternalAccounts.getFromFileSystem().getAccounts()
         
         if indexPath.row == 0 {
             type = WalletHeaderCollectionCell.HeaderType.combined
+        } else if indexPath.row < filteredBlockchainAddrs.count + 1 {
+            type = WalletHeaderCollectionCell.HeaderType.blockchainAddress
+            blockchainAccount = filteredBlockchainAddrs[indexPath.row - 1]
         } else {
-            type = WalletHeaderCollectionCell.HeaderType.account
-            account = unfiltered[indexPath.row - 1]
+            type = WalletHeaderCollectionCell.HeaderType.linkedAccount
+            externalAccount = externalAccounts[indexPath.row - filteredBlockchainAddrs.count - 1]
         }
         
         
-        if indexPath.row == unfiltered.count {
+        if indexPath.row == filteredBlockchainAddrs.count + externalAccounts.count {
             cell.rightButton.isHidden = true
         } else {
             cell.rightButton.isHidden = false
@@ -43,7 +54,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         var data =  WalletHeaderCollectionCell.Data (
             type: type,
-            account: account,
+            blockchainAccount: blockchainAccount,
+            externalAccount: externalAccount,
             latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
             previousPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
             referenceCurrency: (homeviewModel?.referenceCurrency)!,

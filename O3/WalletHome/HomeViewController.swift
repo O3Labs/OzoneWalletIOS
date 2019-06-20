@@ -41,12 +41,32 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var firstTimeViewLoad = true
     var homeviewModel: HomeViewModel!
     var selectedPrice: PriceData?
-    var displayedAssets = [O3WalletNativeAsset]()
+    var displayedAssets = [PortfolioAsset]()
     var watchAddresses = [NEP6.Account]()
     
-    var coinbaseAssets = [PortfolioAsset]()
+    var coinbaseAssets: [PortfolioAsset] {
+        get {
+            return displayedAssets.filter { asset -> Bool in
+                return self.homeviewModel.coinbaseAccountBalances.contains {
+                    return $0.symbol.lowercased() == asset.symbol.lowercased()
+                }
+            }
+        }
+    }
+    
+    var walletAssets: [PortfolioAsset] {
+        get {
+            return displayedAssets.filter { asset -> Bool in
+                return self.homeviewModel.coinbaseAccountBalances.contains {
+                    $0.symbol.lowercased() == asset.symbol.lowercased()
+                } == false
+            }
+        }
+    }
+    
     
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
+    
 
     func addThemedElements() {
         applyNavBarTheme()
@@ -214,8 +234,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupGraphView()
         showDisclaimer()
         super.viewDidLoad()
-        loadCoinbase()
-    
     }
     
     @objc func showMultiWalletDisplay() {
@@ -248,27 +266,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
-    func updateWithBalanceData(_ assets: [O3WalletNativeAsset]) {
+    func updateWithBalanceData(_ assets: [PortfolioAsset]) {
         self.displayedAssets = assets
         DispatchQueue.main.async {
             self.assetsTable.delegate = self
             self.assetsTable.dataSource = self
             self.assetsTable.reloadData()
-        }
-    }
-
-    
-    func loadCoinbase() {
-        CoinbaseClient.shared.getAllPortfolioAssets { result in
-            switch result {
-            case .failure(_):
-                return
-            case .success(let response):
-                DispatchQueue.main.async {
-                    self.coinbaseAssets = response
-                    self.assetsTable.reloadData()
-                }
-            }
         }
     }
 
@@ -414,12 +417,24 @@ extension HomeViewController: QRScanDelegate {
         //if there is more type of string we have to check it here
         if data.hasPrefix("neo") {
             DispatchQueue.main.async {
-                //Controller().openSend(to:)
+            //self.sendTapped(qrData: data)
             }
         } else if (URL(string: data) != nil) {
-            Controller().openDappBrowserV2(url: URL(string: data)!)
+            //dont present from top
+            let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
+            if let vc = nav!.viewControllers.first as?
+                dAppBrowserV2ViewController {
+                let viewModel = dAppBrowserViewModel()
+                viewModel.url = URL(string: data)
+                vc.viewModel = viewModel
+                DispatchQueue.main.async {
+                    self.present(nav!, animated: true)
+                }
+            }
         } else {
-            //Controller().openSend()
+            DispatchQueue.main.async {
+                //self.sendTapped()
+            }
         }
     }
 }
