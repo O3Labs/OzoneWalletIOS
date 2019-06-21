@@ -590,6 +590,9 @@
                                                     <real key="value" value="6"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="didTapConfirm:" destination="ik8-Wh-rcu" eventType="touchUpInside" id="XjL-Oy-9W7"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -815,6 +818,7 @@
                     <connections>
                         <outlet property="actionContainerView" destination="ujl-9K-asx" id="veg-pr-fZI"/>
                         <outlet property="containerView" destination="bA4-8R-plW" id="dZN-lB-Wjd"/>
+                        <outlet property="sendButton" destination="gX6-tL-hpT" id="KL8-8K-BAs"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tIt-yf-u5t" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -132,7 +132,8 @@ public class NeoClient {
         }
         request.httpBody = body
         
-        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, _, err) in
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, err) in
+            print(response)
             if err != nil {
                 completion(.failure(.invalidRequest))
                 return
