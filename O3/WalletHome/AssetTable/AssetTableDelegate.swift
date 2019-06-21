@@ -111,7 +111,7 @@ extension HomeViewController {
             }
             urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", chain, asset.symbol, Authenticated.wallet!.address)
         } else {
-            urlString = "https://www.coinbase.com/price/\(asset.symbol.lowercased())"
+            urlString = "https://www.coinbase.com/price/\(asset.name.lowercased())"
         }
     
         DispatchQueue.main.async {
@@ -130,13 +130,13 @@ extension HomeViewController {
             if walletAssets.count == 0 {
                 return 0.0
             } else {
-                return 30.0
+                return 34.0
             }
         } else {
             if coinbaseAssets.count == 0 {
                 return 0.0
             } else {
-                return 30.0
+                return 34.0
             }
         }
     }
@@ -153,14 +153,13 @@ extension HomeViewController {
             return UIView()
         } else if section == 1 {
             (sectionHeader.viewWithTag(1) as! UILabel).text = "Wallets"
-            (sectionHeader.viewWithTag(1) as! UILabel).theme_textColor = O3Theme.titleColorPicker
+            (sectionHeader.viewWithTag(1) as! UILabel).theme_textColor = O3Theme.sectionHeaderTextColor
             return sectionHeader
         } else {
             (sectionHeader.viewWithTag(1) as! UILabel).text = "Connected Accounts"
-            (sectionHeader.viewWithTag(1) as! UILabel).theme_textColor = O3Theme.titleColorPicker
+            (sectionHeader.viewWithTag(1) as! UILabel).theme_textColor = O3Theme.sectionHeaderTextColor
             return sectionHeader
         }
-        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

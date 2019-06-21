@@ -40,6 +40,12 @@ struct CoinbaseTokenResponse: Codable {
     }
 }
 
+var supportedCurrencies = ["BTC": "Bitcoin", "BCH": "Bitcoin-Cash", "BSV": "Bitcoin-SV",
+                           "ETH": "Ethereum", "LTC": "Litecoin", "XLM": "Stellar",
+                           "XRP": "Ripple", "EOS": "EOS", "ETC": "Etherum-Classic",
+                           "ZEC": "Zcash", "BAT": "basic-attention-token", "USDC": "USDC",
+                           "ZRX": "0x", "REP": "Augur", "DAI": "Dai"]
+
 struct CurrencyAccount: Codable {
     var id: String
     var name: String
@@ -394,7 +400,7 @@ class CoinbaseClient {
     }
     
     func converToPortfolioAccounts(accounts: [CurrencyAccount]) -> [CoinbasePortfolioAccount] {
-        var supportedCurrencies = ["BTC": "Bitcoin", "ETH": "Ethereum"]
+        
         var convertedAccounts = [CoinbasePortfolioAccount]()
         for account in accounts {
             if let walletAccountIndex = convertedAccounts.firstIndex(where: { $0.name == account.balance.currency}) {
@@ -402,9 +408,14 @@ class CoinbaseClient {
                 convertedAccounts[walletAccountIndex].value = newBalance
                 
             } else {
+                var currencySymbol = account.balance.currency.uppercased()
+                if supportedCurrencies.keys.contains(currencySymbol) == false {
+                    continue
+                }
+                
                 if Double(account.balance.amount) ?? 0.0 > 0 && account.type == "wallet" {
-                    convertedAccounts.append(CoinbasePortfolioAccount(symbol: account.balance.currency,
-                                                                      name: account.balance.currency,
+                    convertedAccounts.append(CoinbasePortfolioAccount(symbol: currencySymbol,
+                                                                      name: supportedCurrencies[currencySymbol]!,
                                                                       value: Double(account.balance.amount) ?? 0.0))
                 }
             }

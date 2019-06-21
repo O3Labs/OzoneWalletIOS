@@ -253,7 +253,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
         if section == 0 {
             return 0
         }
-        return 26.0
+        return 34.0
     }
     
     func getCombinedCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -349,7 +349,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
             titleLabel.text = "Connected Accounts"
         }
         
-        titleLabel.theme_textColor = O3Theme.titleColorPicker
+        titleLabel.theme_textColor = O3Theme.sectionHeaderTextColor
         cell?.theme_backgroundColor = O3Theme.backgroundLightgrey
         cell?.contentView.theme_backgroundColor = O3Theme.backgroundSectionHeader
         return cell
@@ -435,9 +435,15 @@ class PortfolioSelectorTableViewController: UITableViewController {
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
             DispatchQueue.main.async {
+                let untrackedIndex = UserDefaultsManager.untrackedWatchAddr.firstIndex(of: self.watchAddresses[indexPath.row].address)
+                if untrackedIndex != nil {
+                    UserDefaultsManager.untrackedWatchAddr.remove(at: untrackedIndex!)
+                }
                 let nep6 = NEP6.getFromFileSystem()!
                 nep6.removeEncryptedKey(address: self.watchAddresses[indexPath.row].address)
                 self.watchAddresses = NEP6.getFromFileSystem()?.getWatchAccounts() ?? []
+                
+                
                 self.accountValues.removeValue(forKey: indexPath)
                 self.sumForCombined()
             }
@@ -454,13 +460,49 @@ class PortfolioSelectorTableViewController: UITableViewController {
     }
     
     func handlePortfolioTapped(indexPath: IndexPath) {
-        var absoluteIndex = indexPath.row
-        for section in 0..<indexPath.section {
-            absoluteIndex += tableView.numberOfRows(inSection: section)
+        var absoluteIndex = 0
+        if indexPath.section == 0 {
+            absoluteIndex = 0
+        } else if indexPath.section == 1 {
+            absoluteIndex = indexPath.row
+        } else if indexPath.section == 2 {
+            absoluteIndex = wallets.count
+            for row in 0..<indexPath.row {
+                if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddrs[IndexPath(row: row, section: 2)]!.address) {
+                    continue
+                } else {
+                    absoluteIndex += 1
+                }
+            }
+        } else {
+            absoluteIndex = wallets.count + watchAddrs.count - UserDefaultsManager.untrackedWatchAddr.count + 1
         }
         
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "jumpToPortfolio"), object: nil, userInfo: ["portfolioIndex": absoluteIndex])
         self.dismiss(animated: true)
+    }
+    
+    func handleExternalAccountTapped(indexPath: IndexPath) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let jumpPortfolioAction = UIAlertAction(title: "Jump to Portfolio", style: .default) { _ in
+            self.handlePortfolioTapped(indexPath: indexPath)
+        }
+        alert.addAction(jumpPortfolioAction)
+        
+        let manageCoinbaseAction = UIAlertAction(title: "ManageAccount", style: .default) { _ in
+        
+        }
+        alert.addAction(manageCoinbaseAction)
+    
+        
+        let cancel = UIAlertAction(title: OzoneAlert.cancelNegativeConfirmString, style: .cancel) { _ in
+            
+        }
+        alert.addAction(cancel)
+        
+        
+        present(alert, animated: true, completion: nil)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -474,7 +516,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
             }
         } else if indexPath.section == 3 {
             if ExternalAccounts.getCoinbaseTokenFromDisk() != nil {
-                // do something else
+                handleExternalAccountTapped(indexPath: indexPath)
             } else {
                 Controller().openDappBrowserV2(url: coinbase_dapp_url)
             }

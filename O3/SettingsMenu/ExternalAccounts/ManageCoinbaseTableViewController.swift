@@ -50,9 +50,9 @@ class ManageCoinbaseTableViewController: UITableViewController {
     }
     
     func setLocalizedStrings() {
-        connectedAccountLabel.text = "Connected Account"
-        updateLimitLabel.text = "Update Limits"
-        disconnectAccountLabel.text = "Disconnect Account"
+        connectedAccountLabel.text = "Connected account"
+        updateLimitLabel.text = "Update spending limit"
+        disconnectAccountLabel.text = "Disconnect account"
         title = "Manage Coinbase"
     }
     

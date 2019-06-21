@@ -66,7 +66,6 @@
 		354013A522BC847D00AB11ED /* ZendeskSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 354013A122BC847C00AB11ED /* ZendeskSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		354013A622BC847D00AB11ED /* ZendeskCoreSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 354013A222BC847C00AB11ED /* ZendeskCoreSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		354013A722BC847D00AB11ED /* ZendeskProviderSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 354013A322BC847D00AB11ED /* ZendeskProviderSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		354013AA22BC874D00AB11ED /* ZendeskSDKStrings.bundle in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 354013A922BC874C00AB11ED /* ZendeskSDKStrings.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		354013AB22BC875200AB11ED /* ZendeskSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 354013A922BC874C00AB11ED /* ZendeskSDKStrings.bundle */; };
 		354394D3218979AE000C1D8C /* ConvertToWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354394D2218979AE000C1D8C /* ConvertToWalletTableViewController.swift */; };
 		354394D6218BF16B000C1D8C /* IdentitiesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354394D5218BF16B000C1D8C /* IdentitiesTableViewController.swift */; };
@@ -384,7 +383,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				354013AA22BC874D00AB11ED /* ZendeskSDKStrings.bundle in Embed Frameworks */,
 				354013A522BC847D00AB11ED /* ZendeskSDK.framework in Embed Frameworks */,
 				354013A622BC847D00AB11ED /* ZendeskCoreSDK.framework in Embed Frameworks */,
 				354013A722BC847D00AB11ED /* ZendeskProviderSDK.framework in Embed Frameworks */,
