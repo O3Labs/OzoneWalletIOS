@@ -490,8 +490,8 @@ class PortfolioSelectorTableViewController: UITableViewController {
         }
         alert.addAction(jumpPortfolioAction)
         
-        let manageCoinbaseAction = UIAlertAction(title: "ManageAccount", style: .default) { _ in
-        
+        let manageCoinbaseAction = UIAlertAction(title: "Manage Account", style: .default) { _ in
+            Controller().openCoinbaseSettings()
         }
         alert.addAction(manageCoinbaseAction)
     

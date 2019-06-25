@@ -228,13 +228,16 @@ class HomeViewModel {
     func loadPortfolioValue() {
         delegate?.showLoadingIndicator()
         DispatchQueue.global().async {
+            let startIndex = self.currentIndex
             O3Client.shared.getPortfolioValue(self.getTransferableAssets(), interval: self.selectedInterval.rawValue) {result in
                 switch result {
                 case .failure:
                     self.delegate?.hideLoadingIndicator()
                 case .success(let portfolio):
-                    self.delegate?.hideLoadingIndicator()
-                    self.delegate?.updateWithPortfolioData(portfolio)
+                    if startIndex == self.currentIndex {
+                        self.delegate?.hideLoadingIndicator()
+                        self.delegate?.updateWithPortfolioData(portfolio)
+                    }
                 }
             }
         }

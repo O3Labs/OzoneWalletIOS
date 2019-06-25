@@ -109,6 +109,16 @@ class Controller: NSObject {
         UIApplication.topViewController()!.present(nav, animated: true)
     }
     
+    func openCoinbaseSettings() {
+        guard let coinbaseModal = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(withIdentifier: "coinbaseTableViewController") as? ManageCoinbaseTableViewController else {
+            fatalError("Presenting improper view controller")
+        }
+        
+        let nav = UINavigationController()
+        nav.viewControllers = [coinbaseModal]
+        UIApplication.topViewController()!.present(nav, animated: true)
+    }
+    
     func openMyAddress() {
         guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {
             return

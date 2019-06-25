@@ -712,6 +712,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
+                                                <constraint firstItem="xCN-nt-tc1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Mqg-79-r5F" secondAttribute="trailing" constant="8" id="Cw2-RR-X50"/>
                                                 <constraint firstAttribute="trailing" secondItem="xCN-nt-tc1" secondAttribute="trailing" constant="20" id="Liy-QR-jde"/>
                                                 <constraint firstItem="Mqg-79-r5F" firstAttribute="centerY" secondItem="Q6P-Z1-Tfe" secondAttribute="centerY" id="MHu-mQ-7Fb"/>
                                                 <constraint firstItem="Mqg-79-r5F" firstAttribute="leading" secondItem="Q6P-Z1-Tfe" secondAttribute="leading" constant="16" id="g4o-VS-bDx"/>

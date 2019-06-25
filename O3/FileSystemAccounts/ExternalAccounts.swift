@@ -142,6 +142,10 @@ public class ExternalAccounts: Codable {
     }
     
     public func writeToFileSystem() {
+        //update portfolio when adding or removing aan account from disk
+        let needUpdatePortfolio =
+            ExternalAccounts.getFromFileSystem().accounts.count !=
+        getAccounts().count
         let nep6Data = try! JSONEncoder().encode(self)
         let fileName = ExternalAccounts.file_on_disk_name
         let DocumentDirURL = CloudDataManager.DocumentsDirectory.localDocumentsURL
@@ -156,7 +160,10 @@ public class ExternalAccounts: Codable {
         let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("json")
         try! nep6Data.write(to: fileURL, options: [.atomic, .completeFileProtection])
         //trigger protfolio cha ges when new account added
-        NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
+        if needUpdatePortfolio {
+            NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
+        }
+        
     }
     
     

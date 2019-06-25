@@ -46,21 +46,23 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var coinbaseAssets: [PortfolioAsset] {
         get {
-            return displayedAssets.filter { asset -> Bool in
+            var assets = displayedAssets.filter { asset -> Bool in
                 return self.homeviewModel.coinbaseAccountBalances.contains {
                     return $0.symbol.lowercased() == asset.symbol.lowercased()
                 }
             }
+            return assets
         }
     }
     
     var walletAssets: [PortfolioAsset] {
         get {
-            return displayedAssets.filter { asset -> Bool in
+            var assets = displayedAssets.filter { asset -> Bool in
                 return self.homeviewModel.coinbaseAccountBalances.contains {
                     $0.symbol.lowercased() == asset.symbol.lowercased()
                 } == false
             }
+            return assets
         }
     }
     

@@ -288,7 +288,7 @@ class CoinbaseClient {
                             completion(.failure(CoinbaseClientError.invalidData))
                             return
                     }
-                    let index = currencyAccounts.firstIndex {$0.type == "wallet" && $0.balance.currency.lowercased() == currency.lowercased() }
+                    let index = currencyAccounts.firstIndex { $0.balance.currency.lowercased() == currency.lowercased() }
                     if index == nil {
                         completion(.failure(CoinbaseSpecificError(id: "wallet_error", message: "User does not have this wallet in their coinbase account")))
                     } else {
@@ -403,7 +403,7 @@ class CoinbaseClient {
         
         var convertedAccounts = [CoinbasePortfolioAccount]()
         for account in accounts {
-            if let walletAccountIndex = convertedAccounts.firstIndex(where: { $0.name == account.balance.currency}) {
+            if let walletAccountIndex = convertedAccounts.firstIndex(where: { $0.symbol == account.balance.currency}) {
                 var newBalance = convertedAccounts[walletAccountIndex].value + (Double(account.balance.amount) ?? 0.0)
                 convertedAccounts[walletAccountIndex].value = newBalance
                 
@@ -413,7 +413,7 @@ class CoinbaseClient {
                     continue
                 }
                 
-                if Double(account.balance.amount) ?? 0.0 > 0 && account.type == "wallet" {
+                if Double(account.balance.amount) ?? 0.0 > 0 {
                     convertedAccounts.append(CoinbasePortfolioAccount(symbol: currencySymbol,
                                                                       name: supportedCurrencies[currencySymbol]!,
                                                                       value: Double(account.balance.amount) ?? 0.0))
