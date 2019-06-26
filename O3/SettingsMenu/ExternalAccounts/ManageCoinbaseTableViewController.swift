@@ -71,10 +71,12 @@ class ManageCoinbaseTableViewController: UITableViewController {
             Controller().openDappBrowserV2(url: coinbase_dapp_url)
         } else if indexPath.row == 1 {
             Controller().openDappBrowserV2(url: coinbase_dapp_url)
+            CoinbaseEvent().updateLimit()
         } else if indexPath.row == 2 {
             var externalAccounts = ExternalAccounts.getFromFileSystem()
             externalAccounts.removeAccount(platform: ExternalAccounts.Platforms.COINBASE)
             externalAccounts.writeToFileSystem()
+            CoinbaseEvent().removedCoinbase()
             DispatchQueue.main.async {
                 //trigger this to reload the portfolio screen
                 self.dismiss(animated: true)

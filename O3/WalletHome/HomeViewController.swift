@@ -419,7 +419,7 @@ extension HomeViewController: QRScanDelegate {
         //if there is more type of string we have to check it here
         if data.hasPrefix("neo") {
             DispatchQueue.main.async {
-            //self.sendTapped(qrData: data)
+            self.startSendRequest   (qrData: data)
             }
         } else if (URL(string: data) != nil) {
             //dont present from top
@@ -435,8 +435,25 @@ extension HomeViewController: QRScanDelegate {
             }
         } else {
             DispatchQueue.main.async {
-                //self.sendTapped()
+                self.startSendRequest()
             }
+        }
+    }
+    
+    func startSendRequest(qrData: String? = nil) {
+        DispatchQueue.main.async {
+            guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "sendWhereTableViewController") as? SendWhereTableViewController else {
+                fatalError("Presenting improper modal controller")
+            }
+            sendModal.incomingQRData = qrData
+            let nav = NoHairlineNavigationController(rootViewController: sendModal)
+            nav.navigationBar.prefersLargeTitles = false
+            nav.navigationItem.largeTitleDisplayMode = .never
+            sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(self.dismissTapped))
+            let transitionDelegate = DeckTransitioningDelegate()
+            nav.transitioningDelegate = transitionDelegate
+            nav.modalPresentationStyle = .custom
+            self.present(nav, animated: true, completion: nil)
         }
     }
 }

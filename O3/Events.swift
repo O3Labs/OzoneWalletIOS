@@ -299,5 +299,37 @@ class RevenueEvent: NSObject {
     }
 }
 
+class CoinbaseEvent: NSObject {
+    private var amplitude: Amplitude! = Amplitude.instance()
+    static let shared: RevenueEvent! = RevenueEvent()
+    
+    enum coinbaseEventName: String {
+        case connectedCoinbase = "connected_coinbase"
+        case updatedLimit = "update_limit_tapped"
+        case removedCoinbase = "remove_coinbase"
+        case transactedCoinbase = "transaction_coinbase"
+    }
+    
+    func log(event: String, data: [String: Any]) {
+        amplitude.logEvent(event, withEventProperties: data)
+    }
+    
+    func connectedCoinbase() {
+        log(event: coinbaseEventName.connectedCoinbase.rawValue, data:[:])
+    }
+    
+    func updateLimit() {
+        log(event: coinbaseEventName.updatedLimit.rawValue, data:[:])
+    }
+    
+    func removedCoinbase() {
+        log(event: coinbaseEventName.removedCoinbase.rawValue, data:[:])
+    }
+    
+    func transactedCoinbase() {
+        log(event: coinbaseEventName.transactedCoinbase.rawValue, data: [:])
+    }
+}
+
 
 

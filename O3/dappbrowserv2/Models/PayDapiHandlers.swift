@@ -27,6 +27,7 @@ extension dAppBrowserViewModel {
         }, onCompleted: { response, err in
             DispatchQueue.global().async {
                 if err == nil {
+                    CoinbaseEvent().transactedCoinbase()
                     self.delegate?.didFinishMessage(message: message, response: response!.dictionary)
                 } else {
                     self.delegate?.error(message: message, error: err.debugDescription)

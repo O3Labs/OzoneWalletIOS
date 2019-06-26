@@ -24,6 +24,7 @@ extension dAppBrowserViewModel {
                     case .success(let userData):
                         ExternalAccounts.getFromFileSystem().setAccount(platform: ExternalAccounts.Platforms.COINBASE, unencryptedToken: token.refresh_token,
                                                                         scope: token.scope, accountMetaData: userData)
+                        CoinbaseEvent().connectedCoinbase()
                         self.delegate?.didFinishMessage(message: message, response: true)
                     }
                 }
