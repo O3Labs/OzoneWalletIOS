@@ -30,6 +30,7 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
             dic["data"] = response
             let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
             let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
+            print(jsonString)
             self.callback(jsonString: jsonString)
         }
     }

@@ -288,7 +288,7 @@ class CoinbaseClient {
                             completion(.failure(CoinbaseClientError.invalidData))
                             return
                     }
-                    let index = currencyAccounts.firstIndex { $0.balance.currency.lowercased() == currency.lowercased() }
+                    let index = currencyAccounts.firstIndex { $0.balance.currency.lowercased() == currency.lowercased() && $0.type == "wallet" }
                     if index == nil {
                         completion(.failure(CoinbaseSpecificError(id: "wallet_error", message: "User does not have this wallet in their coinbase account")))
                     } else {

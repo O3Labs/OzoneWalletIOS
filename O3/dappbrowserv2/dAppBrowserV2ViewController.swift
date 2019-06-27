@@ -381,8 +381,11 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         checkBackForwardButton()
-        
-        self.event(eventName: "READY", data: [:])
+        var theme = "Light Mode"
+        if UserDefaultsManager.theme == .dark {
+            theme = "Dark Mode"
+        }
+        self.event(eventName: "READY", data: ["name": "o3", "version": "v2", "website": "https://o3.network", "compatibility": ["NEP-dapi", "PAY"], "theme": theme])
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {

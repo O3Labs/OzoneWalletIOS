@@ -46,7 +46,7 @@ public class dAppProtocol: NSObject {
         let extra: [String: String]
         
         enum CodingKeys: String, CodingKey {
-            case compatibility = "platform"
+            case compatibility = "compatibility"
             case name = "name"
             case version = "version"
             case website = "website"
