@@ -203,10 +203,6 @@ class PortfolioSelectorTableViewController: UITableViewController {
         }
     }
     
-    func loadPortfolioAccountValues() {
-        
-    }
-    
     func getPortfolioForAccountState(indexPath: IndexPath, accountState: AccountState, address: String) {
         O3Client().getAccountValue(accountState.assets + accountState.nep5Tokens + accountState.ontology) { result in
             switch result {
@@ -421,12 +417,14 @@ class PortfolioSelectorTableViewController: UITableViewController {
         let addRemoveTotalAction = UIAlertAction(title: totalTitle, style: .default) { _ in
             if isTracked {
                 UserDefaultsManager.untrackedWatchAddr = UserDefaultsManager.untrackedWatchAddr + [self.watchAddrs[indexPath]!.address]
+                NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
                 self.handlePortfolioTapped(indexPath: IndexPath(row: 0, section: 0))
             } else {
                 
                 var newUntracked = UserDefaultsManager.untrackedWatchAddr
                 newUntracked.remove(at: newUntracked.firstIndex {$0 == self.watchAddrs[indexPath]!.address }!)
                 UserDefaultsManager.untrackedWatchAddr = newUntracked
+                NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
                 self.handlePortfolioTapped(indexPath: IndexPath(row: 0, section: 0))
             }
         }

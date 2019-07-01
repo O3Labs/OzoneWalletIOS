@@ -97,8 +97,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc func jumpToPortfolio(_ notification: NSNotification) {
         if let portfolioIndex = notification.userInfo?["portfolioIndex"] as? Int {
-            walletHeaderCollectionView.reloadData()
             homeviewModel.currentIndex = portfolioIndex
+            walletHeaderCollectionView.reloadData()
             self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: portfolioIndex, section: 0), at: .left, animated: false)
             getBalance()
         }
