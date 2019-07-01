@@ -14,6 +14,7 @@ import SwiftTheme
 import DeckTransition
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, GraphPanDelegate, ScrollableGraphViewDataSource, HomeViewModelDelegate, EmptyPortfolioDelegate, AddressAddDelegate {
+    
 
     @IBOutlet weak var walletHeaderCollectionView: UICollectionView!
     @IBOutlet weak var graphLoadingIndicator: UIActivityIndicatorView!
@@ -40,10 +41,34 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var firstTimeViewLoad = true
     var homeviewModel: HomeViewModel!
     var selectedPrice: PriceData?
-    var displayedAssets = [TransferableAsset]()
+    var displayedAssets = [PortfolioAsset]()
     var watchAddresses = [NEP6.Account]()
     
+    var coinbaseAssets: [PortfolioAsset] {
+        get {
+            var assets = displayedAssets.filter { asset -> Bool in
+                return self.homeviewModel.coinbaseAccountBalances.contains {
+                    return $0.symbol.lowercased() == asset.symbol.lowercased()
+                }
+            }
+            return assets
+        }
+    }
+    
+    var walletAssets: [PortfolioAsset] {
+        get {
+            var assets = displayedAssets.filter { asset -> Bool in
+                return self.homeviewModel.coinbaseAccountBalances.contains {
+                    $0.symbol.lowercased() == asset.symbol.lowercased()
+                } == false
+            }
+            return assets
+        }
+    }
+    
+    
     var halfModalTransitioningDelegate: HalfModalTransitioningDelegate?
+    
 
     func addThemedElements() {
         applyNavBarTheme()
@@ -83,6 +108,31 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeviewModel.reloadBalances()
     }
     
+    func updateWithPortfolioData(_ portfolio: PortfolioValue) {
+        DispatchQueue.main.async {
+            self.portfolio = portfolio
+            self.selectedPrice = portfolio.data.first
+            self.walletHeaderCollectionView.reloadData()
+            self.assetsTable.reloadData()
+            if portfolio.data.first?.average == 0.0 &&
+                portfolio.data.last?.average == 0.0 &&
+                self.homeviewModel.currentIndex == 0 {
+                self.setEmptyGraphView()
+            } else {
+                self.emptyGraphView?.isHidden = true
+            }
+            self.graphView.reload()
+        }
+        
+        //A hack otherwise graph wont appear
+        if self.firstTimeGraphLoad {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                self.graphView.reload()
+                self.firstTimeGraphLoad = false
+            }
+        }
+    }
+    
     func loadInbox() {
         let pubkey = O3KeychainManager.getO3PubKey()!
         O3APIClient(network: AppState.network).getMessages(pubKey: pubkey) { result in
@@ -103,47 +153,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
             }
         }
-    }
-
-
-    @objc func updateGraphAppearance(_ sender: Any) {
-        DispatchQueue.main.async {
-            
-            let needEmptyView = self.graphViewContainer.subviews.last ?? UIView() == self.emptyGraphView ?? UIView()
-            
-            self.graphView.removeFromSuperview()
-            self.panView.removeFromSuperview()
-            self.setupGraphView()
-            self.getBalance()
-            if needEmptyView {
-                self.graphViewContainer.bringSubviewToFront(self.emptyGraphView!)
-            }
-        }
-    }
-
-    func setupGraphView() {
-        graphView = ScrollableGraphView.ozoneTheme(frame: graphViewContainer.bounds, dataSource: self)
-        graphViewContainer.embed(graphView)
-
-        panView = GraphPanView(frame: graphViewContainer.bounds)
-        panView.delegate = self
-        graphViewContainer.embed(panView)
-    }
-
-    func panDataIndexUpdated(index: Int, timeLabel: UILabel) {
-        DispatchQueue.main.async {
-            self.selectedPrice = self.portfolio?.data.reversed()[index]
-            self.walletHeaderCollectionView.reloadData()
-
-            let posixString = self.portfolio?.data.reversed()[index].time ?? ""
-            timeLabel.text = posixString.intervaledDateString(self.homeviewModel.selectedInterval)
-            timeLabel.sizeToFit()
-        }
-    }
-
-    func panEnded() {
-        selectedPrice = self.portfolio?.data.first
-        DispatchQueue.main.async { self.walletHeaderCollectionView.reloadData() }
     }
     
     func addObservers() {
@@ -227,11 +236,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupGraphView()
         showDisclaimer()
         super.viewDidLoad()
-
     }
     
     @objc func showMultiWalletDisplay() {
-        Controller().openWalletSelector()
+        Controller().openPortfolioSelector()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -260,114 +268,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
-    func updateWithBalanceData(_ assets: [TransferableAsset]) {
+    func updateWithBalanceData(_ assets: [PortfolioAsset]) {
         self.displayedAssets = assets
         DispatchQueue.main.async {
             self.assetsTable.delegate = self
             self.assetsTable.dataSource = self
             self.assetsTable.reloadData()
         }
-    }
-
-    func updateWithPortfolioData(_ portfolio: PortfolioValue) {
-        DispatchQueue.main.async {
-            self.portfolio = portfolio
-            self.selectedPrice = portfolio.data.first
-            self.walletHeaderCollectionView.reloadData()
-            self.assetsTable.reloadData()
-            if portfolio.data.first?.average == 0.0 &&
-                portfolio.data.last?.average == 0.0 &&
-                self.homeviewModel.currentIndex == 0 {
-                self.setEmptyGraphView()
-            } else {
-                self.emptyGraphView?.isHidden = true
-            }
-            self.graphView.reload()
-        }
-
-        //A hack otherwise graph wont appear
-        if self.firstTimeGraphLoad {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                self.graphView.reload()
-                self.firstTimeGraphLoad = false
-            }
-        }
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            if AppState.dismissBackupNotification() == false {
-                guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "notification-cell") as? PortfolioNotificationTableViewCell else {
-                    fatalError("Undefined Table Cell Behavior")
-                }
-                cell.selectionStyle = .none
-                cell.delegate = self
-                return cell
-            } else {
-                guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "buyNeoCell") as? BuyNeoTableViewCell else {
-                    fatalError("Undefined Table Cell Behavior")
-                }
-                cell.selectionStyle = .none
-                return cell
-            }
-        }
-        guard let cell = assetsTable.dequeueReusableCell(withIdentifier: "portfolioAssetCell") as? PortfolioAssetCell else {
-            fatalError("Undefined Table Cell Behavior")
-        }
-        let asset = self.displayedAssets[indexPath.row]
-        guard let latestPrice = portfolio?.price[asset.symbol],
-            let firstPrice = portfolio?.firstPrice[asset.symbol] else {
-                cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
-                                                    amount: Double(truncating: asset.value as NSNumber),
-                                                    referenceCurrency: (homeviewModel?.referenceCurrency)!,
-                                                    latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
-                                                    firstPrice: PriceData(average: 0, averageBTC: 0, time: "24h"))
-                return cell
-        }
-
-        cell.data = PortfolioAssetCell.Data(assetName: asset.symbol,
-                                            amount: Double(truncating: asset.value as NSNumber),
-                                            referenceCurrency: (homeviewModel?.referenceCurrency)!,
-                                            latestPrice: latestPrice,
-                                            firstPrice: firstPrice)
-        cell.selectionStyle = .none
-        return cell
-    }
-
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section == 0 {
-            return
-        }
-
-        let asset = self.displayedAssets[indexPath.row]
-        var chain = "neo"
-        if asset.assetType == TransferableAsset.AssetType.ontologyAsset {
-            chain = "ont"
-        }
-        let url = URL(string: String(format: "https://public.o3.network/%@/assets/%@?address=%@", chain, asset.symbol, Authenticated.wallet!.address))
-        DispatchQueue.main.async {
-            Controller().openDappBrowserV2(url: url!, assetSymbol: asset.symbol)
-        }
-    }
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            var addressHasBalance = false
-            for asset in self.displayedAssets {
-                if asset.value > 0 {
-                    addressHasBalance = true
-                }
-            }
-            //notification area
-            return 1
-        }
-        return self.displayedAssets.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -404,24 +311,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
-    // MARK: - Graph delegate
-    func value(forPlot plot: Plot, atIndex pointIndex: Int) -> Double {
-        if pointIndex > portfolio!.data.count {
-            return 0
-        }
-        return homeviewModel?.referenceCurrency == .btc ? portfolio!.data.reversed()[pointIndex].averageBTC : portfolio!.data.reversed()[pointIndex].average
-    }
-
-    func label(atIndex pointIndex: Int) -> String {
-        return ""//String(format:"%@",portfolio!.data[pointIndex].time)
-    }
-
-    func numberOfPoints() -> Int {
-        if portfolio == nil {
-            return 0
-        }
-        return portfolio!.data.count
-    }
+    
 
     func setLocalizedStrings() {
         
@@ -462,107 +352,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         nav.modalPresentationStyle = .custom
         self.present(nav, animated: true, completion: nil)
     }
-}
-
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, WalletHeaderCellDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
-        unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
-        return unfiltered.count + 1
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "walletHeaderCollectionCell", for: indexPath) as? WalletHeaderCollectionCell else {
-            fatalError("Undefined collection view behavior")
-        }
-        cell.delegate = self
-
-        var account: NEP6.Account? = nil
-        var type: WalletHeaderCollectionCell.HeaderType
-        var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
-        unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
-        
-        if indexPath.row == 0 {
-            type = WalletHeaderCollectionCell.HeaderType.combined
-        } else {
-            type = WalletHeaderCollectionCell.HeaderType.account
-            account = unfiltered[indexPath.row - 1]
-        }
-        
-        
-        if indexPath.row == unfiltered.count {
-            cell.rightButton.isHidden = true
-        } else {
-            cell.rightButton.isHidden = false
-        }
-        
-        var data =  WalletHeaderCollectionCell.Data (
-            type: type,
-            account: account,
-            latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
-            previousPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
-            referenceCurrency: (homeviewModel?.referenceCurrency)!,
-            selectedInterval: (homeviewModel?.selectedInterval)!
-        )
-        
-        //portfolio prices can only be loaded when the cell actually appeaRS
-        if (homeviewModel.currentIndex != indexPath.row) {
-            cell.data = data
-            return cell
-        }
-
-        guard let latestPrice = selectedPrice,
-            let previousPrice = portfolio?.data.last else {
-                cell.data = data
-                return cell
-        }
-        data.latestPrice = latestPrice
-        data.previousPrice = previousPrice
-        cell.data = data
-
-        return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let screenSize = UIScreen.main.bounds
-        return CGSize(width: screenSize.width, height: 75)
-    }
-
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if scrollView == assetsTable {
-            return
-        }
-
-        var visibleRect = CGRect()
-        visibleRect.origin = walletHeaderCollectionView.contentOffset
-        visibleRect.size = walletHeaderCollectionView.bounds.size
-
-        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
-        let visibleIndexPath: IndexPath? = walletHeaderCollectionView.indexPathForItem(at: visiblePoint)
-        if visibleIndexPath != nil {
-            self.homeviewModel?.setCurrentIndex(visibleIndexPath!.row)
-        }
-    }
     
-    func setEmptyGraphView() {
-        if emptyGraphView == nil {
-            emptyGraphView = EmptyPortfolioView(frame: graphViewContainer.bounds).loadNib()
-            (emptyGraphView as! EmptyPortfolioView).emptyDelegate = self
-            graphViewContainer.embed(emptyGraphView!)
-            graphViewContainer.bringSubviewToFront(emptyGraphView!)
-        }
-
-        (emptyGraphView as! EmptyPortfolioView).emptyLabel.text = PortfolioStrings.emptyBalance
-        (emptyGraphView as! EmptyPortfolioView).rightActionButton.setTitle(PortfolioStrings.depositTokens, for: UIControl.State())
-        (emptyGraphView as! EmptyPortfolioView).leftActionButton.setTitle("Buy NEO", for: UIControl.State())
-        (emptyGraphView as! EmptyPortfolioView).leftActionButton.isHidden = false
-        (emptyGraphView as! EmptyPortfolioView).rightActionButton.isHidden = false
-        (emptyGraphView as! EmptyPortfolioView).dividerLine.isHidden = false
     
-        emptyGraphView?.isHidden = false
-    }
     
     func addressAdded(_ address: String, nickName: String) {
         let context = UIApplication.appDelegate.persistentContainer.viewContext
@@ -611,36 +402,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         actionSheet.addAction(cancel)
         present(actionSheet, animated: true, completion: nil)
     }
-    
-    func emptyPortfolioRightButtonTapped() {
-        if homeviewModel.currentIndex != 0 {
-            displayEnableMultiWallet()
-        } else {
-            displayDepositTokens()
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        Controller().openWalletSelector()
-
-    }
-
-    func didTapLeft() {
-        DispatchQueue.main.async {
-            let index = self.walletHeaderCollectionView.indexPathsForVisibleItems[0].row
-            self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row: index - 1, section: 0), at: .left, animated: true)
-            self.homeviewModel?.setCurrentIndex(index - 1)
-        }
-    }
-
-    func didTapRight() {
-        DispatchQueue.main.async {
-            let index = self.walletHeaderCollectionView.indexPathsForVisibleItems[0].row
-            self.walletHeaderCollectionView.scrollToItem(at: IndexPath(row:
-                 index + 1, section: 0), at: .right, animated: true)
-            self.homeviewModel?.setCurrentIndex(index + 1)
-        }
-    }
 }
 
 extension HomeViewController: PortfolioNotificationTableViewCellDelegate {
@@ -658,12 +419,41 @@ extension HomeViewController: QRScanDelegate {
         //if there is more type of string we have to check it here
         if data.hasPrefix("neo") {
             DispatchQueue.main.async {
-                //Controller().openSend(to:)
+            self.startSendRequest   (qrData: data)
             }
         } else if (URL(string: data) != nil) {
-            Controller().openDappBrowserV2(url: URL(string: data)!)
+            //dont present from top
+            let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
+            if let vc = nav!.viewControllers.first as?
+                dAppBrowserV2ViewController {
+                let viewModel = dAppBrowserViewModel()
+                viewModel.url = URL(string: data)
+                vc.viewModel = viewModel
+                DispatchQueue.main.async {
+                    self.present(nav!, animated: true)
+                }
+            }
         } else {
-            //Controller().openSend()
+            DispatchQueue.main.async {
+                self.startSendRequest()
+            }
+        }
+    }
+    
+    func startSendRequest(qrData: String? = nil) {
+        DispatchQueue.main.async {
+            guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "sendWhereTableViewController") as? SendWhereTableViewController else {
+                fatalError("Presenting improper modal controller")
+            }
+            sendModal.incomingQRData = qrData
+            let nav = NoHairlineNavigationController(rootViewController: sendModal)
+            nav.navigationBar.prefersLargeTitles = false
+            nav.navigationItem.largeTitleDisplayMode = .never
+            sendModal.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-x"), style: .plain, target: self, action: #selector(self.dismissTapped))
+            let transitionDelegate = DeckTransitioningDelegate()
+            nav.transitioningDelegate = transitionDelegate
+            nav.modalPresentationStyle = .custom
+            self.present(nav, animated: true, completion: nil)
         }
     }
 }

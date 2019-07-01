@@ -120,11 +120,11 @@ class WithdrawDepositTableViewController: UITableViewController {
         amountTextField.inputAccessoryView = inputToolbar.loadNib()
         amountTextField.inputAccessoryView?.theme_backgroundColor = O3Theme.backgroundColorPicker
         
-        inputToolbar.asset = TransferableAsset(id: asset.id, name: asset.name, symbol: asset.symbol, decimals: asset.decimals, value: asset.amountInDouble(), assetType: AccountState.TransferableAsset.AssetType.nep5Token)
+        inputToolbar.asset = O3WalletNativeAsset(id: asset.id, name: asset.name, symbol: asset.symbol, decimals: asset.decimals, value: asset.amountInDouble(), assetType: AccountState.O3WalletNativeAsset.AssetType.nep5Token)
         
         amountTextField.becomeFirstResponder()
         
-        if asset.symbol.uppercased() == TransferableAsset.NEO().symbol.uppercased() {
+        if asset.symbol.uppercased() == O3WalletNativeAsset.NEO().symbol.uppercased() {
             amountTextField.decimals = 0
         } else {
             amountTextField.decimals = asset.decimals
@@ -142,7 +142,7 @@ class WithdrawDepositTableViewController: UITableViewController {
         
         setupView()
         if selectedAsset == nil {
-            selectedAsset = TransferableAsset.NEO().toTradableAsset()
+            selectedAsset = O3WalletNativeAsset.NEO().toTradableAsset()
             setupSelectedAsset(asset: selectedAsset!)
         }
     }
@@ -296,7 +296,7 @@ extension WithdrawDepositTableViewController: AssetInputToolbarDelegate {
         }
         var adjustedValue = value
         //user can only withdraw a whole amount of NEO
-        if self.selectedAsset!.symbol.uppercased() == TransferableAsset.NEO().symbol.uppercased() {
+        if self.selectedAsset!.symbol.uppercased() == O3WalletNativeAsset.NEO().symbol.uppercased() {
             if value.isLess(than: 1.0) {
                 return
             }
@@ -318,7 +318,7 @@ extension WithdrawDepositTableViewController: AssetInputToolbarDelegate {
         }
         var adjustedValue = value
         //user can only withdraw a whole amount of NEO
-        if self.selectedAsset!.symbol.uppercased() == TransferableAsset.NEO().symbol.uppercased() {
+        if self.selectedAsset!.symbol.uppercased() == O3WalletNativeAsset.NEO().symbol.uppercased() {
             if value.isLess(than: 1.0) {
                 return
             }

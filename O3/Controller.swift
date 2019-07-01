@@ -68,7 +68,7 @@ class Controller: NSObject {
         top!.present(nav!, animated: true, completion: nil)
     }
 
-    func openSend(to: String, selectedAsset: TransferableAsset, amount: String?) {
+    func openSend(to: String, selectedAsset: O3WalletNativeAsset, amount: String?) {
 
         guard let sendModal = UIStoryboard(name: "Send", bundle: nil).instantiateViewController(withIdentifier: "sendWhereTableViewController") as? SendWhereTableViewController else {
             fatalError("Presenting improper modal controller")
@@ -109,6 +109,16 @@ class Controller: NSObject {
         UIApplication.topViewController()!.present(nav, animated: true)
     }
     
+    func openCoinbaseSettings() {
+        guard let coinbaseModal = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(withIdentifier: "coinbaseTableViewController") as? ManageCoinbaseTableViewController else {
+            fatalError("Presenting improper view controller")
+        }
+        
+        let nav = UINavigationController()
+        nav.viewControllers = [coinbaseModal]
+        UIApplication.topViewController()!.present(nav, animated: true)
+    }
+    
     func openMyAddress() {
         guard let tabbar = UIApplication.appDelegate.window?.rootViewController as? O3TabBarController else {
             return
@@ -127,9 +137,13 @@ class Controller: NSObject {
         tabbar.selectedIndex = tabIndex
     }
     
-    func openWalletSelector(isPortfolio: Bool = true ) {
+    func openWalletSelector() {
         let modal = UIStoryboard(name: "WalletSelector", bundle: nil).instantiateInitialViewController() as! UINavigationController
-        (modal.children.first as! WalletSelectorTableViewController).isPortfolio = isPortfolio
+        UIApplication.topViewController()!.present(modal, animated: true, completion: nil)
+    }
+    
+    func openPortfolioSelector(isPortfolio: Bool = true ) {
+        let modal = UIStoryboard(name: "PortfolioSelector", bundle: nil).instantiateInitialViewController() as! UINavigationController
         UIApplication.topViewController()!.present(modal, animated: true, completion: nil)
     }
     

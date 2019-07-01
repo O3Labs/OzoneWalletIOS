@@ -9,7 +9,7 @@
 import UIKit
 
 protocol AssetSelectorDelegate: class {
-    func assetSelected(selected: TransferableAsset, gasBalance: Double)
+    func assetSelected(selected: O3WalletNativeAsset, gasBalance: Double)
 }
 
 class AssetSelectorTableViewController: UITableViewController {
@@ -22,9 +22,9 @@ class AssetSelectorTableViewController: UITableViewController {
         case ontologyAssets
         case nep5Tokens
     }
-    var neoAssets = [TransferableAsset.NEONoBalance(), TransferableAsset.GASNoBalance()]
-    var tokens = [TransferableAsset]()
-    var ontologyAssets = [TransferableAsset]()
+    var neoAssets = [O3WalletNativeAsset.NEONoBalance(), O3WalletNativeAsset.GASNoBalance()]
+    var tokens = [O3WalletNativeAsset]()
+    var ontologyAssets = [O3WalletNativeAsset]()
 
     func addThemedElements() {
         applyNavBarTheme()

@@ -23,7 +23,7 @@ struct AES {
         }
     }
 
-    static public func encrypt(bytes: [UInt8], key: [UInt8], keySize: KeySize, pkcs7Padding: Bool) -> [UInt8] {
+    static public func encrypt(bytes: [UInt8], key: [UInt8], keySize: KeySize, pkcs7Padding: Bool, iv: [UInt8]) -> [UInt8] {
         assert(keySize.rawValue / 8 <= key.count)
 
         let options = kCCOptionECBMode | (pkcs7Padding ? kCCOptionPKCS7Padding : 0)
@@ -32,13 +32,15 @@ struct AES {
 
         var result: [UInt8] = Array(repeatElement(0, count: resultSize))
         var numBytesEncrypted = 0
+        
+        
 
         let status = CCCrypt(CCOperation(kCCEncrypt),
                              CCAlgorithm(kCCAlgorithmAES),
                              CCOptions(options),
                              key,
                              keySize.kCCKeySize,
-                             nil,
+                             iv,
                              bytes,
                              bytes.count,
                              &result,
@@ -51,7 +53,7 @@ struct AES {
         return result
     }
 
-    static public func decrypt(bytes: [UInt8], key: [UInt8], keySize: KeySize, pkcs7Padding: Bool) -> [UInt8] {
+    static public func decrypt(bytes: [UInt8], key: [UInt8], keySize: KeySize, pkcs7Padding: Bool, iv: [UInt8]) -> [UInt8] {
         assert(keySize.rawValue / 8 <= key.count)
 
         let options = kCCOptionECBMode | (pkcs7Padding ? kCCOptionPKCS7Padding : 0)
@@ -60,13 +62,13 @@ struct AES {
 
         var result: [UInt8] = Array(repeatElement(0, count: resultSize))
         var numBytesEncrypted = 0
-
+    
         let status = CCCrypt(CCOperation(kCCDecrypt),
                              CCAlgorithm(kCCAlgorithmAES),
                              CCOptions(options),
                              key,
                              keySize.kCCKeySize,
-                             nil,
+                             iv,
                              bytes,
                              bytes.count,
                              &result,

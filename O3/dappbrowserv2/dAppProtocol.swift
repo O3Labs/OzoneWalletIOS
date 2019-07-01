@@ -28,7 +28,8 @@ public class dAppProtocol: NSObject {
                                               "invokeRead",
                                               "invoke",
                                               "disconnect",
-                                              "send"]
+                                              "send",
+                                              "connect"]
     
     static let needAuthorizationCommands: [String] = ["getAccount", "getAddress", "invoke", "send"]
     
@@ -45,7 +46,7 @@ public class dAppProtocol: NSObject {
         let extra: [String: String]
         
         enum CodingKeys: String, CodingKey {
-            case compatibility = "platform"
+            case compatibility = "compatibility"
             case name = "name"
             case version = "version"
             case website = "website"
@@ -279,11 +280,28 @@ public class dAppProtocol: NSObject {
         }
     }
     
+    struct CoinbaseSendRequest: Codable {
+        var asset: ExternalAccountAsset
+        var to: String
+        var amount: String
+        var description: String?
+        var uniqueId: String?
+        
+        struct ExternalAccountAsset: Codable {
+            var blockchain: String
+            var symbol: String
+            var id: String?
+        }
+    }
+    
+    struct CoinbaseSendResponse: Codable {
+        var result: Bool
+        var txid: String?
+    }
+    
     struct errorResponse: Codable {
         let error: String
     }
-    
-    
 }
 
 

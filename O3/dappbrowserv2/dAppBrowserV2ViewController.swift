@@ -18,6 +18,8 @@ protocol dAppBrowserDelegate {
    
     func onSendRequest(message: dAppMessage, request: dAppProtocol.SendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.SendRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.SendResponse?, _ error: dAppProtocol.errorResponse?) -> Void)
     
+    func onCoinbaseSendRequest(message: dAppMessage, request: dAppProtocol.CoinbaseSendRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.CoinbaseSendRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.CoinbaseSendResponse?, _ error: dAppProtocol.errorResponse?) -> Void)
+    
     func onInvokeRequest(message: dAppMessage, request: dAppProtocol.InvokeRequest, didCancel: @escaping (_ message: dAppMessage, _ request: dAppProtocol.InvokeRequest) -> Void, onCompleted:@escaping (_ response: dAppProtocol.InvokeResponse?, _ error: dAppProtocol.errorResponse?) -> Void)
     
     func error(message: dAppMessage, error: String)
@@ -324,7 +326,7 @@ extension dAppBrowserV2ViewController: WKScriptMessageHandler {
             return
         }
         dapiEvent.shared.methodCall(method: message.command, url: self.viewModel.url.absoluteString, domain: self.viewModel.url.host ?? "")
-        if dAppProtocol.needAuthorizationCommands.contains(message.command) && self.viewModel.isConnected == false {
+        if message.blockchain == "NEO" && dAppProtocol.needAuthorizationCommands.contains(message.command) && self.viewModel.isConnected == false {
             self.viewModel.requestToConnect(message: message, didCancel: { m in
                 //cancel
                 self.viewModel.responseWithError(message: message, error: "CONNECTION_DENIED")
@@ -379,8 +381,11 @@ extension dAppBrowserV2ViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         checkBackForwardButton()
-        
-        self.event(eventName: "READY", data: [:])
+        var theme = "Light Mode"
+        if UserDefaultsManager.theme == .dark {
+            theme = "Dark Mode"
+        }
+        self.event(eventName: "READY", data: ["name": "o3", "version": "v2", "website": "https://o3.network", "compatibility": ["NEP-dapi", "PAY"], "theme": theme])
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {

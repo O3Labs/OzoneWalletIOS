@@ -30,6 +30,7 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
             dic["data"] = response
             let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
             let jsonString = String(data: jsonData!, encoding: String.Encoding.utf8)!
+            print(jsonString)
             self.callback(jsonString: jsonString)
         }
     }
@@ -140,6 +141,28 @@ extension dAppBrowserV2ViewController: dAppBrowserDelegate {
             
             vc.dappMetadata = self.viewModel.dappMetadata
             vc.request = request
+        }
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    func onCoinbaseSendRequest(message: dAppMessage, request: dAppProtocol.CoinbaseSendRequest, didCancel: @escaping (dAppMessage, dAppProtocol.CoinbaseSendRequest) -> Void, onCompleted: @escaping (dAppProtocol.CoinbaseSendResponse?, dAppProtocol.errorResponse?) -> Void) {
+        let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateViewController(withIdentifier: "CoinbaseSendRequestTableViewControllerNav")
+        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+        nav.modalPresentationStyle = .custom
+        nav.transitioningDelegate = self.halfModalTransitioningDelegate
+        if let vc = nav.children.first as? CoinbaseSendRequestTableViewController {
+            vc.url = self.viewModel.url
+            vc.dappMetadata = self.viewModel.dappMetadata
+            vc.request = request
+            vc.message = message
+            
+            vc.onCompleted = { response, err in
+                onCompleted(response,err)
+            }
+            
+            vc.onCancel = { m, r in
+                didCancel(m,r)
+            }
         }
         self.present(nav, animated: true, completion: nil)
     }

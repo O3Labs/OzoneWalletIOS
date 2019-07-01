@@ -29,7 +29,7 @@ class SendReviewTableViewController: UITableViewController {
     @IBOutlet weak var sendButton: ShadowedButton!
     @IBOutlet weak var contentView: UIView!
     
-    var selectedAsset: TransferableAsset!
+    var selectedAsset: O3WalletNativeAsset!
     var selectedAmount: Double!
     var sendToAddress: String!
     var addressAlias: String = ""
@@ -187,7 +187,7 @@ class SendReviewTableViewController: UITableViewController {
         }
     }
     
-    func savePendingTransaction(blockchain: String,txID: String, from: String, to: String, asset: TransferableAsset, amount: String) {
+    func savePendingTransaction(blockchain: String,txID: String, from: String, to: String, asset: O3WalletNativeAsset, amount: String) {
         let context = UIApplication.appDelegate.accountPersistentContainer.viewContext
         let pending = PendingTransaction(context: context)
         pending.blockchain = blockchain

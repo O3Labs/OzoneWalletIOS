@@ -45,22 +45,34 @@ class CreateWalletTableViewController: UITableViewController, UITextFieldDelegat
         setLocalizedStrings()
     }
     
+    func setLoginState() {
+        if enterPasswordField.text!.count >= 8 && confirmPasswordField.text! == enterPasswordField.text{
+            createButton.isEnabled = true
+            createButton.backgroundColor = Theme.light.accentColor
+            enterPasswordField.errorMessage = nil
+            confirmPasswordField.errorMessage = nil
+        } else {
+            createButton.isEnabled = false
+            createButton.backgroundColor = Theme.light.disabledColor
+        }
+        
+        if enterPasswordField.text!.count >= 8 {
+            enterPasswordField.errorMessage = nil
+        }
+    }
+    
     @objc func passwordFieldChanged(_ textfield: UITextField) {
         if (enterPasswordField.text!.count > 5 && enterPasswordField.text!.count < 8) {
             enterPasswordField.errorMessage = "Your password must be at least 8 characters"
-        } else {
-            enterPasswordField.errorMessage = nil
         }
+        setLoginState()
     }
     
     @objc func confirmPasswordFieldChanged(_ textfield: UITextField) {
         if (confirmPasswordField.text! != enterPasswordField.text) {
             confirmPasswordField.errorMessage = "Your passwords don't match"
-        } else {
-            confirmPasswordField.errorMessage = nil
-            createButton.isEnabled = true
-            createButton.backgroundColor = Theme.light.accentColor
         }
+        setLoginState()
     }
     
     @IBAction func cancelTapped(_ sender: Any) {

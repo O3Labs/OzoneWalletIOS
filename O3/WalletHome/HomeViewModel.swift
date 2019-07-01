@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol HomeViewModelDelegate: class {
-    func updateWithBalanceData(_ assets: [TransferableAsset])
+    func updateWithBalanceData(_ assets: [PortfolioAsset])
     func updateWithPortfolioData(_ portfolio: PortfolioValue)
     func showLoadingIndicator()
     func hideLoadingIndicator()
@@ -23,20 +23,15 @@ struct WatchAddr: Hashable {
 
 class HomeViewModel {
     weak var delegate: HomeViewModelDelegate?
-    var accountBalances  = [NEP6.Account: [TransferableAsset]]()
+    var walletAccountBalances  = [NEP6.Account: [O3WalletNativeAsset]]()
+    var coinbaseAccountBalances = [CoinbaseClient.CoinbasePortfolioAccount]()
     
     var addressCount = 0
     var currentIndex = 0
-    
-    //Added for ontology
-
-    /*var neo = O3Cache.neo()
-    var gas = O3Cache.gas()*/
 
     var accounts = [NEP6.Account]()
     var group = DispatchGroup()
 
-    //var portfolioType: PortfolioType = .writable
     var referenceCurrency: Currency = .usd
     var selectedInterval: PriceInterval = .oneDay
 
@@ -55,11 +50,10 @@ class HomeViewModel {
         self.referenceCurrency = currency
     }
 
-    func getCombinedAccounts() -> [TransferableAsset] {
-        
-        var assets = [TransferableAsset]()
+    func getCombinedAccounts() -> [PortfolioAsset] {
+        var assets = [PortfolioAsset]()
         for addr in accounts {
-            for asset in accountBalances[addr] ?? [] {
+            for asset in walletAccountBalances[addr] ?? [] {
                 if let index = assets.firstIndex(where: { (item) -> Bool in item.name == asset.name }) {
                     assets[index].value = assets[index].value + asset.value
                 } else {
@@ -67,22 +61,35 @@ class HomeViewModel {
                 }
             }
         }
+        
+        for asset in coinbaseAccountBalances {
+            if let index = assets.firstIndex(where: { (item) -> Bool in item.name == asset.name }) {
+                assets[index].value = assets[index].value + asset.value
+            } else {
+                assets.append(asset)
+            }
+        }
+        
         return assets
     }
 
-    func getAccountAssets(address: NEP6.Account) -> [TransferableAsset] {
-        return accountBalances[address] ?? []
+    func getAccountAssets(address: NEP6.Account) -> [O3WalletNativeAsset] {
+        return walletAccountBalances[address] ?? []
     }
 
-    func getTransferableAssets() -> [TransferableAsset] {
-        var transferableAssetsToReturn: [TransferableAsset]  = []
+    func getTransferableAssets() -> [PortfolioAsset] {
+        var transferableAssetsToReturn: [PortfolioAsset]  = []
         switch currentIndex {
-        case 0: transferableAssetsToReturn = getCombinedAccounts()
-        default: transferableAssetsToReturn = accountBalances[accounts[currentIndex - 1]] ?? []
+        case 0:
+            transferableAssetsToReturn = getCombinedAccounts()
+        case 1..<walletAccountBalances.keys.count + 1:
+            transferableAssetsToReturn = walletAccountBalances[accounts[currentIndex - 1]] ?? []
+        default:
+            transferableAssetsToReturn = coinbaseAccountBalances
         }
 
         //Put NEO + GAS at the top
-        var sortedAssets = [TransferableAsset]()
+        var sortedAssets = [PortfolioAsset]()
         if let indexNEO = transferableAssetsToReturn.firstIndex(where: { (item) -> Bool in
             item.symbol == "NEO"
         }) {
@@ -104,12 +111,12 @@ class HomeViewModel {
         self.delegate = delegate
         var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
         unfiltered = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
-        var cachedCombinedAssets = [TransferableAsset]()
+        var cachedCombinedAssets = [O3WalletNativeAsset]()
         for account in unfiltered {
-            var totalAssets: [TransferableAsset] = [O3Cache.neoBalance(for: account.address)] +
+            let totalAssets: [O3WalletNativeAsset] = [O3Cache.neoBalance(for: account.address)] +
                 [O3Cache.gasBalance(for: account.address)] + O3Cache.ontologyBalances(for: account.address) +
                 O3Cache.tokensBalance(for: account.address)
-            for asset in totalAssets ?? [] {
+            for asset in totalAssets {
                 if let index = cachedCombinedAssets.firstIndex(where: { (item) -> Bool in item.name == asset.name }) {
                     cachedCombinedAssets[index].value = cachedCombinedAssets[index].value + asset.value
                 } else {
@@ -123,7 +130,7 @@ class HomeViewModel {
     }
 
     func resetReadOnlyBalances() {
-        accountBalances = [:]
+        walletAccountBalances = [:]
     }
     
 
@@ -132,14 +139,17 @@ class HomeViewModel {
         resetReadOnlyBalances()
         accounts = []
         
-        var unfiltered = NEP6.getFromFileSystem()!.getAccounts()
+        let unfiltered = NEP6.getFromFileSystem()!.getAccounts()
         accounts = unfiltered.filter { UserDefaultsManager.untrackedWatchAddr.contains($0.address) == false}
         
         for account in accounts {
-            if NEOValidator.validateNEOAddress(account.address ?? "") {
-                self.loadAccountState(account: account)
-            }
+            self.loadAccountState(account: account)
         }
+        
+        if ExternalAccounts.getCoinbaseTokenFromDisk() != nil {
+            loadCoinbase()
+        }
+        
     
         group.notify(queue: .main) {
             self.loadPortfolioValue()
@@ -147,42 +157,21 @@ class HomeViewModel {
         }
     }
 
-    /*func addWritableAccountState(_ accountState: AccountState) {
-        for asset in accountState.assets {
-            if asset.id.contains(AssetId.neoAssetId.rawValue) {
-                neo = asset
-            } else {
-                gas = asset
-            }
-        }
-        writableTokens = []
-        for token in accountState.nep5Tokens {
-            writableTokens.append(token)
-        }
-        //assign writable ontology asset
-        writableOntologyAssets = accountState.ontology
-
-        O3Cache.setGASForSession(gasBalance: gas.value)
-        O3Cache.setNEOForSession(neoBalance: Int(neo.value))
-        O3Cache.setTokenAssetsForSession(tokens: writableTokens)
-        O3Cache.setOntologyAssetsForSession(tokens: accountState.ontology)
-    }*/
-
-    func addTokenBalance(_ token: TransferableAsset, account: NEP6.Account) {
-        if accountBalances[account] == nil {
-            accountBalances[account] = []
+    func addTokenBalance(_ token: O3WalletNativeAsset, account: NEP6.Account) {
+        if walletAccountBalances[account] == nil {
+            walletAccountBalances[account] = []
         }
         
-        if let index = accountBalances[account]!.firstIndex(where: { (item) -> Bool in item.name == token.name }) {
-            accountBalances[account]![index].value += token.value
+        if let index = walletAccountBalances[account]!.firstIndex(where: { (item) -> Bool in item.name == token.name }) {
+            walletAccountBalances[account]![index].value += token.value
         } else {
-            accountBalances[account]!.append(token)
+            walletAccountBalances[account]!.append(token)
         }
     }
 
     func addAccountState(_ accountState: AccountState, account: NEP6.Account) {
-        if accountBalances.keys.contains(account) {
-            accountBalances[account] = []
+        if walletAccountBalances.keys.contains(account) {
+            walletAccountBalances[account] = []
         }
         
         for asset in accountState.assets {
@@ -215,9 +204,23 @@ class HomeViewModel {
                     self.group.leave()
                     return
                 case .success(let accountState):
-                    self.addAccountState(accountState, account: account)
+                        self.addAccountState(accountState, account: account)
                     self.group.leave()
                 }
+            }
+        }
+    }
+    
+    func loadCoinbase() {
+        self.group.enter()
+        CoinbaseClient.shared.getAllPortfolioAssets { result in
+            switch result {
+            case .failure(_):
+                self.group.leave()
+                return
+            case .success(let response):
+                self.coinbaseAccountBalances = response
+                self.group.leave()
             }
         }
     }
@@ -225,13 +228,16 @@ class HomeViewModel {
     func loadPortfolioValue() {
         delegate?.showLoadingIndicator()
         DispatchQueue.global().async {
+            let startIndex = self.currentIndex
             O3Client.shared.getPortfolioValue(self.getTransferableAssets(), interval: self.selectedInterval.rawValue) {result in
                 switch result {
                 case .failure:
                     self.delegate?.hideLoadingIndicator()
                 case .success(let portfolio):
-                    self.delegate?.hideLoadingIndicator()
-                    self.delegate?.updateWithPortfolioData(portfolio)
+                    if startIndex == self.currentIndex {
+                        self.delegate?.hideLoadingIndicator()
+                        self.delegate?.updateWithPortfolioData(portfolio)
+                    }
                 }
             }
         }

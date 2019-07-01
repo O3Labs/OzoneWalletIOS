@@ -48,7 +48,7 @@ class DeeplinkNavigator {
         
         switch type {
         case .send(address: let address):
-            Controller().openSend(to: address, selectedAsset: TransferableAsset.NEO(), amount: nil)
+            Controller().openSend(to: address, selectedAsset: O3WalletNativeAsset.NEO(), amount: nil)
         case .receive:
             Controller().openMyAddress()
         case .apps(url: let url):

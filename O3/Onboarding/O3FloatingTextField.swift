@@ -15,7 +15,7 @@ class O3FloatingTextField: SkyFloatingLabelTextField {
         super.init(frame: rect)
         //title label attributes
         titleFormatter = { $0 }
-        titleLabel.backgroundColor = .white
+        titleLabel.theme_backgroundColor = O3Theme.backgroundColorPicker
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont(name: "Avenir", size: 12)
         errorColor = Theme.light.errorColor
@@ -24,6 +24,7 @@ class O3FloatingTextField: SkyFloatingLabelTextField {
         //ui field attributes
         borderStyle = UITextField.BorderStyle.roundedRect
         tintColor = Theme.light.accentColor
+        
         theme_textColor = O3Theme.titleColorPicker
         selectedTitleColor = Theme.light.accentColor
         selectedLineHeight = CGFloat(0)
@@ -34,6 +35,7 @@ class O3FloatingTextField: SkyFloatingLabelTextField {
         lineColor = .clear
         lineErrorColor = .clear
         self.font = UIFont(name:"Avenir", size: 14)
+        theme_backgroundColor = O3Theme.cardColorPicker
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,7 +43,7 @@ class O3FloatingTextField: SkyFloatingLabelTextField {
         
         //title label attributes
         titleFormatter = { $0 }
-        titleLabel.backgroundColor = .white
+        titleLabel.theme_backgroundColor = O3Theme.backgroundColorPicker
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont(name: "Avenir", size: 12)
         errorColor = Theme.light.errorColor
@@ -59,6 +61,7 @@ class O3FloatingTextField: SkyFloatingLabelTextField {
         lineColor = .clear
         lineErrorColor = .clear
         self.font = UIFont(name:"Avenir", size: 14)
+        theme_backgroundColor = O3Theme.cardColorPicker
     }
     
     override func titleLabelRectForBounds(_ bounds: CGRect, editing: Bool) -> CGRect {

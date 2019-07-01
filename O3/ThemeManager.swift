@@ -290,4 +290,8 @@ class O3Theme {
                                                       Theme.dark.cardColor.hexString(false),
                                                       Theme.dark.cardColor.hexString(false))
     
+    static let sectionHeaderTextColor = ThemeColorPicker(colors: "#AAAAAAFF",
+                                                          "#AAAAAAFF",
+                                                          "#AAAAAAFF")
+    
 }

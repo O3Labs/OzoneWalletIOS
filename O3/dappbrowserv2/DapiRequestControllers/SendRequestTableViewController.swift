@@ -28,7 +28,7 @@ class SendRequestTableViewController: UITableViewController {
     var dappMetadata: dAppMetadata?
     var accountState: AccountState?
     var url: URL?
-    var requestedAsset: TransferableAsset?
+    var requestedAsset: O3WalletNativeAsset?
     var isCheckingBalance: Bool! = false
 
     var onCancel: ((_ message: dAppMessage, _ request: dAppProtocol.SendRequest)->())?

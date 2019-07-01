@@ -8,15 +8,22 @@
 
 import Foundation
 
-typealias TransferableAsset = AccountState.TransferableAsset
+typealias O3WalletNativeAsset = AccountState.O3WalletNativeAsset
+
+protocol PortfolioAsset {
+    var name: String { get set }
+    var symbol: String { get set }
+    var value: Double {get set}
+}
+
 
 public struct AccountState: Codable {
     var version: Int
     var address: String
     var scriptHash: String
-    var assets: [TransferableAsset]
-    var nep5Tokens: [TransferableAsset]
-    var ontology: [TransferableAsset]
+    var assets: [O3WalletNativeAsset]
+    var nep5Tokens: [O3WalletNativeAsset]
+    var ontology: [O3WalletNativeAsset]
 
     enum CodingKeys: String, CodingKey {
         case version
@@ -28,7 +35,7 @@ public struct AccountState: Codable {
     }
 
     public init(version: Int, address: String, scriptHash: String,
-                assets: [TransferableAsset], nep5Tokens: [TransferableAsset], ontology: [TransferableAsset]?) {
+                assets: [O3WalletNativeAsset], nep5Tokens: [O3WalletNativeAsset], ontology: [O3WalletNativeAsset]?) {
         self.version = version
         self.address = address
         self.scriptHash = scriptHash
@@ -46,13 +53,13 @@ public struct AccountState: Codable {
         let version: Int = try container.decode(Int.self, forKey: .version)
         let address: String = try container.decode(String.self, forKey: .address)
         let scriptHash: String = try container.decode(String.self, forKey: .scriptHash)
-        let assets: [TransferableAsset] = try container.decode([TransferableAsset].self, forKey: .assets)
-        let nep5Tokens: [TransferableAsset] = try container.decode([TransferableAsset].self, forKey: .nep5Tokens)
-        let ontology: [TransferableAsset]? = try? container.decode([TransferableAsset].self, forKey: .ontology)
+        let assets: [O3WalletNativeAsset] = try container.decode([O3WalletNativeAsset].self, forKey: .assets)
+        let nep5Tokens: [O3WalletNativeAsset] = try container.decode([O3WalletNativeAsset].self, forKey: .nep5Tokens)
+        let ontology: [O3WalletNativeAsset]? = try? container.decode([O3WalletNativeAsset].self, forKey: .ontology)
         self.init(version: version, address: address, scriptHash: scriptHash, assets: assets, nep5Tokens: nep5Tokens, ontology: ontology)
     }
 
-    public struct TransferableAsset: Codable {
+    public struct O3WalletNativeAsset: PortfolioAsset, Codable {
         var id: String
         var name: String
         var symbol: String
@@ -121,7 +128,7 @@ public struct AccountState: Codable {
     }
 }
 
-extension TransferableAsset {
+extension O3WalletNativeAsset {
 
     var formattedBalanceString: String {
         let amountFormatter = NumberFormatter()
@@ -134,9 +141,9 @@ extension TransferableAsset {
     }
 }
 
-extension TransferableAsset {
-    static func NEO() -> TransferableAsset {
-        return TransferableAsset(
+extension O3WalletNativeAsset {
+    static func NEO() -> O3WalletNativeAsset {
+        return O3WalletNativeAsset(
             id: AssetId.neoAssetId.rawValue,
             name: "NEO",
             symbol: "NEO",
@@ -145,8 +152,8 @@ extension TransferableAsset {
             assetType: .neoAsset)
     }
 
-    static func NEONoBalance() -> TransferableAsset {
-        return TransferableAsset(
+    static func NEONoBalance() -> O3WalletNativeAsset {
+        return O3WalletNativeAsset(
             id: AssetId.neoAssetId.rawValue,
             name: "NEO",
             symbol: "NEO",
@@ -155,8 +162,8 @@ extension TransferableAsset {
             assetType: .neoAsset)
     }
 
-    static func GAS() -> TransferableAsset {
-        return TransferableAsset(
+    static func GAS() -> O3WalletNativeAsset {
+        return O3WalletNativeAsset(
             id: AssetId.gasAssetId.rawValue,
             name: "GAS",
             symbol: "GAS",
@@ -165,8 +172,8 @@ extension TransferableAsset {
             assetType: .neoAsset)
     }
 
-    static func GASNoBalance() -> TransferableAsset {
-        return TransferableAsset(
+    static func GASNoBalance() -> O3WalletNativeAsset {
+        return O3WalletNativeAsset(
             id: AssetId.gasAssetId.rawValue,
             name: "GAS",
             symbol: "GAS",

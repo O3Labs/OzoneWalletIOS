@@ -19,15 +19,17 @@ protocol WalletHeaderCellDelegate: class {
 class WalletHeaderCollectionCell: UICollectionViewCell {
     struct Data {
         var type: HeaderType
-        var account: NEP6.Account?
+        var blockchainAccount: NEP6.Account?
+        var externalAccount: ExternalAccounts.Account?
         var latestPrice: PriceData
         var previousPrice: PriceData
         var referenceCurrency: Currency
         var selectedInterval: PriceInterval
     }
     enum HeaderType {
-        case account
+        case blockchainAddress
         case combined
+        case linkedAccount
     }
     
     
@@ -39,8 +41,8 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
     
     weak var delegate: WalletHeaderCellDelegate?
     
-    func setupAccount() {
-        walletHeaderLabel.text = data?.account!.label
+    func setupBlockchainAddress() {
+        walletHeaderLabel.text = data?.blockchainAccount!.label
         leftButton.isHidden = false
         percentChangeLabel.isHidden = false
     }
@@ -49,6 +51,12 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
         walletHeaderLabel.text = PortfolioStrings.portfolioHeaderCombinedHeader
         rightButton.isHidden = false
         leftButton.isHidden = true
+        percentChangeLabel.isHidden = false
+    }
+    
+    func setupLinkedAccount() {
+        walletHeaderLabel.text = data?.externalAccount?.platform ?? ""
+        leftButton.isHidden = false
         percentChangeLabel.isHidden = false
     }
     
@@ -64,10 +72,12 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
                     fatalError("Cell is missing type")
             }
             switch type {
-            case .account:
-                setupAccount()
+            case .blockchainAddress:
+                setupBlockchainAddress()
             case .combined:
                 setupCombined()
+            case .linkedAccount:
+                setupLinkedAccount()
             }
             
             

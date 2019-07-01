@@ -121,7 +121,7 @@ public class O3Client {
         }
     }
 
-    func getPortfolioValue(_ assets: [TransferableAsset], interval: String, completion: @escaping (O3ClientResult<PortfolioValue>) -> Void) {
+    func getPortfolioValue(_ assets: [PortfolioAsset], interval: String, completion: @escaping (O3ClientResult<PortfolioValue>) -> Void) {
 
         var queryString = String(format: "?i=%@", interval)
         for asset in assets {
@@ -309,7 +309,7 @@ public class O3Client {
         }
     }
     
-    func getAccountValue(_ assets: [TransferableAsset], completion: @escaping (O3ClientResult<AccountValue>) -> Void) {
+    func getAccountValue(_ assets: [PortfolioAsset], completion: @escaping (O3ClientResult<AccountValue>) -> Void) {
         
         var queryString = String(format: "?currency=%@", UserDefaultsManager.referenceFiatCurrency.rawValue)
         for asset in assets {
@@ -337,6 +337,4 @@ public class O3Client {
             }
         }
     }
-    
-    
 }

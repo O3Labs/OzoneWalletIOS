@@ -107,7 +107,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     }
 
     @objc func showMultiWalletDisplay() {
-        Controller().openWalletSelector(isPortfolio: false)
+        Controller().openWalletSelector()
     }
     
     @objc func openDAppBrowser(_ sender: Any) {
@@ -204,5 +204,4 @@ extension AccountTabViewController: QRScanDelegate {
             }
         }
     }
-    
 }
