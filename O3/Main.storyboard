@@ -442,7 +442,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5r8-hm-IPJ">
-                                                    <rect key="frame" x="16" y="10" width="43" height="24"/>
+                                                    <rect key="frame" x="16" y="18" width="43" height="24"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -636,7 +636,6 @@
                     <connections>
                         <segue destination="F25-Yg-MOz" kind="relationship" relationship="viewControllers" id="aXT-lt-Sa1"/>
                         <segue destination="nwB-AY-Qhc" kind="relationship" relationship="viewControllers" id="pfm-AG-37V"/>
-                        <segue destination="CfQ-Qs-T27" kind="relationship" relationship="viewControllers" id="X7W-5t-FUt"/>
                         <segue destination="Yal-Kt-dC0" kind="relationship" relationship="viewControllers" id="6fp-du-8hA"/>
                         <segue destination="d6f-ly-42d" kind="relationship" relationship="viewControllers" id="2g6-SE-ZaE"/>
                     </connections>
@@ -644,16 +643,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nZe-SP-xuA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1948" y="-170"/>
-        </scene>
-        <!--Marketplace-->
-        <scene sceneID="xrm-z3-Do7">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Marketplace" id="CfQ-Qs-T27" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="6th-ax-yyH"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ugi-lA-ZNw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2688" y="117"/>
         </scene>
         <!--No Hairline Navigation Controller-->
         <scene sceneID="biH-0S-AIy">
@@ -686,10 +675,10 @@
             </objects>
             <point key="canvasLocation" x="3335" y="-170"/>
         </scene>
-        <!--NewsFeed-->
+        <!--Explore-->
         <scene sceneID="zoM-4C-BMM">
             <objects>
-                <viewControllerPlaceholder storyboardName="NewsFeed" id="Yal-Kt-dC0" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="Explore" id="Yal-Kt-dC0" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="XTy-W3-5ZZ"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J7h-MF-JYe" userLabel="First Responder" sceneMemberID="firstResponder"/>

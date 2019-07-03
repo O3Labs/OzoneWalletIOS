@@ -23,10 +23,10 @@ class O3TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.theme_barStyle = O3Theme.tabBarStylePicker
-        tabBar.items?[4].image = UIImage(named: "cog")
-        tabBar.items?[4].title = ""
-        tabBar.items?[4].imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -10, right: 0)
-        tabBar.items?[4].isEnabled = true
+        tabBar.items?[3].image = UIImage(named: "cog")
+        tabBar.items?[3].title = ""
+        tabBar.items?[3].imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -10, right: 0)
+        tabBar.items?[3].isEnabled = true
         
         ShortcutParser.shared.registerShortcuts()
         Amplitude.instance().logEvent("Loaded_Main_Tab")

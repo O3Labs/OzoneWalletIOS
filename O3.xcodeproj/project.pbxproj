@@ -19,6 +19,9 @@
 		351200BB207DE0E2003CA07D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351200BA207DE0E2003CA07D /* StoreKit.framework */; };
 		351200BD207EF84C003CA07D /* TokenSales.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351200BC207EF84C003CA07D /* TokenSales.swift */; };
 		3512923721E5B55900BFD0FD /* CreateWalletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3512923621E5B55900BFD0FD /* CreateWalletTableViewController.swift */; };
+		3513F33E22CBD6EF003690DB /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3513F33D22CBD6EF003690DB /* Explore.storyboard */; };
+		3513F34022CBD79A003690DB /* ExploreTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3513F33F22CBD79A003690DB /* ExploreTabViewController.swift */; };
+		3513F34222CBD802003690DB /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3513F34122CBD802003690DB /* ExploreViewController.swift */; };
 		3514C1DB225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514C1DA225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift */; };
 		3514C1DD225D823A00E5BB23 /* Disclaimers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3514C1DC225D823A00E5BB23 /* Disclaimers.storyboard */; };
 		3514C1DF225ED4D900E5BB23 /* O3KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514C1DE225ED4D900E5BB23 /* O3KeychainManager.swift */; };
@@ -405,6 +408,9 @@
 		351200BA207DE0E2003CA07D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		351200BC207EF84C003CA07D /* TokenSales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSales.swift; sourceTree = "<group>"; };
 		3512923621E5B55900BFD0FD /* CreateWalletTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletTableViewController.swift; sourceTree = "<group>"; };
+		3513F33D22CBD6EF003690DB /* Explore.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
+		3513F33F22CBD79A003690DB /* ExploreTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreTabViewController.swift; sourceTree = "<group>"; };
+		3513F34122CBD802003690DB /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		3514C1DA225D818B00E5BB23 /* AnalyticsDisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsDisclaimerViewController.swift; sourceTree = "<group>"; };
 		3514C1DC225D823A00E5BB23 /* Disclaimers.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Disclaimers.storyboard; sourceTree = "<group>"; };
 		3514C1DE225ED4D900E5BB23 /* O3KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = O3KeychainManager.swift; sourceTree = "<group>"; };
@@ -830,6 +836,16 @@
 				356F1B0A219049130004C088 /* EncyptionCompletedViewController.swift */,
 			);
 			path = PrivateKey;
+			sourceTree = "<group>";
+		};
+		3513F33C22CBD6DE003690DB /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				3513F33D22CBD6EF003690DB /* Explore.storyboard */,
+				3513F33F22CBD79A003690DB /* ExploreTabViewController.swift */,
+				3513F34122CBD802003690DB /* ExploreViewController.swift */,
+			);
+			path = Explore;
 			sourceTree = "<group>";
 		};
 		3514C1D9225D816300E5BB23 /* Disclaimers */ = {
@@ -1511,6 +1527,7 @@
 		7575ADC41F6006AC0077007B /* O3 */ = {
 			isa = PBXGroup;
 			children = (
+				3513F33C22CBD6DE003690DB /* Explore */,
 				355D468022B22777006DE02B /* SHA256.swift */,
 				355D467F22B22777006DE02B /* WIF.swift */,
 				355D467B22B221E1006DE02B /* AES.swift */,
@@ -1852,6 +1869,7 @@
 				6E60CC6020CE38630062F1CE /* AccountAssets.xcassets in Resources */,
 				6E5B1074215DF9F600D076C6 /* Tokens.xcassets in Resources */,
 				6E8B0A4F21587AD700E8A2E5 /* PriceInputToolbar.xib in Resources */,
+				3513F33E22CBD6EF003690DB /* Explore.storyboard in Resources */,
 				6E64C0DE215B89C2002B1366 /* PriceInputToggleToolbar.xib in Resources */,
 				35AD2B66209179010024A900 /* zh-Hans.lproj in Resources */,
 				35734262229D08BA00BE7F5E /* luna_bobbing.json in Resources */,
@@ -2110,6 +2128,7 @@
 				7501E8431F79536300123EA8 /* SettingsMenuTableViewController.swift in Sources */,
 				35AF806B20CA6CF700E48457 /* NEP2DetectedViewController.swift in Sources */,
 				6EC483882163372F002CBF76 /* DappTableViewCell.swift in Sources */,
+				3513F34222CBD802003690DB /* ExploreViewController.swift in Sources */,
 				35AD2B72209317950024A900 /* SettingsStrings.swift in Sources */,
 				35A37C34226D9EEB00473895 /* InboxTableViewController.swift in Sources */,
 				35F8D66D20C6255F00C7EC56 /* WalletToolbarCell.swift in Sources */,
@@ -2122,6 +2141,7 @@
 				6E64C0D32159CE19002B1366 /* RequestOrder.swift in Sources */,
 				6EC4838A21633A3B002CBF76 /* DappString.swift in Sources */,
 				35AF806320CA366A00E48457 /* UITextField.swift in Sources */,
+				3513F34022CBD79A003690DB /* ExploreTabViewController.swift in Sources */,
 				6EA7F9281F6E2F7F00E31B78 /* O3Client.swift in Sources */,
 				6EEE3DFA20E0AFD30030A4AB /* InboxItemTableViewCell.swift in Sources */,
 				6E2F263D2151FB8800A3DEB1 /* AssetPrice.swift in Sources */,
