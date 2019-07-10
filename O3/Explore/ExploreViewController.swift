@@ -18,6 +18,7 @@ class ExploreViewController: UIViewController, WKNavigationDelegate{
         super.viewDidLoad()
         webView.load(URLRequest(url: URL(string: urlString)!))
         webView.navigationDelegate = self
+        setThemedElements()
     }
     
     
@@ -32,5 +33,12 @@ class ExploreViewController: UIViewController, WKNavigationDelegate{
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         print(Date().timeIntervalSince1970 - currtime)
+    }
+    
+    func setThemedElements() {
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        webView.isOpaque = false
+        webView.backgroundColor = UIColor.clear
+
     }
 }

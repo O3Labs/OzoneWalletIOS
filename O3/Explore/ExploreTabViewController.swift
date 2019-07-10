@@ -30,14 +30,22 @@ class ExploreTabViewController: TabmanViewController, PageboyViewControllerDataS
         let exploreHomeViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateViewController(withIdentifier: "exploreViewController") as! ExploreViewController
         let exploreDappsViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateViewController(withIdentifier: "exploreViewController") as! ExploreViewController
         let exploreAssetsViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateViewController(withIdentifier: "exploreViewController") as! ExploreViewController
-        if (AppState.network == .test) {
-            exploreHomeViewController.urlString = "https://testnet.o3.app/?hide=true"
-            exploreDappsViewController.urlString = "https://testnet.o3.app/dapps?hide=true"
-            exploreAssetsViewController.urlString = "https://testnet.o3.app/assets?hide=true"
+        var themeString = ""
+        
+        if UserDefaultsManager.theme == Theme.dark {
+            themeString = "dark=true"
         } else {
-            exploreHomeViewController.urlString = "https://o3.app/?hide=true"
-            exploreDappsViewController.urlString = "https://o3.app/dapps?hide=true"
-            exploreAssetsViewController.urlString = "https://o3.app/assets?hide=true"
+            themeString = "dark=false"
+        }
+        
+        if AppState.network == .test {
+            exploreHomeViewController.urlString = "https://testnet.o3.app/?hide=true&\(themeString)"
+            exploreDappsViewController.urlString = "https://testnet.o3.app/dapps?hide=true&\(themeString)"
+            exploreAssetsViewController.urlString = "https://testnet.o3.app/assets?hide=true&\(themeString)"
+        } else {
+            exploreHomeViewController.urlString = "https://o3.app/?hide=true&\(themeString)"
+            exploreDappsViewController.urlString = "https://o3.app/dapps?hide=true&\(themeString)"
+            exploreAssetsViewController.urlString = "https://o3.app/assets?hide=true&\(themeString)"
         }
         
         exploreAssetsViewController.view.layoutSubviews()
@@ -85,7 +93,8 @@ class ExploreTabViewController: TabmanViewController, PageboyViewControllerDataS
     }
     
     func setThemedElements() {
-       changedTheme(nil)
+        changedTheme(nil)
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
     
     func setLocalizedStrings() {
