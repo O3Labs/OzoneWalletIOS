@@ -36,4 +36,16 @@ extension dAppBrowserViewModel {
         })
         return
     }
+    
+    func handleGetExternalAccountAddress(message: dAppMessage) {
+        let asset = message.data["asset"] as! [String: String]
+        CoinbaseClient.shared.getNewAddress(currency: asset["symbol"] as! String) { result in
+            switch result {
+            case .failure(let e):
+                self.delegate?.error(message: message, error: e.localizedDescription)
+            case .success(let address):
+                self.delegate?.didFinishMessage(message: message, response: ["address": address])
+            }
+        }
+    }
 }

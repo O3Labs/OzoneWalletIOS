@@ -466,4 +466,77 @@ class CoinbaseClient {
             }
         }
     }
+    
+    func getNewAddressWithToken(currency: String, completion: @escaping (CoinbaseClientResult<String>) -> Void) {
+        getWalletAccountWithToken(currency: currency) { result in
+            switch result {
+            case .failure(let e):
+                completion(.failure(e))
+            case .success(let wallet):
+                self.createAddressWithToken(accountID: wallet.id) { result in
+                    switch result {
+                    case .failure(let e):
+                        completion(.failure(e))
+                    case .success(let success):
+                        if success {
+                            let url = "https://api.coinbase.com/v2/accounts/\(wallet.id)/addresses"
+                            let headers = ["Authorization" : "Bearer \(ExternalAccounts.getCoinbaseTokenFromMemory()!)"]
+                            self.sendRequest(url, method: .GET, data: nil, headers: headers) { result in
+                                switch result {
+                                case .failure(let e):
+                                    completion(.failure(e))
+                                case .success(let response):
+                                    if response.keys.contains("errors") {
+                                        completion(.failure(CoinbaseSpecificError(id: "coinbase_error", message: "something went wrong")))
+                                    } else {
+                                        let data = response["data"] as! [[String: Any]]
+                                        let address =  data[0]["address"] as! String
+                                        completion(.success(address))
+                                    }
+                                }
+                            }
+                        } else {
+                            completion(.failure(CoinbaseSpecificError(id: "coinbase_error", message: "Could not create address")))
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func getNewAddress(currency: String, completion: @escaping (CoinbaseClientResult<String>) -> Void) {
+        if ExternalAccounts.getCoinbaseTokenFromMemory() == nil {
+            refreshToken { result in
+                switch result {
+                case .failure(let e):
+                    completion(.failure(e))
+                case .success(_):
+                    self.getNewAddressWithToken(currency: currency) { result in
+                        completion(result)
+                    }
+                }
+            }
+        } else {
+            self.getNewAddressWithToken(currency: currency) { result in
+                completion(result)
+            }
+        }
+    }
+    
+    func createAddressWithToken(accountID: String, completion: @escaping (CoinbaseClientResult<Bool>) -> Void) {
+        let url = "https://api.coinbase.com/v2/accounts/\(accountID)/addresses"
+        let headers = ["Authorization" : "Bearer \(ExternalAccounts.getCoinbaseTokenFromMemory()!)"]
+        sendRequest(url, method: .POST, data: nil, headers: headers) { result in
+            switch result {
+            case .failure(let e):
+                completion(.failure(e))
+            case .success(let response):
+                if response.keys.contains("error") {
+                    completion(.failure(CoinbaseSpecificError(id: "coinbase_error", message: response["error"] as! String)))
+                } else {
+                    completion(.success(true))
+                }
+            }
+        }
+    }
 }
