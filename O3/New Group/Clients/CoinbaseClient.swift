@@ -467,7 +467,7 @@ class CoinbaseClient {
         }
     }
     
-    func getNewAddressWithToken(currency: String, completion: @escaping (CoinbaseClientResult<String>) -> Void) {
+    func getNewAddressWithToken(currency: String, completion: @escaping (CoinbaseClientResult<[String: String]>) -> Void) {
         getWalletAccountWithToken(currency: currency) { result in
             switch result {
             case .failure(let e):
@@ -491,7 +491,16 @@ class CoinbaseClient {
                                     } else {
                                         let data = response["data"] as! [[String: Any]]
                                         let address =  data[0]["address"] as! String
-                                        completion(.success(address))
+                                        var tag: String? = nil
+                                        if data[0].keys.contains("destination_tag") {
+                                            tag = data[0]["destination_tag"] as! String
+                                        }
+                                        var dict = ["address": address]
+                                        if tag != nil {
+                                            dict["tag"] = tag!
+                                        }
+                                        
+                                        completion(.success(dict))
                                     }
                                 }
                             }
@@ -504,7 +513,7 @@ class CoinbaseClient {
         }
     }
     
-    func getNewAddress(currency: String, completion: @escaping (CoinbaseClientResult<String>) -> Void) {
+    func getNewAddress(currency: String, completion: @escaping (CoinbaseClientResult<[String: String]>) -> Void) {
         if ExternalAccounts.getCoinbaseTokenFromMemory() == nil {
             refreshToken { result in
                 switch result {

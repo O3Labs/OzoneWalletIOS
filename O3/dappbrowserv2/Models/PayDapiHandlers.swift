@@ -43,8 +43,8 @@ extension dAppBrowserViewModel {
             switch result {
             case .failure(let e):
                 self.delegate?.error(message: message, error: e.localizedDescription)
-            case .success(let address):
-                self.delegate?.didFinishMessage(message: message, response: ["address": address])
+            case .success(let dict):
+                self.delegate?.didFinishMessage(message: message, response: dict)
             }
         }
     }
