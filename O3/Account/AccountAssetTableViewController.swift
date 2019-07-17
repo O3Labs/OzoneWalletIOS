@@ -572,7 +572,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
         
         tradingEvent.shared.viewTokenDetail(asset: symbol, source: TradingActionSource.o3Account)
-        let urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.wallet!.address)
+        let urlString = String(format: "https://o3.app/assets/%@/%@", blockchain, symbol)
         Controller().openDappBrowserV2(url: URL(string: urlString)!, assetSymbol: symbol )
     }
     

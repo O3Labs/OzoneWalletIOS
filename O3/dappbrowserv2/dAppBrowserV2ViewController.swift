@@ -189,8 +189,9 @@ class dAppBrowserV2ViewController: UIViewController {
         
         var req = URLRequest(url: self.viewModel.url)
         dapiEvent.shared.dappOpened(url: self.viewModel.url.absoluteString, domain: self.viewModel.url.host ?? "")
-        if (viewModel.url?.absoluteString.hasPrefix("https://public.o3.network")) == true {
-            let queryItems = [NSURLQueryItem(name: "theme", value: UserDefaultsManager.themeIndex == 0 ? "light" : "dark")]
+        if (viewModel.url?.absoluteString.hasPrefix("https://o3.app")) == true {
+            let queryItems = [NSURLQueryItem(name: "dark", value: UserDefaultsManager.themeIndex == 0 ? "false" : "true"),
+            NSURLQueryItem(name: "hide", value: "true")]
             let urlComps = NSURLComponents(url: viewModel.url!, resolvingAgainstBaseURL: false)!
             urlComps.queryItems = queryItems as [URLQueryItem]
             req = URLRequest(url: urlComps.url!)
