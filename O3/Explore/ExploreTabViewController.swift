@@ -14,22 +14,19 @@ import SwiftTheme
 
 class ExploreTabViewController: TabmanViewController, PageboyViewControllerDataSource {
     var viewControllers = [UIViewController]()
-
+    var exploreHomeViewController: ExploreViewController!
+    var exploreDappsViewController: ExploreViewController!
+    var exploreAssetsViewController: ExploreViewController!
 
     func addThemeObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.changedTheme), name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
-        /*NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletInfo), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)*/
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
-        //NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
     }
     
-    func initiateControllerTabs() {
-        let exploreHomeViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateViewController(withIdentifier: "exploreViewController") as! ExploreViewController
-        let exploreDappsViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateViewController(withIdentifier: "exploreViewController") as! ExploreViewController
-        let exploreAssetsViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateViewController(withIdentifier: "exploreViewController") as! ExploreViewController
+    func setControllerUrls() {
         var themeString = ""
         
         if UserDefaultsManager.theme == Theme.dark {
@@ -47,6 +44,14 @@ class ExploreTabViewController: TabmanViewController, PageboyViewControllerDataS
             exploreDappsViewController.urlString = "https://o3.app/dapps?hide=true&\(themeString)"
             exploreAssetsViewController.urlString = "https://o3.app/assets?hide=true&\(themeString)"
         }
+    }
+    
+    func initiateControllerTabs() {
+        exploreHomeViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateViewController(withIdentifier: "exploreViewController") as! ExploreViewController
+        exploreDappsViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateViewController(withIdentifier: "exploreViewController") as! ExploreViewController
+        exploreAssetsViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateViewController(withIdentifier: "exploreViewController") as! ExploreViewController
+        
+        setControllerUrls()
         
         exploreAssetsViewController.view.layoutSubviews()
         exploreDappsViewController.view.layoutSubviews()
@@ -54,6 +59,8 @@ class ExploreTabViewController: TabmanViewController, PageboyViewControllerDataS
         self.viewControllers.append(exploreHomeViewController)
         self.viewControllers.append(exploreDappsViewController)
         self.viewControllers.append(exploreAssetsViewController)
+        
+        addThemeObserver()
     }
     
     override func viewDidLoad() {
@@ -81,6 +88,10 @@ class ExploreTabViewController: TabmanViewController, PageboyViewControllerDataS
     
     
     @objc func changedTheme(_ sender: Any?) {
+        setControllerUrls()
+        for viewController in viewControllers {
+            (viewController as! ExploreViewController).loadURL()
+        }
         self.bar.appearance = TabmanBar.Appearance({ (appearance) in
             appearance.state.selectedColor = UserDefaultsManager.theme.primaryColor
             appearance.state.color = UserDefaultsManager.theme.lightTextColor
@@ -94,6 +105,7 @@ class ExploreTabViewController: TabmanViewController, PageboyViewControllerDataS
     
     func setThemedElements() {
         changedTheme(nil)
+        applyNavBarTheme()
         view.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
     

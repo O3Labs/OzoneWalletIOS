@@ -16,11 +16,14 @@ class ExploreViewController: UIViewController, WKNavigationDelegate{
     let currtime = Date().timeIntervalSince1970
     override func viewDidLoad() {
         super.viewDidLoad()
-        webView.load(URLRequest(url: URL(string: urlString)!))
+        loadURL()
         webView.navigationDelegate = self
         setThemedElements()
     }
     
+    func loadURL() {
+        webView.load(URLRequest(url: URL(string: urlString)!))
+    }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if navigationAction.navigationType == WKNavigationType.linkActivated {
