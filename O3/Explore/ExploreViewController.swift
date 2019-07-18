@@ -9,16 +9,24 @@
 import Foundation
 import UIKit
 import WebKit
+import Lottie
 
 class ExploreViewController: UIViewController, WKNavigationDelegate{
     @IBOutlet weak var webView: WKWebView!
-    var urlString = "https://staging.o3.app"
-    let currtime = Date().timeIntervalSince1970
+    @IBOutlet weak var animationContainer: UIView!
+    
+    
+    var urlString = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadURL()
         webView.navigationDelegate = self
         setThemedElements()
+        let neoLoaderView = LOTAnimationView(name: "loader_portfolio")
+        neoLoaderView.loopAnimation = true
+        neoLoaderView.play()
+        animationContainer.embed(neoLoaderView)
     }
     
     func loadURL() {
@@ -35,7 +43,10 @@ class ExploreViewController: UIViewController, WKNavigationDelegate{
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        print(Date().timeIntervalSince1970 - currtime)
+    }
+    
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        animationContainer.isHidden = true
     }
     
     func setThemedElements() {

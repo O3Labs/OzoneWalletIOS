@@ -26,18 +26,29 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mI0-Q1-GWR">
+                                <rect key="frame" x="182" y="428" width="50" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="CwC-vI-MXX"/>
+                                    <constraint firstAttribute="height" constant="50" id="tsw-3Y-p4S"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="yoH-i3-CCp" firstAttribute="bottom" secondItem="lco-qH-kct" secondAttribute="bottom" id="8vL-iE-oga"/>
+                            <constraint firstItem="mI0-Q1-GWR" firstAttribute="centerY" secondItem="lco-qH-kct" secondAttribute="centerY" id="BL0-8f-eNA"/>
                             <constraint firstItem="lco-qH-kct" firstAttribute="leading" secondItem="yoH-i3-CCp" secondAttribute="leading" id="La2-wL-OTC"/>
                             <constraint firstItem="yoH-i3-CCp" firstAttribute="trailing" secondItem="lco-qH-kct" secondAttribute="trailing" id="Mpk-d9-oJl"/>
+                            <constraint firstItem="mI0-Q1-GWR" firstAttribute="centerX" secondItem="lco-qH-kct" secondAttribute="centerX" id="mn6-Jw-vRb"/>
                             <constraint firstItem="lco-qH-kct" firstAttribute="top" secondItem="yoH-i3-CCp" secondAttribute="top" id="xkw-rZ-cDc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yoH-i3-CCp"/>
                     </view>
                     <navigationItem key="navigationItem" id="Xot-Lf-gwK"/>
                     <connections>
+                        <outlet property="animationContainer" destination="mI0-Q1-GWR" id="WBN-oZ-zDN"/>
                         <outlet property="webView" destination="lco-qH-kct" id="c33-op-r3O"/>
                     </connections>
                 </viewController>
