@@ -117,7 +117,7 @@ extension HomeViewController {
         DispatchQueue.main.async {
             Controller().openDappBrowserV2(url: URL(string: urlString)!, assetSymbol: asset.symbol)
         }
-    }
+        }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if homeviewModel.currentIndex != 0 {
