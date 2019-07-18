@@ -111,7 +111,7 @@ class AccountTabViewController: TabmanViewController, PageboyViewControllerDataS
     }
     
     @objc func openDAppBrowser(_ sender: Any) {
-        Controller().openSwitcheoDapp()
+        Controller().openDappBrowserV2(url: URL(string: "https://swap.o3.app/stage/")!)
     }
 
     override func viewWillAppear(_ animated: Bool) {

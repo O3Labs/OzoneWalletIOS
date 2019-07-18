@@ -124,8 +124,8 @@ class O3KeychainManager {
         let confirmAction = UIAlertAction(title: OzoneAlert.okPositiveConfirmString, style: .default) { (_) in
             let inputPass = alertController.textFields?[0].text
             var error: NSError?
-            if let wallet = Wallet(wallet: NeoutilsNEP2DecryptToWallet(account.key!, inputPass, &error)) {
-                completion(.success(wallet))
+            if let wallet = NeoutilsNEP2DecryptToWallet(account.key!, inputPass, &error) {
+                completion(.success(Wallet(wallet: wallet)!))
             } else {
                 OzoneAlert.alertDialog("Incorrect passphrase", message: "Please check your passphrase and try again", dismissTitle: "Ok") {
                     completion(.failure("Failed Decryption"))

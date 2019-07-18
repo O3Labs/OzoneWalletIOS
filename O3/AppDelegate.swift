@@ -98,7 +98,7 @@ import ZendeskProviderSDK
         }
     }
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {        
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
             ////If your plist contain root as Dictionary
             if let dic = NSDictionary(contentsOfFile: path) as? [String: Any] {

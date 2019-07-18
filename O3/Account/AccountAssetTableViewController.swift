@@ -572,7 +572,7 @@ class AccountAssetTableViewController: UITableViewController, ClaimingGasCellDel
         }
         
         tradingEvent.shared.viewTokenDetail(asset: symbol, source: TradingActionSource.o3Account)
-        let urlString = String(format: "https://public.o3.network/%@/assets/%@?address=%@", blockchain, symbol, Authenticated.wallet!.address)
+        let urlString = String(format: "https://o3.app/assets/%@/%@", blockchain, symbol)
         Controller().openDappBrowserV2(url: URL(string: urlString)!, assetSymbol: symbol )
     }
     
@@ -712,7 +712,7 @@ extension AccountAssetTableViewController {
         
         let alert = UIAlertController(title: "Trading account", message: nil, preferredStyle: .actionSheet)
         
-        if self.tradingAccount!.switcheo.confirmed.count > 0 {
+        if self.tradingAccount?.switcheo.confirmed.count ?? 0 > 0 {
             let depositButton = UIAlertAction(title: "Deposit", style: .default) { _ in
                 tradingEvent.shared.startDeposit(asset: "NEO", source: TradingActionSource.tradingAccount)
                 self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Deposit, asset: nil)

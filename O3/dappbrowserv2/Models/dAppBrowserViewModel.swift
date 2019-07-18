@@ -65,6 +65,8 @@ class dAppBrowserViewModel: NSObject {
     func processPayMessage(message: dAppMessage) {
         if message.command == "send" {
             handleCoinbasePay(message: message)
+        } else if message.command.lowercased() == "getAccount".lowercased() {
+            handleGetExternalAccountAddress(message: message)
         }
     }
     
