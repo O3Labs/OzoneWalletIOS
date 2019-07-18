@@ -147,6 +147,19 @@ class ActivateMultiWalletTableViewController: UITableViewController {
         }
     }
     
+    @IBAction func passwordInputShowButtonTapped(_ sender: Any) {
+        passwordInputIsSecure = !passwordInputIsSecure
+        passwordInputField.isSecureTextEntry = passwordInputIsSecure
+        let tmp = passwordInputField.text
+        passwordInputField.text = ""
+        passwordInputField.text = tmp
+        if passwordInputIsSecure {
+            passwordInputShowButton.alpha = CGFloat(0.3)
+        } else {
+            passwordInputShowButton.alpha = CGFloat(1.0)
+        }
+    }
+    
     
     func setLocalizedStrings() {
         titleLabel.text = MultiWalletStrings.activateMultiWalletTitle

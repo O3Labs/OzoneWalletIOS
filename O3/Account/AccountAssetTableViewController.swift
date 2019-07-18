@@ -712,7 +712,7 @@ extension AccountAssetTableViewController {
         
         let alert = UIAlertController(title: "Trading account", message: nil, preferredStyle: .actionSheet)
         
-        if self.tradingAccount!.switcheo.confirmed.count > 0 {
+        if self.tradingAccount?.switcheo.confirmed.count ?? 0 > 0 {
             let depositButton = UIAlertAction(title: "Deposit", style: .default) { _ in
                 tradingEvent.shared.startDeposit(asset: "NEO", source: TradingActionSource.tradingAccount)
                 self.openWithDrawOrDeposit(action: WithdrawDepositTableViewController.Action.Deposit, asset: nil)

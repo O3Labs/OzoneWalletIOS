@@ -240,10 +240,11 @@ class CoinbaseClient {
                 case .failure(let e):
                     completion(.failure(e))
                 case .success(let response):
-                    let data = response["data"] as! JSONDictionary
-                    if data.keys.contains("error") {
-                        completion(.failure(CoinbaseSpecificError(id: "coinbase_error", message: data["error"] as! String)))
+                    if let data = (response["errors"] as? NSArray)?.firstObject as? JSONDictionary {
+                        let coinbaseError = CoinbaseSpecificError(id: data["id"] as! String, message: data["message"] as! String)
+                        completion(.failure(coinbaseError))
                     } else {
+                        let data = response["data"] as! JSONDictionary
                         let email = data["email"] as! String
                         let id = data["id"] as! String
                         completion(.success(["email": email, "id": id]))
@@ -279,8 +280,9 @@ class CoinbaseClient {
             case .failure(let e):
                 completion(.failure(e))
             case .success(let response):
-                if response.keys.contains("error") {
-                    completion(.failure(CoinbaseSpecificError(id: "coinbase_error", message: response["error"] as! String)))
+                if let data = (response["errors"] as? NSArray)?.firstObject as? JSONDictionary {
+                    let coinbaseError = CoinbaseSpecificError(id: data["id"] as! String, message: data["message"] as! String)
+                    completion(.failure(coinbaseError))
                 } else {
                     let decoder = JSONDecoder()
                     guard let data = try? JSONSerialization.data(withJSONObject: response["data"], options: .prettyPrinted),
@@ -432,8 +434,9 @@ class CoinbaseClient {
             case .failure(let e):
                 completion(.failure(e))
             case .success(let response):
-                if response.keys.contains("error") {
-                    completion(.failure(CoinbaseSpecificError(id: "coinbase_error", message: response["error"] as! String)))
+                if let data = (response["errors"] as? NSArray)?.firstObject as? JSONDictionary {
+                    let coinbaseError = CoinbaseSpecificError(id: data["id"] as! String, message: data["message"] as! String)
+                    completion(.failure(coinbaseError))
                 } else {
                     let decoder = JSONDecoder()
                     guard let data = try? JSONSerialization.data(withJSONObject: response["data"], options: .prettyPrinted),
@@ -540,8 +543,9 @@ class CoinbaseClient {
             case .failure(let e):
                 completion(.failure(e))
             case .success(let response):
-                if response.keys.contains("error") {
-                    completion(.failure(CoinbaseSpecificError(id: "coinbase_error", message: response["error"] as! String)))
+                if let data = (response["errors"] as? NSArray)?.firstObject as? JSONDictionary {
+                    let coinbaseError = CoinbaseSpecificError(id: data["id"] as! String, message: data["message"] as! String)
+                    completion(.failure(coinbaseError))
                 } else {
                     completion(.success(true))
                 }
