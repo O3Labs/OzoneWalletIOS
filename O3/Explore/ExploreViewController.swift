@@ -35,7 +35,13 @@ class ExploreViewController: UIViewController, WKNavigationDelegate{
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if navigationAction.navigationType == WKNavigationType.linkActivated {
-            Controller().openDappBrowserV2(url: navigationAction.request.url!)
+            if navigationAction.request.url?.absoluteString.contains("switcheo.exchange") ?? false || navigationAction.request.url?.absoluteString.contains("nel.group") ?? false {
+                Controller().openDappBrowser(url: navigationAction.request.url!, modal: true)
+            } else {
+                Controller().openDappBrowserV2(url: navigationAction.request.url!)
+            }
+            
+            
             decisionHandler(WKNavigationActionPolicy.cancel)
             return
         }
