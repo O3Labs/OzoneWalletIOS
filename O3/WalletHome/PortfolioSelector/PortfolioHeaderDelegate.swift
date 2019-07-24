@@ -112,8 +112,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        Controller().openPortfolioSelector()
-        
+        UserDefaultsManager.privacyModeEnabled = !UserDefaultsManager.privacyModeEnabled
+        NotificationCenter.default.post(name: Notification.Name("NEP6Updated"), object: nil)
     }
     
     func didTapLeft() {

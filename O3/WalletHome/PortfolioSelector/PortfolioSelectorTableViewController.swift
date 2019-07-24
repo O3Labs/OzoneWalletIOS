@@ -414,6 +414,11 @@ class PortfolioSelectorTableViewController: UITableViewController {
         }
         alert.addAction(editNameAction)
         
+        let copyAction = UIAlertAction(title: "Copy Address", style: .default) { _ in
+            UIPasteboard.general.string = self.watchAddresses[indexPath.row].address
+        }
+        alert.addAction(copyAction)
+        
         let addRemoveTotalAction = UIAlertAction(title: totalTitle, style: .default) { _ in
             if isTracked {
                 UserDefaultsManager.untrackedWatchAddr = UserDefaultsManager.untrackedWatchAddr + [self.watchAddrs[indexPath]!.address]

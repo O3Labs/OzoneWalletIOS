@@ -259,4 +259,41 @@ class UserDefaultsManager {
         UserDefaults.standard.set(timeStamp, forKey: "\(address)_" + walletBackupTimeKey)
         UserDefaults.standard.synchronize()
     }
+    
+    private static let dustIsHiddenKey = "dustIsHiddenKey"
+    static var isDustHidden: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: dustIsHiddenKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: dustIsHiddenKey)
+        }
+    }
+    
+    private static let privacyModeEnabledKey = "privacyModeEnabledKey"
+    static var privacyModeEnabled: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: privacyModeEnabledKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: privacyModeEnabledKey)
+        }
+    }
+    
+    enum SortType: String {
+        case defaultSort = "defaultSort"
+        case valueSort = "valueSort"
+        case atozSort = "atozSort"
+    }
+    
+    private static let portfolioSortTypeKey = "portfolioSortTypeKey"
+    static var portfolioSortType: SortType {
+        get {
+            let stringVal = UserDefaults.standard.string(forKey: portfolioSortTypeKey) ?? "defaultSort"
+            return SortType(rawValue: stringVal)!
+        }
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: portfolioSortTypeKey)
+        }
+    }
 }

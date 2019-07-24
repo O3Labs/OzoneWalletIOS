@@ -154,6 +154,7 @@
 		35B426BA20980CAE00957211 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B426B920980CAE00957211 /* LaunchScreen.storyboard */; };
 		35B426BC20980CC400957211 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B426BB20980CC400957211 /* Main.storyboard */; };
 		35B426D820998B6300957211 /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B426D720998B6300957211 /* UISearchBar.swift */; };
+		35BB0FC922E6F7660005CA62 /* SortTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BB0FC822E6F7660005CA62 /* SortTableViewController.swift */; };
 		35C281D42175854F00CC64E3 /* SendWhereTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281D32175854F00CC64E3 /* SendWhereTableViewController.swift */; };
 		35C370A7218033FA0023AABC /* Nep6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C370A6218033FA0023AABC /* Nep6.swift */; };
 		35C370A9218053500023AABC /* CloudDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C370A8218053500023AABC /* CloudDataManager.swift */; };
@@ -522,6 +523,7 @@
 		35B426B920980CAE00957211 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		35B426BB20980CC400957211 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		35B426D720998B6300957211 /* UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
+		35BB0FC822E6F7660005CA62 /* SortTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTableViewController.swift; sourceTree = "<group>"; };
 		35C281D32175854F00CC64E3 /* SendWhereTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendWhereTableViewController.swift; sourceTree = "<group>"; };
 		35C370A6218033FA0023AABC /* Nep6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nep6.swift; sourceTree = "<group>"; };
 		35C370A8218053500023AABC /* CloudDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudDataManager.swift; sourceTree = "<group>"; };
@@ -1364,6 +1366,7 @@
 				355D468C22B9CB64006DE02B /* PortfolioSelector */,
 				755D8F551F665F8200058434 /* HomeViewController.swift */,
 				35E5F6112029477400D65BEA /* HomeViewModel.swift */,
+				35BB0FC822E6F7660005CA62 /* SortTableViewController.swift */,
 			);
 			path = WalletHome;
 			sourceTree = "<group>";
@@ -1948,6 +1951,7 @@
 				3557BA9C20AA9C870034937C /* Wallet.swift in Sources */,
 				3557BAC520AA9D0B0034937C /* NeoScanTransactionHistory.swift in Sources */,
 				755D8F561F665F8200058434 /* HomeViewController.swift in Sources */,
+				35BB0FC922E6F7660005CA62 /* SortTableViewController.swift in Sources */,
 				6E64C0D12159CE19002B1366 /* Deposit.swift in Sources */,
 				752006901F7FD0FF00D19B5F /* AddressSelectTableViewController.swift in Sources */,
 				6EF59C9621A3D25C00087D72 /* dAppProtocol.swift in Sources */,
