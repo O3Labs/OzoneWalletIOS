@@ -141,6 +141,14 @@ extension HomeViewController {
         }
     }
     
+    @objc func displaySortBottomSheet() {
+        let nav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "sortBottomSheetNav") as! UINavigationController
+        self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
+        nav.modalPresentationStyle = .custom
+        nav.transitioningDelegate = self.halfModalTransitioningDelegate
+        self.present(nav, animated: true, completion: nil)
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if homeviewModel.currentIndex != 0 {
             return UIView()
@@ -154,9 +162,13 @@ extension HomeViewController {
         } else if section == 1 {
             (sectionHeader.viewWithTag(1) as! UILabel).text = "Wallets"
             (sectionHeader.viewWithTag(1) as! UILabel).theme_textColor = O3Theme.sectionHeaderTextColor
+            (sectionHeader.viewWithTag(2) as! UIButton).isHidden = false
+            (sectionHeader.viewWithTag(2) as! UIButton).addTarget(self, action: #selector(self.displaySortBottomSheet), for: .touchUpInside)
+
             return sectionHeader
         } else {
             (sectionHeader.viewWithTag(1) as! UILabel).text = "Connected Accounts"
+            (sectionHeader.viewWithTag(2) as! UIButton).isHidden = true
             (sectionHeader.viewWithTag(1) as! UILabel).theme_textColor = O3Theme.sectionHeaderTextColor
             return sectionHeader
         }
@@ -165,6 +177,7 @@ extension HomeViewController {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {

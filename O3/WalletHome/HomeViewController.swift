@@ -51,6 +51,31 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                     return $0.symbol.lowercased() == asset.symbol.lowercased()
                 }
             }
+            
+            if UserDefaultsManager.isDustHidden && homeviewModel.currentIndex == 0 {
+                assets = assets.filter { asset -> Bool in
+                    let price = portfolio?.price[asset.symbol]?.averageBTC ?? 0.0
+                    let amount = asset.value
+                    return price * amount >= 0.00005
+                }
+            }
+            
+            if UserDefaultsManager.portfolioSortType == .atozSort {
+                assets.sort { asset1, asset2 -> Bool in
+                    return asset1.symbol < asset2.symbol
+                }
+            } else if UserDefaultsManager.portfolioSortType == .valueSort {
+                assets.sort { asset1, asset2 -> Bool in
+                    let price1 = portfolio?.price[asset1.symbol]?.averageBTC ?? 0.0
+                    let amount1 = asset1.value
+                    
+                    let price2 = portfolio?.price[asset2.symbol]?.averageBTC ?? 0.0
+                    let amount2 = asset2.value
+                    
+                    return price1 * amount1 > price2 * amount2
+                }
+            }
+        
             return assets
         }
     }
@@ -62,6 +87,30 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                     $0.symbol.lowercased() == asset.symbol.lowercased()
                 } == false
             }
+            if UserDefaultsManager.isDustHidden && homeviewModel.currentIndex == 0 {
+                assets = assets.filter { asset -> Bool in
+                    let price = portfolio?.price[asset.symbol]?.averageBTC ?? 0.0
+                    let amount = asset.value
+                    return price * amount >= 0.00005
+                }
+            }
+            
+            if UserDefaultsManager.portfolioSortType == .atozSort {
+                assets.sort { asset1, asset2 -> Bool in
+                    return asset1.symbol < asset2.symbol
+                }
+            } else if UserDefaultsManager.portfolioSortType == .valueSort {
+                assets.sort { asset1, asset2 -> Bool in
+                    let price1 = portfolio?.price[asset1.symbol]?.averageBTC ?? 0.0
+                    let amount1 = asset1.value
+                    
+                    let price2 = portfolio?.price[asset2.symbol]?.averageBTC ?? 0.0
+                    let amount2 = asset2.value
+                    
+                    return price1 * amount1 > price2 * amount2
+                }
+            }
+            
             return assets
         }
     }
@@ -273,7 +322,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         DispatchQueue.main.async {
             self.assetsTable.delegate = self
             self.assetsTable.dataSource = self
-            self.assetsTable.reloadData()
         }
     }
 

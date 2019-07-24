@@ -97,6 +97,11 @@ class WalletHeaderCollectionCell: UICollectionViewCell {
                 percentChangeLabel.theme_textColor = O3Theme.lightTextColorPicker
                 portfolioValueLabel.text = Fiat(amount: Float(0.0)).formattedString()
             }
+            
+            if UserDefaultsManager.privacyModeEnabled {
+                portfolioValueLabel.text = "Tap to Reveal"
+                portfolioValueLabel.theme_textColor = O3Theme.lightTextColorPicker
+            }
         }
     }
     

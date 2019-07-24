@@ -44,6 +44,14 @@ class PortfolioAssetCell: UITableViewCell {
                 let firstPrice = data?.firstPrice else {
                     fatalError("undefined data set")
             }
+            if UserDefaultsManager.privacyModeEnabled {
+                assetAmountLabel.isHidden = true
+                assetFiatAmountLabel.isHidden = true
+            } else {
+                assetAmountLabel.isHidden = false
+                assetFiatAmountLabel.isHidden = false
+            }
+            
             assetTitleLabel.text = asset.symbol 
             let amountDouble = Double(truncating: asset.value as NSNumber)
             
@@ -75,6 +83,7 @@ class PortfolioAssetCell: UITableViewCell {
                     self.assetPercentChangeLabel.theme_textColor = O3Theme.negativeLossColorPicker
                 } else {
                     self.assetPercentChangeLabel.theme_textColor = O3Theme.lightTextColorPicker
+                    self.assetPercentChangeLabel.text = "--"
                 }
             }
 
