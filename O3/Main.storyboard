@@ -674,6 +674,41 @@
             </objects>
             <point key="canvasLocation" x="8725.6000000000004" y="1897.6011994002999"/>
         </scene>
+        <!--New ExploreVC-->
+        <scene sceneID="wPb-kJ-1NL">
+            <objects>
+                <viewController id="MHc-Qe-2Nd" customClass="NewExploreVC" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="y3a-uj-RZZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="lKE-uU-W94"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="X9z-ch-tpL"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A37-kh-umN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-212" y="-171"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="vNI-zp-5Gd">
+            <objects>
+                <navigationController id="bUn-2u-jg0" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="rocket" id="zhu-t0-0fw">
+                        <inset key="imageInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-10"/>
+                    </tabBarItem>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6Pr-7Q-4Sh">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="MHc-Qe-2Nd" kind="relationship" relationship="rootViewController" id="nBz-6Q-kKx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Mn-sL-VDa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="660" y="-201"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="KgO-C9-pzk">
             <objects>
@@ -688,9 +723,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="F25-Yg-MOz" kind="relationship" relationship="viewControllers" id="aXT-lt-Sa1"/>
-                        <segue destination="nwB-AY-Qhc" kind="relationship" relationship="viewControllers" id="pfm-AG-37V"/>
-                        <segue destination="Yal-Kt-dC0" kind="relationship" relationship="viewControllers" id="6fp-du-8hA"/>
-                        <segue destination="d6f-ly-42d" kind="relationship" relationship="viewControllers" id="2g6-SE-ZaE"/>
+                        <segue destination="bUn-2u-jg0" kind="relationship" relationship="viewControllers" id="Fxk-Nx-dHp"/>
+                        <segue destination="d6f-ly-42d" kind="relationship" relationship="viewControllers" id="Tg9-ux-Qyz"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nZe-SP-xuA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -808,7 +842,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hiu-aL-Wxs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2114" y="1889"/>
+            <point key="canvasLocation" x="-589" y="2177"/>
         </scene>
         <!--Settings-->
         <scene sceneID="YMe-FI-LKT">
@@ -1139,7 +1173,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tyb-lI-4RW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3699.375" y="1539.0845070422536"/>
+            <point key="canvasLocation" x="598" y="1463"/>
         </scene>
         <!--manageCoinbaseNav-->
         <scene sceneID="ywx-8M-GjF">
@@ -1623,7 +1657,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MMU-Cb-2hi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2380" y="745"/>
+            <point key="canvasLocation" x="1534" y="667"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="T9T-BQ-sMY">
@@ -1782,7 +1816,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="96Z-gj-HKa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2902" y="1889"/>
+            <point key="canvasLocation" x="2132" y="2971"/>
         </scene>
         <!--Verify Manual Backup View Controller-->
         <scene sceneID="RTa-AO-yTF">
@@ -2020,6 +2054,7 @@ Your raw private key is not password protected, anyone with access to this priva
         <image name="ic_security" width="24" height="24"/>
         <image name="ic_sort" width="26" height="18"/>
         <image name="plus" width="24" height="24"/>
+        <image name="rocket" width="30" height="30"/>
         <image name="times" width="20" height="20"/>
         <namedColor name="grey">
             <color red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
