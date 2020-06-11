@@ -406,11 +406,11 @@ class CoinbaseClient {
         var convertedAccounts = [CoinbasePortfolioAccount]()
         for account in accounts {
             if let walletAccountIndex = convertedAccounts.firstIndex(where: { $0.symbol == account.balance.currency}) {
-                var newBalance = convertedAccounts[walletAccountIndex].value + (Double(account.balance.amount) ?? 0.0)
+                let newBalance = convertedAccounts[walletAccountIndex].value + (Double(account.balance.amount) ?? 0.0)
                 convertedAccounts[walletAccountIndex].value = newBalance
                 
             } else {
-                var currencySymbol = account.balance.currency.uppercased()
+                let currencySymbol = account.balance.currency.uppercased()
                 if supportedCurrencies.keys.contains(currencySymbol) == false {
                     continue
                 }
