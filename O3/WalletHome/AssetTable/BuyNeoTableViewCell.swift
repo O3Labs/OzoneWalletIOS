@@ -40,13 +40,13 @@ class BuyNeoTableViewCell: UITableViewCell {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
             Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
-            RevenueEvent.shared.buyInitiated(buyWith: "fiat", source: "portfolio")
+//            RevenueEvent.shared.buyInitiated(buyWith: "fiat", source: "portfolio")
         }
         actionSheet.addAction(buyWithFiat)
         
         let buyWithCrypto = UIAlertAction(title: "With Crypto", style: .default) { _ in
             Controller().openDappBrowserV2(url: URL(string: "https://swap.o3.app")!)
-            RevenueEvent.shared.buyInitiated(buyWith: "crypto", source: "portfolio")
+//            RevenueEvent.shared.buyInitiated(buyWith: "crypto", source: "portfolio")
         }
         actionSheet.addAction(buyWithCrypto)
         

@@ -6,7 +6,7 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:o3.network</string>
+		<string>applinks:neoline.io</string>
 	</array>
 	<key>com.apple.developer.default-data-protection</key>
 	<string>NSFileProtectionComplete</string>
@@ -26,12 +26,10 @@
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
 	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
 	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>group.network.o3.wallet.ios</string>
-	</array>
+	<array/>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)network.o3.wallet.ios</string>
+		<string>$(AppIdentifierPrefix)com.fengsuan.o3.wallet.ios</string>
 	</array>
 </dict>
 </plist>

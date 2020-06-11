@@ -49,7 +49,7 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
         cell.titleLabel.text = account.label
         cell.addressLabel.text = account.address
         
-        if account.address.isEqual(to: selectedAccount?.address) {
+        if account.address.isEqual(selectedAccount?.address) {
             cell.accessoryType = .checkmark
             cell.selectionStyle = .none
         } else {
@@ -64,7 +64,7 @@ class ConnectWalletSelectorTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         let account = accounts?[indexPath.row]
         //don't do anything if user selected the same one
-        if account!.address.isEqual(to: selectedAccount?.address) {
+        if account!.address.isEqual(selectedAccount?.address) {
             if self.navigationController?.viewControllers == nil {
                 self.dismiss(animated: true, completion: nil)
             }

@@ -246,26 +246,44 @@ class O3Theme {
         Theme.dark.cardColor.hexString(false))
 
     //title attributes
-    static let largeTitleAttributesPicker = ThemeDictionaryPicker(arrayLiteral:
-        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.black,
-         NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont],
-        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
-        NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont],
-        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
-         NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont])
-    
-    
-    static let placeholderAttributesPicker = ThemeDictionaryPicker(arrayLiteral:
-        [NSAttributedString.Key.foregroundColor.rawValue: Theme.light.textFieldPlaceHolderColor],
-            [NSAttributedString.Key.foregroundColor.rawValue: Theme.dark.textFieldPlaceHolderColor],
-          [NSAttributedString.Key.foregroundColor.rawValue: Theme.dark.textFieldPlaceHolderColor])
+        
+        //富文本主题模板修改
+        static let largeTitleAttributesPicker = ThemeStringAttributesPicker(arrayLiteral:
+            [.foregroundColor: UIColor.black, .font: O3Theme.largeTitleFont],
+            [.foregroundColor: UIColor.white, .font: O3Theme.largeTitleFont],
+            [.foregroundColor: UIColor.white, .font: O3Theme.largeTitleFont])
+        
+    //    static let largeTitleAttributesPicker = ThemeDictionaryPicker(arrayLiteral:
+    //        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.black,
+    //         NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont],
+    //        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
+    //        NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont],
+    //        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
+    //         NSAttributedString.Key.font.rawValue: O3Theme.largeTitleFont])
+        
+        
+        //富文本主题模板修改
+        static let placeholderAttributesPicker = ThemeStringAttributesPicker(arrayLiteral:
+            [ .foregroundColor : Theme.light.textFieldPlaceHolderColor],
+            [ .foregroundColor : Theme.dark.textFieldPlaceHolderColor],
+            [ .foregroundColor : Theme.dark.textFieldPlaceHolderColor])
+        
+    //    static let placeholderAttributesPicker = ThemeDictionaryPicker(arrayLiteral:
+    //        [NSAttributedString.Key.foregroundColor.rawValue: Theme.light.textFieldPlaceHolderColor],
+    //            [NSAttributedString.Key.foregroundColor.rawValue: Theme.dark.textFieldPlaceHolderColor],
+    //          [NSAttributedString.Key.foregroundColor.rawValue: Theme.dark.textFieldPlaceHolderColor])
 
-    static let regularTitleAttributesPicker = ThemeDictionaryPicker(arrayLiteral: [NSAttributedString.Key.foregroundColor.rawValue: UIColor.black,
-                                                                                   NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle],
-        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
-        NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle],
-        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
-         NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle])
+        //富文本主题模板修改
+        static let regularTitleAttributesPicker = ThemeStringAttributesPicker(arrayLiteral:
+            [.foregroundColor: UIColor.black, .font: O3Theme.navBarTitle],
+            [.foregroundColor: UIColor.white, .font: O3Theme.navBarTitle],
+            [.foregroundColor: UIColor.white, .font: O3Theme.navBarTitle])
+    //    static let regularTitleAttributesPicker = ThemeDictionaryPicker(arrayLiteral: [NSAttributedString.Key.foregroundColor.rawValue: UIColor.black,
+    //                                                                                   NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle],
+    //        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
+    //        NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle],
+    //        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
+    //         NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle])
 
     //text fields
     static let clearTextFieldBackgroundColorPicker = ThemeColorPicker(colors: Theme.light.backgroundColor.hexString(false), Theme.dark.backgroundColor.hexString(false))

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import WebBrowser
-import ZendeskSDK
+//import ZendeskSDK
 
 class HelpTableViewController: UITableViewController, WebBrowserDelegate {
     let helpArticles = ["Crypto 101"]
@@ -96,12 +96,12 @@ class HelpTableViewController: UITableViewController, WebBrowserDelegate {
     }
     
     func openHelpDesk() {
-        let config = RequestUiConfiguration()
-        config.subject = "iOS Support"
-        config.tags = [UIDevice.current.modelName, UIDevice.current.systemVersion,
-                       Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String ]
-        let viewController = RequestUi.buildRequestUi(with: [config])
-        self.navigationController?.pushViewController(viewController, animated: true)
+//        let config = RequestUiConfiguration()
+//        config.subject = "iOS Support"
+//        config.tags = [UIDevice.current.modelName, UIDevice.current.systemVersion,
+//                       Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String ]
+//        let viewController = RequestUi.buildRequestUi(with: [config])
+//        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     @IBAction func closeTapped(_ sender: Any) {

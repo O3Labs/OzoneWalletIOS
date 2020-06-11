@@ -3,8 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>group.network.o3.wallet.ios</string>
-	</array>
+	<array/>
 </dict>
 </plist>

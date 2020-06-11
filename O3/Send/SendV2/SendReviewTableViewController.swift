@@ -11,7 +11,8 @@ import UIKit
 import Kingfisher
 import KeychainAccess
 import Neoutils
-import Amplitude
+//统计功能注释
+//import Amplitude
 import PKHUD
 
 class SendReviewTableViewController: UITableViewController {
@@ -91,8 +92,9 @@ class SendReviewTableViewController: UITableViewController {
                         if txid != nil {
                             self.txId = txid!
                             self.transactionCompleted = true
-                            Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
-                                                                                               "amount": amount])
+                            //统计功能注释
+//                            Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
+//                                                                                               "amount": amount])
                         } else {
                             self.transactionCompleted = false
                         }
@@ -145,8 +147,9 @@ class SendReviewTableViewController: UITableViewController {
                         self.transactionCompleted = true
                         self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                     } else {
-                        Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetSymbol,
-                                                                                           "amount": amount ])
+                        //统计功能注释
+//                        Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetSymbol,
+//                                                                                           "amount": amount ])
                         self.transactionCompleted = false
                         self.performSegue(withIdentifier: "segueToTransactionComplete", sender: nil)
                     }
@@ -172,8 +175,9 @@ class SendReviewTableViewController: UITableViewController {
                     DispatchQueue.main.async {
                         HUD.hide()
                         self.transactionCompleted = txid != nil
-                        Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
-                                                                                           "amount": amount])
+                        //统计功能注释
+//                        Amplitude.instance()?.logEvent("Asset Send", withEventProperties: ["asset": assetName,
+//                                                                                           "amount": amount])
                         if self.transactionCompleted == true {
                             self.txId = txid!
                             self.savePendingTransaction(blockchain: "neo", txID: txid!, from: (Authenticated.wallet?.address)!, to: toAddress, asset: self.selectedAsset!, amount: amount.string(self.selectedAsset!.decimals, removeTrailing: true))

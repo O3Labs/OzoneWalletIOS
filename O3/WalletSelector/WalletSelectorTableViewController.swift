@@ -128,7 +128,7 @@ class WalletSelectorTableViewController: UITableViewController {
                 switch result {
                 case .success(let wallet):
                     NEP6.makeNewDefault(key: self.wallets[indexPath.row].key!, wallet: wallet)
-                    MultiwalletEvent.shared.walletUnlocked()
+//                    MultiwalletEvent.shared.walletUnlocked()
                     DispatchQueue.main.async { HUD.show(.progress) }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         HUD.hide()

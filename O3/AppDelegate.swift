@@ -14,10 +14,11 @@ import Crashlytics
 import SwiftTheme
 import Neoutils
 import UserNotifications
-import Amplitude
-import ZendeskSDK
-import ZendeskCoreSDK
-import ZendeskProviderSDK
+//统计功能注释
+//import Amplitude
+//import ZendeskSDK
+//import ZendeskCoreSDK
+//import ZendeskProviderSDK
 
 @UIApplicationMain
     class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -50,24 +51,26 @@ import ZendeskProviderSDK
 
     let alertController = UIAlertController(title: OzoneAlert.noInternetError, message: nil, preferredStyle: .alert)
     @objc func reachabilityChanged(_ note: Notification) {
-        switch reachability.connection {
-        case .wifi:
-            print("Reachable via WiFi")
-            alertController.dismiss(animated: true, completion: nil)
-
-        case .cellular:
-            print("Reachable via cellular")
-            alertController.dismiss(animated: true, completion: nil)
-        case .none:
-            print("Network not reachable")
-            UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
-        }
+//        switch reachability?.connection {
+//        case .wifi:
+//            print("Reachable via WiFi")
+//            alertController.dismiss(animated: true, completion: nil)
+//
+//        case .cellular:
+//            print("Reachable via cellular")
+//            alertController.dismiss(animated: true, completion: nil)
+//        case .none:
+//            print("Network not reachable")
+//            UIApplication.shared.keyWindow?.rootViewController?.presentFromEmbedded(alertController, animated: true, completion: nil)
+//        default :
+//            break
+//        }
     }
-    let reachability = Reachability()!
+//    let reachability : Reachability? = Reachability()
     func setupReachability() {
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: nil)
         do {
-            try reachability.startNotifier()
+//            try reachability?.startNotifier()
         } catch {
             print("could not start reachability notifier")
         }
@@ -110,11 +113,12 @@ import ZendeskProviderSDK
                 let zendeskClientId = zendesk["clientId"] as! String
                 
                 #if !DEBUG
-                Amplitude.instance().initializeApiKey(ampApiKey)
-                Zendesk.initialize(appId: zendeskKey,
-                                   clientId: zendeskClientId,
-                                   zendeskUrl: "https://o3labs.zendesk.com/")
-                Support.initialize(withZendesk: Zendesk.instance)
+                //统计功能注释
+//                Amplitude.instance().initializeApiKey(ampApiKey)
+//                Zendesk.initialize(appId: zendeskKey,
+//                                   clientId: zendeskClientId,
+//                                   zendeskUrl: "https://o3labs.zendesk.com/")
+//                Support.initialize(withZendesk: Zendesk.instance)
                 let ident = Identity.createAnonymous()
                 Zendesk.instance?.setIdentity(ident)
                #endif

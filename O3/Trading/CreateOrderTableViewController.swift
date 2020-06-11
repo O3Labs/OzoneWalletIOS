@@ -163,7 +163,7 @@ class CreateOrderViewModel {
                     return
                 case .success(let pairs):
                     let foundPair = pairs.first(where: { p -> Bool in
-                        return p.name.isEqual(to: pair)
+                        return p.name.isEqual(pair)
                     })
                     self.pairPrecision = foundPair == nil ? self.defaultPrecision : foundPair!.precision
                     group.leave()

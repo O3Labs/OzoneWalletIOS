@@ -11,7 +11,8 @@ import UIKit
 import DeckTransition
 import SwiftTheme
 import Crashlytics
-import Amplitude
+//统计功能注释
+//import Amplitude
 
 class O3TabBarController: UITabBarController {
     // swiftlint:disable weak_delegate
@@ -29,7 +30,8 @@ class O3TabBarController: UITabBarController {
         tabBar.items?[3].isEnabled = true
         
         ShortcutParser.shared.registerShortcuts()
-        Amplitude.instance().logEvent("Loaded_Main_Tab")
+        //统计功能注释
+//        Amplitude.instance().logEvent("Loaded_Main_Tab")
     }
 
     @IBAction func unwindToTabbar(segue: UIStoryboardSegue) {

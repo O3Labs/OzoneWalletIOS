@@ -23,12 +23,26 @@ class dAppBrowserViewModel: NSObject {
     var tradableAsset: TradableAsset? = nil
     
     func loadMetadata(){
-        OpenGraph.fetch(url: url!) { og, error in
+        
+        //开放协议API修改
+        OpenGraph.fetch(url: url!) { result in
             self.dappMetadata?.url = self.url!
-            self.dappMetadata?.title = og?[.title]
-            self.dappMetadata?.iconURL = og?[.image]
-            self.dappMetadata?.description = og?[.description]
+            switch result {
+            case .success(let og):
+              self.dappMetadata?.title = og[.title]
+              self.dappMetadata?.iconURL = og[.image]
+              self.dappMetadata?.description = og[.description]
+            case .failure( _):
+                break
+            }
         }
+        
+//        OpenGraph.fetch(url: url!) { og, error in
+//            self.dappMetadata?.url = self.url!
+//            self.dappMetadata?.title = og?[.title]
+//            self.dappMetadata?.iconURL = og?[.image]
+//            self.dappMetadata?.description = og?[.description]
+//        }
     }
     
     func requestToConnect(message: dAppMessage, didCancel: @escaping (_ message: dAppMessage) -> Void, didConfirm: @escaping (_ message: dAppMessage, _ wallet: Wallet, _ acount: NEP6.Account?) -> Void) {
@@ -138,7 +152,7 @@ class dAppBrowserViewModel: NSObject {
                     return
             }
             let response = O3DappAPI().invokeRead(request: request)
-            self.delegate?.didFinishMessage(message: message, response: response)
+            self.delegate?.didFinishMessage(message: message, response: response!)
             return
         }
         

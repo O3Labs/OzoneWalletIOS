@@ -13,7 +13,7 @@ import SwiftTheme
 import KeychainAccess
 import WebBrowser
 import DeckTransition
-import ZendeskSDK
+//import ZendeskSDK
 import Neoutils
 
 class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate {
@@ -272,12 +272,12 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
 
     @objc func sendMail() {
-        let config = RequestUiConfiguration()
-        config.subject = "iOS Support"
-        config.tags = [UIDevice.current.modelName, UIDevice.current.systemVersion,
-                       Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String ]
-        let viewController = RequestUi.buildRequestUi(with: [config])
-        self.navigationController?.pushViewController(viewController, animated: true)
+//        let config = RequestUiConfiguration()
+//        config.subject = "iOS Support"
+//        config.tags = [UIDevice.current.modelName, UIDevice.current.systemVersion,
+//                       Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String ]
+//        let viewController = RequestUi.buildRequestUi(with: [config])
+//        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc func openSupportForum() {

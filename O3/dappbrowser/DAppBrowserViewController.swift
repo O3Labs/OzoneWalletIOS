@@ -11,7 +11,8 @@ import WebKit
 import Neoutils
 import KeychainAccess
 import Lottie
-import Amplitude
+//统计功能注释
+//import Amplitude
 import DeckTransition
 
 extension Bundle {
@@ -389,14 +390,16 @@ extension DAppBrowserViewController: WKScriptMessageHandler {
                 let unsignedJson = unsignedHexVar.substring(from: jsonStart!)
                 let unsignedJsonData = unsignedJson.dataWithHexString()
                 do {
-                    let dict = try JSONSerialization.jsonObject(with: unsignedJsonData, options: []) as? [String: Any]
-                    Amplitude.instance().logEvent("Switcheo_Signed_JSON", withEventProperties: dict)
+                    //统计功能注释
+//                    let dict = try JSONSerialization.jsonObject(with: unsignedJsonData, options: []) as? [String: Any]
+//                    Amplitude.instance().logEvent("Switcheo_Signed_JSON", withEventProperties: dict)
                 } catch {
                     return
                 }
             }
         } else {
-            Amplitude.instance().logEvent("Switcheo_Signed_Raw_TX")
+            //统计功能注释
+//            Amplitude.instance().logEvent("Switcheo_Signed_Raw_TX")
         }
     }
 

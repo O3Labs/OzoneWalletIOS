@@ -52,7 +52,7 @@
 		3540138722BC7E8F00AB11ED /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137722BC7E8F00AB11ED /* Amplitude.framework */; };
 		3540138822BC7E8F00AB11ED /* Pageboy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137822BC7E8F00AB11ED /* Pageboy.framework */; };
 		3540138922BC7E8F00AB11ED /* SwiftTheme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137922BC7E8F00AB11ED /* SwiftTheme.framework */; };
-		3540138A22BC7E8F00AB11ED /* PKHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137A22BC7E8F00AB11ED /* PKHUD.framework */; };
+		3540138A22BC7E8F00AB11ED /* PKHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137A22BC7E8F00AB11ED /* PKHUD.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		3540138B22BC7E9000AB11ED /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137B22BC7E8F00AB11ED /* KeychainAccess.framework */; };
 		3540138C22BC7E9000AB11ED /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137C22BC7E8F00AB11ED /* Fabric.framework */; };
 		3540138D22BC7E9000AB11ED /* AutoInsetter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137D22BC7E8F00AB11ED /* AutoInsetter.framework */; };
@@ -136,7 +136,6 @@
 		35ACAF192277F25000B67AFA /* WalletSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35ACAF182277F25000B67AFA /* WalletSelectorTableViewCell.swift */; };
 		35AD2B64209179010024A900 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 35AD2B61209179010024A900 /* Base.lproj */; };
 		35AD2B65209179010024A900 /* ja.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 35AD2B62209179010024A900 /* ja.lproj */; };
-		35AD2B66209179010024A900 /* zh-Hans.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 35AD2B63209179010024A900 /* zh-Hans.lproj */; };
 		35AD2B6A209301A30024A900 /* AccountStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AD2B69209301A30024A900 /* AccountStrings.swift */; };
 		35AD2B6C2093087C0024A900 /* SendStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AD2B6B2093087C0024A900 /* SendStrings.swift */; };
 		35AD2B70209312600024A900 /* OnboardingStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AD2B6F209312600024A900 /* OnboardingStrings.swift */; };
@@ -505,7 +504,6 @@
 		35ACAF182277F25000B67AFA /* WalletSelectorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSelectorTableViewCell.swift; sourceTree = "<group>"; };
 		35AD2B61209179010024A900 /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
 		35AD2B62209179010024A900 /* ja.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ja.lproj; sourceTree = "<group>"; };
-		35AD2B63209179010024A900 /* zh-Hans.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "zh-Hans.lproj"; sourceTree = "<group>"; };
 		35AD2B69209301A30024A900 /* AccountStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStrings.swift; sourceTree = "<group>"; };
 		35AD2B6B2093087C0024A900 /* SendStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendStrings.swift; sourceTree = "<group>"; };
 		35AD2B6F209312600024A900 /* OnboardingStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStrings.swift; sourceTree = "<group>"; };
@@ -1473,7 +1471,6 @@
 				75E14E521F7D27F900BEAE22 /* O3.xcdatamodeld */,
 				35AD2B61209179010024A900 /* Base.lproj */,
 				35AD2B62209179010024A900 /* ja.lproj */,
-				35AD2B63209179010024A900 /* zh-Hans.lproj */,
 				6ED6001B1F76506B006760E6 /* SharedAssets.xcassets */,
 				6ED6001D1F76559E006760E6 /* LogoAssets.xcassets */,
 				75D5BFC31F6D1A4F00E64855 /* AppAssets.xcassets */,
@@ -1777,7 +1774,6 @@
 				6E8B0A4F21587AD700E8A2E5 /* PriceInputToolbar.xib in Resources */,
 				3513F33E22CBD6EF003690DB /* Explore.storyboard in Resources */,
 				6E64C0DE215B89C2002B1366 /* PriceInputToggleToolbar.xib in Resources */,
-				35AD2B66209179010024A900 /* zh-Hans.lproj in Resources */,
 				35734262229D08BA00BE7F5E /* luna_bobbing.json in Resources */,
 				35A37C32226D9ED200473895 /* Inbox.storyboard in Resources */,
 				35C370B22182A8080023AABC /* AddNewMultiWallet.storyboard in Resources */,
@@ -2186,13 +2182,13 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				DEVELOPMENT_TEAM = 89YSAN7DCM;
 				INFOPLIST_FILE = O3Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2206,12 +2202,12 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				DEVELOPMENT_TEAM = 89YSAN7DCM;
 				INFOPLIST_FILE = O3Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2225,12 +2221,12 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				DEVELOPMENT_TEAM = 89YSAN7DCM;
 				INFOPLIST_FILE = O3Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2244,12 +2240,12 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				DEVELOPMENT_TEAM = 89YSAN7DCM;
 				INFOPLIST_FILE = O3Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2334,7 +2330,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				DEVELOPMENT_TEAM = 89YSAN7DCM;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2351,7 +2347,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200 -DTESTNET";
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2440,7 +2436,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				DEVELOPMENT_TEAM = 89YSAN7DCM;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2457,7 +2453,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200 -DPRIVATENET";
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2605,7 +2601,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				DEVELOPMENT_TEAM = 89YSAN7DCM;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2622,7 +2618,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200";
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2644,7 +2640,7 @@
 				CODE_SIGN_ENTITLEMENTS = O3/O3.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2CBVZ5X783;
+				DEVELOPMENT_TEAM = 89YSAN7DCM;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2660,7 +2656,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -43,7 +43,7 @@ class AddNameEncryptedKeyTableViewController: UITableViewController {
         var updatedNep6 = NEP6.getFromFileSystem()!
         do {
             try updatedNep6.addEncryptedKey(name: nameInputField.text!, address: address, key: encryptedKey)
-                MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
+//                MultiwalletEvent.shared.walletAdded(type: "import_key", method: "import")
                 UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true)
         } catch {
             OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
