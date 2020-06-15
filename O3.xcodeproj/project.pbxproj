@@ -49,7 +49,6 @@
 		3540138422BC7E8F00AB11ED /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137422BC7E8F00AB11ED /* Kingfisher.framework */; };
 		3540138522BC7E8F00AB11ED /* M13Checkbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137522BC7E8F00AB11ED /* M13Checkbox.framework */; };
 		3540138622BC7E8F00AB11ED /* WebBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137622BC7E8F00AB11ED /* WebBrowser.framework */; };
-		3540138722BC7E8F00AB11ED /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137722BC7E8F00AB11ED /* Amplitude.framework */; };
 		3540138822BC7E8F00AB11ED /* Pageboy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137822BC7E8F00AB11ED /* Pageboy.framework */; };
 		3540138922BC7E8F00AB11ED /* SwiftTheme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137922BC7E8F00AB11ED /* SwiftTheme.framework */; };
 		3540138A22BC7E8F00AB11ED /* PKHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3540137A22BC7E8F00AB11ED /* PKHUD.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -417,7 +416,6 @@
 		3540137422BC7E8F00AB11ED /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		3540137522BC7E8F00AB11ED /* M13Checkbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = M13Checkbox.framework; path = Carthage/Build/iOS/M13Checkbox.framework; sourceTree = "<group>"; };
 		3540137622BC7E8F00AB11ED /* WebBrowser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebBrowser.framework; path = Carthage/Build/iOS/WebBrowser.framework; sourceTree = "<group>"; };
-		3540137722BC7E8F00AB11ED /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
 		3540137822BC7E8F00AB11ED /* Pageboy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pageboy.framework; path = Carthage/Build/iOS/Pageboy.framework; sourceTree = "<group>"; };
 		3540137922BC7E8F00AB11ED /* SwiftTheme.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftTheme.framework; path = Carthage/Build/iOS/SwiftTheme.framework; sourceTree = "<group>"; };
 		3540137A22BC7E8F00AB11ED /* PKHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PKHUD.framework; path = Carthage/Build/iOS/PKHUD.framework; sourceTree = "<group>"; };
@@ -745,7 +743,6 @@
 				3540138422BC7E8F00AB11ED /* Kingfisher.framework in Frameworks */,
 				3540138522BC7E8F00AB11ED /* M13Checkbox.framework in Frameworks */,
 				3540138622BC7E8F00AB11ED /* WebBrowser.framework in Frameworks */,
-				3540138722BC7E8F00AB11ED /* Amplitude.framework in Frameworks */,
 				3540138822BC7E8F00AB11ED /* Pageboy.framework in Frameworks */,
 				3540138922BC7E8F00AB11ED /* SwiftTheme.framework in Frameworks */,
 				3540138A22BC7E8F00AB11ED /* PKHUD.framework in Frameworks */,
@@ -1379,7 +1376,6 @@
 			isa = PBXGroup;
 			children = (
 				3540137322BC7E8E00AB11ED /* ActiveLabel.framework */,
-				3540137722BC7E8F00AB11ED /* Amplitude.framework */,
 				3540137D22BC7E8F00AB11ED /* AutoInsetter.framework */,
 				3540137F22BC7E8F00AB11ED /* Cache.framework */,
 				3540137E22BC7E8F00AB11ED /* Crashlytics.framework */,
@@ -1836,7 +1832,6 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/ActiveLabel.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Amplitude.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/AutoInsetter.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Cache.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/DeckTransition.framework",
@@ -2190,13 +2185,13 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 89YSAN7DCM;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				INFOPLIST_FILE = O3Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2346,9 +2341,6 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2452,9 +2444,6 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2609,7 +2598,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 89YSAN7DCM;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2617,16 +2606,13 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2656,9 +2642,6 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/4.2.1",
-					"$(PROJECT_DIR)/Carthage/Checkouts/zendesk_sdk_ios/ZendeskSDK/5.0",
 				);
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
