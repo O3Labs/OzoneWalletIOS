@@ -176,6 +176,9 @@
 		35E5F6122029477400D65BEA /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5F6112029477400D65BEA /* HomeViewModel.swift */; };
 		35E5F614202ADE4300D65BEA /* NativeAssetSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5F613202ADE4300D65BEA /* NativeAssetSelectorTableViewCell.swift */; };
 		35F8D66D20C6255F00C7EC56 /* WalletToolbarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8D66C20C6255F00C7EC56 /* WalletToolbarCell.swift */; };
+		417D4F90249858E700DEAA09 /* NewExploreTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417D4F8F249858E700DEAA09 /* NewExploreTabViewController.swift */; };
+		417D4F922498A9A700DEAA09 /* NewExploreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417D4F912498A9A700DEAA09 /* NewExploreTableViewCell.swift */; };
+		417D4F952498AE6200DEAA09 /* ExploreHeaderButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417D4F942498AE6200DEAA09 /* ExploreHeaderButtonCollectionViewCell.swift */; };
 		6E1ACFE621BA365A0079E752 /* dAppBrowserMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1ACFE521BA365A0079E752 /* dAppBrowserMenuTableViewController.swift */; };
 		6E1BBF7F1F77BEE30095F466 /* WalletHomeAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E1BBF7E1F77BEE30095F466 /* WalletHomeAssets.xcassets */; };
 		6E244EC52085BF71001B4B22 /* AssetInputToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E244EC42085BF71001B4B22 /* AssetInputToolbar.xib */; };
@@ -546,6 +549,9 @@
 		35E5F6112029477400D65BEA /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		35E5F613202ADE4300D65BEA /* NativeAssetSelectorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAssetSelectorTableViewCell.swift; sourceTree = "<group>"; };
 		35F8D66C20C6255F00C7EC56 /* WalletToolbarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToolbarCell.swift; sourceTree = "<group>"; };
+		417D4F8F249858E700DEAA09 /* NewExploreTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExploreTabViewController.swift; sourceTree = "<group>"; };
+		417D4F912498A9A700DEAA09 /* NewExploreTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExploreTableViewCell.swift; sourceTree = "<group>"; };
+		417D4F942498AE6200DEAA09 /* ExploreHeaderButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreHeaderButtonCollectionViewCell.swift; sourceTree = "<group>"; };
 		6E1ACFE521BA365A0079E752 /* dAppBrowserMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dAppBrowserMenuTableViewController.swift; sourceTree = "<group>"; };
 		6E1BBF7E1F77BEE30095F466 /* WalletHomeAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = WalletHomeAssets.xcassets; sourceTree = "<group>"; };
 		6E244EC42085BF71001B4B22 /* AssetInputToolbar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssetInputToolbar.xib; sourceTree = "<group>"; };
@@ -808,6 +814,9 @@
 				3513F33F22CBD79A003690DB /* ExploreTabViewController.swift */,
 				3513F34122CBD802003690DB /* ExploreViewController.swift */,
 				6F117A5B2491DE8800792536 /* NewExploreVC.swift */,
+				417D4F8F249858E700DEAA09 /* NewExploreTabViewController.swift */,
+				417D4F912498A9A700DEAA09 /* NewExploreTableViewCell.swift */,
+				417D4F942498AE6200DEAA09 /* ExploreHeaderButtonCollectionViewCell.swift */,
 			);
 			path = Explore;
 			sourceTree = "<group>";
@@ -1982,6 +1991,7 @@
 				356F1B0B219049130004C088 /* EncyptionCompletedViewController.swift in Sources */,
 				6EA7F9291F6E32B600E31B78 /* PriceData.swift in Sources */,
 				6E4C4FA92165E650001B7114 /* SAConfettiView.swift in Sources */,
+				417D4F922498A9A700DEAA09 /* NewExploreTableViewCell.swift in Sources */,
 				35B399D32106F65100284BFA /* TokenSaleLog.swift in Sources */,
 				353E11E520C676E000697359 /* LandingViewController.swift in Sources */,
 				7575ADC61F6006AC0077007B /* AppDelegate.swift in Sources */,
@@ -1993,6 +2003,7 @@
 				757FEB711F77E2790099E26F /* UIView.swift in Sources */,
 				355D469022B9CBC8006DE02B /* PortfolioSelectorTableViewCell.swift in Sources */,
 				3512923721E5B55900BFD0FD /* CreateWalletTableViewController.swift in Sources */,
+				417D4F952498AE6200DEAA09 /* ExploreHeaderButtonCollectionViewCell.swift in Sources */,
 				6E64C0CD2159CE19002B1366 /* Candlestick.swift in Sources */,
 				3557BAD320AA9D310034937C /* validator.swift in Sources */,
 				35809D9D21E7262800E1D277 /* NewWalletWelcomeViewController.swift in Sources */,
@@ -2068,6 +2079,7 @@
 				6E64C0CE2159CE19002B1366 /* Last24hour.swift in Sources */,
 				6E9129772164C287006826A0 /* ThemedUIView.swift in Sources */,
 				6EF59C8B21A2A25900087D72 /* dAppMessage.swift in Sources */,
+				417D4F90249858E700DEAA09 /* NewExploreTabViewController.swift in Sources */,
 				751666B01F80C190009ACC07 /* TransactionWebViewController.swift in Sources */,
 				3573425E229BC5AA00BE7F5E /* UIBarButtonItem.swift in Sources */,
 				7550940D1F779EEE00127B4F /* WalletHeaderCollectionCell.swift in Sources */,
