@@ -549,6 +549,7 @@
 		35E5F6112029477400D65BEA /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		35E5F613202ADE4300D65BEA /* NativeAssetSelectorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAssetSelectorTableViewCell.swift; sourceTree = "<group>"; };
 		35F8D66C20C6255F00C7EC56 /* WalletToolbarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToolbarCell.swift; sourceTree = "<group>"; };
+		414946422499ADE500E1078D /* FSPagerView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FSPagerView.framework; path = Carthage/Build/iOS/FSPagerView.framework; sourceTree = "<group>"; };
 		417D4F8F249858E700DEAA09 /* NewExploreTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExploreTabViewController.swift; sourceTree = "<group>"; };
 		417D4F912498A9A700DEAA09 /* NewExploreTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExploreTableViewCell.swift; sourceTree = "<group>"; };
 		417D4F942498AE6200DEAA09 /* ExploreHeaderButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreHeaderButtonCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1384,6 +1385,7 @@
 		755D8F5E1F66743900058434 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				414946422499ADE500E1078D /* FSPagerView.framework */,
 				3540137322BC7E8E00AB11ED /* ActiveLabel.framework */,
 				3540137D22BC7E8F00AB11ED /* AutoInsetter.framework */,
 				3540137F22BC7E8F00AB11ED /* Cache.framework */,
@@ -1857,6 +1859,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftTheme.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Tabman.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/WebBrowser.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/FSPagerView.framework",
 			);
 			outputFileListPaths = (
 			);

@@ -52,6 +52,8 @@ class NewExploreTabViewController: TabmanViewController, PageboyViewControllerDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        automaticallyAdjustsChildScrollViewInsets = false
+        automaticallyAdjustsChildViewInsets = false
         self.setupTabs()
         navigationController?.hideHairline()
         
