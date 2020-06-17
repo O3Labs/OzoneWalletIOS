@@ -9,7 +9,8 @@
 import UIKit
 import FSPagerView
 
-
+let kEmotionCellNumberOfOneRow = 4
+let kEmotionCellRow = 2
 
 class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, FSPagerViewDelegate, FSPagerViewDataSource{
     
@@ -21,6 +22,9 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     @IBOutlet weak var pageView: UIView!
     @IBOutlet weak var buttonCollectionView: UICollectionView!
 //    var pageControl :FSPageControl!
+    @IBOutlet weak var buttonCollectionViewHeight: NSLayoutConstraint!
+    
+    let buttonCount : Int = 4
     
     lazy var pagerControl:FSPageControl = {
         let pageControl = FSPageControl(frame: self.pageView.frame)
@@ -69,9 +73,14 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
         self.pagerView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
         self.pagerView.itemSize = FSPagerView.automaticSize
         
+        if buttonCount > kEmotionCellNumberOfOneRow{
+            buttonCollectionViewHeight.constant = 250.0
+        }else{
+            buttonCollectionViewHeight.constant = 130.0
+        }
         exploreTableView.delegate = self
         exploreTableView.dataSource = self
-        self.tableHeaderView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 450)
+        self.tableHeaderView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 200+buttonCollectionViewHeight.constant)
         self.exploreTableView.tableHeaderView = self.tableHeaderView
         
         exploreTableView.tableFooterView = UIView(frame: .zero)
@@ -117,8 +126,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     
 }
 
-let kEmotionCellNumberOfOneRow = 4
-let kEmotionCellRow = 2
+
 
 
 class LXFChatEmotionCollectionLayout: UICollectionViewFlowLayout {
