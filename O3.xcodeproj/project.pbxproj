@@ -176,6 +176,9 @@
 		35E5F6122029477400D65BEA /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5F6112029477400D65BEA /* HomeViewModel.swift */; };
 		35E5F614202ADE4300D65BEA /* NativeAssetSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5F613202ADE4300D65BEA /* NativeAssetSelectorTableViewCell.swift */; };
 		35F8D66D20C6255F00C7EC56 /* WalletToolbarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8D66C20C6255F00C7EC56 /* WalletToolbarCell.swift */; };
+		41338948249B0547007CFD50 /* NewExploreSegmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41338947249B0547007CFD50 /* NewExploreSegmentViewController.swift */; };
+		4133894C249B13AC007CFD50 /* ExploreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4133894B249B13AB007CFD50 /* ExploreViewModel.swift */; };
+		4149464F249AF82B00E1078D /* JXSegmentedView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4149464E249AF82A00E1078D /* JXSegmentedView.framework */; };
 		417D4F90249858E700DEAA09 /* NewExploreTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417D4F8F249858E700DEAA09 /* NewExploreTabViewController.swift */; };
 		417D4F922498A9A700DEAA09 /* NewExploreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417D4F912498A9A700DEAA09 /* NewExploreTableViewCell.swift */; };
 		417D4F952498AE6200DEAA09 /* ExploreHeaderButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417D4F942498AE6200DEAA09 /* ExploreHeaderButtonCollectionViewCell.swift */; };
@@ -549,7 +552,10 @@
 		35E5F6112029477400D65BEA /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		35E5F613202ADE4300D65BEA /* NativeAssetSelectorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAssetSelectorTableViewCell.swift; sourceTree = "<group>"; };
 		35F8D66C20C6255F00C7EC56 /* WalletToolbarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToolbarCell.swift; sourceTree = "<group>"; };
+		41338947249B0547007CFD50 /* NewExploreSegmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExploreSegmentViewController.swift; sourceTree = "<group>"; };
+		4133894B249B13AB007CFD50 /* ExploreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewModel.swift; sourceTree = "<group>"; };
 		414946422499ADE500E1078D /* FSPagerView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FSPagerView.framework; path = Carthage/Build/iOS/FSPagerView.framework; sourceTree = "<group>"; };
+		4149464E249AF82A00E1078D /* JXSegmentedView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JXSegmentedView.framework; path = Carthage/Build/iOS/JXSegmentedView.framework; sourceTree = "<group>"; };
 		417D4F8F249858E700DEAA09 /* NewExploreTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExploreTabViewController.swift; sourceTree = "<group>"; };
 		417D4F912498A9A700DEAA09 /* NewExploreTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExploreTableViewCell.swift; sourceTree = "<group>"; };
 		417D4F942498AE6200DEAA09 /* ExploreHeaderButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreHeaderButtonCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -757,6 +763,7 @@
 				3540138C22BC7E9000AB11ED /* Fabric.framework in Frameworks */,
 				3540138D22BC7E9000AB11ED /* AutoInsetter.framework in Frameworks */,
 				3540138E22BC7E9000AB11ED /* Crashlytics.framework in Frameworks */,
+				4149464F249AF82B00E1078D /* JXSegmentedView.framework in Frameworks */,
 				3540138F22BC7E9000AB11ED /* Cache.framework in Frameworks */,
 				3540136C22BC7E8E00AB11ED /* ScrollableGraphView.framework in Frameworks */,
 				3540136D22BC7E8E00AB11ED /* Reachability.framework in Frameworks */,
@@ -818,6 +825,8 @@
 				417D4F8F249858E700DEAA09 /* NewExploreTabViewController.swift */,
 				417D4F912498A9A700DEAA09 /* NewExploreTableViewCell.swift */,
 				417D4F942498AE6200DEAA09 /* ExploreHeaderButtonCollectionViewCell.swift */,
+				41338947249B0547007CFD50 /* NewExploreSegmentViewController.swift */,
+				4133894B249B13AB007CFD50 /* ExploreViewModel.swift */,
 			);
 			path = Explore;
 			sourceTree = "<group>";
@@ -1385,6 +1394,7 @@
 		755D8F5E1F66743900058434 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4149464E249AF82A00E1078D /* JXSegmentedView.framework */,
 				414946422499ADE500E1078D /* FSPagerView.framework */,
 				3540137322BC7E8E00AB11ED /* ActiveLabel.framework */,
 				3540137D22BC7E8F00AB11ED /* AutoInsetter.framework */,
@@ -1860,6 +1870,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Tabman.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/WebBrowser.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/FSPagerView.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/JXSegmentedView.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -2028,6 +2039,7 @@
 				35734260229CC76000BE7F5E /* AddressNotificationTableViewController.swift in Sources */,
 				35ACAF192277F25000B67AFA /* WalletSelectorTableViewCell.swift in Sources */,
 				35A8464E2214FFF400E95F48 /* ContractDetailsTableViewController.swift in Sources */,
+				4133894C249B13AC007CFD50 /* ExploreViewModel.swift in Sources */,
 				35DBABCA2098028D009BE767 /* PortfolioStrings.swift in Sources */,
 				3514DC60225C4CE2001DCFD9 /* dappBrowserBottomToolbar.swift in Sources */,
 				6E5568EE214B5F1E00BA805E /* UIButton.swift in Sources */,
@@ -2118,6 +2130,7 @@
 				752006861F7F698300D19B5F /* O3TabBarController.swift in Sources */,
 				6E4E6F89201465BE001A5844 /* NativeAssetTableViewCell.swift in Sources */,
 				355D469C22BA155D006DE02B /* AssetTableDelegate.swift in Sources */,
+				41338948249B0547007CFD50 /* NewExploreSegmentViewController.swift in Sources */,
 				6ED5D7EC2016BFC900AF3713 /* AssetSelectorTableViewController.swift in Sources */,
 				356F1B05218FD39D0004C088 /* UnlockMultiWalletTableViewController.swift in Sources */,
 				6E64C0CF2159CE19002B1366 /* TokenDetail.swift in Sources */,

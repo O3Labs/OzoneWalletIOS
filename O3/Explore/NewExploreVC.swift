@@ -8,6 +8,8 @@
 
 import UIKit
 import FSPagerView
+import JXSegmentedView
+
 
 let kEmotionCellNumberOfOneRow = 4
 let kEmotionCellRow = 2
@@ -190,4 +192,23 @@ class LXFChatEmotionCollectionLayout: UICollectionViewFlowLayout {
         return CGSize(width: (collectionView!.bounds.width) * CGFloat(page+1), height: collectionView!.bounds.height);
     }
     
+}
+extension NewExploreVC: JXSegmentedListContainerViewListDelegate {
+    func listView() -> UIView {
+        return view
+    }
+    
+    func listDidAppear() {
+            //因为`JXSegmentedListContainerView`内部通过`UICollectionView`的cell加载列表。当切换tab的时候，之前的列表所在的cell就被回收到缓存池，就会从视图层级树里面被剔除掉，即没有显示出来且不在视图层级里面。这个时候MJRefreshHeader所持有的UIActivityIndicatorView就会被设置hidden。所以需要在列表显示的时候，且isRefreshing==YES的时候，再让UIActivityIndicatorView重新开启动画。
+    //        if (self.tableView.mj_header.isRefreshing) {
+    //            UIActivityIndicatorView *activity = [self.tableView.mj_header valueForKey:@"loadingView"];
+    //            [activity startAnimating];
+    //        }
+
+    //        print("listDidAppear")
+        }
+
+        func listDidDisappear() {
+    //        print("listDidDisappear")
+        }
 }
