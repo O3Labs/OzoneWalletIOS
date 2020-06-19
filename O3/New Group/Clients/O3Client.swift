@@ -40,6 +40,8 @@ public class O3Client {
         case getAccountValue = "/v1/value"
         case getNewsFeed = "/v1/feed/"
         case getTokenSales = "https://platform.o3.network/api/v1/neo/tokensales"
+        case getDapps = "/v1/dapps"
+        case getExploreAssets = "/v1/assets"
     }
 
     enum HTTPMethod: String {
@@ -337,4 +339,48 @@ public class O3Client {
             }
         }
     }
+    
+    func getDapps(completion: @escaping (O3ClientResult<[Dapps]>) -> Void){
+        let endpoint = O3Endpoints.getDapps.rawValue
+        sendRequest(endpoint, method: .GET, data: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+                let result = response["result"] as? JSONDictionary
+                guard let data = try? JSONSerialization.data(withJSONObject: result!["data"]!, options: .prettyPrinted),
+   
+                    let dappsList = try? decoder.decode([Dapps].self, from: data) else {
+                        completion(.failure(.invalidData))
+                        return
+                }
+
+                let clientResult = O3ClientResult.success(dappsList)
+                completion(clientResult)
+            }
+        }
+    }
+    
+    func getExploreAssets(completion: @escaping (O3ClientResult<[ExploreAssets]>) -> Void){
+         let endpoint = O3Endpoints.getExploreAssets.rawValue
+         sendRequest(endpoint, method: .GET, data: nil) { result in
+             switch result {
+             case .failure(let error):
+                 completion(.failure(error))
+             case .success(let response):
+                 let decoder = JSONDecoder()
+                 let result = response["result"] as? JSONDictionary
+                 let responseData = result!["data"] as? JSONDictionary
+                 guard let data = try? JSONSerialization.data(withJSONObject: responseData!["assets"]!, options: .prettyPrinted),
+                     let assetList = try? decoder.decode([ExploreAssets].self, from: data) else {
+                         return
+                 }
+
+                 let clientResult = O3ClientResult.success(assetList)
+                 completion(clientResult)
+             }
+         }
+     }
+    
 }

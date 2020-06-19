@@ -190,6 +190,32 @@ enum Theme: String {
             return UIColor.white
         }
     }
+    var newTitleTextColor: UIColor {
+        switch self {
+        case .light:
+            return UIColor(named: "newTextColor")!
+        case .dark:
+            return UIColor.white
+        }
+    }
+    
+    var newTitleNormalColor: UIColor {
+        switch self {
+        case .light:
+            return UIColor(named: "newTitleNormalColor_light")!
+        case .dark:
+            return UIColor(named: "newTitleNormalColor_dark")!
+        }
+    }
+    
+    var indicatorColor: UIColor {
+        switch self {
+        case .light:
+            return UIColor(named: "newTextColor")!
+        case .dark:
+            return UIColor(named: "indicatorColor_dark")!
+        }
+    }
 }
 
 // This will let you use a theme in the app.
@@ -311,5 +337,7 @@ class O3Theme {
     static let sectionHeaderTextColor = ThemeColorPicker(colors: "#AAAAAAFF",
                                                           "#AAAAAAFF",
                                                           "#AAAAAAFF")
+    //newExplore
+    static let newTextColorPicker = ThemeColorPicker(colors: Theme.light.newTitleTextColor.hexString(false), Theme.dark.newTitleTextColor.hexString(false))
     
 }

@@ -15,8 +15,14 @@ let kEmotionCellNumberOfOneRow = 4
 let kEmotionCellRow = 2
 
 class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, FSPagerViewDelegate, FSPagerViewDataSource{
-    
+    var typeString: String = ""
 
+    enum tabName: String {
+        case recommend = "recommend"
+        case recreation = "recreation"
+        case finance = " finance "
+    }
+    
     @IBOutlet weak var exploreTableView: UITableView!
     @IBOutlet weak var tableHeaderView: UIView!
     @IBOutlet weak var pagerView: FSPagerView!
@@ -26,12 +32,13 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
 //    var pageControl :FSPageControl!
     @IBOutlet weak var buttonCollectionViewHeight: NSLayoutConstraint!
     
-    let buttonCount : Int = 4
+    var bannerFeatureFeedData: FeatureFeed?
+    var bannerNewsfeedData: FeedData?
+    var dappsData = [Dapps]()
+    var exploreAssetsData = [ExploreAssets]()
     
     lazy var pagerControl:FSPageControl = {
-        let pageControl = FSPageControl(frame: self.pageView.frame)
-        //设置下标的个数
-        pageControl.numberOfPages = 2
+        let pageControl = FSPageControl(frame: CGRect.init(x: 0, y: 0, width: self.pageView.frame.size.width, height: self.pageView.frame.size.height))
         //设置下标位置
         pageControl.contentHorizontalAlignment = .center
 
@@ -52,16 +59,60 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
         super.viewWillDisappear(animated)
 
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.typeString == "recommend" {
+            loadFeatureFeed()
+            loadDapps()
+            
+        }else if self.typeString == "recreation"{
+            loadNewsFeed()
+            loadDapps()
+        }
+        loadAssets()
+    }
     
     func numberOfItems(in pagerView: FSPagerView) -> Int {
-        return 2
+        if self.typeString == "recommend" {
+            return self.bannerFeatureFeedData?.features.count ?? 0
+        }else if self.typeString == "recreation"{
+            if bannerNewsfeedData?.items.count ?? 0 >= 4{
+                return 4
+            }else{
+                return self.bannerNewsfeedData?.items.count ?? 0
+            }
+        }else{
+            return 0
+        }
     }
 
     public func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
         let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
-//        cell.imageView?.kf.
+        if self.typeString == "recommend" {
+            let item = self.bannerFeatureFeedData?.features[index]
+            cell.imageView?.kf.setImage(with: URL(string: item?.imageURL ?? ""))
+        }else if self.typeString == "recreation"{
+            let item = self.bannerNewsfeedData?.items[index]
+            if item?.images.count ?? 0 > 0{
+                cell.imageView?.kf.setImage(with: URL(string: item?.images.first?.url ?? ""))
+            }
+        }
+        
         return cell
     }
+    
+    public func pagerView(_ pagerView: FSPagerView, didSelectItemAt index: Int) {
+        if self.typeString == "recommend" {
+            let item = self.bannerFeatureFeedData?.features[index]
+            Controller().openDappBrowserV2(url: URL(string: item?.actionURL ?? "")!)
+        }else if self.typeString == "recreation"{
+            let item = self.bannerNewsfeedData?.items[index]
+            Controller().openDappBrowserV2(url: URL(string: item?.link ?? "")!)
+        }
+
+    }
+    
+    
     
     
     override func viewDidLoad() {
@@ -70,23 +121,34 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
         pagerView.delegate = self
         pagerView.dataSource = self
         
-        self.pagerView.addSubview(pagerControl)
+        self.pageView.addSubview(pagerControl)
         self.pagerView.interitemSpacing = 8.0
         self.pagerView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
         self.pagerView.itemSize = FSPagerView.automaticSize
         
-        if buttonCount > kEmotionCellNumberOfOneRow{
+        if dappsData.count > kEmotionCellNumberOfOneRow{
             buttonCollectionViewHeight.constant = 250.0
         }else{
             buttonCollectionViewHeight.constant = 130.0
         }
+
         exploreTableView.delegate = self
         exploreTableView.dataSource = self
         self.tableHeaderView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 200+buttonCollectionViewHeight.constant)
+        if typeString == "recommend"{
+            self.tableHeaderView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 200+buttonCollectionViewHeight.constant)
+        }else if typeString == "recreation"{
+            self.tableHeaderView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 200)
+            self.buttonCollectionView.isHidden = true
+        }else {
+            self.tableHeaderView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+            self.buttonCollectionView.isHidden = true
+        }
         self.exploreTableView.tableHeaderView = self.tableHeaderView
         
         exploreTableView.tableFooterView = UIView(frame: .zero)
-        
+        exploreTableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+
         
         buttonCollectionView.delegate = self
         buttonCollectionView.dataSource = self
@@ -97,35 +159,149 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        4
+        if self.typeString == "recreation"{
+            return self.dappsData.count
+        }else{
+            return self.exploreAssetsData.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewExploreTableViewCell") as! NewExploreTableViewCell
+        
+        if self.typeString == "recreation"{
+            let item = self.dappsData[indexPath.row]
+            cell.exploreImageView.kf.setImage(with: URL(string: item.iconURL))
+            cell.exploreTitleLabel.text = item.name
+            cell.exploreDetailLabel?.text = item.description
+        }else{
+            let item = self.exploreAssetsData[indexPath.row]
+            cell.exploreImageView.kf.setImage(with: URL(string: item.logoURL))
+            cell.exploreTitleLabel.text = item.symbol
+            cell.exploreDetailLabel?.text = item.symbol
+        }
         return cell
-
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if  self.typeString == "recreation" {
+            let item = self.dappsData[indexPath.row]
+            Controller().openDappBrowserV2(url: URL(string: item.url)!)
+        }else{
+            let item = self.exploreAssetsData[indexPath.row]
+            Controller().openDappBrowserV2(url: URL(string: item.webURL)!)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        6
+        return dappsData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExploreHeaderButtonCollectionViewCell", for: indexPath) as! ExploreHeaderButtonCollectionViewCell
+        let item = self.dappsData[indexPath.row]
+        cell.buttonImageView?.kf.setImage(with: URL(string: item.iconURL ))
+        if item.name == "O3 Fiat Gateway"{
+            cell.buttonTitleLabel.text = "O3 Fiat"
+        }else{
+            cell.buttonTitleLabel.text = item.name
+        }
         return cell
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let item = self.dappsData[indexPath.row]
+        Controller().openDappBrowserV2(url: URL(string: item.url )!)
     }
     
      // MARK:- FSPagerViewDelegate
        
-       func pagerViewWillEndDragging(_ pagerView: FSPagerView, targetIndex: Int) {
-           pagerControl.currentPage = targetIndex
-       }
-    
+    func pagerViewWillEndDragging(_ pagerView: FSPagerView, targetIndex: Int) {
+        pagerControl.currentPage = targetIndex
+    }
+    // MARK:- 网络请求
+    //第一个banner
+    func loadFeatureFeed(){
+        O3Client().getFeatures() { result in
+            switch result {
+            case .failure:
+                return
+            case .success(let FeatureFeed):
+                DispatchQueue.main.async {
+                    self.bannerFeatureFeedData = FeatureFeed
+                    self.pagerControl.numberOfPages = FeatureFeed.features.count
+                    self.pagerView.reloadData()
+                }
+            }
+        }
+    }
+    //第二个banner
+    func loadNewsFeed(){
+        O3Client().getNewsFeed() { result in
+            switch result {
+            case .failure:
+                return
+            case .success(let feedData):
+                DispatchQueue.main.async {
+                    self.bannerNewsfeedData = feedData
+                    if feedData.items.count >= 4{
+                        self.pagerControl.numberOfPages = 4
+                    }else{
+                        self.pagerControl.numberOfPages = feedData.items.count
+                    }
+                    self.pagerView.reloadData()
+                }
+            }
+        }
+    }
+    //获取dapps
+    func loadDapps(){
+        O3Client().getDapps(){ result in
+            switch result {
+            case .failure:
+                return
+            case .success(let dappsList):
+                DispatchQueue.main.async {
+                    self.dappsData.removeAll()
+                    if self.typeString == "recommend"{
+                        for dapp in dappsList{
+                            if dapp.name == "O3 Fiat Gateway" || dapp.name == "O3 Swap" || dapp.name == "Staketology"{
+                                self.dappsData.append(dapp)
+                            }
+                        }
+                    }else{
+                        self.dappsData = dappsList
+                    }
+                    self.buttonCollectionView.reloadData()
+                }
+            }
+        }
+    }
+    //获取assets
+    func loadAssets(){
+        O3Client().getExploreAssets(){ result in
+            switch result {
+            case .failure:
+                return
+            case .success(let assetsList):
+                DispatchQueue.main.async {
+                    self.exploreAssetsData.removeAll()
+                    if self.typeString == "recommend"{
+                        for assets in assetsList{
+                            if assets.symbol == "NEO" || assets.symbol == "GAS" || assets.symbol == "ONT" || assets.symbol == "ONG"{
+                                self.exploreAssetsData.append(assets)
+                            }
+                        }
+                    }else{
+                        self.exploreAssetsData = assetsList
+                    }
+                    self.exploreAssetsData = self.exploreAssetsData.filterDuplicates({$0.symbol})
+                    self.exploreTableView.reloadData()
+                }
+            }
+        }
+    }
 }
 
 
@@ -211,4 +387,18 @@ extension NewExploreVC: JXSegmentedListContainerViewListDelegate {
         func listDidDisappear() {
     //        print("listDidDisappear")
         }
+}
+extension Array {
+    
+    // 去重
+    func filterDuplicates<E: Equatable>(_ filter: (Element) -> E) -> [Element] {
+        var result = [Element]()
+        for value in self {
+            let key = filter(value)
+            if !result.map({filter($0)}).contains(key) {
+                result.append(value)
+            }
+        }
+        return result
+    }
 }

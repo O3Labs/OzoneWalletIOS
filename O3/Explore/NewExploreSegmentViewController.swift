@@ -10,21 +10,25 @@ import UIKit
 import JXSegmentedView
 
 class NewExploreSegmentViewController: UIViewController {
-    var segmentedDataSource: JXSegmentedBaseDataSource?
+    var segmentedDataSource: JXSegmentedTitleDataSource!
     let segmentedView = JXSegmentedView()
     lazy var listContainerView: JXSegmentedListContainerView! = {
         return JXSegmentedListContainerView(dataSource: self)
     }()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let titles = ["推荐", "娱乐", "金融"]
-        let dataSource = JXSegmentedTitleDataSource()
-        dataSource.isTitleColorGradientEnabled = true
-        dataSource.titles = titles
-        segmentedDataSource = dataSource
+        navigationController?.hideHairline()
+        
+        self.title = "Explor"
+        
+        let titles = ["recommend", "recreation", " finance "]
+        segmentedDataSource = JXSegmentedTitleDataSource()
+        segmentedDataSource.isTitleColorGradientEnabled = true
+        segmentedDataSource.titles = titles
+        segmentedDataSource.titleNormalColor = UserDefaultsManager.theme.newTitleNormalColor
+        segmentedDataSource.titleSelectedColor = UserDefaultsManager.theme.newTitleTextColor
+//        segmentedDataSource = dataSource
         //segmentedViewDataSource一定要通过属性强持有！！！！！！！！！
         segmentedView.dataSource = segmentedDataSource
         segmentedView.delegate = self
@@ -34,9 +38,11 @@ class NewExploreSegmentViewController: UIViewController {
         view.addSubview(listContainerView)
         
         let indicator = JXSegmentedIndicatorLineView()
-        indicator.indicatorWidth = 20
+        indicator.indicatorWidth = JXSegmentedViewAutomaticDimension
+        indicator.indicatorColor = UserDefaultsManager.theme.indicatorColor
         segmentedView.indicators = [indicator]
         view.addSubview(indicator)
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
         // Do any additional setup after loading the view.
     }
     
@@ -96,10 +102,11 @@ extension NewExploreSegmentViewController: JXSegmentedListContainerViewDataSourc
 
     func listContainerView(_ listContainerView: JXSegmentedListContainerView, initListAt index: Int) -> JXSegmentedListContainerViewListDelegate {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NewExploreVC") as! NewExploreVC
-
+        vc.typeString = segmentedDataSource.titles[index]
         return vc
-//        let vc = LoadDataListViewController()
-//        vc.typeString = segmentedDataSource.titles[index]
-//        return vc
     }
+    
+    
+    
+    
 }

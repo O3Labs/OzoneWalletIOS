@@ -189,6 +189,8 @@
 		41338960249B486B007CFD50 /* UIWindow+JXSafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4133895F249B486B007CFD50 /* UIWindow+JXSafeArea.swift */; };
 		41338967249B77E6007CFD50 /* CurrencyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41338965249B77E5007CFD50 /* CurrencyTableViewCell.swift */; };
 		41338968249B77E6007CFD50 /* CurrencyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41338966249B77E5007CFD50 /* CurrencyTableViewCell.xib */; };
+		4134A168249C97B7001F6F65 /* Dapps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4134A167249C97B7001F6F65 /* Dapps.swift */; };
+		4134A16A249CA656001F6F65 /* ExploreAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4134A169249CA656001F6F65 /* ExploreAssets.swift */; };
 		4149464F249AF82B00E1078D /* JXSegmentedView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4149464E249AF82A00E1078D /* JXSegmentedView.framework */; };
 		417D4F90249858E700DEAA09 /* NewExploreTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417D4F8F249858E700DEAA09 /* NewExploreTabViewController.swift */; };
 		417D4F922498A9A700DEAA09 /* NewExploreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417D4F912498A9A700DEAA09 /* NewExploreTableViewCell.swift */; };
@@ -576,6 +578,8 @@
 		4133895F249B486B007CFD50 /* UIWindow+JXSafeArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIWindow+JXSafeArea.swift"; sourceTree = "<group>"; };
 		41338965249B77E5007CFD50 /* CurrencyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTableViewCell.swift; sourceTree = "<group>"; };
 		41338966249B77E5007CFD50 /* CurrencyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyTableViewCell.xib; sourceTree = "<group>"; };
+		4134A167249C97B7001F6F65 /* Dapps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dapps.swift; sourceTree = "<group>"; };
+		4134A169249CA656001F6F65 /* ExploreAssets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreAssets.swift; sourceTree = "<group>"; };
 		414946422499ADE500E1078D /* FSPagerView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FSPagerView.framework; path = Carthage/Build/iOS/FSPagerView.framework; sourceTree = "<group>"; };
 		4149464E249AF82A00E1078D /* JXSegmentedView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JXSegmentedView.framework; path = Carthage/Build/iOS/JXSegmentedView.framework; sourceTree = "<group>"; };
 		417D4F8F249858E700DEAA09 /* NewExploreTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExploreTabViewController.swift; sourceTree = "<group>"; };
@@ -959,6 +963,7 @@
 		3557BAB320AA9D010034937C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4134A164249C93F3001F6F65 /* Explore */,
 				6E2F263B2151FB6E00A3DEB1 /* Trading */,
 				35B399DD210EDE3600284BFA /* Ontology */,
 				35B399DB210EDAD100284BFA /* Marketplace */,
@@ -1196,6 +1201,15 @@
 				41338966249B77E5007CFD50 /* CurrencyTableViewCell.xib */,
 			);
 			path = PagingView;
+			sourceTree = "<group>";
+		};
+		4134A164249C93F3001F6F65 /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				4134A167249C97B7001F6F65 /* Dapps.swift */,
+				4134A169249CA656001F6F65 /* ExploreAssets.swift */,
+			);
+			path = Explore;
 			sourceTree = "<group>";
 		};
 		6E2F263B2151FB6E00A3DEB1 /* Trading */ = {
@@ -2019,6 +2033,7 @@
 				35A8464C2212C23E00E95F48 /* InvokeRequestTableViewController.swift in Sources */,
 				6E244EC72085C15A001B4B22 /* AssetInputToolbar.swift in Sources */,
 				6EFF839A20148CD700BDBE52 /* CardView.swift in Sources */,
+				4134A16A249CA656001F6F65 /* ExploreAssets.swift in Sources */,
 				7518C0001F8B49D500FBA0BA /* UserDefaultsManager.swift in Sources */,
 				3557BA9C20AA9C870034937C /* Wallet.swift in Sources */,
 				3557BAC520AA9D0B0034937C /* NeoScanTransactionHistory.swift in Sources */,
@@ -2073,6 +2088,7 @@
 				6E64C0CD2159CE19002B1366 /* Candlestick.swift in Sources */,
 				41338957249B300F007CFD50 /* JXPagingListContainerView.swift in Sources */,
 				3557BAD320AA9D310034937C /* validator.swift in Sources */,
+				4134A168249C97B7001F6F65 /* Dapps.swift in Sources */,
 				35809D9D21E7262800E1D277 /* NewWalletWelcomeViewController.swift in Sources */,
 				3557BAD720AA9D310034937C /* Data+Util.swift in Sources */,
 				355D466F22B0D815006DE02B /* ExternalAccounts.swift in Sources */,
