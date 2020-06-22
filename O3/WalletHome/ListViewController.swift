@@ -9,13 +9,20 @@
 import UIKit
 
 class ListViewController: UIViewController {
+    
     lazy var tableView: UITableView = UITableView(frame: CGRect.zero, style: .plain)
-    var dataSource: [String] = [String]()
     var isNeedHeader = false
     var isNeedFooter = false
     var listViewDidScrollCallback: ((UIScrollView) -> ())?
     var isHeaderRefreshed = false
-
+    
+    var displayedAssets = [PortfolioAsset]()
+    var portfolio: PortfolioValue?
+    var homeviewModel: HomeViewModel!
+    var coinbaseAssets: [PortfolioAsset] = []
+    var walletAssets: [PortfolioAsset] = []
+    var typeString: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -57,7 +64,6 @@ class ListViewController: UIViewController {
 
     @objc func loadMore() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(2)) {
-            self.dataSource.append("加载更多成功")
             self.tableView.reloadData()
         }
     }
@@ -66,16 +72,38 @@ class ListViewController: UIViewController {
 extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isHeaderRefreshed {
-            return dataSource.count
+            if typeString == "Wallets"{
+                return walletAssets.count
+            }else{
+                return coinbaseAssets.count
+            }
+            
         }
         return 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-//        cell.textLabel?.text = dataSource[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyTableViewCell", for: indexPath) as! CurrencyTableViewCell
-
+        var asset: PortfolioAsset
+        if typeString == "Wallets"{
+            asset = self.walletAssets[indexPath.row]
+        }else{
+            asset = self.coinbaseAssets[indexPath.row]
+        }
+        guard let latestPrice = portfolio?.price[asset.symbol],
+            let firstPrice = portfolio?.firstPrice[asset.symbol] else {
+                cell.data = CurrencyTableViewCell.Data(asset: asset,
+                                                    referenceCurrency: (homeviewModel?.referenceCurrency)!,
+                                                    latestPrice: PriceData(average: 0, averageBTC: 0, time: "24h"),
+                                                    firstPrice: PriceData(average: 0, averageBTC: 0, time: "24h"))
+                return cell
+        }
+        
+        cell.data = CurrencyTableViewCell.Data(asset: asset,
+                                            referenceCurrency: (homeviewModel?.referenceCurrency)!,
+                                            latestPrice: latestPrice,
+                                            firstPrice: firstPrice)
+        cell.selectionStyle = .none
         return cell
     }
 
@@ -88,6 +116,24 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var asset: PortfolioAsset
+        asset = self.walletAssets[indexPath.row]
+        
+        var urlString = ""
+        
+        if let o3NativeAsset = asset as? O3WalletNativeAsset {
+            var chain = "neo"
+            if o3NativeAsset.assetType == O3WalletNativeAsset.AssetType.ontologyAsset {
+                chain = "ont"
+            }
+            urlString = String(format: "https://o3.app/assets/%@/%@", chain, asset.symbol)
+        } else {
+            urlString = "https://www.coinbase.com/price/\(asset.name.lowercased())"
+        }
+    
+        DispatchQueue.main.async {
+            Controller().openDappBrowserV2(url: URL(string: urlString)!, assetSymbol: asset.symbol)
+        }
     }
 }
 
