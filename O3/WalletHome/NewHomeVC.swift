@@ -17,7 +17,46 @@ import JXSegmentedView
 extension JXPagingListContainerView: JXSegmentedViewListContainer {}
 
 
-class NewHomeVC: UIViewController, HomeViewModelDelegate{
+class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderViewDelegate{
+    func setIsClaimingNeo(_ isClaiming: Bool) {
+        self.isClaimingNeo = isClaiming
+    }
+    
+    func setIsClaimingOnt(_ isClaiming: Bool) {
+        self.isClaimingOnt = isClaiming
+    }
+    
+    @objc func loadClaimableGAS(address: String) {
+        if Authenticated.wallet == nil {
+            return
+        }
+        
+        if self.isClaimingNeo == true {
+            return
+        }
+        if address == "" {
+            userHeaderView.loadClaimableGASNeo()
+        }else{
+            userHeaderView.loadClaimableGASNeo(address: address)
+        }
+        
+    }
+    
+    @objc func loadClaimableOng(address: String) {
+        if Authenticated.wallet == nil {
+            return
+        }
+        
+        if self.isClaimingNeo == true {
+            return
+        }
+        if address == "" {
+            userHeaderView.loadClaimableOng()
+        }else{
+            userHeaderView.loadClaimableOng(address: address)
+        }
+    }
+    
     
     @IBOutlet weak var walletNameSelectButton: UIButton!
     @IBOutlet weak var walletNameSelectLabel: UILabel!
@@ -43,6 +82,13 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate{
     var isNeedFooter = false
     
     var wallets = NEP6.getFromFileSystem()?.getWalletAccounts() ?? []
+
+    //算钱包value
+    var accountValues: [IndexPath: AccountValue] = [:]
+    var watchAddrs: [IndexPath: NEP6.Account] = [:]
+    var combinedAccountValue: AccountValue?
+    var group: DispatchGroup = DispatchGroup()
+    var walletSectionNum = 1
     
     var firstTimeGraphLoad = true
     var firstTimeViewLoad = true
@@ -87,52 +133,63 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate{
          }
      }
      
-     var walletAssets: [PortfolioAsset] {
-         get {
-             var assets = displayedAssets.filter { asset -> Bool in
-                 return self.homeviewModel.coinbaseAccountBalances.contains {
-                     $0.symbol.lowercased() == asset.symbol.lowercased()
-                 } == false
-             }
-             if UserDefaultsManager.isDustHidden && homeviewModel.currentIndex == 0 {
-                 assets = assets.filter { asset -> Bool in
-                     let price = portfolio?.price[asset.symbol]?.averageBTC ?? 0.0
-                     let amount = asset.value
-                     return price * amount >= 0.00005
-                 }
-             }
-             
-             if UserDefaultsManager.portfolioSortType == .atozSort {
-                 assets.sort { asset1, asset2 -> Bool in
-                     return asset1.symbol < asset2.symbol
-                 }
-             } else if UserDefaultsManager.portfolioSortType == .valueSort {
-                 assets.sort { asset1, asset2 -> Bool in
-                     let price1 = portfolio?.price[asset1.symbol]?.averageBTC ?? 0.0
-                     let amount1 = asset1.value
-                     
-                     let price2 = portfolio?.price[asset2.symbol]?.averageBTC ?? 0.0
-                     let amount2 = asset2.value
-                     
-                     return price1 * amount1 > price2 * amount2
-                 }
-             }
-             
-             return assets
-         }
-     }
+    var walletAssets: [PortfolioAsset] {
+        get {
+            var assets = displayedAssets.filter { asset -> Bool in
+                return self.homeviewModel.coinbaseAccountBalances.contains {
+                    $0.symbol.lowercased() == asset.symbol.lowercased()
+                } == false
+            }
+            if UserDefaultsManager.isDustHidden && homeviewModel.currentIndex == 0 {
+                assets = assets.filter { asset -> Bool in
+                    let price = portfolio?.price[asset.symbol]?.averageBTC ?? 0.0
+                    let amount = asset.value
+                    return price * amount >= 0.00005
+                }
+            }
+            
+            if UserDefaultsManager.portfolioSortType == .atozSort {
+                assets.sort { asset1, asset2 -> Bool in
+                    return asset1.symbol < asset2.symbol
+                }
+            } else if UserDefaultsManager.portfolioSortType == .valueSort {
+                assets.sort { asset1, asset2 -> Bool in
+                    let price1 = portfolio?.price[asset1.symbol]?.averageBTC ?? 0.0
+                    let amount1 = asset1.value
+                    
+                    let price2 = portfolio?.price[asset2.symbol]?.averageBTC ?? 0.0
+                    let amount2 = asset2.value
+                    
+                    return price1 * amount1 > price2 * amount2
+                }
+            }
+            
+            return assets
+        }
+    }
+    
+    //同步
+    var claims: Claimable?
+    var isClaimingNeo: Bool = false
+    var isClaimingOnt: Bool = false
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.isTranslucent = false
+        
+        addObservers()
 
         homeviewModel = HomeViewModel(delegate: self)
         
         watchAddresses = loadWatchAddresses()
-        
-        
+
+        walletNameSelectLabel.text = wallets.first {$0.isDefault}!.label
+        addressLabel.text = wallets.first {$0.isDefault}!.address
+        loadWalletPortfolios()
+        sumForCombined()
+
         dataSource.titles = titles
         dataSource.titleSelectedColor = UIColor(red: 105/255, green: 144/255, blue: 239/255, alpha: 1)
         dataSource.titleNormalColor = UIColor.black
@@ -166,21 +223,24 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate{
         pagingView.listContainerView.scrollView.panGestureRecognizer.require(toFail: self.navigationController!.interactivePopGestureRecognizer!)
         pagingView.mainTableView.panGestureRecognizer.require(toFail: self.navigationController!.interactivePopGestureRecognizer!)
         
-        
-        sendAndReceiveBgView.layer.shadowRadius = 25
-        sendAndReceiveBgView.layer.shadowOffset = CGSize(width: 0, height: 10)
-        sendAndReceiveBgView.layer.shadowColor = UIColor(red: 0.71, green: 0.81, blue: 1, alpha: 0.2).cgColor
-        
         // Create action listener
         walletNameSelectButton.addTarget(self, action: #selector(showMultiWalletDisplay), for: .touchUpInside)
         copyButton.addTarget(self, action: #selector(copyAddress), for: .touchUpInside)
         scanButton.addTarget(self, action: #selector(rightBarButtonTapped), for: .touchUpInside)
 
-        let button:UIButton = UIButton(frame: CGRect.init(x: UIScreen.main.bounds.size.width-100, y: UIScreen.main.bounds.size.height-100-44, width: 100.0, height: 100.0))
+        let button:UIButton = UIButton(frame: CGRect.init(x: UIScreen.main.bounds.size.width-100, y: UIScreen.main.bounds.size.height-110-44, width: 99.0, height: 110.0))
         button.setImage(UIImage.init(named: "home_buyNeo"), for: .normal)
         button.addTarget(self, action: #selector(buyNeoClick), for: .touchUpInside)
         self.view.addSubview(button)
         self.view.bringSubviewToFront(button)
+        
+       
+        
+        // shadowCode
+        sendAndReceiveBgView.layer.shadowColor = UIColor.blue.cgColor
+        sendAndReceiveBgView.layer.shadowRadius = 25
+        sendAndReceiveBgView.layer.shadowOpacity = 0.2
+        sendAndReceiveBgView.layer.shadowOffset = CGSize.init(width: 0, height: 10)
     }
     @objc func showMultiWalletDisplay() {
         Controller().openPortfolioSelector()
@@ -194,6 +254,9 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate{
         }
         firstTimeViewLoad = false
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = (segmentedView.selectedIndex == 0)
+        
+        loadClaimableGAS(address: "")
+        loadClaimableOng(address: "")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -233,9 +296,130 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate{
         }
     }
     
+    @objc func jumpToPortfolio(_ notification: NSNotification) {
+        if let portfolioIndex = notification.userInfo?["portfolioIndex"] as? Int {
+            homeviewModel.currentIndex = portfolioIndex
+            getBalance()
+            if portfolioIndex == 0{
+                walletNameSelectLabel.text = "Total"
+                addressLabel.text = wallets.first {$0.isDefault}!.address
+                sumForCombined()
+                
+                let formatter = NumberFormatter()
+                formatter.currencySymbol = combinedAccountValue?.currency
+                formatter.locale = Locale(identifier: "en_US_POSIX")
+                let number = formatter.number(from: combinedAccountValue?.total ?? "0")
+                let fiat = Fiat(amount: number?.floatValue ?? 0.0)
+                totalNumberLabel.text = fiat.formattedString()
+                loadClaimableGAS(address: wallets.first {$0.isDefault}!.address)
+                loadClaimableOng(address: wallets.first {$0.isDefault}!.address)
+                
+            }else{
+                walletNameSelectLabel.text = wallets[portfolioIndex - 1].label
+                addressLabel.text = wallets[portfolioIndex - 1].address
+                let indexPath = IndexPath(row: portfolioIndex - 1, section: walletSectionNum)
+                totalNumberLabel.text = accountValues[indexPath]?.total
+                
+                loadClaimableGAS(address: wallets[portfolioIndex - 1].address)
+                loadClaimableOng(address: wallets[portfolioIndex - 1].address)
+            }
+        }
+        
+    }
+    
+    //MARK:- Observers
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.jumpToPortfolio(_:)), name: Notification.Name("jumpToPortfolio"), object: nil)
+    }
+
+    @objc func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("jumpToPortfolio"), object: nil)
+    }
+
+    deinit {
+        removeObservers()
+    }
+    
     @objc func getBalance() {
         homeviewModel.reloadBalances()
     }
+    //计算综合
+    func sumForCombined() {
+        var accountValue: AccountValue?
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        for key in accountValues.keys {
+            if watchAddrs[key] != nil && UserDefaultsManager.untrackedWatchAddr.contains(watchAddrs[key]!.address) {
+                continue
+            }
+            if accountValue == nil {
+                accountValue = accountValues[key]
+            } else {
+                let currentNumber = (formatter.number(from: accountValue!.total))!
+                let toAddNumber = (formatter.number(from: accountValues[key]!.total))!
+                let total = currentNumber.floatValue + toAddNumber.floatValue
+                accountValue = AccountValue(total: formatter.string(from: NSNumber(value: total)) ?? "0", currency: accountValues[key]!.currency)
+                
+            }
+        }
+        combinedAccountValue = accountValue
+
+    }
+    
+    func loadWalletPortfolios() {
+        for i in 0..<self.wallets.count {
+            let indexPath = IndexPath(row: i, section: walletSectionNum)
+            if self.getCachedPortfolioValue(for: self.wallets[i].address, indexPath: indexPath) == false {
+                DispatchQueue.global().async {
+                    self.group.enter()
+                    O3APIClient(network: AppState.network).getAccountState(address: self.wallets[i].address) { result in
+                        switch result {
+                        case .failure:
+                            self.group.leave()
+                            return
+                        case .success(let accountState):
+                            self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.wallets[i].address)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    func getPortfolioForAccountState(indexPath: IndexPath, accountState: AccountState, address: String) {
+        O3Client().getAccountValue(accountState.assets + accountState.nep5Tokens + accountState.ontology) { result in
+            switch result {
+            case .failure:
+                self.group.leave()
+                return
+            case .success(let accountValue):
+                O3Cache.setCachedPortfolioValue(for: address, portfolioValue: accountValue)
+                self.accountValues[indexPath] = accountValue
+                DispatchQueue.main.async {
+                    if address == self.wallets.first(where: {$0.isDefault})!.address{
+                        self.totalNumberLabel.text = accountValue.total
+                    }
+                }
+                self.group.leave()
+            }
+        }
+    }
+
+    
+    func getCachedPortfolioValue(for address: String, indexPath: IndexPath) -> Bool {
+        let accountValue = O3Cache.getCachedPortfolioValue(for: address)
+        if accountValue == nil {
+            return false
+        } else {
+            DispatchQueue.main.async {
+                self.accountValues[indexPath] = accountValue!
+                if address == self.wallets.first(where: {$0.isDefault})!.address{
+                    self.totalNumberLabel.text = accountValue?.total
+                }
+            }
+            return true
+        }
+    }
+   
     
     
     func updateWithPortfolioData(_ portfolio: PortfolioValue) {

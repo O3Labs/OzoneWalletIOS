@@ -76,6 +76,8 @@ class PagingViewTableHeaderView: UIView {
         self.setupTheme()
     }
     
+    
+    
     weak var PagingViewTableHeaderViewDelegate: PagingViewTableHeaderViewDelegate?
        
        
@@ -188,9 +190,42 @@ class PagingViewTableHeaderView: UIView {
             }
         }
     }
-
+    func loadClaimableGASNeo(address: String) {
+        O3APIClient(network: AppState.network).getClaims(address: address) { result in
+            switch result {
+            case .failure(let error):
+                self.resetNEOState()
+                OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: "OK", didDismiss: {})
+                return
+            case .success(let claims):
+                DispatchQueue.main.async {
+                    if claims.claims.count > 0 {
+                        AppState.setClaimingState(address: Authenticated.wallet!.address, claimingState: .ReadyToClaim)
+                    }
+                    self.displayClaimableStateNeo(claimable: claims)
+                }
+            }
+        }
+    }
     func loadClaimableOng() {
         O3Client().getUnboundOng(address: (Authenticated.wallet?.address)!) { result in
+            switch result {
+            case .failure(let error):
+                self.resetOntState()
+                OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: "OK", didDismiss: {})
+                return
+            case .success(let unboundOng):
+                //if claims.claims.count > 0 {
+                //   AppState.setClaimingState(address: Authenticated.account!.address, claimingState: .ReadyToClaim)
+                // }
+                DispatchQueue.main.async {
+                    self.displayClaimableStateOnt(unboundOng: unboundOng)
+                }
+            }
+        }
+    }
+    func loadClaimableOng(address: String) {
+        O3Client().getUnboundOng(address: address) { result in
             switch result {
             case .failure(let error):
                 self.resetOntState()

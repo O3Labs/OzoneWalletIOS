@@ -467,7 +467,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
         if indexPath.section == 0 {
             absoluteIndex = 0
         } else if indexPath.section == 1 {
-            absoluteIndex = indexPath.row
+            absoluteIndex = indexPath.row + indexPath.section
         } else if indexPath.section == 2 {
             absoluteIndex = wallets.count
             for row in 0..<indexPath.row {
@@ -509,6 +509,9 @@ class PortfolioSelectorTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1{
+            
+        }
         if indexPath.section == 1 || indexPath.section == 0 {
             handlePortfolioTapped(indexPath: indexPath)
         } else if indexPath.section == 2  {
