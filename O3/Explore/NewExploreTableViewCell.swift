@@ -16,6 +16,8 @@ class NewExploreTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        exploreTitleLabel.theme_textColor = O3Theme.titleColorPicker
+        exploreDetailLabel.textColor = UserDefaultsManager.theme.newTitleNormalColor
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

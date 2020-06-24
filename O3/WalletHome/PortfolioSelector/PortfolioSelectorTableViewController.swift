@@ -178,6 +178,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
         var accountValue: AccountValue?
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.numberStyle = .decimal
         for key in accountValues.keys {
             if watchAddrs[key] != nil && UserDefaultsManager.untrackedWatchAddr.contains(watchAddrs[key]!.address) {
                 continue
@@ -188,7 +189,8 @@ class PortfolioSelectorTableViewController: UITableViewController {
                 let currentNumber = (formatter.number(from: accountValue!.total))!
                 let toAddNumber = (formatter.number(from: accountValues[key]!.total))!
                 let total = currentNumber.floatValue + toAddNumber.floatValue
-                accountValue = AccountValue(total: formatter.string(from: NSNumber(value: total)) ?? "0", currency: accountValues[key]!.currency)
+                let totalStr = formatter.string(from: NSNumber(value: total)) ?? "0.00"
+                accountValue = AccountValue(total: formatter.string(from: NSNumber(value: total)) ?? "0.00", currency: accountValues[key]!.currency)
                 
             }
         }
@@ -361,7 +363,6 @@ class PortfolioSelectorTableViewController: UITableViewController {
                     DispatchQueue.main.async { HUD.show(.progress) }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         HUD.hide()
-                        Controller().focusOnTab(tabIndex: 1)
                         self.dismiss(animated: true)
                     }
                     
@@ -466,7 +467,9 @@ class PortfolioSelectorTableViewController: UITableViewController {
         var absoluteIndex = 0
         if indexPath.section == 0 {
             absoluteIndex = 0
+            self.dismiss(animated: true)
         } else if indexPath.section == 1 {
+            handleWalletTapped(indexPath: indexPath)
             absoluteIndex = indexPath.row + indexPath.section
         } else if indexPath.section == 2 {
             absoluteIndex = wallets.count
@@ -482,7 +485,6 @@ class PortfolioSelectorTableViewController: UITableViewController {
         }
         
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "jumpToPortfolio"), object: nil, userInfo: ["portfolioIndex": absoluteIndex])
-        self.dismiss(animated: true)
     }
     
     func handleExternalAccountTapped(indexPath: IndexPath) {

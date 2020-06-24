@@ -55,6 +55,7 @@
                         </constraints>
                     </imageView>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="BBE-5R-cuO" firstAttribute="leading" secondItem="Kdv-Uq-bJA" secondAttribute="leading" id="07t-if-Okb"/>
                     <constraint firstAttribute="trailing" secondItem="nK2-hT-JEp" secondAttribute="trailing" constant="16" id="3gI-FU-HC9"/>
@@ -70,6 +71,7 @@
                     <constraint firstItem="Oy2-hb-WOs" firstAttribute="centerY" secondItem="qQY-Iz-g0W" secondAttribute="centerY" id="n99-yS-uvg"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="assetAmountLabel" destination="Kdv-Uq-bJA" id="T1T-3r-07f"/>
                 <outlet property="assetFiatAmountLabel" destination="BBE-5R-cuO" id="Hqa-nI-8qR"/>

@@ -67,7 +67,7 @@ class PagingViewTableHeaderView: UIView {
         claimableGasAmountLabel?.theme_textColor = O3Theme.titleColorPicker
         neoSyncNowButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
         ontSyncButton.theme_setTitleColor(O3Theme.titleColorPicker, forState: UIControl.State())
-        shadowBackground?.theme_backgroundColor = O3Theme.backgroundColorPicker
+        shadowBackground?.theme_backgroundColor = O3Theme.newHomeHeaderBackgroundColorPicker
         theme_backgroundColor = O3Theme.backgroundLightgrey
     }
     

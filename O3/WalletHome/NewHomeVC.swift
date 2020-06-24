@@ -63,13 +63,18 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     @IBOutlet weak var scanButton: UIButton!
     @IBOutlet weak var keyButton: UIButton!
     
+    @IBOutlet weak var walletNameLabel: UILabel!
     @IBOutlet weak var totalNumberLabel: UILabel!
     @IBOutlet weak var watchButton: UIButton!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var copyButton: UIButton!
     @IBOutlet weak var sendAndReceiveBgView: UIView!
+    @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var receiveButton: UIButton!
     
     @IBOutlet weak var contentView: UIView!
+    
+    var refreshControl = UIRefreshControl()
     
     lazy var pagingView: JXPagingView = preferredPagingView()
     lazy var userHeaderView: PagingViewTableHeaderView = preferredTableHeaderView()
@@ -80,6 +85,8 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     var headerInSectionHeight: Int = 50
     var isNeedHeader = false
     var isNeedFooter = false
+    
+    var isSecureText = false//是否隐藏
     
     var wallets = NEP6.getFromFileSystem()?.getWalletAccounts() ?? []
 
@@ -186,9 +193,9 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         watchAddresses = loadWatchAddresses()
 
         walletNameSelectLabel.text = wallets.first {$0.isDefault}!.label
+        walletNameLabel.text = "\(wallets.first {$0.isDefault}!.label)≈"
         addressLabel.text = wallets.first {$0.isDefault}!.address
-        loadWalletPortfolios()
-        sumForCombined()
+
 
         dataSource.titles = titles
         dataSource.titleSelectedColor = UIColor(red: 105/255, green: 144/255, blue: 239/255, alpha: 1)
@@ -226,7 +233,11 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         // Create action listener
         walletNameSelectButton.addTarget(self, action: #selector(showMultiWalletDisplay), for: .touchUpInside)
         copyButton.addTarget(self, action: #selector(copyAddress), for: .touchUpInside)
+        let clickTap = UITapGestureRecognizer(target: self, action: #selector(copyAddress))
+        addressLabel.isUserInteractionEnabled = true
+        addressLabel.addGestureRecognizer(clickTap)
         scanButton.addTarget(self, action: #selector(rightBarButtonTapped), for: .touchUpInside)
+        watchButton.addTarget(self, action: #selector(switchIsSecureText), for: .touchUpInside)
 
         let button:UIButton = UIButton(frame: CGRect.init(x: UIScreen.main.bounds.size.width-100, y: UIScreen.main.bounds.size.height-110-44, width: 99.0, height: 110.0))
         button.setImage(UIImage.init(named: "home_buyNeo"), for: .normal)
@@ -234,13 +245,39 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         self.view.addSubview(button)
         self.view.bringSubviewToFront(button)
         
-       
-        
         // shadowCode
         sendAndReceiveBgView.layer.shadowColor = UIColor.blue.cgColor
         sendAndReceiveBgView.layer.shadowRadius = 25
         sendAndReceiveBgView.layer.shadowOpacity = 0.2
         sendAndReceiveBgView.layer.shadowOffset = CGSize.init(width: 0, height: 10)
+        
+        refreshControl.addTarget(self, action: #selector(reloadAllData),
+
+        for: .valueChanged)
+
+        refreshControl.attributedTitle = NSAttributedString(string: "loading...")
+
+        pagingView.mainTableView.addSubview(refreshControl)
+        
+        
+        addThemedElements()
+    }
+    
+    @objc func addThemedElements(){
+        sendAndReceiveBgView.theme_backgroundColor = O3Theme.newHomeHeaderBackgroundColorPicker
+        pagingView.mainTableView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
+        self.sendButton.setTitleColor(UserDefaultsManager.theme.newTitleNormalColor, for: .normal)
+        self.receiveButton.setTitleColor(UserDefaultsManager.theme.newTitleNormalColor, for: .normal)
+        self.sendButton.setImage(UserDefaultsManager.theme.sendButtonImage, for: .normal)
+        self.receiveButton.theme_setImage(O3Theme.receiveButtonImagePicker, forState: .normal)
+        dataSource.titleNormalColor = UserDefaultsManager.theme.titleTextColor
+        dataSource.titleSelectedColor = UserDefaultsManager.theme.titleTextColor
+        segmentedView.theme_backgroundColor = O3Theme.backgroundColorPicker
+        
+        refreshControl.theme_backgroundColor = O3Theme.backgroundColorPicker
+        refreshControl.theme_tintColor = O3Theme.titleColorPicker
+        
     }
     @objc func showMultiWalletDisplay() {
         Controller().openPortfolioSelector()
@@ -298,128 +335,76 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     
     @objc func jumpToPortfolio(_ notification: NSNotification) {
         if let portfolioIndex = notification.userInfo?["portfolioIndex"] as? Int {
-            homeviewModel.currentIndex = portfolioIndex
+//            homeviewModel.currentIndex = portfolioIndex
+            if portfolioIndex == 0{
+                homeviewModel.currentIndex = portfolioIndex
+            }else{
+                homeviewModel.currentIndex = 1
+            }
             getBalance()
             if portfolioIndex == 0{
                 walletNameSelectLabel.text = "Total"
+                walletNameLabel.text = "Total≈"
                 addressLabel.text = wallets.first {$0.isDefault}!.address
-                sumForCombined()
                 
-                let formatter = NumberFormatter()
-                formatter.currencySymbol = combinedAccountValue?.currency
-                formatter.locale = Locale(identifier: "en_US_POSIX")
-                let number = formatter.number(from: combinedAccountValue?.total ?? "0")
-                let fiat = Fiat(amount: number?.floatValue ?? 0.0)
-                totalNumberLabel.text = fiat.formattedString()
                 loadClaimableGAS(address: wallets.first {$0.isDefault}!.address)
                 loadClaimableOng(address: wallets.first {$0.isDefault}!.address)
                 
             }else{
-                walletNameSelectLabel.text = wallets[portfolioIndex - 1].label
-                addressLabel.text = wallets[portfolioIndex - 1].address
-                let indexPath = IndexPath(row: portfolioIndex - 1, section: walletSectionNum)
-                totalNumberLabel.text = accountValues[indexPath]?.total
+                updateWallets()
+                walletNameSelectLabel.text = wallets.first {$0.isDefault}!.label
+                walletNameLabel.text = "\(wallets.first {$0.isDefault}!.label)≈"
+                addressLabel.text = wallets.first {$0.isDefault}!.address
                 
-                loadClaimableGAS(address: wallets[portfolioIndex - 1].address)
-                loadClaimableOng(address: wallets[portfolioIndex - 1].address)
+                loadClaimableGAS(address: wallets.first {$0.isDefault}!.address)
+                loadClaimableOng(address: wallets.first {$0.isDefault}!.address)
             }
         }
         
     }
     
+    func updateWallets() {
+        wallets = NEP6.getFromFileSystem()?.getWalletAccounts() ?? []
+    }
+    
     //MARK:- Observers
     func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadAllData), name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("ChangedNetwork"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.getBalance), name: Notification.Name("ChangedReferenceCurrency"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.jumpToPortfolio(_:)), name: Notification.Name("jumpToPortfolio"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.removeObservers), name: Notification.Name("loggedOut"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.addThemedElements), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
 
     @objc func removeObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.removeObservers), name: Notification.Name("loggedOut"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("ChangedNetwork"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name("jumpToPortfolio"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("ChangedReferenceCurrency"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
 
     deinit {
         removeObservers()
     }
     
+    @objc func reloadAllData(){
+        self.updateWallets()
+        walletNameSelectLabel.text = wallets.first {$0.isDefault}!.label
+        walletNameLabel.text = "\(wallets.first {$0.isDefault}!.label)≈"
+        addressLabel.text = wallets.first {$0.isDefault}!.address
+        
+        loadClaimableGAS(address: wallets.first {$0.isDefault}!.address)
+        loadClaimableOng(address: wallets.first {$0.isDefault}!.address)
+        self.getBalance()
+    }
+    
     @objc func getBalance() {
         homeviewModel.reloadBalances()
     }
-    //计算综合
-    func sumForCombined() {
-        var accountValue: AccountValue?
-        let formatter = NumberFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        for key in accountValues.keys {
-            if watchAddrs[key] != nil && UserDefaultsManager.untrackedWatchAddr.contains(watchAddrs[key]!.address) {
-                continue
-            }
-            if accountValue == nil {
-                accountValue = accountValues[key]
-            } else {
-                let currentNumber = (formatter.number(from: accountValue!.total))!
-                let toAddNumber = (formatter.number(from: accountValues[key]!.total))!
-                let total = currentNumber.floatValue + toAddNumber.floatValue
-                accountValue = AccountValue(total: formatter.string(from: NSNumber(value: total)) ?? "0", currency: accountValues[key]!.currency)
-                
-            }
-        }
-        combinedAccountValue = accountValue
-
-    }
-    
-    func loadWalletPortfolios() {
-        for i in 0..<self.wallets.count {
-            let indexPath = IndexPath(row: i, section: walletSectionNum)
-            if self.getCachedPortfolioValue(for: self.wallets[i].address, indexPath: indexPath) == false {
-                DispatchQueue.global().async {
-                    self.group.enter()
-                    O3APIClient(network: AppState.network).getAccountState(address: self.wallets[i].address) { result in
-                        switch result {
-                        case .failure:
-                            self.group.leave()
-                            return
-                        case .success(let accountState):
-                            self.getPortfolioForAccountState(indexPath: indexPath, accountState: accountState, address: self.wallets[i].address)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    func getPortfolioForAccountState(indexPath: IndexPath, accountState: AccountState, address: String) {
-        O3Client().getAccountValue(accountState.assets + accountState.nep5Tokens + accountState.ontology) { result in
-            switch result {
-            case .failure:
-                self.group.leave()
-                return
-            case .success(let accountValue):
-                O3Cache.setCachedPortfolioValue(for: address, portfolioValue: accountValue)
-                self.accountValues[indexPath] = accountValue
-                DispatchQueue.main.async {
-                    if address == self.wallets.first(where: {$0.isDefault})!.address{
-                        self.totalNumberLabel.text = accountValue.total
-                    }
-                }
-                self.group.leave()
-            }
-        }
-    }
-
-    
-    func getCachedPortfolioValue(for address: String, indexPath: IndexPath) -> Bool {
-        let accountValue = O3Cache.getCachedPortfolioValue(for: address)
-        if accountValue == nil {
-            return false
-        } else {
-            DispatchQueue.main.async {
-                self.accountValues[indexPath] = accountValue!
-                if address == self.wallets.first(where: {$0.isDefault})!.address{
-                    self.totalNumberLabel.text = accountValue?.total
-                }
-            }
-            return true
-        }
-    }
-   
     
     
     func updateWithPortfolioData(_ portfolio: PortfolioValue) {
@@ -432,9 +417,10 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
             self.dataSource.titles = self.titles
             self.portfolio = portfolio
             self.selectedPrice = portfolio.data.first
+            self.totalNumberLabel.text = self.selectedPrice?.averageFiatMoney().formattedString()
             self.segmentedView.reloadData()
             self.pagingView.reloadData()
-
+            self.refreshControl.endRefreshing()
         }
         
         //A hack otherwise graph wont appear
@@ -457,6 +443,15 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         nav.transitioningDelegate = transitionDelegate
         nav.modalPresentationStyle = .custom
         self.present(nav, animated: true, completion: nil)
+    }
+    
+    @objc func switchIsSecureText(){
+        self.isSecureText = !self.isSecureText
+        if self.isSecureText {
+            self.totalNumberLabel.text = "********"
+        }else{
+            self.totalNumberLabel.text = self.selectedPrice?.averageFiatMoney().formattedString()
+        }
     }
     
     

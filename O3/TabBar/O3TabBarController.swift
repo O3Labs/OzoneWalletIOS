@@ -32,8 +32,21 @@ class O3TabBarController: UITabBarController {
         ShortcutParser.shared.registerShortcuts()
         //统计功能注释
 //        Amplitude.instance().logEvent("Loaded_Main_Tab")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.addThemedElements), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
+    }
+    @objc func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
 
+    deinit {
+        removeObservers()
+    }
+    
+    @objc func addThemedElements(){
+        tabBar.theme_barStyle = O3Theme.tabBarStylePicker
+        
+    }
+    
     @IBAction func unwindToTabbar(segue: UIStoryboardSegue) {
     }
 }

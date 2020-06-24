@@ -27,7 +27,7 @@ class HomeViewModel {
     var coinbaseAccountBalances = [CoinbaseClient.CoinbasePortfolioAccount]()
     
     var addressCount = 0
-    var currentIndex = 0
+    var currentIndex = 1
 
     var accounts = [NEP6.Account]()
     var group = DispatchGroup()

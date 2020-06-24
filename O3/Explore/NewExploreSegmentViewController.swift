@@ -8,6 +8,7 @@
 
 import UIKit
 import JXSegmentedView
+import SwiftTheme
 
 class NewExploreSegmentViewController: UIViewController {
     var segmentedDataSource: JXSegmentedTitleDataSource!
@@ -19,6 +20,7 @@ class NewExploreSegmentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.hideHairline()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.addThemedElements), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
         
         self.title = "Explor"
         
@@ -46,6 +48,14 @@ class NewExploreSegmentViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    @objc func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
+    }
+
+    deinit {
+        removeObservers()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
            super.viewWillAppear(animated)
 
@@ -68,15 +78,10 @@ class NewExploreSegmentViewController: UIViewController {
         listContainerView.frame = CGRect(x: 0, y: segmentedView.frame.maxY, width: view.bounds.size.width, height: view.bounds.size.height - segmentedView.frame.maxY)
        }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc func addThemedElements(){
+        segmentedDataSource.titleNormalColor = UserDefaultsManager.theme.newTitleNormalColor
+        segmentedDataSource.titleSelectedColor = UserDefaultsManager.theme.newTitleTextColor
     }
-    */
 
 }
 extension NewExploreSegmentViewController: JXSegmentedViewDelegate {

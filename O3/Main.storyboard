@@ -1045,6 +1045,11 @@
                                             <constraint firstItem="LkF-TV-FZm" firstAttribute="width" secondItem="Ovx-jw-JwL" secondAttribute="width" id="sk6-Mw-Ac8"/>
                                             <constraint firstItem="LkF-TV-FZm" firstAttribute="centerY" secondItem="Ovx-jw-JwL" secondAttribute="centerY" id="yjC-MV-SYg"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="25"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1101,9 +1106,12 @@
                         <outlet property="contentView" destination="zZM-FY-3Gm" id="Zbt-OC-eZi"/>
                         <outlet property="copyButton" destination="Z4G-Bf-sTV" id="6Rv-cJ-Ipz"/>
                         <outlet property="keyButton" destination="r1I-g5-J5l" id="D6i-oQ-mnm"/>
+                        <outlet property="receiveButton" destination="LkF-TV-FZm" id="jl3-3t-Hox"/>
                         <outlet property="scanButton" destination="gYs-Yi-roi" id="y5o-mp-4vp"/>
                         <outlet property="sendAndReceiveBgView" destination="vDC-6v-8Ma" id="cPG-nW-9g9"/>
+                        <outlet property="sendButton" destination="Ovx-jw-JwL" id="VMg-P0-Xzv"/>
                         <outlet property="totalNumberLabel" destination="Sjp-eX-EGM" id="flN-ci-c3x"/>
+                        <outlet property="walletNameLabel" destination="YWF-68-0rC" id="fCy-W4-qU1"/>
                         <outlet property="walletNameSelectButton" destination="jYt-0h-zkZ" id="7oA-c9-XeV"/>
                         <outlet property="walletNameSelectLabel" destination="Gjz-T9-kCK" id="xGc-Zn-VLi"/>
                         <outlet property="watchButton" destination="9FS-2g-ge4" id="OX7-pe-N4B"/>
@@ -1222,7 +1230,7 @@
             <objects>
                 <tableViewController id="jGu-2L-sns" customClass="IdentitiesTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ymh-Ly-jra">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
@@ -1623,7 +1631,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="manageWalletTableViewController" id="tsJ-76-UJl" customClass="SecurityCenterTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="4ir-Hj-BL1">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="pbE-t0-zB0">
@@ -1807,7 +1815,7 @@
             <objects>
                 <viewController title="Private Key" id="4nu-8p-E2h" customClass="PrivateKeyViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CNv-Sz-LvT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="23Y-sy-V4z">
@@ -1871,7 +1879,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="activateMultiWalletTableViewController" id="1Kv-SZ-EK8" customClass="ActivateMultiWalletTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="aje-3i-fsS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="cx6-Xe-JdZ">
@@ -2005,7 +2013,7 @@
             <objects>
                 <viewController id="A2g-nQ-SPa" customClass="NewMultiWalletViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TAt-gg-UDI">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CND-So-tkq">
@@ -2135,7 +2143,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="convertToWalletTableViewController" id="uXF-C9-11X" customClass="ConvertToWalletTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="79S-6r-lvU">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="2yV-ba-Tzm">
@@ -2258,7 +2266,7 @@
             <objects>
                 <viewController storyboardIdentifier="verifyManualBackupViewController" id="hTw-p8-FBu" customClass="VerifyManualBackupViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="311-Rv-nT0">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0S3-5p-qTm">

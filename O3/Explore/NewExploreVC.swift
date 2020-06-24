@@ -9,6 +9,7 @@
 import UIKit
 import FSPagerView
 import JXSegmentedView
+import SwiftTheme
 
 
 let kEmotionCellNumberOfOneRow = 4
@@ -206,6 +207,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
         }else{
             cell.buttonTitleLabel.text = item.name
         }
+        cell.buttonTitleLabel.theme_textColor = O3Theme.titleColorPicker
         return cell
     }
     

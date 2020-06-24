@@ -216,6 +216,50 @@ enum Theme: String {
             return UIColor(named: "indicatorColor_dark")!
         }
     }
+    
+    var newHomeHeaderBackgroundColor: UIColor{
+        switch self {
+        case .light:
+            return UIColor.white
+        case .dark:
+            return UIColor(named: "newHeaderBackgroundColor")!
+        }
+    }
+    //首页send按钮logo
+    var sendButtonImage: UIImage{
+        switch self {
+        case .light:
+            return UIImage.init(named: "home_send")!
+        case .dark:
+            return UIImage.init(named: "home_send_dark")!
+        }
+    }
+    //首页receive按钮logo
+    var receiveButtonImage: UIImage{
+        switch self {
+        case .light:
+            return UIImage.init(named: "home_receive")!
+        case .dark:
+            return UIImage.init(named: "home_receive_dark")!
+        }
+    }
+    
+    var homeHeaderBackgroundImage: UIImage{
+        switch self {
+        case .light:
+            return UIImage.init(named: "home_topBackground")!
+        case .dark:
+            return UIImage.init(named: "home_topBackground_dark")!
+        }
+    }
+    var detailTextColor: UIColor{
+        switch self {
+        case .light:
+            return UIColor.white
+        case .dark:
+            return UIColor(named: "newHeaderBackgroundColor")!
+        }
+    }
 }
 
 // This will let you use a theme in the app.
@@ -311,6 +355,10 @@ class O3Theme {
     //        [NSAttributedString.Key.foregroundColor.rawValue: UIColor.white,
     //         NSAttributedString.Key.font.rawValue: O3Theme.navBarTitle])
 
+    //首页
+    static let newHomeHeaderBackgroundColorPicker = ThemeColorPicker(colors: Theme.light.newHomeHeaderBackgroundColor.hexString(false), Theme.dark.newHomeHeaderBackgroundColor.hexString(false))
+    static let receiveButtonImagePicker = ThemeImagePicker(images: Theme.light.receiveButtonImage,Theme.dark.receiveButtonImage)
+    static let sendButtonImagePicker = ThemeImagePicker(images: Theme.light.sendButtonImage,Theme.dark.sendButtonImage)
     //text fields
     static let clearTextFieldBackgroundColorPicker = ThemeColorPicker(colors: Theme.light.backgroundColor.hexString(false), Theme.dark.backgroundColor.hexString(false))
     static let textFieldBackgroundColorPicker = ThemeColorPicker(colors: Theme.light.textFieldBackgroundColor.hexString(false), Theme.dark.textFieldBackgroundColor.hexString(false))
