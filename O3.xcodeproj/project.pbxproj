@@ -1423,6 +1423,7 @@
 			children = (
 				35AD2B73209320140024A900 /* TabbarStrings.swift */,
 				752006851F7F698300D19B5F /* O3TabBarController.swift */,
+				75BEB2601F89FAFE00DC20E9 /* LoadingHUD */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -1543,7 +1544,6 @@
 				75B6E5C01F6D4E6900F53CA8 /* QRScan */,
 				75D5BFB01F6CE8B700E64855 /* Onboarding */,
 				752006841F7F695C00D19B5F /* TabBar */,
-				75BEB2601F89FAFE00DC20E9 /* LoadingHUD */,
 				75DA58F91F7A67690065FE0D /* SettingsMenu */,
 				755D8F541F665F5D00058434 /* WalletHome */,
 				7575ADC51F6006AC0077007B /* AppDelegate.swift */,

@@ -119,6 +119,8 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .clear
+        
         pagerView.delegate = self
         pagerView.dataSource = self
         
