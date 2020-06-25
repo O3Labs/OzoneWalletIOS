@@ -43,7 +43,7 @@ class O3TabBarController: UITabBarController {
     }
     
     @objc func addThemedElements(){
-        tabBar.theme_barStyle = O3Theme.tabBarStylePicker
+//        tabBar.theme_barStyle = O3Theme.tabBarStylePicker
         
     }
     
