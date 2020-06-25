@@ -175,11 +175,21 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         }
     }
     
+    private enum accounts: Int {
+        case o3Account = 0
+        case tradingAccount
+    }
     //同步
     var claims: Claimable?
     var isClaimingNeo: Bool = false
     var isClaimingOnt: Bool = false
     
+    var ongAmount = 0.0
+    var tokenAssets = O3Cache.tokensBalance(for: Authenticated.wallet!.address)
+    var neoBalance: Int = Int(O3Cache.neoBalance(for: Authenticated.wallet!.address).value)
+    var gasBalance: Double = O3Cache.gasBalance(for: Authenticated.wallet!.address).value
+    var ontologyAssets: [O3WalletNativeAsset] = O3Cache.ontologyBalances(for: Authenticated.wallet!.address)
+        
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -191,6 +201,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         homeviewModel = HomeViewModel(delegate: self)
         
         watchAddresses = loadWatchAddresses()
+        loadAccountState()
 
         walletNameSelectLabel.text = wallets.first {$0.isDefault}!.label
         walletNameLabel.text = "\(wallets.first {$0.isDefault}!.label)≈"
@@ -399,6 +410,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         
         loadClaimableGAS(address: wallets.first {$0.isDefault}!.address)
         loadClaimableOng(address: wallets.first {$0.isDefault}!.address)
+        loadAccountState()
         self.getBalance()
     }
     
@@ -406,6 +418,77 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         homeviewModel.reloadBalances()
     }
     
+    
+    func loadAccountState() {
+        O3APIClient(network: AppState.network).getAccountState(address: Authenticated.wallet?.address ?? "") { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .failure:
+                    return
+                case .success(let accountState):
+                    let index = accountState.ontology.firstIndex{$0.symbol == "ONG"}
+                    if let index = index {
+                        self.userHeaderView.ongBalance = accountState.ontology[index].value
+                    }
+                    self.updateCacheAndLocalBalance(accountState: accountState)
+                }
+            }
+        }
+    }
+    func updateCacheAndLocalBalance(accountState: AccountState) {
+        for asset in accountState.assets {
+            if asset.id.contains(AssetId.neoAssetId.rawValue) {
+                neoBalance = Int(asset.value)
+            } else {
+                gasBalance = asset.value
+            }
+        }
+        ontologyAssets = accountState.ontology
+        
+        tokenAssets = []
+        for token in accountState.nep5Tokens {
+            tokenAssets.append(token)
+        }
+        O3Cache.setGasBalance(gasBalance: gasBalance, address: Authenticated.wallet!.address)
+        O3Cache.setNeoBalance(neoBalance: neoBalance, address: Authenticated.wallet!.address)
+        O3Cache.setTokensBalance(tokens: tokenAssets, address: Authenticated.wallet!.address)
+        O3Cache.setOntologyBalance(tokens: ontologyAssets, address: Authenticated.wallet!.address)
+        DispatchQueue.main.async {
+//            self.tableView.reloadData()
+        }
+        self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neoBalance(for: Authenticated.wallet!.address), O3Cache.gasBalance(for: Authenticated.wallet!.address)] + self.ontologyAssets + self.tokenAssets)
+    }
+    private func loadAccountValue(account: accounts,  list: [O3WalletNativeAsset]) {
+        
+        if list.count == 0 {
+            let fiat = Fiat(amount: 0.0)
+//            self.tableView.reloadData()
+            return
+        }
+        
+        O3Client.shared.getAccountValue(list) { result in
+            switch result {
+            case .failure:
+                return
+            case .success(let value):
+                let formatter = NumberFormatter()
+                formatter.currencySymbol = value.currency
+                formatter.locale = Locale(identifier: "en_US_POSIX")
+                DispatchQueue.main.async {
+                    let index = list.firstIndex{$0.symbol == "ONG"}
+                    if let index = index {
+                        self.userHeaderView.ongBalance = list[index].value
+                    }
+                    
+                    //somehow calling reloadSections makes the uitableview flickering
+                    //using reloadData instead ¯\_(ツ)_/¯
+//                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+
+
     
     func updateWithPortfolioData(_ portfolio: PortfolioValue) {
         DispatchQueue.main.async {
