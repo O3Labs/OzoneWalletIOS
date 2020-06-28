@@ -33,7 +33,7 @@ class ListViewController: UIViewController {
         tableView.register(UINib.init(nibName: "CurrencyTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "CurrencyTableViewCell")
 //        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         //列表的contentInsetAdjustmentBehavior失效，需要自己设置底部inset
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: UIApplication.shared.keyWindow!.jx_layoutInsets().bottom, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 110, right: 0)
         view.addSubview(tableView)
     
         beginFirstRefresh()

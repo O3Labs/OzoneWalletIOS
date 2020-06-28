@@ -580,6 +580,7 @@
 		41338966249B77E5007CFD50 /* CurrencyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyTableViewCell.xib; sourceTree = "<group>"; };
 		4134A167249C97B7001F6F65 /* Dapps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dapps.swift; sourceTree = "<group>"; };
 		4134A169249CA656001F6F65 /* ExploreAssets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreAssets.swift; sourceTree = "<group>"; };
+		4134A16D24A82B0E001F6F65 /* O3Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = O3Debug.entitlements; sourceTree = "<group>"; };
 		414946422499ADE500E1078D /* FSPagerView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FSPagerView.framework; path = Carthage/Build/iOS/FSPagerView.framework; sourceTree = "<group>"; };
 		4149464E249AF82A00E1078D /* JXSegmentedView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JXSegmentedView.framework; path = Carthage/Build/iOS/JXSegmentedView.framework; sourceTree = "<group>"; };
 		417D4F8F249858E700DEAA09 /* NewExploreTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExploreTabViewController.swift; sourceTree = "<group>"; };
@@ -1520,6 +1521,7 @@
 		7575ADC41F6006AC0077007B /* O3 */ = {
 			isa = PBXGroup;
 			children = (
+				4134A16D24A82B0E001F6F65 /* O3Debug.entitlements */,
 				3513F33C22CBD6DE003690DB /* Explore */,
 				355D468022B22777006DE02B /* SHA256.swift */,
 				355D467F22B22777006DE02B /* WIF.swift */,
@@ -2289,10 +2291,12 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 115;
 				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				INFOPLIST_FILE = O3Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 2.10.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
@@ -2309,12 +2313,14 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 89YSAN7DCM;
+				CURRENT_PROJECT_VERSION = 115;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				INFOPLIST_FILE = O3Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 2.10.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2328,12 +2334,14 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 89YSAN7DCM;
+				CURRENT_PROJECT_VERSION = 115;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				INFOPLIST_FILE = O3Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 2.10.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2347,12 +2355,14 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = O3Widget/O3Widget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 89YSAN7DCM;
+				CURRENT_PROJECT_VERSION = 115;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				INFOPLIST_FILE = O3Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 2.10.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios.O3Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2436,8 +2446,9 @@
 				CODE_SIGN_ENTITLEMENTS = O3/O3.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 115;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 89YSAN7DCM;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2449,9 +2460,10 @@
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.10.0;
 				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200 -DTESTNET";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2539,8 +2551,9 @@
 				CODE_SIGN_ENTITLEMENTS = O3/O3.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 115;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 89YSAN7DCM;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2552,9 +2565,10 @@
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.10.0;
 				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200 -DPRIVATENET";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2698,9 +2712,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = O3/O3.entitlements;
+				CODE_SIGN_ENTITLEMENTS = O3/O3Debug.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 115;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				ENABLE_BITCODE = NO;
@@ -2714,6 +2729,7 @@
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.10.0;
 				OTHER_LDFLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200";
 				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
@@ -2738,7 +2754,8 @@
 				CODE_SIGN_ENTITLEMENTS = O3/O3.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 89YSAN7DCM;
+				CURRENT_PROJECT_VERSION = 115;
+				DEVELOPMENT_TEAM = 2CBVZ5X783;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2750,8 +2767,9 @@
 				INFOPLIST_FILE = O3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.10.0;
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fengsuan.o3.wallet.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = network.o3.wallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

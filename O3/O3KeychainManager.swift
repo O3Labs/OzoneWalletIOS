@@ -180,17 +180,22 @@ class O3KeychainManager {
                         completion(.failure(error!.localizedDescription))
                     }
                 }
-                
-                O3KeychainManager.inputPassword(account: account) { result in
-                    completion(result)
+                DispatchQueue.main.sync {
+                    O3KeychainManager.inputPassword(account: account) { result in
+                        completion(result)
+                    }
                 }
+                
             } catch let error {
                 if error as! Status == Status.userCanceled {
                     completion(.failure(error.localizedDescription))
                 } else {
-                    O3KeychainManager.inputPassword(account: account) { result in
-                        completion(result)
+                    DispatchQueue.main.sync {
+                        O3KeychainManager.inputPassword(account: account) { result in
+                            completion(result)
+                        }
                     }
+                    
                 }
             }
         }

@@ -387,5 +387,7 @@ class O3Theme {
                                                           "#AAAAAAFF")
     //newExplore
     static let newTextColorPicker = ThemeColorPicker(colors: Theme.light.newTitleTextColor.hexString(false), Theme.dark.newTitleTextColor.hexString(false))
+    static let newTitleNormalColorPicker = ThemeColorPicker(colors: Theme.light.newTitleNormalColor.hexString(false), Theme.dark.newTitleNormalColor.hexString(false))
+    static let newTitleTextColorPicker = ThemeColorPicker(colors: Theme.light.newTitleTextColor.hexString(false), Theme.dark.newTitleTextColor.hexString(false))
     
 }

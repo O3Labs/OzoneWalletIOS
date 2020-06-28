@@ -119,8 +119,8 @@ import UserNotifications
 //                                   clientId: zendeskClientId,
 //                                   zendeskUrl: "https://o3labs.zendesk.com/")
 //                Support.initialize(withZendesk: Zendesk.instance)
-                let ident = Identity.createAnonymous()
-                Zendesk.instance?.setIdentity(ident)
+//                let ident = Identity.createAnonymous()
+//                Zendesk.instance?.setIdentity(ident)
                #endif
             }
         }

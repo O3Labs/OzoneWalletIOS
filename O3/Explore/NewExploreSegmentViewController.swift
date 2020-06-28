@@ -81,6 +81,7 @@ class NewExploreSegmentViewController: UIViewController {
     @objc func addThemedElements(){
         segmentedDataSource.titleNormalColor = UserDefaultsManager.theme.newTitleNormalColor
         segmentedDataSource.titleSelectedColor = UserDefaultsManager.theme.newTitleTextColor
+        segmentedView.reloadData()
     }
 
 }

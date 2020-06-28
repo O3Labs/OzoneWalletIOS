@@ -16,6 +16,7 @@ import JXSegmentedView
 
 extension JXPagingListContainerView: JXSegmentedViewListContainer {}
 
+let IS_IPHONEX = UIApplication.shared.statusBarFrame.size.height > 20
 
 class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderViewDelegate{
     func setIsClaimingNeo(_ isClaiming: Bool) {
@@ -87,6 +88,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     var isNeedFooter = false
     
     var isSecureText = false//是否隐藏
+    var buyButtonBottom = IS_IPHONEX ? 88.0 : 44.0
     
     var wallets = NEP6.getFromFileSystem()?.getWalletAccounts() ?? []
 
@@ -250,7 +252,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         scanButton.addTarget(self, action: #selector(rightBarButtonTapped), for: .touchUpInside)
         watchButton.addTarget(self, action: #selector(switchIsSecureText), for: .touchUpInside)
 
-        let button:UIButton = UIButton(frame: CGRect.init(x: UIScreen.main.bounds.size.width-100, y: UIScreen.main.bounds.size.height-110-44, width: 99.0, height: 110.0))
+        let button:UIButton = UIButton(frame: CGRect.init(x: UIScreen.main.bounds.size.width-100, y: UIScreen.main.bounds.size.height-110-CGFloat(buyButtonBottom), width: 99.0, height: 110.0))
         button.setImage(UIImage.init(named: "home_buyNeo"), for: .normal)
         button.addTarget(self, action: #selector(buyNeoClick), for: .touchUpInside)
         self.view.addSubview(button)
@@ -288,6 +290,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         
         refreshControl.theme_backgroundColor = O3Theme.backgroundColorPicker
         refreshControl.theme_tintColor = O3Theme.titleColorPicker
+        view.theme_backgroundColor = O3Theme.backgroundColorPicker
         
     }
     @objc func showMultiWalletDisplay() {
@@ -353,22 +356,17 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
                 homeviewModel.currentIndex = 1
             }
             getBalance()
+            updateWallets()
+            self.addressLabel.text = self.wallets.first {$0.isDefault}!.address
+            
+            loadClaimableGAS(address: wallets.first {$0.isDefault}!.address)
+            loadClaimableOng(address: wallets.first {$0.isDefault}!.address)
             if portfolioIndex == 0{
                 walletNameSelectLabel.text = "Total"
                 walletNameLabel.text = "Total≈"
-                addressLabel.text = wallets.first {$0.isDefault}!.address
-                
-                loadClaimableGAS(address: wallets.first {$0.isDefault}!.address)
-                loadClaimableOng(address: wallets.first {$0.isDefault}!.address)
-                
             }else{
-                updateWallets()
                 walletNameSelectLabel.text = wallets.first {$0.isDefault}!.label
                 walletNameLabel.text = "\(wallets.first {$0.isDefault}!.label)≈"
-                addressLabel.text = wallets.first {$0.isDefault}!.address
-                
-                loadClaimableGAS(address: wallets.first {$0.isDefault}!.address)
-                loadClaimableOng(address: wallets.first {$0.isDefault}!.address)
             }
         }
         
