@@ -364,7 +364,8 @@ class O3Theme {
     static let textFieldBackgroundColorPicker = ThemeColorPicker(colors: Theme.light.textFieldBackgroundColor.hexString(false), Theme.dark.textFieldBackgroundColor.hexString(false))
     static let textFieldTextColorPicker = ThemeColorPicker(colors: Theme.light.textFieldTextColor.hexString(false), Theme.dark.textFieldTextColor.hexString(false))
     static let keyboardPicker = ThemeKeyboardAppearancePicker(styles: .default, .dark)
-
+    static let homeTopBackgroundImagePick = ThemeImagePicker(images: Theme.light.homeHeaderBackgroundImage,Theme.dark.homeHeaderBackgroundImage)
+    
     //tableSeparator
     static let tableSeparatorColorPicker = ThemeColorPicker(colors: Theme.light.seperatorColor.hexString(false), Theme.dark.seperatorColor.hexString(false))
 

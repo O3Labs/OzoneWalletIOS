@@ -1,23 +1,23 @@
 {
-  "info" : {
-    "author" : "zeplin",
-    "version" : 1
-  },
   "images" : [
     {
+      "filename" : "logo-light-1.png",
       "idiom" : "universal",
-      "filename" : "qrLogo.png",
       "scale" : "1x"
     },
     {
+      "filename" : "logo-light@2x.png",
       "idiom" : "universal",
-      "filename" : "qrLogo@2x.png",
       "scale" : "2x"
     },
     {
+      "filename" : "logo-light@3x.png",
       "idiom" : "universal",
-      "filename" : "qrLogo@3x.png",
       "scale" : "3x"
     }
-  ]
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
 }

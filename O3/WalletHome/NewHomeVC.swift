@@ -74,6 +74,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     @IBOutlet weak var receiveButton: UIButton!
     
     @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var homeTopBackgroundImageView: UIImageView!
     
     var refreshControl = UIRefreshControl()
     
@@ -81,7 +82,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     lazy var userHeaderView: PagingViewTableHeaderView = preferredTableHeaderView()
     let dataSource: JXSegmentedTitleDataSource = JXSegmentedTitleDataSource()
     lazy var segmentedView: JXSegmentedView = JXSegmentedView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: CGFloat(headerInSectionHeight)))
-    var titles = ["Wallets"]
+    var titles = ["Assets"]
     var tableHeaderViewHeight: Int = 200
     var headerInSectionHeight: Int = 50
     var isNeedHeader = false
@@ -199,6 +200,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         self.navigationController?.navigationBar.isTranslucent = false
         
         addObservers()
+        homeTopBackgroundImageView.contentMode = .scaleToFill
 
         homeviewModel = HomeViewModel(delegate: self)
         
@@ -277,6 +279,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     }
     
     @objc func addThemedElements(){
+        homeTopBackgroundImageView.theme_image = O3Theme.homeTopBackgroundImagePick
         sendAndReceiveBgView.theme_backgroundColor = O3Theme.newHomeHeaderBackgroundColorPicker
         pagingView.mainTableView.theme_backgroundColor = O3Theme.backgroundColorPicker
         self.view.theme_backgroundColor = O3Theme.backgroundColorPicker
@@ -401,13 +404,15 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     }
     
     @objc func reloadAllData(){
-        self.updateWallets()
-        walletNameSelectLabel.text = wallets.first {$0.isDefault}!.label
-        walletNameLabel.text = "\(wallets.first {$0.isDefault}!.label)≈"
-        addressLabel.text = wallets.first {$0.isDefault}!.address
         
-        loadClaimableGAS(address: wallets.first {$0.isDefault}!.address)
-        loadClaimableOng(address: wallets.first {$0.isDefault}!.address)
+        self.updateWallets()
+        DispatchQueue.main.async {
+            self.pagingView.mainTableView.isScrollEnabled = false
+            self.walletNameSelectLabel.text = self.wallets.first {$0.isDefault}!.label
+            self.walletNameLabel.text = "\(self.wallets.first {$0.isDefault}!.label)≈"
+            self.addressLabel.text = self.wallets.first {$0.isDefault}!.address
+        }
+        
         loadAccountState()
         self.getBalance()
     }
@@ -477,7 +482,8 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
                     if let index = index {
                         self.userHeaderView.ongBalance = list[index].value
                     }
-                    
+                    self.loadClaimableGAS(address: self.wallets.first {$0.isDefault}!.address)
+                    self.loadClaimableOng(address: self.wallets.first {$0.isDefault}!.address)
                     //somehow calling reloadSections makes the uitableview flickering
                     //using reloadData instead ¯\_(ツ)_/¯
 //                    self.tableView.reloadData()
@@ -491,9 +497,9 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     func updateWithPortfolioData(_ portfolio: PortfolioValue) {
         DispatchQueue.main.async {
             if self.coinbaseAssets.count>0{
-                self.titles = ["Wallets", "Connected Accounts"]
+                self.titles = ["Assets", "Token"]
             }else{
-                self.titles = ["Wallets"]
+                self.titles = ["Assets"]
             }
             self.dataSource.titles = self.titles
             self.portfolio = portfolio
@@ -501,6 +507,8 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
             self.totalNumberLabel.text = self.selectedPrice?.averageFiatMoney().formattedString()
             self.segmentedView.reloadData()
             self.pagingView.reloadData()
+            self.loadClaimableGAS(address: self.wallets.first {$0.isDefault}!.address)
+            self.loadClaimableOng(address: self.wallets.first {$0.isDefault}!.address)
             self.refreshControl.endRefreshing()
         }
         
@@ -549,10 +557,16 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
       func showLoadingIndicator() {
           
       }
-      
-      func hideLoadingIndicator() {
-          
-      }
+    func hideLoadingIndicator(result: String) {
+        DispatchQueue.main.async {
+            self.pagingView.mainTableView.isScrollEnabled = true
+            if result == "fail"{
+                HUD.flash(.label("please try again later"), delay: 1.0)
+                
+            }
+            self.refreshControl.endRefreshing()
+        }
+    }
     
     func sendTapped(qrData: String? = nil) {
         DispatchQueue.main.async {
@@ -578,6 +592,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     @objc func copyAddress(){
         let pas = UIPasteboard.general
         pas.string = self.addressLabel.text
+        HUD.flash(.label("Copy Success"), delay:1)
     }
     
     @objc func buyNeoClick(){
@@ -671,27 +686,29 @@ extension NewHomeVC: JXPagingMainTableViewGestureDelegate {
 extension NewHomeVC: QRScanDelegate {
     func qrScanned(data: String) {
         //if there is more type of string we have to check it here
-        if data.hasPrefix("neo") {
+//        if data.hasPrefix("neo") {
             DispatchQueue.main.async {
             self.startSendRequest   (qrData: data)
             }
-        } else if (URL(string: data) != nil) {
-            //dont present from top
-            let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
-            if let vc = nav!.viewControllers.first as?
-                dAppBrowserV2ViewController {
-                let viewModel = dAppBrowserViewModel()
-                viewModel.url = URL(string: data)
-                vc.viewModel = viewModel
-                DispatchQueue.main.async {
-                    self.present(nav!, animated: true)
-                }
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.startSendRequest()
-            }
-        }
+//        }
+//        else if (URL(string: data) != nil) {
+//            //dont present from top
+//            let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
+//            if let vc = nav!.viewControllers.first as?
+//                dAppBrowserV2ViewController {
+//                let viewModel = dAppBrowserViewModel()
+//                viewModel.url = URL(string: data)
+//                vc.viewModel = viewModel
+//                DispatchQueue.main.async {
+//                    self.present(nav!, animated: true)
+//                }
+//            }
+//        }
+//        else {
+//            DispatchQueue.main.async {
+//                self.startSendRequest()
+//            }
+//        }
     }
     
     func startSendRequest(qrData: String? = nil) {

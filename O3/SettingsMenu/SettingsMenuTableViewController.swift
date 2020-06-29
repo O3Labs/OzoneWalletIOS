@@ -16,7 +16,7 @@ import DeckTransition
 //import ZendeskSDK
 import Neoutils
 
-class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate {
+class SettingsMenuTableViewController: UITableViewController, HalfModalPresentable, WebBrowserDelegate{
     @IBOutlet weak var generalSettingsCell: UITableViewCell!
     @IBOutlet weak var supportCell: UITableViewCell!
     @IBOutlet weak var enableMultiWalletCell: UITableViewCell!
@@ -64,9 +64,9 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     }
     
     func share() {
-        let shareURL = URL(string: "https://o3.app/" + (Authenticated.wallet?.address)!)
+//        let shareURL = URL(string: "https://o3.app/" + (Authenticated.wallet?.address)!)
         let qrWithBranding = UIImage.imageWithView(view: self.qrView)
-        let activityViewController = UIActivityViewController(activityItems: [shareURL as Any, qrWithBranding], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: [qrWithBranding], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         
         self.present(activityViewController, animated: true, completion: nil)
@@ -144,7 +144,7 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
         self.qrView.image = UIImage.init(qrData: (Authenticated.wallet?.address)!, width: self.qrView.bounds.size.width, height: self.qrView.bounds.size.height)
         
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "support"), style: .plain, target: self, action: #selector(leftBarButtonTapped(_:)))
+//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "support"), style: .plain, target: self, action: #selector(leftBarButtonTapped(_:)))
         
         setThemedElements()
         setLocalizedStrings()
@@ -242,9 +242,9 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if UserDefaultsManager.needsInboxBadge {
-            self.navigationItem.leftBarButtonItem!.setBadge(text: " ")
+//            self.navigationItem.leftBarButtonItem!.setBadge(text: " ")
         } else {
-            self.navigationItem.leftBarButtonItem!.setBadge(text: "")
+//            self.navigationItem.leftBarButtonItem!.setBadge(text: "")
         }
         
     }

@@ -311,7 +311,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
-    func hideLoadingIndicator() {
+    func hideLoadingIndicator(result: String) {
         DispatchQueue.main.async {
             self.graphLoadingIndicator.stopAnimating()
         }

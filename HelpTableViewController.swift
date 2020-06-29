@@ -13,7 +13,8 @@ import WebBrowser
 
 class HelpTableViewController: UITableViewController, WebBrowserDelegate {
     let helpArticles = ["Crypto 101"]
-    let supportLinks = ["O3 Community", "Contact Us"]
+    let supportLinks = ["O3 Community"]
+//    let supportLinks = ["O3 Community", "Contact Us"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +53,7 @@ class HelpTableViewController: UITableViewController, WebBrowserDelegate {
         if section == 0 {
             return 1
         } else {
-            return 2
+            return 1
         }
     }
     

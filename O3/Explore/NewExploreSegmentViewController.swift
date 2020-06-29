@@ -22,9 +22,9 @@ class NewExploreSegmentViewController: UIViewController {
         navigationController?.hideHairline()
         NotificationCenter.default.addObserver(self, selector: #selector(self.addThemedElements), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
         
-        navigationItem.title = "Explor"
+        navigationItem.title = "Explore"
         
-        let titles = ["recommend", "recreation", " finance "]
+        let titles = ["Recommend", "Entertainment", " Token "]
         segmentedDataSource = JXSegmentedTitleDataSource()
         segmentedDataSource.isTitleColorGradientEnabled = true
         segmentedDataSource.titles = titles

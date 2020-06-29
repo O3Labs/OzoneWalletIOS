@@ -19,9 +19,9 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     var typeString: String = ""
 
     enum tabName: String {
-        case recommend = "recommend"
-        case recreation = "recreation"
-        case finance = " finance "
+        case Recommend = "Recommend"
+        case Entertainment = "Entertainment"
+        case Token = " Token "
     }
     
     @IBOutlet weak var exploreTableView: UITableView!
@@ -62,11 +62,11 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if self.typeString == "recommend" {
+        if self.typeString == tabName.Recommend.rawValue {
             loadFeatureFeed()
             loadDapps()
             
-        }else if self.typeString == "recreation"{
+        }else if self.typeString == tabName.Entertainment.rawValue{
             loadNewsFeed()
             loadDapps()
         }
@@ -74,9 +74,9 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     }
     
     func numberOfItems(in pagerView: FSPagerView) -> Int {
-        if self.typeString == "recommend" {
+        if self.typeString == tabName.Recommend.rawValue {
             return self.bannerFeatureFeedData?.features.count ?? 0
-        }else if self.typeString == "recreation"{
+        }else if self.typeString == tabName.Entertainment.rawValue{
             if bannerNewsfeedData?.items.count ?? 0 >= 4{
                 return 4
             }else{
@@ -89,10 +89,10 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
 
     public func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
         let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
-        if self.typeString == "recommend" {
+        if self.typeString == tabName.Recommend.rawValue {
             let item = self.bannerFeatureFeedData?.features[index]
             cell.imageView?.kf.setImage(with: URL(string: item?.imageURL ?? ""))
-        }else if self.typeString == "recreation"{
+        }else if self.typeString == tabName.Entertainment.rawValue{
             let item = self.bannerNewsfeedData?.items[index]
             if item?.images.count ?? 0 > 0{
                 cell.imageView?.kf.setImage(with: URL(string: item?.images.first?.url ?? ""))
@@ -103,10 +103,10 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     }
     
     public func pagerView(_ pagerView: FSPagerView, didSelectItemAt index: Int) {
-        if self.typeString == "recommend" {
+        if self.typeString == tabName.Recommend.rawValue {
             let item = self.bannerFeatureFeedData?.features[index]
             Controller().openDappBrowserV2(url: URL(string: item?.actionURL ?? "")!)
-        }else if self.typeString == "recreation"{
+        }else if self.typeString == tabName.Entertainment.rawValue{
             let item = self.bannerNewsfeedData?.items[index]
             Controller().openDappBrowserV2(url: URL(string: item?.link ?? "")!)
         }
@@ -138,9 +138,9 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
         exploreTableView.delegate = self
         exploreTableView.dataSource = self
         self.tableHeaderView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 200+buttonCollectionViewHeight.constant)
-        if typeString == "recommend"{
+        if typeString == tabName.Recommend.rawValue{
             self.tableHeaderView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 200+buttonCollectionViewHeight.constant)
-        }else if typeString == "recreation"{
+        }else if typeString == tabName.Entertainment.rawValue{
             self.tableHeaderView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 200)
             self.buttonCollectionView.isHidden = true
         }else {
@@ -162,7 +162,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.typeString == "recreation"{
+        if self.typeString == tabName.Entertainment.rawValue{
             return self.dappsData.count
         }else{
             return self.exploreAssetsData.count
@@ -172,7 +172,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewExploreTableViewCell") as! NewExploreTableViewCell
         
-        if self.typeString == "recreation"{
+        if self.typeString == tabName.Entertainment.rawValue{
             let item = self.dappsData[indexPath.row]
             cell.exploreImageView.kf.setImage(with: URL(string: item.iconURL))
             cell.exploreTitleLabel.text = item.name
@@ -187,7 +187,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if  self.typeString == "recreation" {
+        if  self.typeString == tabName.Entertainment.rawValue {
             let item = self.dappsData[indexPath.row]
             Controller().openDappBrowserV2(url: URL(string: item.url)!)
         }else{
@@ -268,7 +268,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
             case .success(let dappsList):
                 DispatchQueue.main.async {
                     self.dappsData.removeAll()
-                    if self.typeString == "recommend"{
+                    if self.typeString == tabName.Recommend.rawValue{
                         for dapp in dappsList{
                             if dapp.name == "O3 Fiat Gateway" || dapp.name == "O3 Swap" || dapp.name == "Staketology"{
                                 self.dappsData.append(dapp)
@@ -291,7 +291,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
             case .success(let assetsList):
                 DispatchQueue.main.async {
                     self.exploreAssetsData.removeAll()
-                    if self.typeString == "recommend"{
+                    if self.typeString == tabName.Recommend.rawValue{
                         for assets in assetsList{
                             if assets.symbol == "NEO" || assets.symbol == "GAS" || assets.symbol == "ONT" || assets.symbol == "ONG"{
                                 self.exploreAssetsData.append(assets)

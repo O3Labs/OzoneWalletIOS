@@ -245,8 +245,14 @@ class dAppBrowserV2ViewController: UIViewController {
         
         vc.onShare = {
             DispatchQueue.main.async {
-                let vc = UIActivityViewController(activityItems: [self.viewModel.url.absoluteString], applicationActivities: [])
-                self.present(vc, animated: true, completion: nil)
+                let shareURL = URL(string: self.viewModel.url.absoluteString)
+                let activityViewController = UIActivityViewController(activityItems: [shareURL as Any,], applicationActivities: nil)
+                activityViewController.popoverPresentationController?.sourceView = self.view
+               
+                self.present(activityViewController, animated: true, completion: nil)
+//                let title = "O3 Wallet"
+//                let vc = UIActivityViewController(activityItems: [title, self.viewModel.url.absoluteString], applicationActivities: [])
+//                self.present(vc, animated: true, completion: nil)
             }
         }
         
@@ -269,7 +275,7 @@ class dAppBrowserV2ViewController: UIViewController {
     }
     
     func showDappDisclaimer() {
-        if (UserDefaultsManager.hasAgreedAnalytics == false) {
+        if (UserDefaultsManager.hasAgreedDapps == false) {
             let nav = UIStoryboard(name: "Disclaimers", bundle: nil).instantiateViewController(withIdentifier: "dappWarningNav")
             self.halfModalTransitioningDelegate = HalfModalTransitioningDelegate(viewController: self, presentingViewController: nav)
             nav.modalPresentationStyle = .custom

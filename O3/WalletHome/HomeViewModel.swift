@@ -13,7 +13,7 @@ protocol HomeViewModelDelegate: class {
     func updateWithBalanceData(_ assets: [PortfolioAsset])
     func updateWithPortfolioData(_ portfolio: PortfolioValue)
     func showLoadingIndicator()
-    func hideLoadingIndicator()
+    func hideLoadingIndicator(result: String)
 }
 
 struct WatchAddr: Hashable {
@@ -232,10 +232,10 @@ class HomeViewModel {
             O3Client.shared.getPortfolioValue(self.getTransferableAssets(), interval: self.selectedInterval.rawValue) {result in
                 switch result {
                 case .failure:
-                    self.delegate?.hideLoadingIndicator()
+                    self.delegate?.hideLoadingIndicator(result: "fail")
                 case .success(let portfolio):
                     if startIndex == self.currentIndex {
-                        self.delegate?.hideLoadingIndicator()
+                        self.delegate?.hideLoadingIndicator(result: "success")
                         self.delegate?.updateWithPortfolioData(portfolio)
                     }
                 }
