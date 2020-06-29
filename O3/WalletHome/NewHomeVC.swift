@@ -497,7 +497,8 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     func updateWithPortfolioData(_ portfolio: PortfolioValue) {
         DispatchQueue.main.async {
             if self.coinbaseAssets.count>0{
-                self.titles = ["Assets", "Token"]
+//                self.titles = ["Assets", "Token"]
+                self.titles = ["Assets"]
             }else{
                 self.titles = ["Assets"]
             }

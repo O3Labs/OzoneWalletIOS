@@ -72,7 +72,7 @@ class ListViewController: UIViewController {
 extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isHeaderRefreshed {
-            if typeString == "Wallets"{
+            if typeString == "Assets"{
                 return walletAssets.count
             }else{
                 return coinbaseAssets.count
@@ -85,7 +85,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyTableViewCell", for: indexPath) as! CurrencyTableViewCell
         var asset: PortfolioAsset
-        if typeString == "Wallets"{
+        if typeString == "Assets"{
             asset = self.walletAssets[indexPath.row]
         }else{
             asset = self.coinbaseAssets[indexPath.row]
