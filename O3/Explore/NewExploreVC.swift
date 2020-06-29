@@ -189,7 +189,13 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if  self.typeString == tabName.Entertainment.rawValue {
             let item = self.dappsData[indexPath.row]
-            Controller().openDappBrowserV2(url: URL(string: item.url)!)
+//            Controller().openDappBrowserV2(url: URL(string: item.url)!)
+            let viewModel = dAppBrowserViewModel()
+            viewModel.dappMetadata?.title = item.name
+            viewModel.dappMetadata?.description = item.description
+            viewModel.dappMetadata?.iconURL = item.iconURL
+            viewModel.dappMetadata?.url = URL(string: item.url)
+            Controller().openDappBrowserV3(url: URL(string: item.url )!, viewModel: viewModel)
         }else{
             let item = self.exploreAssetsData[indexPath.row]
             Controller().openDappBrowserV2(url: URL(string: item.webURL)!)

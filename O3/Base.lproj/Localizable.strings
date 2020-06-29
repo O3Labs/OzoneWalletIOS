@@ -508,7 +508,7 @@
 "SEND_Created_Transaction_Failed_Title" = "Please Try Again Later";
 
 /* Description to display when the transaction has successfuly been submitted to the NEO blockchain */
-"SEND_Created_Transaction_Successfully_Description" = "Once your transaction has been confirmed it will appear in your transaction history.";
+"SEND_Created_Transaction_Successfully_Description" = "Checking transaction history please refer to O3 explorer: https://explorer.o3.network/";
 
 /* Title to display when the transaction has successfuly been submitted to the NEO blockchain */
 "SEND_Created_Transaction_Successfully_Title" = "Created Transaction Successfully";

@@ -262,6 +262,7 @@ class dAppBrowserV2ViewController: UIViewController {
                 self.viewModel.selectedAccount = nil
                 self.viewModel.isConnected = false
                 self.walletSwitcherButton.tintColor = UIColor.gray
+                self.webView.reload()
             }
         }
         
@@ -334,6 +335,17 @@ extension dAppBrowserV2ViewController: WKScriptMessageHandler {
         }
         dapiEvent.shared.methodCall(method: message.command, url: self.viewModel.url.absoluteString, domain: self.viewModel.url.host ?? "")
         if message.blockchain == "NEO" && dAppProtocol.needAuthorizationCommands.contains(message.command) && self.viewModel.isConnected == false {
+            self.viewModel.requestToConnect(message: message, didCancel: { m in
+                //cancel
+                self.viewModel.responseWithError(message: message, error: "CONNECTION_DENIED")
+            }) { m, wallet, account in
+                //confirm
+                DispatchQueue.main.async {
+                    self.viewModel.proceedMessage(message: message)
+                }
+            }
+            return
+        }else if message.blockchain == "ONT" && dAppProtocol.needAuthorizationCommands.contains(message.command) && self.viewModel.isConnected == false  && self.viewModel.dappMetadata?.title != nil{
             self.viewModel.requestToConnect(message: message, didCancel: { m in
                 //cancel
                 self.viewModel.responseWithError(message: message, error: "CONNECTION_DENIED")

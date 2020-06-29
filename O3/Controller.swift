@@ -67,6 +67,25 @@ class Controller: NSObject {
         
         top!.present(nav!, animated: true, completion: nil)
     }
+    func openDappBrowserV3(url: URL, viewModel: dAppBrowserViewModel , assetSymbol: String? = nil) {
+        let top = UIApplication.topViewController()
+        if  top == nil {
+            return
+        }
+        
+        let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
+        if let vc = nav!.viewControllers.first as?
+            dAppBrowserV2ViewController {
+            let vcViewModel = viewModel
+            vcViewModel.url = url
+            if assetSymbol != nil {
+                vcViewModel.assetSymbol = assetSymbol
+            }
+            vc.viewModel = vcViewModel
+        }
+        
+        top!.present(nav!, animated: true, completion: nil)
+    }
 
     func openSend(to: String, selectedAsset: O3WalletNativeAsset, amount: String?) {
 
