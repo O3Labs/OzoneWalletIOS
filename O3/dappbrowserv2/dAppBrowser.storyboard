@@ -176,6 +176,7 @@
                         <outlet property="forwardButton" destination="6eu-bo-hjF" id="SUS-1m-IBV"/>
                         <outlet property="homeButton" destination="wFX-ca-CNK" id="VwR-6N-29r"/>
                         <outlet property="openOrderButton" destination="s7C-5t-1bH" id="cMX-hH-WVm"/>
+                        <outlet property="tradeButton" destination="ey0-Dw-dot" id="MzU-BC-ZA2"/>
                         <outlet property="tradingToolbar" destination="9uh-6y-pWc" id="de3-3M-5Ku"/>
                         <outlet property="walletSwitcherButton" destination="XeQ-ck-nG5" id="vfs-Ea-phK"/>
                     </connections>

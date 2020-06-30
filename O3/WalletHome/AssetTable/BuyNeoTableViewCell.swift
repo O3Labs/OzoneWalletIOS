@@ -54,6 +54,7 @@ class BuyNeoTableViewCell: UITableViewCell {
             
         }
         actionSheet.addAction(cancel)
+        actionSheet.popoverPresentationController?.sourceView = sender as? UIView
         UIApplication.shared.keyWindow?.rootViewController?.present(actionSheet, animated: true, completion: nil)
     }
     

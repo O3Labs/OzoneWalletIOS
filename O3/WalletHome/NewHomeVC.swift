@@ -90,7 +90,8 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     
     var isSecureText = false//是否隐藏
     var buyButtonBottom = IS_IPHONEX ? 88.0 : 44.0
-    
+    var buyButton = UIButton()
+
     var wallets = NEP6.getFromFileSystem()?.getWalletAccounts() ?? []
 
     //算钱包value
@@ -254,11 +255,11 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         scanButton.addTarget(self, action: #selector(rightBarButtonTapped), for: .touchUpInside)
         watchButton.addTarget(self, action: #selector(switchIsSecureText), for: .touchUpInside)
 
-        let button:UIButton = UIButton(frame: CGRect.init(x: UIScreen.main.bounds.size.width-100, y: UIScreen.main.bounds.size.height-110-CGFloat(buyButtonBottom), width: 99.0, height: 110.0))
-        button.setImage(UIImage.init(named: "home_buyNeo"), for: .normal)
-        button.addTarget(self, action: #selector(buyNeoClick), for: .touchUpInside)
-        self.view.addSubview(button)
-        self.view.bringSubviewToFront(button)
+        buyButton = UIButton(frame: CGRect.init(x: UIScreen.main.bounds.size.width-100, y: UIScreen.main.bounds.size.height-110-CGFloat(self.buyButtonBottom), width: 99.0, height: 110.0))
+        buyButton.setImage(UIImage.init(named: "home_buyNeo"), for: .normal)
+        buyButton.addTarget(self, action: #selector(buyNeoClick), for: .touchUpInside)
+        self.view.addSubview(buyButton)
+        self.view.bringSubviewToFront(buyButton)
         
         // shadowCode
         sendAndReceiveBgView.layer.shadowColor = UIColor.blue.cgColor
@@ -612,6 +613,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
             
         }
         actionSheet.addAction(cancel)
+        actionSheet.popoverPresentationController?.sourceView = self.buyButton
         present(actionSheet, animated: true, completion: nil)
     }
     

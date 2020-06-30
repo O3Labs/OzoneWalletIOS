@@ -195,7 +195,10 @@ class SettingsMenuTableViewController: UITableViewController, HalfModalPresentab
             
         }
         actionSheet.addAction(cancel)
-        present(actionSheet, animated: true, completion: nil)
+
+        actionSheet.popoverPresentationController?.sourceView = (sender as! UIView)
+        self.present(actionSheet, animated: true, completion: nil)
+        
     }
     
     @IBAction func referNeo(_ sender: Any) {

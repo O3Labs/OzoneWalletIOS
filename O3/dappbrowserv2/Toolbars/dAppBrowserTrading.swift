@@ -86,6 +86,7 @@ extension dAppBrowserV2ViewController {
             
         }
         alert.addAction(cancel)
+        alert.popoverPresentationController?.sourceView = tradeButton
         present(alert, animated: true, completion: nil)
     }
     
@@ -105,6 +106,7 @@ extension dAppBrowserV2ViewController {
             
         }
         actionSheet.addAction(cancel)
+        actionSheet.popoverPresentationController?.sourceView = tradeButton
         present(actionSheet, animated: true, completion: nil)
     }
     

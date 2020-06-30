@@ -434,7 +434,6 @@ class PortfolioSelectorTableViewController: UITableViewController {
                 self.handlePortfolioTapped(indexPath: IndexPath(row: 0, section: 0))
             }
         }
-        
         alert.addAction(addRemoveTotalAction)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
@@ -458,8 +457,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
             
         }
         alert.addAction(cancel)
-        
-        
+        alert.popoverPresentationController?.sourceView = getWatchAddressCell(self.tableView, cellForRowAt: indexPath)
         present(alert, animated: true, completion: nil)
     }
     
@@ -506,7 +504,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
         }
         alert.addAction(cancel)
         
-        
+        alert.popoverPresentationController?.sourceView = self.tableView
         present(alert, animated: true, completion: nil)
     }
     

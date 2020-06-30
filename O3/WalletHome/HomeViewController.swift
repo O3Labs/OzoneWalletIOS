@@ -448,6 +448,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
         actionSheet.addAction(cancel)
+        actionSheet.popoverPresentationController?.sourceView = self.walletHeaderCollectionView
         present(actionSheet, animated: true, completion: nil)
     }
 }

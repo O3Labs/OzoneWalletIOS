@@ -297,9 +297,9 @@ extension DAppBrowserViewController {
     
     @IBAction func tradeTapped(_ sender: Any) {
         if (self.tradableAsset?.symbol.lowercased() != "neo") {
-            showActionSheetAssetInTradingAccount(asset: self.tradableAsset!)
+            showActionSheetAssetInTradingAccount(asset: self.tradableAsset!, sender)
         } else {
-            showBuyOptionsNEO()
+            showBuyOptionsNEO(sender)
         }
     }
     
@@ -327,7 +327,7 @@ extension DAppBrowserViewController {
         self.present(nav, animated: true, completion: nil)
     }
     
-    func showBuyOptionsNEO() {
+    func showBuyOptionsNEO(_ sender: Any) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let buyWithFiat = UIAlertAction(title: "With Fiat", style: .default) { _ in
             Controller().openDappBrowserV2(url: URL(string: "https://buy.o3.network/?a=" + (Authenticated.wallet?.address)!)!)
@@ -343,10 +343,11 @@ extension DAppBrowserViewController {
             
         }
         actionSheet.addAction(cancel)
+        actionSheet.popoverPresentationController?.sourceView = sender as? UIView
         present(actionSheet, animated: true, completion: nil)
     }
     
-    func showActionSheetAssetInTradingAccount(asset: TradableAsset) {
+    func showActionSheetAssetInTradingAccount(asset: TradableAsset, _ sender: Any) {
         
         let alert = UIAlertController(title: asset.name, message: nil, preferredStyle: .actionSheet)
         
@@ -370,6 +371,7 @@ extension DAppBrowserViewController {
             
         }
         alert.addAction(cancel)
+        alert.popoverPresentationController?.sourceView = sender as? UIView
         present(alert, animated: true, completion: nil)
     }
 }

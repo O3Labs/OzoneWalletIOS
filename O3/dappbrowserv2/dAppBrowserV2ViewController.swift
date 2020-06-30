@@ -40,6 +40,7 @@ class dAppBrowserV2ViewController: UIViewController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var forwardButton: UIButton!
     
+    @IBOutlet weak var tradeButton: UIButton!
     var webView: WKWebView!
     var progressView: UIProgressView!
     var textFieldURL: UITextField!
