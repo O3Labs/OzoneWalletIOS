@@ -50,11 +50,22 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vWH-kY-N4H">
+                                            <rect key="frame" x="330" y="183" width="30" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="36F-tl-RTr"/>
+                                            </constraints>
+                                            <connections>
+                                                <action selector="createButtonClick:" destination="Qre-3e-igv" eventType="touchUpInside" id="H8A-Lg-1HI"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="vWH-kY-N4H" secondAttribute="bottom" constant="2" id="1Rt-kc-eaZ"/>
                                         <constraint firstItem="jDg-0y-SiJ" firstAttribute="centerX" secondItem="PKs-OV-AGL" secondAttribute="centerX" id="2oR-Ht-mIO"/>
                                         <constraint firstItem="jDg-0y-SiJ" firstAttribute="top" secondItem="FM7-uD-pNH" secondAttribute="bottom" constant="8" id="Jk7-3O-iBT"/>
+                                        <constraint firstAttribute="trailing" secondItem="vWH-kY-N4H" secondAttribute="trailing" constant="15" id="PVa-3b-nVS"/>
                                         <constraint firstItem="VQx-yA-75r" firstAttribute="top" secondItem="PKs-OV-AGL" secondAttribute="top" constant="25" id="XCr-83-lvT"/>
                                         <constraint firstItem="FM7-uD-pNH" firstAttribute="top" secondItem="VQx-yA-75r" secondAttribute="bottom" constant="21" id="e13-Xg-ju7"/>
                                         <constraint firstItem="FM7-uD-pNH" firstAttribute="centerX" secondItem="PKs-OV-AGL" secondAttribute="centerX" id="s5z-TP-aZA"/>
@@ -119,6 +130,7 @@
                     </view>
                     <connections>
                         <outlet property="animationViewContainer" destination="6FU-zK-P2n" id="4pe-K7-Hpa"/>
+                        <outlet property="createWalletButton" destination="vWH-kY-N4H" id="S1f-Hv-App"/>
                         <outlet property="subtitleLabel" destination="jDg-0y-SiJ" id="WOp-l9-wuc"/>
                         <outlet property="tableView" destination="NGl-20-Wj8" id="o4F-UW-cXO"/>
                         <outlet property="titleLabel" destination="FM7-uD-pNH" id="N5z-hc-0R2"/>
@@ -579,7 +591,7 @@
         <!--Create Wallet Table View Controller-->
         <scene sceneID="ase-Di-bmg">
             <objects>
-                <tableViewController id="DSE-k4-O6n" customClass="CreateWalletTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CreateWalletTableViewController" id="DSE-k4-O6n" customClass="CreateWalletTableViewController" customModule="O3" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="NjT-O4-T4G">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

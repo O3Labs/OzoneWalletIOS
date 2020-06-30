@@ -23,9 +23,10 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var createWalletButton: UIButton!
     
     let animation = LOTAnimationView(name: "RocketSplash")
-    let nep6 = NEP6.getFromFileSystem()
+    var nep6 = NEP6.getFromFileSystem()
     var delegate: LoginToNEP6ViewControllerDelegate?
     var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 
@@ -65,7 +66,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     
     
     func loginLegacy() {
-        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "activateMultiWalletTableViewController") as? ActivateMultiWalletTableViewController {
+        if let vc = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "CreateWalletTableViewController") as? CreateWalletTableViewController {
             let vcWithNav = (UINavigationController(rootViewController: vc))
             self.present(vcWithNav, animated: true, completion: {})
             return
@@ -94,9 +95,32 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }
     }
+    @IBAction func createButtonClick(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "create a new wallet", message:"After the wallet is created, all the original wallet data will be cleared and cannot be retrieved. Can you confirm to create the wallet?" , preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "confirm", style: .default) { _ in
+            NEP6.removeFromDevice()
+            O3Cache.clear()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                if self.nep6 == nil {
+                    self.loginLegacy()
+                    return
+                }
+            }
+        }
+        let cancelAction = UIAlertAction(title: "cancel", style: .cancel) { _ in
+        }
+
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.createWalletButton.setTitle("create a new wallet", for: .normal)
+        self.createWalletButton.setTitleColor(.white, for: .normal)
         setGradient()
         animationViewContainer.embed(animation)
         animation.loopAnimation = true
@@ -141,6 +165,7 @@ class LoginToNep6ViewController: UIViewController, UITableViewDelegate, UITableV
     
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        nep6 = NEP6.getFromFileSystem()
         if nep6 != nil {
             return nep6!.getWalletAccounts().count
         } else {

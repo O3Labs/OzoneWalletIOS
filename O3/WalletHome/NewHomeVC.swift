@@ -206,6 +206,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         homeviewModel = HomeViewModel(delegate: self)
         
         watchAddresses = loadWatchAddresses()
+        self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neoBalance(for: Authenticated.wallet!.address), O3Cache.gasBalance(for: Authenticated.wallet!.address)] + O3Cache.ontologyBalances(for: Authenticated.wallet!.address) + O3Cache.tokensBalance(for: Authenticated.wallet!.address))
         loadAccountState()
 
         walletNameSelectLabel.text = wallets.first {$0.isDefault}!.label
@@ -298,7 +299,9 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         
     }
     @objc func showMultiWalletDisplay() {
-        Controller().openPortfolioSelector()
+        DispatchQueue.main.async {
+            Controller().openPortfolioSelector()
+        }
     }
 
     
@@ -533,7 +536,9 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         let transitionDelegate = DeckTransitioningDelegate()
         nav.transitioningDelegate = transitionDelegate
         nav.modalPresentationStyle = .custom
-        self.present(nav, animated: true, completion: nil)
+        DispatchQueue.main.sync {
+            self.present(nav, animated: true, completion: nil)
+        }
     }
     
     @objc func switchIsSecureText(){
