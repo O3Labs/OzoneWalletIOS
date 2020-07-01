@@ -69,6 +69,8 @@ class O3APIClient: NSObject {
                             overrideURL: String? = nil, completion :@escaping (O3APIClientResult<JSONDictionary>) -> Void) {
 
         var fullURL = useCache ? apiWithCacheBaseEndpoint + resourceEndpoint : apiBaseEndpoint + resourceEndpoint
+//        var fullURL = apiWithCacheBaseEndpoint + resourceEndpoint
+
         if overrideURL != nil {
             fullURL = overrideURL!
         }
@@ -178,6 +180,7 @@ class O3APIClient: NSObject {
                 guard let dictionary = response["result"] as? JSONDictionary,
                     let data = try? JSONSerialization.data(withJSONObject: dictionary["data"] as Any, options: .prettyPrinted),
                     let accountState = try? decoder.decode(AccountState.self, from: data) else {
+                        completion(.failure(.invalidData))
                         return
                 }
                 let balancesResult = O3APIClientResult.success(accountState)

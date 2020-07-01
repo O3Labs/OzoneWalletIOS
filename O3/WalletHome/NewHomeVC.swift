@@ -91,9 +91,9 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     var isSecureText = false//是否隐藏
     var buyButtonBottom = IS_IPHONEX ? 88.0 : 44.0
     var buyButton = UIButton()
-
+    
     var wallets = NEP6.getFromFileSystem()?.getWalletAccounts() ?? []
-
+    
     //算钱包value
     var accountValues: [IndexPath: AccountValue] = [:]
     var watchAddrs: [IndexPath: NEP6.Account] = [:]
@@ -109,47 +109,47 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     var displayedAssets = [PortfolioAsset]()
     var watchAddresses = [NEP6.Account]()
     var coinbaseAssets: [PortfolioAsset] {
-         get {
-             var assets = displayedAssets.filter { asset -> Bool in
-                 return self.homeviewModel.coinbaseAccountBalances.contains {
-                     return $0.symbol.lowercased() == asset.symbol.lowercased()
-                 }
-             }
-             
-             if UserDefaultsManager.isDustHidden && homeviewModel.currentIndex == 0 {
-                 assets = assets.filter { asset -> Bool in
-                     let price = portfolio?.price[asset.symbol]?.averageBTC ?? 0.0
-                     let amount = asset.value
-                     return price * amount >= 0.00005
-                 }
-             }
-             
-             if UserDefaultsManager.portfolioSortType == .atozSort {
-                 assets.sort { asset1, asset2 -> Bool in
-                     return asset1.symbol < asset2.symbol
-                 }
-             } else if UserDefaultsManager.portfolioSortType == .valueSort {
-                 assets.sort { asset1, asset2 -> Bool in
-                     let price1 = portfolio?.price[asset1.symbol]?.averageBTC ?? 0.0
-                     let amount1 = asset1.value
-                     
-                     let price2 = portfolio?.price[asset2.symbol]?.averageBTC ?? 0.0
-                     let amount2 = asset2.value
-                     
-                     return price1 * amount1 > price2 * amount2
-                 }
-             }
-         
-             return assets
-         }
-     }
-     
+        get {
+            var assets = displayedAssets.filter { asset -> Bool in
+                return self.homeviewModel.coinbaseAccountBalances.contains {
+                    return $0.symbol.lowercased() == asset.symbol.lowercased()
+                }
+            }
+            
+            if UserDefaultsManager.isDustHidden && homeviewModel.currentIndex == 0 {
+                assets = assets.filter { asset -> Bool in
+                    let price = portfolio?.price[asset.symbol]?.averageBTC ?? 0.0
+                    let amount = asset.value
+                    return price * amount >= 0.00005
+                }
+            }
+            
+            if UserDefaultsManager.portfolioSortType == .atozSort {
+                assets.sort { asset1, asset2 -> Bool in
+                    return asset1.symbol < asset2.symbol
+                }
+            } else if UserDefaultsManager.portfolioSortType == .valueSort {
+                assets.sort { asset1, asset2 -> Bool in
+                    let price1 = portfolio?.price[asset1.symbol]?.averageBTC ?? 0.0
+                    let amount1 = asset1.value
+                    
+                    let price2 = portfolio?.price[asset2.symbol]?.averageBTC ?? 0.0
+                    let amount2 = asset2.value
+                    
+                    return price1 * amount1 > price2 * amount2
+                }
+            }
+            
+            return assets
+        }
+    }
+    
     var walletAssets: [PortfolioAsset] {
         get {
             var assets = displayedAssets.filter { asset -> Bool in
                 return self.homeviewModel.coinbaseAccountBalances.contains {
                     $0.symbol.lowercased() == asset.symbol.lowercased()
-                } == false
+                    } == false
             }
             if UserDefaultsManager.isDustHidden && homeviewModel.currentIndex == 0 {
                 assets = assets.filter { asset -> Bool in
@@ -193,7 +193,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     var neoBalance: Int = Int(O3Cache.neoBalance(for: Authenticated.wallet!.address).value)
     var gasBalance: Double = O3Cache.gasBalance(for: Authenticated.wallet!.address).value
     var ontologyAssets: [O3WalletNativeAsset] = O3Cache.ontologyBalances(for: Authenticated.wallet!.address)
-        
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -202,47 +202,47 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         
         addObservers()
         homeTopBackgroundImageView.contentMode = .scaleToFill
-
+        
         homeviewModel = HomeViewModel(delegate: self)
         
         watchAddresses = loadWatchAddresses()
         self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neoBalance(for: Authenticated.wallet!.address), O3Cache.gasBalance(for: Authenticated.wallet!.address)] + O3Cache.ontologyBalances(for: Authenticated.wallet!.address) + O3Cache.tokensBalance(for: Authenticated.wallet!.address))
         loadAccountState()
-
+        
         walletNameSelectLabel.text = wallets.first {$0.isDefault}!.label
         walletNameLabel.text = "\(wallets.first {$0.isDefault}!.label)≈"
         addressLabel.text = wallets.first {$0.isDefault}!.address
-
-
+        
+        
         dataSource.titles = titles
         dataSource.titleSelectedColor = UIColor(red: 105/255, green: 144/255, blue: 239/255, alpha: 1)
         dataSource.titleNormalColor = UIColor.black
         dataSource.isTitleColorGradientEnabled = true
         dataSource.isItemSpacingAverageEnabled = false
         dataSource.isTitleZoomEnabled = true
-
+        
         segmentedView.backgroundColor = UIColor.white
         segmentedView.delegate = self
         segmentedView.isContentScrollViewClickTransitionAnimationEnabled = false
         segmentedView.dataSource = dataSource
-
+        
         let lineView = JXSegmentedIndicatorLineView()
         lineView.indicatorColor = UIColor(red: 105/255, green: 144/255, blue: 239/255, alpha: 1)
         lineView.indicatorWidth = 30
         segmentedView.indicators = [lineView]
-
+        
         let lineWidth = 1/UIScreen.main.scale
         let bottomLineView = UIView()
         bottomLineView.backgroundColor = UIColor.lightGray
         bottomLineView.frame = CGRect(x: 0, y: segmentedView.bounds.height - lineWidth, width: segmentedView.bounds.width, height: lineWidth)
         bottomLineView.autoresizingMask = .flexibleWidth
         segmentedView.addSubview(bottomLineView)
-
+        
         pagingView.mainTableView.gestureDelegate = self
         self.contentView.addSubview(pagingView)
         
         segmentedView.listContainer = pagingView.listContainerView
-
+        
         //扣边返回处理，下面的代码要加上
         pagingView.listContainerView.scrollView.panGestureRecognizer.require(toFail: self.navigationController!.interactivePopGestureRecognizer!)
         pagingView.mainTableView.panGestureRecognizer.require(toFail: self.navigationController!.interactivePopGestureRecognizer!)
@@ -255,7 +255,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         addressLabel.addGestureRecognizer(clickTap)
         scanButton.addTarget(self, action: #selector(rightBarButtonTapped), for: .touchUpInside)
         watchButton.addTarget(self, action: #selector(switchIsSecureText), for: .touchUpInside)
-
+        
         buyButton = UIButton(frame: CGRect.init(x: UIScreen.main.bounds.size.width-100, y: UIScreen.main.bounds.size.height-110-CGFloat(self.buyButtonBottom), width: 99.0, height: 110.0))
         buyButton.setImage(UIImage.init(named: "home_buyNeo"), for: .normal)
         buyButton.addTarget(self, action: #selector(buyNeoClick), for: .touchUpInside)
@@ -269,11 +269,11 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         sendAndReceiveBgView.layer.shadowOffset = CGSize.init(width: 0, height: 10)
         
         refreshControl.addTarget(self, action: #selector(reloadAllData),
-
-        for: .valueChanged)
-
+                                 
+                                 for: .valueChanged)
+        
         refreshControl.attributedTitle = NSAttributedString(string: "loading...")
-
+        
         pagingView.mainTableView.addSubview(refreshControl)
         
         
@@ -303,7 +303,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
             Controller().openPortfolioSelector()
         }
     }
-
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -316,7 +316,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         loadClaimableGAS(address: "")
         loadClaimableOng(address: "")
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -327,11 +327,16 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        self.refreshControl.endRefreshing()
+        if !self.pagingView.mainTableView.isScrollEnabled {
+            self.pagingView.mainTableView.isScrollEnabled = true
+        }
+        
     }
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        
         pagingView.frame = self.contentView.bounds
     }
     func preferredTableHeaderView() -> PagingViewTableHeaderView {
@@ -356,7 +361,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     
     @objc func jumpToPortfolio(_ notification: NSNotification) {
         if let portfolioIndex = notification.userInfo?["portfolioIndex"] as? Int {
-//            homeviewModel.currentIndex = portfolioIndex
+            //            homeviewModel.currentIndex = portfolioIndex
             if portfolioIndex == 0{
                 homeviewModel.currentIndex = portfolioIndex
             }else{
@@ -392,7 +397,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         NotificationCenter.default.addObserver(self, selector: #selector(self.removeObservers), name: Notification.Name("loggedOut"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.addThemedElements), name: NSNotification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
-
+    
     @objc func removeObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.removeObservers), name: Notification.Name("loggedOut"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name("ChangedNetwork"), object: nil)
@@ -402,7 +407,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "NEP6Updated"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
-
+    
     deinit {
         removeObservers()
     }
@@ -461,7 +466,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         O3Cache.setTokensBalance(tokens: tokenAssets, address: Authenticated.wallet!.address)
         O3Cache.setOntologyBalance(tokens: ontologyAssets, address: Authenticated.wallet!.address)
         DispatchQueue.main.async {
-//            self.tableView.reloadData()
+            //            self.tableView.reloadData()
         }
         self.loadAccountValue(account: accounts.o3Account, list: [O3Cache.neoBalance(for: Authenticated.wallet!.address), O3Cache.gasBalance(for: Authenticated.wallet!.address)] + self.ontologyAssets + self.tokenAssets)
     }
@@ -469,7 +474,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         
         if list.count == 0 {
             let fiat = Fiat(amount: 0.0)
-//            self.tableView.reloadData()
+            //            self.tableView.reloadData()
             return
         }
         
@@ -490,18 +495,18 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
                     self.loadClaimableOng(address: self.wallets.first {$0.isDefault}!.address)
                     //somehow calling reloadSections makes the uitableview flickering
                     //using reloadData instead ¯\_(ツ)_/¯
-//                    self.tableView.reloadData()
+                    //                    self.tableView.reloadData()
                 }
             }
         }
     }
-
-
     
+    
+    //更新数据源
     func updateWithPortfolioData(_ portfolio: PortfolioValue) {
         DispatchQueue.main.async {
             if self.coinbaseAssets.count>0{
-//                self.titles = ["Assets", "Token"]
+                //                self.titles = ["Assets", "Token"]
                 self.titles = ["Assets"]
             }else{
                 self.titles = ["Assets"]
@@ -536,7 +541,7 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
         let transitionDelegate = DeckTransitioningDelegate()
         nav.transitioningDelegate = transitionDelegate
         nav.modalPresentationStyle = .custom
-        DispatchQueue.main.sync {
+        DispatchQueue.main.async {
             self.present(nav, animated: true, completion: nil)
         }
     }
@@ -552,18 +557,18 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     
     
     //MARK:- HomeViewModelDelegate
-      func updateWithBalanceData(_ assets: [PortfolioAsset]) {
-          self.displayedAssets = assets
-          DispatchQueue.main.async {
-              
-          }
-      }
-      
-      
-      
-      func showLoadingIndicator() {
-          
-      }
+    func updateWithBalanceData(_ assets: [PortfolioAsset]) {
+        self.displayedAssets = assets
+        DispatchQueue.main.async {
+            
+        }
+    }
+    
+    
+    
+    func showLoadingIndicator() {
+        
+    }
     func hideLoadingIndicator(result: String) {
         DispatchQueue.main.async {
             self.pagingView.mainTableView.isScrollEnabled = true
@@ -637,27 +642,27 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
 }
 
 extension NewHomeVC: JXPagingViewDelegate {
-
+    
     func tableHeaderViewHeight(in pagingView: JXPagingView) -> Int {
         return tableHeaderViewHeight
     }
-
+    
     func tableHeaderView(in pagingView: JXPagingView) -> UIView {
         return userHeaderView
     }
-
+    
     func heightForPinSectionHeader(in pagingView: JXPagingView) -> Int {
         return headerInSectionHeight
     }
-
+    
     func viewForPinSectionHeader(in pagingView: JXPagingView) -> UIView {
         return segmentedView
     }
-
+    
     func numberOfLists(in pagingView: JXPagingView) -> Int {
         return titles.count
     }
-
+    
     func pagingView(_ pagingView: JXPagingView, initListAtIndex index: Int) -> JXPagingViewListViewDelegate {
         let list = ListViewController()
         list.title = titles[index]
@@ -694,29 +699,29 @@ extension NewHomeVC: JXPagingMainTableViewGestureDelegate {
 extension NewHomeVC: QRScanDelegate {
     func qrScanned(data: String) {
         //if there is more type of string we have to check it here
-//        if data.hasPrefix("neo") {
-            DispatchQueue.main.async {
+        //        if data.hasPrefix("neo") {
+        DispatchQueue.main.async {
             self.startSendRequest   (qrData: data)
-            }
-//        }
-//        else if (URL(string: data) != nil) {
-//            //dont present from top
-//            let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
-//            if let vc = nav!.viewControllers.first as?
-//                dAppBrowserV2ViewController {
-//                let viewModel = dAppBrowserViewModel()
-//                viewModel.url = URL(string: data)
-//                vc.viewModel = viewModel
-//                DispatchQueue.main.async {
-//                    self.present(nav!, animated: true)
-//                }
-//            }
-//        }
-//        else {
-//            DispatchQueue.main.async {
-//                self.startSendRequest()
-//            }
-//        }
+        }
+        //        }
+        //        else if (URL(string: data) != nil) {
+        //            //dont present from top
+        //            let nav = UIStoryboard(name: "dAppBrowser", bundle: nil).instantiateInitialViewController() as? UINavigationController
+        //            if let vc = nav!.viewControllers.first as?
+        //                dAppBrowserV2ViewController {
+        //                let viewModel = dAppBrowserViewModel()
+        //                viewModel.url = URL(string: data)
+        //                vc.viewModel = viewModel
+        //                DispatchQueue.main.async {
+        //                    self.present(nav!, animated: true)
+        //                }
+        //            }
+        //        }
+        //        else {
+        //            DispatchQueue.main.async {
+        //                self.startSendRequest()
+        //            }
+        //        }
     }
     
     func startSendRequest(qrData: String? = nil) {
@@ -736,3 +741,4 @@ extension NewHomeVC: QRScanDelegate {
         }
     }
 }
+

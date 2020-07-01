@@ -17,7 +17,7 @@ let kEmotionCellRow = 2
 
 class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, FSPagerViewDelegate, FSPagerViewDataSource{
     var typeString: String = ""
-
+    
     enum tabName: String {
         case Recommend = "Recommend"
         case Entertainment = "Entertainment"
@@ -27,10 +27,10 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     @IBOutlet weak var exploreTableView: UITableView!
     @IBOutlet weak var tableHeaderView: UIView!
     @IBOutlet weak var pagerView: FSPagerView!
-//    @IBOutlet weak var pageControl: FSPageControl!
+    //    @IBOutlet weak var pageControl: FSPageControl!
     @IBOutlet weak var pageView: UIView!
     @IBOutlet weak var buttonCollectionView: UICollectionView!
-//    var pageControl :FSPageControl!
+    //    var pageControl :FSPageControl!
     @IBOutlet weak var buttonCollectionViewHeight: NSLayoutConstraint!
     
     var bannerFeatureFeedData: FeatureFeed?
@@ -42,15 +42,15 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
         let pageControl = FSPageControl(frame: CGRect.init(x: 0, y: 0, width: self.pageView.frame.size.width, height: self.pageView.frame.size.height))
         //设置下标位置
         pageControl.contentHorizontalAlignment = .center
-
+        
         //设置下标指示器颜色（选中状态和普通状态）
         pageControl.setFillColor(UIColor(named: "pagerColor")!, for: .normal)
         pageControl.setFillColor(UIColor(named: "lightThemePrimary")!, for: .selected)
-       
+        
         pageControl.contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
-
+        
         return pageControl
-
+        
     }()
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -58,7 +58,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -86,7 +86,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
             return 0
         }
     }
-
+    
     public func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
         let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
         if self.typeString == tabName.Recommend.rawValue {
@@ -110,7 +110,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
             let item = self.bannerNewsfeedData?.items[index]
             Controller().openDappBrowserV2(url: URL(string: item?.link ?? "")!)
         }
-
+        
     }
     
     
@@ -134,7 +134,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
         }else{
             buttonCollectionViewHeight.constant = 130.0
         }
-
+        
         exploreTableView.delegate = self
         exploreTableView.dataSource = self
         self.tableHeaderView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 200+buttonCollectionViewHeight.constant)
@@ -151,7 +151,7 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
         
         exploreTableView.tableFooterView = UIView(frame: .zero)
         exploreTableView.theme_backgroundColor = O3Theme.backgroundColorPicker
-
+        
         
         buttonCollectionView.delegate = self
         buttonCollectionView.dataSource = self
@@ -189,13 +189,19 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if  self.typeString == tabName.Entertainment.rawValue {
             let item = self.dappsData[indexPath.row]
-//            Controller().openDappBrowserV2(url: URL(string: item.url)!)
-            let viewModel = dAppBrowserViewModel()
-            viewModel.dappMetadata?.title = item.name
-            viewModel.dappMetadata?.description = item.description
-            viewModel.dappMetadata?.iconURL = item.iconURL
-            viewModel.dappMetadata?.url = URL(string: item.url)
-            Controller().openDappBrowserV3(url: URL(string: item.url )!, viewModel: viewModel)
+            //            Controller().openDappBrowserV2(url: URL(string: item.url)!)
+            if item.url.contains("switcheo.exchange") || item.url.contains("nel.group") {
+                Controller().openDappBrowser(url: URL(string: item.url)!, modal: true)
+            } else {
+                //                Controller().openDappBrowserV2(url: URL(string: item.url)!)
+                let viewModel = dAppBrowserViewModel()
+                viewModel.dappMetadata?.title = item.name
+                viewModel.dappMetadata?.description = item.description
+                viewModel.dappMetadata?.iconURL = item.iconURL
+                viewModel.dappMetadata?.url = URL(string: item.url)
+                Controller().openDappBrowserV3(url: URL(string: item.url )!, viewModel: viewModel)
+            }
+            
         }else{
             let item = self.exploreAssetsData[indexPath.row]
             Controller().openDappBrowserV2(url: URL(string: item.webURL)!)
@@ -225,8 +231,8 @@ class NewExploreVC: UIViewController,  UITableViewDelegate, UITableViewDataSourc
         Controller().openDappBrowserV2(url: URL(string: item.url )!)
     }
     
-     // MARK:- FSPagerViewDelegate
-       
+    // MARK:- FSPagerViewDelegate
+    
     func pagerViewWillEndDragging(_ pagerView: FSPagerView, targetIndex: Int) {
         pagerControl.currentPage = targetIndex
     }
@@ -351,7 +357,7 @@ class LXFChatEmotionCollectionLayout: UICollectionViewFlowLayout {
             // 通过一系列计算, 得到x, y值
             let x = itemSize.width * CGFloat(itemIndex % Int(kEmotionCellNumberOfOneRow)) + (CGFloat(page) * UIScreen.main.bounds.size.width)
             let y = itemSize.height * CGFloat((itemIndex - page * kEmotionCellRow * kEmotionCellNumberOfOneRow) / kEmotionCellNumberOfOneRow)
-//            print("第\(indexPath.row) x:\(x) y:\(y)")
+            //            print("第\(indexPath.row) x:\(x) y:\(y)")
             attributes.frame = CGRect(x: x, y: y, width: itemSize.width, height: itemSize.height)
             // 把每一个新的属性保存起来
             attributesArr.append(attributes)
@@ -385,18 +391,18 @@ extension NewExploreVC: JXSegmentedListContainerViewListDelegate {
     }
     
     func listDidAppear() {
-            //因为`JXSegmentedListContainerView`内部通过`UICollectionView`的cell加载列表。当切换tab的时候，之前的列表所在的cell就被回收到缓存池，就会从视图层级树里面被剔除掉，即没有显示出来且不在视图层级里面。这个时候MJRefreshHeader所持有的UIActivityIndicatorView就会被设置hidden。所以需要在列表显示的时候，且isRefreshing==YES的时候，再让UIActivityIndicatorView重新开启动画。
-    //        if (self.tableView.mj_header.isRefreshing) {
-    //            UIActivityIndicatorView *activity = [self.tableView.mj_header valueForKey:@"loadingView"];
-    //            [activity startAnimating];
-    //        }
-
-    //        print("listDidAppear")
-        }
-
-        func listDidDisappear() {
-    //        print("listDidDisappear")
-        }
+        //因为`JXSegmentedListContainerView`内部通过`UICollectionView`的cell加载列表。当切换tab的时候，之前的列表所在的cell就被回收到缓存池，就会从视图层级树里面被剔除掉，即没有显示出来且不在视图层级里面。这个时候MJRefreshHeader所持有的UIActivityIndicatorView就会被设置hidden。所以需要在列表显示的时候，且isRefreshing==YES的时候，再让UIActivityIndicatorView重新开启动画。
+        //        if (self.tableView.mj_header.isRefreshing) {
+        //            UIActivityIndicatorView *activity = [self.tableView.mj_header valueForKey:@"loadingView"];
+        //            [activity startAnimating];
+        //        }
+        
+        //        print("listDidAppear")
+    }
+    
+    func listDidDisappear() {
+        //        print("listDidDisappear")
+    }
 }
 extension Array {
     
