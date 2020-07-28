@@ -16,3 +16,13 @@ struct UnboundOng: Codable {
         case calculated
     }
 }
+
+struct newUnboundOng: Codable {
+    let asset_name: String
+    let balance : String
+    
+    enum CodingKeys: String, CodingKey {
+        case asset_name
+        case balance
+    }
+}

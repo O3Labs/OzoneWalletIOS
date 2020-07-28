@@ -87,7 +87,7 @@ public class O3Client {
             }
 
             if let code = json["code"] as? Int {
-                if code != 200 {
+                if code != 200  && code != 0{
                     completion(.failure(.invalidData))
                     return
                 }
@@ -304,6 +304,22 @@ public class O3Client {
                 let responseData = result!["data"] as? JSONDictionary
                 guard let data = try? JSONSerialization.data(withJSONObject: responseData!, options: .prettyPrinted),
                     let unboundong = try? decoder.decode(UnboundOng.self, from: data) else {
+                        return
+                }
+                completion(.success(unboundong))
+            }
+        }
+    }
+    func getNewUnboundOng(address: String, completion:@escaping(O3ClientResult<[newUnboundOng]>) -> Void){
+        let endpoint = "https://explorer.ont.io/v2/addresses/" + address + "/all/balances"
+        sendRequest(endpoint, method: .GET, data: nil, noBaseURL: true) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let response):
+                let decoder = JSONDecoder()
+               guard let data = try? JSONSerialization.data(withJSONObject: response["result"]!, options: .prettyPrinted),
+                    let unboundong = try? decoder.decode([newUnboundOng].self, from: data) else {
                         return
                 }
                 completion(.success(unboundong))

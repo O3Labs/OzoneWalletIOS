@@ -21,12 +21,12 @@ class PagingViewTableHeaderView: UIView {
     var headerViewFrame: CGRect = CGRect.zero
     
     weak var delegate: PagingViewTableHeaderViewDelegate?
-
+    
     var neoClaimSuccessAnimation: LOTAnimationView = LOTAnimationView(name: "claim_success")
     var ontClaimSuccessAnimation: LOTAnimationView = LOTAnimationView(name: "claim_success")
-
+    
     var ongBalance = 0.0
-
+    
     @IBOutlet weak var shadowBackground: UIView!
     //Neo Claiming Views
     @IBOutlet weak var neoClaimLoadingContainer: UIView!
@@ -59,7 +59,7 @@ class PagingViewTableHeaderView: UIView {
         ontClaimButton?.setTitle(AccountStrings.claimNowButton, for: .normal)
         ontSyncButton?.setTitle(AccountStrings.updateNowButton, for: UIControl.State())
     }
-
+    
     func setupTheme() {
         neoGasClaimingStateLabel?.theme_textColor = O3Theme.lightTextColorPicker
         ontClaimingStateTitle?.theme_textColor = O3Theme.lightTextColorPicker
@@ -79,19 +79,19 @@ class PagingViewTableHeaderView: UIView {
     
     
     weak var PagingViewTableHeaderViewDelegate: PagingViewTableHeaderViewDelegate?
-       
-       
+    
+    
     func setThemedElements() {
         claimableGasAmountLabel.theme_textColor = O3Theme.textFieldTextColorPicker
         self.theme_backgroundColor = O3Theme.backgroundColorPicker
     }
-   
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
     func displayClaimableStateNeo(claimable: Claimable) {
         self.resetNEOState()
-
+        
         let gasDouble = NSDecimalNumber(decimal: claimable.gas).doubleValue
         if claimable.claims.count == 0 {
             //if claim array is empty then we show estimated
@@ -103,32 +103,89 @@ class PagingViewTableHeaderView: UIView {
             self.showConfirmedClaimableGASStateNeo(value: gas)
         }
     }
-
-    func displayClaimableStateOnt(unboundOng: UnboundOng) {
+    
+    func displayClaimableStateOnt(unboundOngList: [newUnboundOng]) {
         self.resetOntState()
-
-        let doubleAmount = Double(Int(unboundOng.ong)!) / 1000000000.0
-        if unboundOng.calculated == true {
-            self.showEstimatedClaimableOngState(value: doubleAmount)
-        } else {
-            self.showConfirmedClaimableOngState(value: doubleAmount)
+        var waitboundong : Double = 0.0
+        var unboundong : Double = 0.0
+        var ong : Double = 0.0
+        for newUnboundOng in unboundOngList{
+            if newUnboundOng.asset_name == "waitboundong" {
+                waitboundong = Double(newUnboundOng.balance) ?? 0.0
+            }
+            
+            if newUnboundOng.asset_name == "unboundong" {
+                unboundong = Double(newUnboundOng.balance) ?? 0.0
+            }
+            
+            if newUnboundOng.asset_name == "ong"{
+                ong = Double(newUnboundOng.balance) ?? 0.0
+            }
+        }
+        let doubleAmount = waitboundong + unboundong
+        
+        DispatchQueue.main.async {
+            if ong < 0.01 {
+                self.ontClaimingStateTitle?.text = "To claim or sync, you need to hold at least 0.01 ONG"
+            }else if(
+            (ong < 0.01) ||
+                ( unboundong < 0.01 && (unboundong + waitboundong) < 0.02) ||
+                (unboundong <= 0 && waitboundong < 0.02)
+                ){
+                self.ontClaimingStateTitle?.text =  "The available amount is less than 0.02 ONG"
+            }else if  (
+                 (unboundong < 0.01 && (unboundong + waitboundong) >= 0.02) ||
+                 (unboundong <= 0 && waitboundong >= 0.02)
+                ){
+                self.ontClaimingStateTitle?.text = "Estimate only, please sync to confirm."
+            }else if (unboundong >= 0.01){
+                self.ontClaimingStateTitle?.text = "Ready to claim!"
+            }
+        }
+        
+        
+        if (
+            (ong < 0.01) ||
+                ( unboundong < 0.01 && (unboundong + waitboundong) < 0.02) ||
+                (unboundong <= 0 && waitboundong < 0.02)
+            ) {
+            if doubleAmount >= 0{
+                self.claimableOntAmountLabel.text = doubleAmount.string(8, removeTrailing: true)
+            }
+            self.resetOntState()
+            return;
+        }
+        if unboundong >= 0.01{
+            //提取
+            self.showConfirmedClaimableOngState(value: unboundong)
+        }else{
+            //同步
+            self.showEstimatedClaimableOngState(value: doubleAmount, waitboundong: waitboundong, unboundong: unboundong)
         }
     }
     
-    func showEstimatedClaimableOngState(value: Double?) {
+    func showEstimatedClaimableOngState(value: Double?, waitboundong: Double?, unboundong:Double?) {
         self.resetOntState()
         self.ontClaimingStateTitle?.text = estimatedString
         DispatchQueue.main.async {
-            self.ontSyncButton.isHidden = false
+            if value!.isZero {
+                self.ontSyncButton.isHidden = true
+            }else{
+                self.ontSyncButton.isHidden = false
+            }
             if value != nil {
                 self.ontSyncButton.isHidden = value!.isZero
                 self.claimableOntAmountLabel.text = value!.string(8, removeTrailing: true)
             }
             
-            if self.ongBalance < 0.02 {
+            if  (
+                (unboundong ?? 0.0 < 0.01 && (unboundong ?? 0.0 + (waitboundong ?? 0.0)) < 0.02) ||
+                    (unboundong ?? 0.0 <= 0 && waitboundong ?? 0.0 < 0.02)
+                ){
                 self.ontSyncButton.isHidden = true
-                self.ontClaimingStateTitle?.text = "You must have 0.02 ONG in order to sync"
+                self.ontClaimingStateTitle?.text = "The available amount is less than 0.02 ONG"
             }
+
         }
     }
     
@@ -136,13 +193,17 @@ class PagingViewTableHeaderView: UIView {
         self.resetOntState()
         self.ontClaimingStateTitle?.text = confirmedString
         DispatchQueue.main.async {
-            self.ontClaimButton.isHidden = false
+            if value!.isZero {
+                self.ontClaimButton.isHidden = true
+            }else{
+                self.ontClaimButton.isHidden = false
+            }
             self.ontClaimingLoadingContainer.isHidden = true
             if value != nil {
                 self.claimableOntAmountLabel.text = value!.string(8, removeTrailing: true)
             }
             
-            if self.ongBalance < 0.01 {
+            if value ?? 0.0 < 0.01{
                 self.ontClaimButton.isHidden = true
                 self.ontClaimingStateTitle?.text = "You must have 0.01 ONG in order to claim"
             }
@@ -157,7 +218,7 @@ class PagingViewTableHeaderView: UIView {
             self.neoSyncNowButton.isHidden = true
         }
     }
-
+    
     func resetOntState() {
         DispatchQueue.main.async {
             self.ontClaimingLoadingContainer.isHidden = true
@@ -166,7 +227,7 @@ class PagingViewTableHeaderView: UIView {
             self.ontSyncButton.isHidden = true
         }
     }
-   
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setThemedElements()
@@ -208,35 +269,31 @@ class PagingViewTableHeaderView: UIView {
         }
     }
     func loadClaimableOng() {
-        O3Client().getUnboundOng(address: (Authenticated.wallet?.address)!) { result in
+        
+        O3Client().getNewUnboundOng(address: (Authenticated.wallet?.address)!) { result in
             switch result {
             case .failure(let error):
                 self.resetOntState()
                 OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: "OK", didDismiss: {})
                 return
-            case .success(let unboundOng):
-                //if claims.claims.count > 0 {
-                //   AppState.setClaimingState(address: Authenticated.account!.address, claimingState: .ReadyToClaim)
-                // }
+            case .success(let unboundOngList):
+                
                 DispatchQueue.main.async {
-                    self.displayClaimableStateOnt(unboundOng: unboundOng)
+                    self.displayClaimableStateOnt(unboundOngList: unboundOngList)
                 }
             }
         }
     }
     func loadClaimableOng(address: String) {
-        O3Client().getUnboundOng(address: address) { result in
+        O3Client().getNewUnboundOng(address: address) { result in
             switch result {
             case .failure(let error):
                 self.resetOntState()
                 OzoneAlert.alertDialog(message: error.localizedDescription, dismissTitle: "OK", didDismiss: {})
                 return
             case .success(let unboundOng):
-                //if claims.claims.count > 0 {
-                //   AppState.setClaimingState(address: Authenticated.account!.address, claimingState: .ReadyToClaim)
-                // }
                 DispatchQueue.main.async {
-                    self.displayClaimableStateOnt(unboundOng: unboundOng)
+                    self.displayClaimableStateOnt(unboundOngList: unboundOng)
                 }
             }
         }
@@ -246,20 +303,20 @@ class PagingViewTableHeaderView: UIView {
         let neoLoaderView = LOTAnimationView(name: "loader_portfolio")
         neoLoaderView.loopAnimation = true
         neoLoaderView.play()
-
+        
         let ontLoaderView = LOTAnimationView(name: "loader_portfolio")
         neoLoaderView.loopAnimation = true
         ontLoaderView.play()
-
+        
         neoClaimLoadingContainer.embed(neoLoaderView)
         neoClaimSuccessContainer.embed(neoClaimSuccessAnimation)
-
+        
         ontClaimingLoadingContainer.embed(ontLoaderView)
         ontClaimingSuccessContainer.embed(ontClaimSuccessAnimation)
-
+        
         neoSyncNowButton?.addTarget(self, action: #selector(neoSyncNowTapped(_:)), for: .touchUpInside)
         neoClaimNowButton?.addTarget(self, action: #selector(neoClaimNowTapped(_:)), for: .touchUpInside)
-
+        
         ontSyncButton?.addTarget(self, action: #selector(ontSyncNowTapped(_:)), for: .touchUpInside)
         ontClaimButton?.addTarget(self, action: #selector(ontClaimNowTapped(_:)), for: .touchUpInside)
     }
@@ -272,7 +329,7 @@ class PagingViewTableHeaderView: UIView {
             self.neoClaimLoadingContainer.isHidden = false
             self.startLoadingNeoClaims()
         }
-
+        
         //try to fetch best node
         if let bestNode = NEONetworkMonitor.autoSelectBestNode(network: AppState.network) {
             AppState.bestSeedNodeURL = bestNode
@@ -281,25 +338,25 @@ class PagingViewTableHeaderView: UIView {
             print(AppState.bestSeedNodeURL)
             #endif
         }
-
+        
         //to be able to claim. we need to send the entire NEO to ourself.
         var customAttributes: [TransactionAttritbute] = []
         let remark = String(format: "O3XFORCLAIM")
         customAttributes.append(TransactionAttritbute(remark: remark))
-
+        
         Authenticated.wallet?.sendAssetTransaction(network: AppState.network, seedURL: AppState.bestSeedNodeURL, asset: AssetId.neoAssetId, amount: O3Cache.neoBalance(for: Authenticated.wallet!.address).value, toAddress: (Authenticated.wallet?.address)!, attributes: customAttributes) { txid, _ in
             if txid == nil {
                 self.delegate?.setIsClaimingNeo(false)
                 //if sending failed then show error message and load the claimable gas again to reset the state
                 OzoneAlert.alertDialog(message: "Error while trying to send", dismissTitle: "OK", didDismiss: {
-
+                    
                 })
                 self.loadClaimableGASNeo()
                 return
             }
         }
     }
-
+    
     func claimConfirmedNeoClaimableGAS() {
         self.delegate?.setIsClaimingNeo(true)
         DispatchQueue.main.async {
@@ -314,11 +371,11 @@ class PagingViewTableHeaderView: UIView {
             print(AppState.bestSeedNodeURL)
             #endif
         }
-
+        
         Authenticated.wallet?.claimGas(network: AppState.network, seedURL: AppState.bestSeedNodeURL) { success, error in
-
+            
             DispatchQueue.main.async {
-
+                
                 if error != nil {
                     self.delegate?.setIsClaimingNeo(false)
                     self.neoClaimLoadingContainer.isHidden = true
@@ -326,7 +383,7 @@ class PagingViewTableHeaderView: UIView {
                     OzoneAlert.alertDialog(SendStrings.transactionFailedTitle, message: SendStrings.transactionFailedSubtitle, dismissTitle: OzoneAlert.okPositiveConfirmString) {}
                     return
                 }
-
+                
                 if success == true {
                     self.neoClaimedSuccess()
                 } else {
@@ -345,13 +402,13 @@ class PagingViewTableHeaderView: UIView {
     @objc @IBAction func neoSyncNowTapped(_ sender: Any) {
         self.sendAllNEOToTheAddress()
     }
-
+    
     @objc @IBAction func neoClaimNowTapped(_ sender: Any) {
         self.claimConfirmedNeoClaimableGAS()
     }
     
     
-
+    
     func showEstimatedClaimableNeoState(value: String) {
         self.resetNEOState()
         DispatchQueue.main.async {
@@ -361,7 +418,7 @@ class PagingViewTableHeaderView: UIView {
             self.claimableGasAmountLabel.text = value
         }
     }
-
+    
     func showConfirmedClaimableGASStateNeo(value: String) {
         self.resetNEOState()
         DispatchQueue.main.async {
@@ -379,7 +436,7 @@ class PagingViewTableHeaderView: UIView {
             self.ontSyncButton.isHidden = true
             self.startLoadingOntClaims()
         }
-
+        
         OntologyClient().getGasPrice { result in
             switch result {
             case .failure(let error):
@@ -404,7 +461,7 @@ class PagingViewTableHeaderView: UIView {
             }
         }
     }
-
+    
     func claimConfirmedOng() {
         self.delegate?.setIsClaimingOnt(true)
         DispatchQueue.main.async {
@@ -444,7 +501,7 @@ class PagingViewTableHeaderView: UIView {
             self.sendOneOntBackToAddress()
         }
     }
-
+    
     @objc func ontClaimNowTapped(_ sender: Any) {
         OzoneAlert.confirmDialog(message: "Claiming ONG requires the Ontology network fee of 0.01 ONG", cancelTitle: OzoneAlert.cancelNegativeConfirmString, confirmTitle: OzoneAlert.okPositiveConfirmString, didCancel: {return}) {
             self.claimConfirmedOng()
@@ -471,7 +528,7 @@ class PagingViewTableHeaderView: UIView {
             }
         }
     }
-
+    
     func ontClaimedSuccess() {
         DispatchQueue.main.async {
             self.ontClaimingLoadingContainer.isHidden = true
@@ -499,7 +556,7 @@ class PagingViewTableHeaderView: UIView {
         }
         timer.fire()
     }
-
+    
     func startCountdownBackToOntEstimated() {
         let targetSec = 30
         var sec = 0
@@ -534,7 +591,7 @@ class PagingViewTableHeaderView: UIView {
         }
         timer.fire()
     }
-
+    
     func startLoadingOntClaims() {
         self.ontClaimingLoadingContainer.isHidden = false
         let targetSec = 60

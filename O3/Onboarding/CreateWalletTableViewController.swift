@@ -107,7 +107,7 @@ class CreateWalletTableViewController: UITableViewController, UITextFieldDelegat
         DispatchQueue.global(qos: .userInitiated).async {
             let wallet = Wallet()
             var error: NSError?
-                let nep2 = NeoutilsNEP2Encrypt(wallet?.wif, password, &error)!
+            let nep2 = NeoutilsNEP2Encrypt(wallet?.wif, password, &error)!
             
             let newAccount = NEP6.Account(address: nep2.address(),
                                           label: "My O3 Wallet", isDefault: true, lock: false,

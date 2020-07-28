@@ -560,7 +560,8 @@ class NewHomeVC: UIViewController, HomeViewModelDelegate, PagingViewTableHeaderV
     func updateWithBalanceData(_ assets: [PortfolioAsset]) {
         self.displayedAssets = assets
         DispatchQueue.main.async {
-            
+            self.segmentedView.reloadData()
+            self.pagingView.reloadData()
         }
     }
     

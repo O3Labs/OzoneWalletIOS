@@ -470,7 +470,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
             handleWalletTapped(indexPath: indexPath)
             absoluteIndex = indexPath.row + indexPath.section
         } else if indexPath.section == 2 {
-            absoluteIndex = wallets.count
+            absoluteIndex = wallets.count+1
             for row in 0..<indexPath.row {
                 if UserDefaultsManager.untrackedWatchAddr.contains(self.watchAddrs[IndexPath(row: row, section: 2)]!.address) {
                     continue
@@ -478,6 +478,7 @@ class PortfolioSelectorTableViewController: UITableViewController {
                     absoluteIndex += 1
                 }
             }
+            self.dismiss(animated: true)
         } else {
             absoluteIndex = wallets.count + watchAddrs.count - UserDefaultsManager.untrackedWatchAddr.count + 1
         }

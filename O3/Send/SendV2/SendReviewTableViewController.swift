@@ -63,7 +63,12 @@ class SendReviewTableViewController: UITableViewController {
         if feeEnabled {
             feeAmountLabel.text = "0.0011 GAS"
         } else if selectedAsset.id.contains("0000000") {
-            feeAmountLabel.text = "0.01 ONG"
+            
+            var dec = Decimal((2500 * 20000.0) / 1000000000.0)
+            var dec_round = Decimal.zero
+            NSDecimalRound(&dec_round, &dec, 2, .bankers)
+            
+            feeAmountLabel.text = "\(NSDecimalNumber(decimal: dec_round).stringValue) ONG"
         } else {
             feeLabel.isHidden = true
             feeAmountLabel.isHidden = true
